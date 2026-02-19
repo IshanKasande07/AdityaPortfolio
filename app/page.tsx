@@ -13,16 +13,12 @@ import PageStack from '@/components/css/PageStack'
 const page = () => {
   return (
     <>
-
-      <PageStack />
-
       <Home />
       <ThreeDCarousel />
       <WhyInfotainmentWorks />
       <ProblemsSection />
       <Who />
       <Contact />
-      <div className='w-full min-h-[100vh] page z-70'></div>
       <Footer />
     </>
   )
