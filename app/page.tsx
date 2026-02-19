@@ -2,21 +2,29 @@ import React from 'react'
 import Home from '@/components/Home'
 import Contact from '@/components/Contact'
 import Who from '@/components/Who'
-import Solutions from '@/components/Solutions'
 import ProblemsSection from '@/components/ProblemsSection'
 import WhyInfotainmentWorks from '@/components/WhyInfotainmentWorks'
 import Footer from '@/components/Footer'
+import FlywheelAnimation from '@/components/FlyWheelAnimation'
+import ThreeDCarousel from '@/components/ThreeDCarousal'
+import PhysicsThrow from '@/components/PhysicsThrow'
+import PageStack from '@/components/css/PageStack'
 
 const page = () => {
   return (
-    <div className="flex flex-col items-center justify-between w-screen h-screen bg-white">  
+    <>
+
+      <PageStack />
+
       <Home />
+      <ThreeDCarousel />
       <WhyInfotainmentWorks />
       <ProblemsSection />
       <Who />
       <Contact />
+      <div className='w-full min-h-[100vh] page z-70'></div>
       <Footer />
-    </div>
+    </>
   )
 }
 

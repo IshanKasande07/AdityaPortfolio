@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Zap, TrendingDown, Clock, Shield, Coffee } from "lucide-react";
+import FadeUp from "./css/FadeUp";
+import FadeUpDelay from "./css/FadeUpDelay";
 
 interface Problem {
   id: string;
@@ -77,9 +79,9 @@ const ProblemsSection = () => {
   const allSolved = problems.every((p) => p.solved);
 
   return (
-      <div className="min-h-screen w-full flex flex-col items-center justify-center gap-20">
+      <div className="page min-h-[100vh] w-full flex flex-col items-center justify-center gap-20 z-40 bg-white">
         {/* Section header */}
-        <div className="text-center mx-auto flex flex-col gap-10">
+        <div className="text-center mx-auto flex flex-col gap-10 mt-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -87,10 +89,14 @@ const ProblemsSection = () => {
             transition={{ duration: 0.5 }}
           >
             <div className="accent-line w-full" />
-            <h2 className="text-[4vw]">The Problems We Solve</h2>
-            <p className="lead text-[1.5vw] text-gray-500">
-              Click on each problem to see how infotainment solves it.
-            </p>
+            <FadeUp>
+              <h2 className="text-[4vw]">The Problems We Solve</h2>
+            </FadeUp>
+            <FadeUpDelay>
+              <p className="lead text-[1.5vw] text-gray-500">
+                Click on each problem to see how infotainment solves it.
+              </p>
+            </FadeUpDelay>
           </motion.div>
         </div>
 

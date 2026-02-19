@@ -10,20 +10,20 @@ const Navbar = () => {
           href="#"
           className="text-xl font-serif font-semibold"
         >
-          Monarch
+          Monarch Media House
         </a>
 
         {/* Desktop menu */}
         <div className="hidden md:flex items-center gap-10 text-gray-500">
-          <button className="text-[1vw]">
+          <button className="text-[1.1vw] font-medium" style={{ cursor : "pointer" }}>
             Work
           </button>
 
-          <button className="text-[1vw]">
+          <button className="text-[1.1vw] font-medium" style={{ cursor : "pointer" }}>
             Contact
           </button>
 
-          <button className="text-[1vw] px-3 py-2 rounded-lg bg-black text-white border-2 hover:bg-white hover:border-2 hover:border-black hover:text-black transition-transform duration-300 ">
+          <button style={{ cursor : "pointer" }} className="text-[1.1vw] px-3 py-2 rounded-lg bg-black text-white border-2 hover:bg-white hover:border-2 hover:border-black hover:text-black transition-transform duration-300 ">
             Get Started
           </button>
         </div>

@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "components/css/FadeUp.tsx", "components/css/FadeUpDelay.tsx", "components/css/RotateInLeft.tsx", "components/css/RotateInRight.tsx"  ],
   "exclude": ["node_modules"]
 }

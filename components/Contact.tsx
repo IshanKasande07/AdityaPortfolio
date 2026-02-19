@@ -13,7 +13,7 @@ const Contact = () => {
 
     const [a, setA] = useState(true);
 
-    const sendData = async (e) => {
+    const sendData = async (e : any) => {
         e.preventDefault();
 
         if(a){
@@ -48,9 +48,9 @@ const Contact = () => {
     }
 
   return (
-    <div className='w-full bg-white flex flex-col items-center justify-center z-10 gap-10 py-20'>
-        <div className='w-[50vw] flex flex-col items-center justify-center text-center text-black'>
-            <p className='text-[4vw] leading-tight'>Turn Your Expertise Into Influence</p>
+    <div className='w-full page bg-white flex flex-col items-center justify-center z-60 gap-10 py-20 min-h-100vh'>
+        <div className='w-[50vw] flex flex-col items-center justify-center text-center text-black mt-10'>
+            <p className='text-[3.5vw] leading-tight'>Turn Your Expertise Into Influence</p>
             <p className='text-[1.3vw] text-gray-500'>Ready to build authority through education? Apply for a strategy call.</p>
         </div>
         <form className='w-[39vw] flex flex-col items-center justify-center gap-7 text-[1.1vw]'>

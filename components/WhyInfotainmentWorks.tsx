@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
+import FadeUp from "./css/FadeUp";
 
 const WhyInfotainmentWorks = () => {
   const steps = [
@@ -12,18 +13,12 @@ const WhyInfotainmentWorks = () => {
   ];
 
   return (
-      <div className="h-auto w-full py-25">
-        <div className="flex flex-col items-center gap-20">
+      <div className="h-auto w-full py-25 page z-30 min-h-[100vh bg-white">
+        <div className="flex flex-col items-center gap-20 mt-10">
           {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center"
-          >
-            <h2 className="text-[4vw] font-serif">Why Infotainment Works</h2>
-          </motion.div>
+            <FadeUp>
+              <h2 className="text-[4vw] font-serif">Why Infotainment Works</h2>
+            </FadeUp>
 
           {/* Flow visualization */}
           <div className="flex flex-col items-center gap-4">
@@ -57,9 +52,11 @@ const WhyInfotainmentWorks = () => {
   transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
   className="text-center"
 >
-  <p className="text-xl md:text-[1.5vw] font-serif italic text-black mx-auto">
+<FadeUp>
+    <p className="text-xl md:text-[1.5vw] font-serif italic text-black mx-auto">
     &quot;Anyone can entertain. Anyone can educate. Very few can do both — consistently.&quot;
   </p>
+</FadeUp>
 </motion.blockquote>
 
 
