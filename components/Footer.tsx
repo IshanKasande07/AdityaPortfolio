@@ -2,14 +2,14 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="py-15 border-t-[1px] border-gray-200 w-full page z-70">
+    <footer className="py-15 border-t border-white/5 w-full page bg-background z-70 text-primary">
       <div className="w-[80vw] mx-auto px-6">
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
 
           {/* Brand */}
-          <div className="text-[1.3vw] font-serif font-semibold">
-            Monarch Media House
+          <div className="text-[1.3vw] font-display font-semibold tracking-wide">
+            MONARCH MEDIA HOUSE
           </div>
 
           {/* Social links */}
@@ -21,7 +21,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
-              className=" transition-colors"
+              className="text-muted hover:text-accent transition-colors"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +45,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-muted hover:text-accent transition-colors"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +67,7 @@ const Footer = () => {
             <a
               href="mailto:hello@monarchmedia.house"
               aria-label="Email"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-muted hover:text-accent transition-colors"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

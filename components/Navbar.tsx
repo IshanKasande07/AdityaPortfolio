@@ -1,36 +1,66 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 
 const Navbar = () => {
-  return (
-    <div className="w-full px-40 bg-white text-black fixed z-50 border-b-[1px] border-gray-200">
-      <div className="flex items-center justify-between h-25">
+  const [scrolled, setScrolled] = useState(false);
 
-        {/* Logo */}
+  useEffect(() => {
+    const handleScroll = () => {
+      // Toggle at 100px or so down
+      setScrolled(window.scrollY > 100);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div
+      className={`fixed top-0 left-0 w-full z-50 grid grid-cols-2 md:grid-cols-3 items-center px-6 md:px-12 py-4 pointer-events-none transition-colors duration-300 text-white`}
+    >
+      {/* Left: Logo */}
+      <div className="flex justify-start pointer-events-auto">
         <a
           href="#"
-          className="text-xl font-serif font-semibold"
+          className="text-xl md:text-2xl font-display font-semibold tracking-wide"
         >
-          Monarch Media House
+          MONARCH MEDIA HOUSE
         </a>
+      </div>
 
-        {/* Desktop menu */}
-        <div className="hidden md:flex items-center gap-10 text-gray-500">
-          <button className="text-[1.1vw] font-medium" style={{ cursor : "pointer" }}>
+      {/* Center: Liquid Glass Pill-shaped Navbar (Perfectly Centered via Grid) */}
+      <div className="hidden md:flex justify-center pointer-events-auto">
+        <div
+          className={`flex items-center gap-6 backdrop-blur-2xl rounded-full px-6 py-2 transition-all duration-300 bg-transparent border border-white/20 shadow-[0_4px_24px_0_rgba(255,255,255,0.05)] text-white`}
+        >
+          <button className={`text-sm font-medium transition-colors hover:text-accent`}>
             Work
           </button>
-
-          <button className="text-[1.1vw] font-medium" style={{ cursor : "pointer" }}>
+          <button className={`text-sm font-medium transition-colors hover:text-accent`}>
+            Services
+          </button>
+          <button className={`text-sm font-medium transition-colors hover:text-accent`}>
+            About
+          </button>
+          <button className={`text-sm font-medium transition-colors hover:text-accent`}>
             Contact
           </button>
-
-          <button style={{ cursor : "pointer" }} className="text-[1.1vw] px-3 py-2 rounded-lg bg-black text-white border-2 hover:bg-white hover:border-2 hover:border-black hover:text-black transition-transform duration-300 ">
-            Get Started
-          </button>
         </div>
+      </div>
 
-        {/* Mobile menu button */}
+      {/* Right: Button */}
+      <div className="hidden md:flex justify-end pointer-events-auto">
         <button
-          className="md:hidden p-2"
+          className={`px-5 py-2.5 rounded-full border text-sm font-medium transition-all flex items-center gap-2 backdrop-blur-sm border-white/30 hover:bg-white hover:text-black bg-transparent text-white`}
+        >
+          Book a Call <span className="text-xs">↗</span>
+        </button>
+      </div>
+
+      {/* Mobile menu button */}
+      <div className="flex justify-end md:hidden pointer-events-auto text-white">
+        <button
+          className="p-2 transition-colors duration-300"
           aria-label="Toggle menu"
         >
           <svg
@@ -50,8 +80,8 @@ const Navbar = () => {
             <line x1="4" x2="20" y1="18" y2="18" />
           </svg>
         </button>
-
       </div>
+
     </div>
   );
 };
