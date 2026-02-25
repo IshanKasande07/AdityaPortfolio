@@ -158,10 +158,10 @@ const WhyInfotainmentWorks = () => {
   }, [cardDimensions]); // Re-run animations when card dimensions change
 
   const steps = [
-    { label: "Attention", desc: "In a world of infinite scrolling, raw information is boring. Entertainment stops the scroll and hooks the viewer.", icon: <Zap className="w-5 h-5 text-accent" />, actionWord: null },
-    { label: "Authority", desc: "Once you have their attention, you must deliver intense value. True education proves your unquestionable expertise.", icon: <Brain className="w-5 h-5 text-accent" />, actionWord: "Builds" },
-    { label: "Trust", desc: "When you consistently educate while entertaining, you transcend from a commodity into a highly trusted advisor.", icon: <Heart className="w-5 h-5 text-accent" />, actionWord: "Earns" },
-    { label: "Demand", desc: "Trust breeds loyalty. Loyalty breeds demand. Your audience doesn't just want a service, they want YOU.", icon: <Sparkles className="w-5 h-5 text-accent" />, actionWord: "Creates" },
+    { label: "Attention", icon: <Zap className="w-5 h-5 text-accent" />, actionWord: null },
+    { label: "Authority", icon: <Brain className="w-5 h-5 text-accent" />, actionWord: "Builds" },
+    { label: "Trust", icon: <Heart className="w-5 h-5 text-accent" />, actionWord: "Earns" },
+    { label: "Demand", icon: <Sparkles className="w-5 h-5 text-accent" />, actionWord: "Creates" },
   ];
 
   const addToRefs = (el: any, refArray: React.MutableRefObject<any[]>, index: number) => {
@@ -264,17 +264,13 @@ const WhyInfotainmentWorks = () => {
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                  <div className={`w-12 h-12 rounded-full bg-surface-light/50 border border-white/10 flex items-center justify-center mb-6 shadow-lg z-10`}>
+                  <div className={`w-12 h-12 rounded-full bg-surface-light/50 border border-white/10 flex items-center justify-center mb-4 shadow-lg z-10`}>
                     {step.icon}
                   </div>
 
-                  <h3 className="text-2xl md:text-3xl font-display font-semibold text-primary mb-4 tracking-tight z-10">
+                  <h3 className="text-2xl md:text-3xl font-display font-semibold text-primary tracking-tight z-10">
                     {step.label}
                   </h3>
-
-                  <p className="text-muted leading-relaxed font-light z-10">
-                    {step.desc}
-                  </p>
                 </div>
 
                 {/* Connecting Vertical Line & Action Word to next card */}
