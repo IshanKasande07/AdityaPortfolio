@@ -1,177 +1,290 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from 'react'
-import FadeUp from './css/FadeUp'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-const goodFit = [
-    "Have real expertise worth sharing.",
-    "Want long term authority, not viral moments.",
-    "Care about brand depth over surface metrics.",
-    "Are ready to invest in their content strategy."
-];
+gsap.registerPlugin(ScrollTrigger)
 
-const badFit = [
-    "Want random viral clips without substance.",
-    "Only chase trends without a core message.",
-    "Treat content as a checkbox, not a strategy.",
-    "Expect overnight results without commitment."
-];
+/* ─── Data ─── */
+import {
+    Sparkles, TrendingUp, Anchor, Gem,
+    Zap, Compass, SquareSquare, Hourglass
+} from 'lucide-react'
 
-const Who = () => {
-    const sectionRef = useRef<HTMLDivElement>(null);
-    const leftCardRef = useRef<HTMLDivElement>(null);
-    const rightCardRef = useRef<HTMLDivElement>(null);
-    const leftItemsRef = useRef<(HTMLLIElement | null)[]>([]);
-    const rightItemsRef = useRef<(HTMLLIElement | null)[]>([]);
-    const [hasRevealed, setHasRevealed] = useState(false);
+const forPoints = [
+    { text: "Real expertise worth sharing.", icon: Sparkles },
+    { text: "Long-term authority over virality.", icon: TrendingUp },
+    { text: "Brand depth over surface metrics.", icon: Anchor },
+    { text: "Ready to invest in content.", icon: Gem },
+]
+const notForPoints = [
+    { text: "Viral clips without substance.", icon: Zap },
+    { text: "Chasing trends, no core message.", icon: Compass },
+    { text: "Content as a checkbox.", icon: SquareSquare },
+    { text: "Expecting overnight results.", icon: Hourglass },
+]
 
-    const addToRefs = (el: any, refArray: React.MutableRefObject<any[]>, index: number) => {
-        if (el) {
-            refArray.current[index] = el;
-        }
-    };
+/* ─── Main Component ─── */
+export default function Who() {
+    const pinWrapRef = useRef<HTMLDivElement>(null)
+    const sectionRef = useRef<HTMLDivElement>(null)
+    const notWordRef = useRef<HTMLSpanElement>(null)
+    const forWordRef = useRef<HTMLSpanElement>(null)
+    const phaseRef = useRef(0)
+    const [phase, setPhase] = useState(0)
+    const pointRefs = useRef<(HTMLDivElement | null)[]>([])
 
-    useEffect(() => {
-        gsap.registerPlugin(ScrollTrigger);
+    /* ─── Animate "not " insertion/removal ─── */
+    const swapPhase = (to: number, dir: 1 | -1) => {
+        const el = sectionRef.current
+        const notEl = notWordRef.current
+        if (!el || !notEl) return
 
-        let ctx = gsap.context(() => {
-            // Initial elegant reveal
-            gsap.fromTo([leftCardRef.current, rightCardRef.current],
-                { opacity: 0, y: 60, filter: "blur(15px)", scale: 0.95 },
-                {
-                    opacity: 0.7, // Start slightly dimmed for premium contrast later
-                    y: 0,
-                    filter: "blur(0px)",
-                    scale: 1,
-                    duration: 1.2,
-                    stagger: 0.2,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top center+=15%",
-                    },
-                    onComplete: () => setHasRevealed(true)
-                }
-            );
-
-            // Set initial state for list items
-            gsap.set([...leftItemsRef.current, ...rightItemsRef.current], { x: 0 });
-
-        }, sectionRef);
-
-        return () => ctx.revert();
-    }, []);
-
-    const handleHover = (hoveredSide: 'left' | 'right' | null) => {
-        if (!hasRevealed || !leftCardRef.current || !rightCardRef.current || window.innerWidth < 768) return;
-
-        const duration = 0.5;
-        const ease = "expo.out";
-
-        if (hoveredSide === 'left') {
-            // Left Card Active
-            gsap.to(leftCardRef.current, { scale: 1.03, opacity: 1, filter: "blur(0px) grayscale(0%)", duration, ease, overwrite: "auto" });
-            gsap.to(leftItemsRef.current, { x: 5, stagger: 0.05, duration: 0.3, ease: "power2.out", overwrite: "auto" });
-
-            // Right Card Inactive
-            gsap.to(rightCardRef.current, { scale: 0.95, opacity: 0.4, filter: "blur(6px) grayscale(70%)", duration, ease, overwrite: "auto" });
-            gsap.to(rightItemsRef.current, { x: 0, duration: 0.3, overwrite: "auto" });
-
-        } else if (hoveredSide === 'right') {
-            // Right Card Active
-            gsap.to(rightCardRef.current, { scale: 1.03, opacity: 1, filter: "blur(0px) grayscale(0%)", duration, ease, overwrite: "auto" });
-            gsap.to(rightItemsRef.current, { x: 5, stagger: 0.05, duration: 0.3, ease: "power2.out", overwrite: "auto" });
-
-            // Left Card Inactive
-            gsap.to(leftCardRef.current, { scale: 0.95, opacity: 0.4, filter: "blur(6px) grayscale(70%)", duration, ease, overwrite: "auto" });
-            gsap.to(leftItemsRef.current, { x: 0, duration: 0.3, overwrite: "auto" });
-
+        if (to === 1) {
+            gsap.to(notEl, {
+                width: notEl.scrollWidth, opacity: 1,
+                duration: 0.5, ease: "power3.out", force3D: true,
+            })
+            if (forWordRef.current) {
+                gsap.to(forWordRef.current, {
+                    color: "#f87171", duration: 0.5, ease: "power2.out", delay: 0.1,
+                })
+            }
         } else {
-            // Reset both to neutral
-            gsap.to([leftCardRef.current, rightCardRef.current], { scale: 1, opacity: 0.7, filter: "blur(0px) grayscale(0%)", duration, ease, overwrite: "auto" });
-            gsap.to([...leftItemsRef.current, ...rightItemsRef.current], { x: 0, duration: 0.3, overwrite: "auto" });
+            gsap.to(notEl, {
+                width: 0, opacity: 0,
+                duration: 0.4, ease: "power2.in", force3D: true,
+            })
+            if (forWordRef.current) {
+                gsap.to(forWordRef.current, {
+                    color: "#FFC300", duration: 0.4, ease: "power2.in",
+                })
+            }
         }
-    };
 
-    return (
-        <div ref={sectionRef} className='w-full page flex flex-col items-center justify-center bg-surface py-25 md:py-32 gap-16 min-h-[100vh] border-b border-white/5 z-50 relative overflow-hidden'>
-            {/* Background ambient lighting */}
-            <div className='absolute top-0 left-1/4 w-1/2 h-full bg-gradient-to-b from-transparent via-white/5 to-transparent blur-3xl opacity-20 pointer-events-none'></div>
+        /* Swap surrounding points — only text + icons, not the line */
+        const exitY = dir === 1 ? -20 : 20
+        const enterY = dir === 1 ? 20 : -20
 
-            <div className='relative z-10 text-center px-[5vw] mb-4'>
-                <FadeUp>
-                    <h2 className='text-4xl md:text-[5vw] font-display font-semibold text-primary tracking-tight'>Who This Is For</h2>
-                    <div className="w-16 md:w-24 h-1 bg-accent mx-auto mt-6 rounded-full opacity-80"></div>
-                </FadeUp>
-            </div>
+        pointRefs.current.forEach((wrapper, i) => {
+            if (!wrapper) return
+            const delay = i * 0.1
 
-            <div
-                className='w-full max-w-[80vw] mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 relative z-10'
-                onMouseLeave={() => handleHover(null)}
-            >
-                {/* Visual Separator for Desktop */}
-                <div className="hidden md:block absolute left-1/2 top-10 bottom-10 w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent -translate-x-1/2 pointer-events-none"></div>
+            /* Text elements */
+            const forText = wrapper.querySelector<HTMLDivElement>(".txt-for")
+            const notText = wrapper.querySelector<HTMLDivElement>(".txt-not")
+            /* Icon elements */
+            const iconFor = wrapper.querySelector<HTMLSpanElement>(".icon-for")
+            const iconNot = wrapper.querySelector<HTMLSpanElement>(".icon-not")
+            /* Large Icon elements */
+            const iconForLg = wrapper.querySelector<SVGSVGElement>(".icon-for-large")
+            const iconNotLg = wrapper.querySelector<SVGSVGElement>(".icon-not-large")
+            /* Line element */
+            const line = wrapper.querySelector<HTMLDivElement>(".point-line")
 
-                {/* Left Side: For Brands Who */}
-                <div
-                    ref={leftCardRef}
-                    onMouseEnter={() => handleHover('left')}
-                    className='group relative flex flex-col gap-8 md:gap-10 p-8 md:p-12 rounded-3xl border border-transparent hover:border-emerald-500/20 hover:bg-emerald-500/[0.02] transition-colors duration-500 cursor-default'
-                >
-                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-emerald-500/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-3xl pointer-events-none blur-3xl"></div>
+            if (to === 1) {
+                if (forText) gsap.to(forText, { y: exitY, opacity: 0, filter: "blur(6px)", duration: 0.35, ease: "power2.in", delay, force3D: true, overwrite: true })
+                if (notText) gsap.fromTo(notText, { y: enterY, opacity: 0, filter: "blur(6px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.55, ease: "power3.out", delay: delay + 0.18, force3D: true, overwrite: true })
+                if (iconFor) gsap.to(iconFor, { opacity: 0, scale: 0.3, rotation: -45, duration: 0.25, delay, force3D: true, overwrite: true })
+                if (iconNot) gsap.to(iconNot, { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: "back.out(1.7)", delay: delay + 0.15, force3D: true, overwrite: true })
+                if (iconForLg) gsap.to(iconForLg, { opacity: 0, scale: 0.3, rotation: -45, duration: 0.25, delay, force3D: true, overwrite: true })
+                if (iconNotLg) gsap.to(iconNotLg, { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: "back.out(1.7)", delay: delay + 0.15, force3D: true, overwrite: true })
+                if (line) gsap.to(line, { backgroundColor: "rgba(248, 113, 113, 0.4)", duration: 0.4, delay: delay + 0.15, overwrite: true }) // Red
+            } else {
+                if (notText) gsap.to(notText, { y: exitY, opacity: 0, filter: "blur(6px)", duration: 0.35, ease: "power2.in", delay, force3D: true, overwrite: true })
+                if (forText) gsap.fromTo(forText, { y: enterY, opacity: 0, filter: "blur(6px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.55, ease: "power3.out", delay: delay + 0.18, force3D: true, overwrite: true })
+                if (iconNot) gsap.to(iconNot, { opacity: 0, scale: 0.3, rotation: 45, duration: 0.25, delay, force3D: true, overwrite: true })
+                if (iconFor) gsap.to(iconFor, { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: "back.out(1.7)", delay: delay + 0.15, force3D: true, overwrite: true })
+                if (iconNotLg) gsap.to(iconNotLg, { opacity: 0, scale: 0.3, rotation: 45, duration: 0.25, delay, force3D: true, overwrite: true })
+                if (iconForLg) gsap.to(iconForLg, { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: "back.out(1.7)", delay: delay + 0.15, force3D: true, overwrite: true })
+                if (line) gsap.to(line, { backgroundColor: "rgba(255, 255, 255, 0.06)", duration: 0.4, delay: delay + 0.15, overwrite: true }) // Back to subtle white
+            }
+        })
+    }
 
-                    <h3 className='text-3xl md:text-[2.2vw] font-display font-medium text-primary transition-colors group-hover:text-emerald-400 duration-500 relative z-10'>
-                        For brands who:
-                    </h3>
+    /* ─── ScrollTrigger ─── */
+    useEffect(() => {
+        if (typeof window === "undefined") return
 
-                    <ul className='flex flex-col gap-6 md:gap-8 relative z-10'>
-                        {goodFit.map((item, index) => (
-                            <li
-                                key={index}
-                                ref={(el) => addToRefs(el, leftItemsRef, index)}
-                                className='flex flex-row items-center gap-5 text-lg md:text-[1.2vw] text-muted group-hover:text-primary transition-colors duration-300'
-                            >
-                                <div className="min-w-[36px] w-[36px] h-[36px] rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold text-sm border border-emerald-500/20 group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all duration-500">
-                                    ✓
-                                </div>
-                                <span className="leading-snug">{item}</span>
-                            </li>
-                        ))}
-                    </ul>
+        const ctx = gsap.context(() => {
+            ScrollTrigger.create({
+                trigger: pinWrapRef.current,
+                start: "top top",
+                end: "+=100%",
+                pin: sectionRef.current,
+                anticipatePin: 1,
+                onUpdate(self) {
+                    const np = self.progress >= 0.48 ? 1 : 0
+                    if (np !== phaseRef.current) {
+                        const dir: 1 | -1 = np > phaseRef.current ? 1 : -1
+                        phaseRef.current = np
+                        setPhase(np)
+                        swapPhase(np, dir)
+                    }
+                },
+            })
+        }, pinWrapRef)
+
+        return () => ctx.revert()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    /* ─── Render a top point (line on top, text below) ─── */
+    const renderTopPoint = (i: number) => {
+        const isRight = i === 1
+        const IconFor = forPoints[i].icon
+        const IconNot = notForPoints[i].icon
+
+        return (
+            <div key={i} ref={el => { pointRefs.current[i] = el }}
+                className="relative" style={{ maxWidth: "clamp(200px, 25vw, 360px)", textAlign: isRight ? "right" : "left" }}>
+
+                {/* Persistent line + swapping icon */}
+                <div className={`flex items-center gap-2.5 mb-2.5 ${isRight ? "flex-row-reverse" : ""}`}>
+                    <div className="relative w-6 h-6 flex flex-shrink-0 items-center justify-center">
+                        <span className="icon-for text-emerald-400 text-lg absolute">✓</span>
+                        <span className="icon-not text-red-400 text-lg absolute" style={{ opacity: 0, transform: "scale(0.5)" }}>×</span>
+                    </div>
+                    <div className="point-line h-[1px] flex-1 bg-white/6" style={{ transition: "background-color 0.4s ease" }} />
                 </div>
 
-                {/* Right Side: Not For Brands Who */}
-                <div
-                    ref={rightCardRef}
-                    onMouseEnter={() => handleHover('right')}
-                    className='group relative flex flex-col gap-8 md:gap-10 p-8 md:p-12 rounded-3xl border border-transparent hover:border-red-500/20 hover:bg-red-500/[0.02] transition-colors duration-500 cursor-default'
-                >
-                    <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-red-500/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-3xl pointer-events-none blur-3xl"></div>
+                {/* Swapping text + large icons */}
+                <div className="relative" style={{ minHeight: "1.8em" }}>
+                    <div className="txt-for flex flex-col gap-3" style={{ willChange: "transform, opacity", alignItems: isRight ? "flex-end" : "flex-start" }}>
+                        <IconFor className="icon-for-large text-emerald-400/80 w-8 h-8 md:w-10 md:h-10" />
+                        <p className="font-display font-medium text-primary/80 text-2xl md:text-[1.8vw] leading-snug">
+                            {forPoints[i].text}
+                        </p>
+                    </div>
+                    <div className="txt-not absolute inset-x-0 top-0 flex flex-col gap-3" style={{ opacity: 0, willChange: "transform, opacity", alignItems: isRight ? "flex-end" : "flex-start" }}>
+                        <IconNot className="icon-not-large text-red-400/80 w-8 h-8 md:w-10 md:h-10" />
+                        <p className="font-display font-medium text-primary/80 text-2xl md:text-[1.8vw] leading-snug">
+                            {notForPoints[i].text}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
-                    <h3 className='text-3xl md:text-[2.2vw] font-display font-medium text-primary transition-colors group-hover:text-red-400 duration-500 relative z-10'>
-                        Not for brands who:
-                    </h3>
+    /* ─── Render a bottom point (text on top, line below) ─── */
+    const renderBottomPoint = (i: number) => {
+        const isRight = i === 3
+        const IconFor = forPoints[i].icon
+        const IconNot = notForPoints[i].icon
 
-                    <ul className='flex flex-col gap-6 md:gap-8 relative z-10'>
-                        {badFit.map((item, index) => (
-                            <li
-                                key={index}
-                                ref={(el) => addToRefs(el, rightItemsRef, index)}
-                                className='flex flex-row items-center gap-5 text-lg md:text-[1.2vw] text-muted group-hover:text-primary transition-colors duration-300'
-                            >
-                                <div className="min-w-[36px] w-[36px] h-[36px] rounded-full bg-red-500/10 text-red-400 flex items-center justify-center font-bold text-lg leading-none pb-[2px] border border-red-500/20 group-hover:bg-red-500/20 group-hover:border-red-500/40 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(239,68,68,0.4)] transition-all duration-500">
-                                    ×
-                                </div>
-                                <span className="leading-snug">{item}</span>
-                            </li>
-                        ))}
-                    </ul>
+        return (
+            <div key={i} ref={el => { pointRefs.current[i] = el }}
+                className={`relative ${i === 2 ? "-mt-8 md:-mt-12" : ""}`} style={{ maxWidth: "clamp(200px, 25vw, 360px)", textAlign: isRight ? "right" : "left" }}>
+
+                {/* Swapping text + large icons */}
+                <div className="relative mb-2.5" style={{ minHeight: "1.8em" }}>
+                    <div className="txt-for flex flex-col-reverse gap-3" style={{ willChange: "transform, opacity", alignItems: isRight ? "flex-end" : "flex-start" }}>
+                        <IconFor className="icon-for-large text-emerald-400/80 w-8 h-8 md:w-10 md:h-10" />
+                        <p className="font-display font-medium text-primary/80 text-2xl md:text-[1.8vw] leading-snug">
+                            {forPoints[i].text}
+                        </p>
+                    </div>
+                    <div className="txt-not absolute inset-x-0 bottom-0 flex flex-col-reverse gap-3" style={{ opacity: 0, willChange: "transform, opacity", alignItems: isRight ? "flex-end" : "flex-start" }}>
+                        <IconNot className="icon-not-large text-red-400/80 w-8 h-8 md:w-10 md:h-10" />
+                        <p className="font-display font-medium text-primary/80 text-2xl md:text-[1.8vw] leading-snug">
+                            {notForPoints[i].text}
+                        </p>
+                    </div>
+                </div>
+
+                {/* Persistent line + swapping icon */}
+                <div className={`flex items-center gap-2.5 ${isRight ? "flex-row-reverse" : ""}`}>
+                    <div className="point-line h-[1px] flex-1 bg-white/6" style={{ transition: "background-color 0.4s ease" }} />
+                    <div className="relative w-6 h-6 flex flex-shrink-0 items-center justify-center">
+                        <span className="icon-for text-emerald-400 text-lg absolute">✓</span>
+                        <span className="icon-not text-red-400 text-lg absolute" style={{ opacity: 0, transform: "scale(0.5)" }}>×</span>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    return (
+        <div ref={pinWrapRef} className="relative w-full" style={{ height: "200vh" }}>
+            <div
+                ref={sectionRef}
+                className="relative w-full h-screen overflow-hidden bg-background flex items-center justify-center border-b border-white/5"
+            >
+                {/* Subtle ambient */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[45vw] h-[45vh] rounded-full pointer-events-none"
+                    style={{ background: "radial-gradient(ellipse, rgba(255,195,0,0.025) 0%, transparent 70%)" }} />
+
+                {/* ─── Main layout ─── */}
+                <div className="relative w-full max-w-[82vw] mx-auto flex flex-col items-center justify-center gap-8 md:gap-10">
+
+                    {/* Top row — points 0 & 1 */}
+                    <div className="w-full flex justify-between items-end px-2 md:px-8 translate-y-8 md:translate-y-12">
+                        {[0, 1].map(i => renderTopPoint(i))}
+                    </div>
+
+                    {/* Arrows between top row and centre */}
+                    <div className="w-full flex justify-between px-16 md:px-28 -my-4 md:-my-5 pointer-events-none" style={{ zIndex: 5 }}>
+                        <svg className="translate-x-8 md:translate-x-12" width="60" height="40" viewBox="0 0 60 40" fill="none" style={{ opacity: 0.35 }}>
+                            <path d="M 10 4 Q 30 4 40 20 Q 48 32 55 32" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+                            <path d="M 50 28 L 56 33 L 50 36" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                        </svg>
+                        <svg className="-translate-x-8 md:-translate-x-12" width="60" height="40" viewBox="0 0 60 40" fill="none" style={{ opacity: 0.35 }}>
+                            <path d="M 50 4 Q 30 4 20 20 Q 12 32 5 32" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+                            <path d="M 10 28 L 4 33 L 10 36" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                        </svg>
+                    </div>
+
+                    {/* ─── Centre ─── */}
+                    <div className="relative text-center">
+                        <div className="px-10 py-8 md:px-16 md:py-11 rounded-3xl border border-white/6 bg-surface-light/15 backdrop-blur-sm">
+                            <h2 className="font-display font-semibold text-primary tracking-tight leading-tight"
+                                style={{ fontSize: "clamp(1.8rem, 3vw, 3.5rem)" }}>
+                                Which brands is this{" "}
+                                <span
+                                    ref={notWordRef}
+                                    className="font-display font-semibold italic"
+                                    style={{ display: "inline-block", width: 0, overflow: "hidden", opacity: 0, whiteSpace: "nowrap", verticalAlign: "baseline", fontSize: "clamp(1.8rem, 3vw, 3.5rem)", lineHeight: "inherit", position: "relative", top: "0.32em", color: "#f87171" }}
+                                >
+                                    not{" "}
+                                </span>{" "}
+                                <span ref={forWordRef} className="font-display font-semibold italic" style={{ color: "var(--color-accent, #FFC300)", transition: "none" }}>
+                                    for?
+                                </span>
+                            </h2>
+                            <div className="w-14 h-[2px] bg-accent mx-auto mt-5 rounded-full opacity-50" />
+                        </div>
+                    </div>
+
+                    {/* Arrows between centre and bottom row */}
+                    <div className="w-full flex justify-between px-16 md:px-28 -mt-10 mb-4 md:-mt-14 md:mb-6 pointer-events-none" style={{ zIndex: 5 }}>
+                        <svg width="60" height="40" viewBox="0 0 60 40" fill="none" style={{ opacity: 0.35 }}>
+                            <path d="M 10 36 Q 30 36 40 20 Q 48 8 55 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+                            <path d="M 50 4 L 56 9 L 50 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                        </svg>
+                        <svg width="60" height="40" viewBox="0 0 60 40" fill="none" style={{ opacity: 0.35 }}>
+                            <path d="M 50 36 Q 30 36 20 20 Q 12 8 5 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+                            <path d="M 10 4 L 4 9 L 10 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                        </svg>
+                    </div>
+
+                    {/* Bottom row — points 2 & 3 */}
+                    <div className="w-full flex justify-between items-start px-2 md:px-8">
+                        {[2, 3].map(i => renderBottomPoint(i))}
+                    </div>
+                </div>
+
+                {/* Scroll dots */}
+                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-2 items-center">
+                    {[0, 1].map(i => (
+                        <div key={i} className="rounded-full transition-all duration-500" style={{
+                            width: phase === i ? 22 : 6, height: 6,
+                            backgroundColor: phase === i ? "var(--color-accent, #FFC300)" : "rgba(255,255,255,0.10)",
+                        }} />
+                    ))}
                 </div>
             </div>
         </div>
     )
 }
-
-export default Who

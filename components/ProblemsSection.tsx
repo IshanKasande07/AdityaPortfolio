@@ -106,7 +106,27 @@ const ProblemsSection = () => {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);   // slot trigger
   const innerCardRefs = useRef<(HTMLDivElement | null)[]>([]); // the visible box
   const titleRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const incomingLineRef = useRef<HTMLDivElement>(null);
+  const headerSvgPathRef = useRef<SVGPathElement>(null);
+  const headerContainerRef = useRef<HTMLDivElement>(null);
+  const headerSectionWrapRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [headerDims, setHeaderDims] = useState<{ width: number, height: number }>({ width: 0, height: 0 });
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (headerContainerRef.current) {
+        setHeaderDims({
+          width: headerContainerRef.current.offsetWidth,
+          height: headerContainerRef.current.offsetHeight
+        });
+      }
+    };
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    setTimeout(updateDimensions, 100);
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -159,11 +179,33 @@ const ProblemsSection = () => {
             duration: 0.4        // Scales down as it leaves
           });
       });
+
+      // Seamless timeline for incoming line + SVG trace
+      if (headerSectionWrapRef.current && incomingLineRef.current && headerSvgPathRef.current) {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: headerSectionWrapRef.current,
+            start: "top center+=15%",
+            end: "bottom center+=15%",
+            scrub: true,
+          }
+        });
+
+        tl.fromTo(incomingLineRef.current,
+          { scaleY: 0 },
+          { scaleY: 1, ease: "none", duration: 60 }
+        )
+          .fromTo(headerSvgPathRef.current,
+            { strokeDashoffset: 1000 },
+            { strokeDashoffset: 0, ease: "none", duration: 1000 },
+            ">"
+          );
+      }
     }, sectionRef);
 
     return () => ctx.revert();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [headerDims]);
 
   const swapTitle = (incoming: number, dir: 1 | -1) => {
     const exitY = dir === 1 ? -80 : 80;
@@ -206,18 +248,70 @@ const ProblemsSection = () => {
     setActiveIndex(incoming);
   };
 
+  const w = headerDims.width;
+  const h = headerDims.height;
+  const radius = 24; // text container rounded-3xl
+
+  const headerPathD = w > 0 ? `
+    M ${w / 2} -20 
+    Q ${w / 2} 0 ${w / 2 + 20} 0 
+    L ${w - radius} 0 
+    Q ${w} 0 ${w} ${radius} 
+    L ${w} ${h - radius} 
+    Q ${w} ${h} ${w - radius} ${h} 
+    L ${radius} ${h} 
+    Q 0 ${h} 0 ${h - radius} 
+    L 0 ${radius} 
+    Q 0 0 ${radius} 0 
+    L ${(w / 2) - 20} 0
+  ` : "";
+
   return (
     <div ref={sectionRef} className="relative w-full bg-background">
 
       {/* ── Section header centred above the split ── */}
-      <div className="text-center pt-10 pb-2 px-[5vw]">
-        <h2 className="text-4xl md:text-[4vw] font-display font-semibold text-primary tracking-tight">
-          The Problems We Solve
-        </h2>
-        <div className="w-24 h-1 bg-gradient-to-r from-accent to-red-500 mx-auto mt-5 rounded-full" />
-        <p className="mt-4 text-base md:text-[1.2vw] text-muted max-w-2xl mx-auto">
-          Discover how infotainment transforms common business challenges into opportunities.
-        </p>
+      <div ref={headerSectionWrapRef} className="relative w-full flex flex-col items-center pt-0 pb-10">
+
+        {/* Incoming Connecting Line from previous section */}
+        <div className="relative w-full flex justify-center h-[80px] z-10">
+          <div className="absolute top-0 h-[60px] w-[2px] bg-white/5"></div>
+          <div
+            ref={incomingLineRef}
+            className="absolute top-0 h-[60px] w-[2px] bg-gradient-to-b from-[#FF5733] to-[#FFC300] origin-top shadow-[0_0_15px_rgba(255,195,0,0.5)] z-0"
+          ></div>
+        </div>
+
+        {/* Traced Header Container */}
+        <div className="relative flex flex-col items-center">
+
+          <div
+            className={`absolute top-0 left-1/2 -translate-x-1/2 transition-opacity duration-300 ${w > 0 ? 'opacity-100' : 'opacity-0'}`}
+            style={{ width: w || "100%", height: h || "100%" }}
+          >
+            <svg className="w-full h-full absolute inset-0 overflow-visible" style={{ zIndex: 0 }}>
+              <path d={headerPathD} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="2" />
+              <path
+                ref={headerSvgPathRef}
+                d={headerPathD}
+                fill="none"
+                stroke="#FFC300"
+                strokeWidth="2"
+                pathLength="1000"
+                style={{ strokeDasharray: "1000 1050", strokeDashoffset: 1000, filter: 'drop-shadow(0px 0px 8px rgba(255, 195, 0, 0.6))' }}
+              />
+            </svg>
+          </div>
+
+          <div ref={headerContainerRef} className="relative z-10 text-center px-[5vw] py-8 bg-surface-light/30 border border-white/5 backdrop-blur-md rounded-3xl">
+            <h2 className="text-4xl md:text-[4vw] font-display font-semibold text-primary tracking-tight">
+              The Problems We Solve
+            </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-[#FFC300] to-red-500 mx-auto mt-5 rounded-full" />
+            <p className="mt-4 text-base md:text-[1.2vw] text-muted max-w-2xl mx-auto">
+              Discover how infotainment transforms common business challenges into opportunities.
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* ── Split columns ── */}

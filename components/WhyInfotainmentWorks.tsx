@@ -171,7 +171,7 @@ const WhyInfotainmentWorks = () => {
   };
 
   return (
-    <div className="h-auto w-full pt-25 pb-0 page z-30 min-h-[100vh] bg-surface relative flex flex-col justify-between overflow-hidden">
+    <div className="h-auto w-full pt-25 pb-0 page z-30 min-h-[100vh] bg-surface relative flex flex-col justify-between">
       <div className="flex flex-col items-center gap-10 mt-10 px-[5vw] mb-20 w-full max-w-4xl mx-auto">
 
         {/* Header */}
@@ -186,7 +186,7 @@ const WhyInfotainmentWorks = () => {
         </FadeUp>
 
         {/* Timeline Structure */}
-        <div ref={containerRef} className="relative w-full flex flex-col items-center">
+        <div ref={containerRef} className="relative w-full flex flex-col items-center z-50">
 
           {/* Initial incoming line */}
           <div className="relative w-full flex justify-center h-32">
@@ -296,8 +296,8 @@ const WhyInfotainmentWorks = () => {
             );
           })}
 
-          {/* Final outgoing line */}
-          <div className="relative w-full flex justify-center h-40">
+          {/* Final outgoing line overlaying the wave SVG */}
+          <div className="absolute top-full left-0 right-0 flex justify-center h-[260px] pointer-events-none">
             <div className="absolute top-0 bottom-0 w-[2px] bg-white/5"></div>
             <div ref={(el) => addToRefs(el, verticalLinesRef, steps.length)} className="absolute top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#FFC300] to-[#FF5733] origin-top shadow-[0_0_15px_rgba(255,195,0,0.5)] z-0"></div>
           </div>
