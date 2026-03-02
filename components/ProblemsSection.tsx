@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Zap, TrendingDown, Clock, Shield, Coffee } from "lucide-react";
@@ -58,75 +58,12 @@ const problemsList: Problem[] = [
   },
 ];
 
-/* ─── Letter-split title layer ─── */
-const TitleLayer = ({
-  problem,
-  elRef,
-  isFirst,
-}: {
-  problem: Problem;
-  elRef: (el: HTMLDivElement | null) => void;
-  isFirst: boolean;
-}) => (
-  <div
-    ref={elRef}
-    className="absolute inset-0 flex flex-col justify-center gap-1"
-    aria-hidden
-  >
-    {problem.lines.map((line, li) => (
-      <div key={li} className="overflow-hidden leading-none">
-        <div className="word-row flex">
-          {line.split("").map((char, ci) => (
-            <span
-              key={ci}
-              className="letter inline-block"
-              style={{
-                opacity: isFirst ? 1 : 0,
-                transform: isFirst ? "translateY(0)" : "translateY(80px)",
-                willChange: "transform, opacity",
-              }}
-            >
-              {char}
-            </span>
-          ))}
-        </div>
-      </div>
-    ))}
-    <div className="overflow-hidden mt-4">
-      <div
-        className="accent-bar h-[3px] w-14 bg-gradient-to-r from-accent to-red-500 rounded-full origin-left"
-        style={{ transform: isFirst ? "scaleX(1)" : "scaleX(0)" }}
-      />
-    </div>
-  </div>
-);
-
 const ProblemsSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);   // slot trigger
   const innerCardRefs = useRef<(HTMLDivElement | null)[]>([]); // the visible box
-  const titleRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const incomingLineRef = useRef<HTMLDivElement>(null);
-  const headerSvgPathRef = useRef<SVGPathElement>(null);
-  const headerContainerRef = useRef<HTMLDivElement>(null);
-  const headerSectionWrapRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [headerDims, setHeaderDims] = useState<{ width: number, height: number }>({ width: 0, height: 0 });
 
-  useEffect(() => {
-    const updateDimensions = () => {
-      if (headerContainerRef.current) {
-        setHeaderDims({
-          width: headerContainerRef.current.offsetWidth,
-          height: headerContainerRef.current.offsetHeight
-        });
-      }
-    };
-    updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-    setTimeout(updateDimensions, 100);
-    return () => window.removeEventListener('resize', updateDimensions);
-  }, []);
+  const slashLineRef = useRef<SVGLineElement>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -136,16 +73,6 @@ const ProblemsSection = () => {
         if (!card) return;
         const inner = innerCardRefs.current[index];
 
-        // ── Title swap ──
-        ScrollTrigger.create({
-          trigger: card,
-          start: "top 60%",
-          end: "bottom 40%",
-          onEnter: () => swapTitle(index, 1),
-          onEnterBack: () => swapTitle(index, -1),
-        });
-
-        // ── Scrub-based scale + brightness single timeline ──
         if (!inner) return;
 
         // Reset any inline styles first from previous renders
@@ -178,244 +105,214 @@ const ProblemsSection = () => {
             ease: "power2.in",
             duration: 0.4        // Scales down as it leaves
           });
+
+        // ── Title Animation (like the old left section) ──
+        const letters = inner.querySelectorAll(".letter");
+        const bar = inner.querySelector(".accent-bar");
+
+        ScrollTrigger.create({
+          trigger: card,
+          start: "top 65%",
+          end: "bottom 35%",
+          onEnter: () => {
+            gsap.fromTo(
+              letters,
+              { y: 80, opacity: 0 },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "power3.out",
+                stagger: { each: 0.03, from: "start" },
+                overwrite: true,
+              }
+            );
+            if (bar) gsap.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power3.out", delay: 0.2, overwrite: true });
+          },
+          onLeave: () => {
+            gsap.to(letters, {
+              y: -80,
+              opacity: 0,
+              duration: 0.4,
+              ease: "power2.in",
+              stagger: { each: 0.02, from: "end" },
+              overwrite: true,
+            });
+            if (bar) gsap.to(bar, { scaleX: 0, duration: 0.3, ease: "power2.in", overwrite: true });
+          },
+          onEnterBack: () => {
+            gsap.fromTo(
+              letters,
+              { y: -80, opacity: 0 },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "power3.out",
+                stagger: { each: 0.03, from: "start" },
+                overwrite: true,
+              }
+            );
+            if (bar) gsap.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power3.out", delay: 0.2, overwrite: true });
+          },
+          onLeaveBack: () => {
+            gsap.to(letters, {
+              y: 80,
+              opacity: 0,
+              duration: 0.4,
+              ease: "power2.in",
+              stagger: { each: 0.02, from: "end" },
+              overwrite: true,
+            });
+            if (bar) gsap.to(bar, { scaleX: 0, duration: 0.3, ease: "power2.in", overwrite: true });
+          },
+        });
       });
 
-      // Seamless timeline for incoming line + SVG trace
-      if (headerSectionWrapRef.current && incomingLineRef.current && headerSvgPathRef.current) {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: headerSectionWrapRef.current,
-            start: "top center+=15%",
-            end: "bottom center+=15%",
-            scrub: true,
+      // ── Gold Slash: looping glow pulse ──
+      if (slashLineRef.current) {
+        gsap.fromTo(
+          slashLineRef.current,
+          { attr: { strokeWidth: 1.5 }, opacity: 0.7 },
+          {
+            attr: { strokeWidth: 3 },
+            opacity: 1,
+            duration: 2.5,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
           }
-        });
-
-        tl.fromTo(incomingLineRef.current,
-          { scaleY: 0 },
-          { scaleY: 1, ease: "none", duration: 60 }
-        )
-          .fromTo(headerSvgPathRef.current,
-            { strokeDashoffset: 1000 },
-            { strokeDashoffset: 0, ease: "none", duration: 1000 },
-            ">"
-          );
+        );
       }
+
     }, sectionRef);
 
     return () => ctx.revert();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [headerDims]);
-
-  const swapTitle = (incoming: number, dir: 1 | -1) => {
-    const exitY = dir === 1 ? -80 : 80;
-    const enterY = dir === 1 ? 80 : -80;
-
-    titleRefs.current.forEach((el, i) => {
-      if (!el) return;
-      const letters = el.querySelectorAll(".letter");
-      const bar = el.querySelector(".accent-bar");
-
-      if (i === incoming) {
-        gsap.fromTo(
-          letters,
-          { y: enterY, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.65,
-            ease: "power3.out",
-            stagger: { each: 0.022, from: "start" },
-            overwrite: true,
-          }
-        );
-        if (bar) gsap.to(bar, { scaleX: 1, duration: 0.5, ease: "power3.out", delay: 0.15 });
-        el.style.zIndex = "10";
-      } else {
-        gsap.to(letters, {
-          y: exitY,
-          opacity: 0,
-          duration: 0.38,
-          ease: "power2.in",
-          stagger: { each: 0.018, from: "end" },
-          overwrite: true,
-        });
-        if (bar) gsap.to(bar, { scaleX: 0, duration: 0.25, ease: "power2.in" });
-        el.style.zIndex = "1";
-      }
-    });
-
-    setActiveIndex(incoming);
-  };
-
-  const w = headerDims.width;
-  const h = headerDims.height;
-  const radius = 24; // text container rounded-3xl
-
-  const headerPathD = w > 0 ? `
-    M ${w / 2} -20 
-    Q ${w / 2} 0 ${w / 2 + 20} 0 
-    L ${w - radius} 0 
-    Q ${w} 0 ${w} ${radius} 
-    L ${w} ${h - radius} 
-    Q ${w} ${h} ${w - radius} ${h} 
-    L ${radius} ${h} 
-    Q 0 ${h} 0 ${h - radius} 
-    L 0 ${radius} 
-    Q 0 0 ${radius} 0 
-    L ${(w / 2) - 20} 0
-  ` : "";
+  }, []);
 
   return (
-    <div ref={sectionRef} className="relative w-full bg-background">
-
-      {/* ── Section header centred above the split ── */}
-      <div ref={headerSectionWrapRef} className="relative w-full flex flex-col items-center pt-0 pb-10">
-
-        {/* Incoming Connecting Line from previous section */}
-        <div className="relative w-full flex justify-center h-[80px] z-10">
-          <div className="absolute top-0 h-[60px] w-[2px] bg-white/5"></div>
-          <div
-            ref={incomingLineRef}
-            className="absolute top-0 h-[60px] w-[2px] bg-gradient-to-b from-[#FF5733] to-[#FFC300] origin-top shadow-[0_0_15px_rgba(255,195,0,0.5)] z-0"
-          ></div>
-        </div>
-
-        {/* Traced Header Container */}
-        <div className="relative flex flex-col items-center">
-
-          <div
-            className={`absolute top-0 left-1/2 -translate-x-1/2 transition-opacity duration-300 ${w > 0 ? 'opacity-100' : 'opacity-0'}`}
-            style={{ width: w || "100%", height: h || "100%" }}
-          >
-            <svg className="w-full h-full absolute inset-0 overflow-visible" style={{ zIndex: 0 }}>
-              <path d={headerPathD} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="2" />
-              <path
-                ref={headerSvgPathRef}
-                d={headerPathD}
-                fill="none"
-                stroke="#FFC300"
-                strokeWidth="2"
-                pathLength="1000"
-                style={{ strokeDasharray: "1000 1050", strokeDashoffset: 1000, filter: 'drop-shadow(0px 0px 8px rgba(255, 195, 0, 0.6))' }}
-              />
-            </svg>
-          </div>
-
-          <div ref={headerContainerRef} className="relative z-10 text-center px-[5vw] py-8 bg-surface-light/30 border border-white/5 backdrop-blur-md rounded-3xl">
-            <h2 className="text-4xl md:text-[4vw] font-display font-semibold text-primary tracking-tight">
-              The Problems We Solve
-            </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-[#FFC300] to-red-500 mx-auto mt-5 rounded-full" />
-            <p className="mt-4 text-base md:text-[1.2vw] text-muted max-w-2xl mx-auto">
-              Discover how infotainment transforms common business challenges into opportunities.
-            </p>
-          </div>
-        </div>
-      </div>
-
+    <div ref={sectionRef} className="relative w-full bg-background pt-20 md:pt-32">
       {/* ── Split columns ── */}
-      {/* The left col uses CSS sticky so it stays centered in the viewport
-          while the right col's block-level cards scroll past normally. */}
-      <div className="flex w-full">
+      <div className="flex flex-col md:flex-row w-full">
 
         {/* LEFT — sticky title panel */}
-        <div className="w-[45%] shrink-0">
-          <div
-            className="sticky top-0 h-screen flex flex-col items-start justify-center px-[6vw] border-r border-white/5"
-          >
+        <div className="w-full md:w-[55%] shrink-0">
+          <div className="md:sticky md:top-0 h-auto md:h-screen flex flex-col items-start justify-center px-[6vw] py-12 md:py-0 border-b md:border-b-0 md:border-r border-white/5">
+            <div className="relative z-10 w-full pl-0 md:pl-[2vw]">
 
+              <h2
+                className="font-display font-bold text-primary tracking-[-0.03em] leading-[1.05]"
+                style={{ fontSize: "clamp(3.5rem, 6vw, 7.5rem)" }}
+              >
+                Problems<br />
+                We&nbsp;&nbsp;&nbsp;Solve
+              </h2>
 
-            {/* Counter */}
-            <p className="font-mono text-xs text-muted/40 tracking-[0.3em] uppercase mb-8 relative z-10">
-              {String(activeIndex + 1).padStart(2, "0")}&nbsp;/&nbsp;{String(problemsList.length).padStart(2, "0")}
-            </p>
-
-            {/* Floating icon */}
-            <div className="relative z-10 h-12 w-12 mb-10">
-              {problemsList.map((p, i) => (
-                <div
-                  key={p.id}
-                  className="absolute inset-0 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-accent transition-all duration-300"
-                  style={{
-                    opacity: i === activeIndex ? 1 : 0,
-                    transform: `scale(${i === activeIndex ? 1 : 0.75})`,
-                  }}
+              {/* Scribbled Arching Arrow (hidden on mobile, visible on md+) */}
+              <div className="hidden md:block absolute -top-[100%] left-[95%] w-[30vw] md:w-[35vw] h-auto opacity-70 pointer-events-none z-0 transform -translate-x-1/2">
+                <svg
+                  viewBox="0 0 300 120"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-full h-full text-accent drop-shadow-[0_0_12px_rgba(255,195,0,0.4)]"
+                  style={{ vectorEffect: "non-scaling-stroke" }}
                 >
-                  {p.icon}
-                </div>
-              ))}
-            </div>
+                  {/* Arrow main curved arch (starts left bottoms, arches right) */}
+                  <path
+                    d="M40,80 C 80,0 240,0 280,80"
+                    stroke="currentColor"
+                    strokeWidth="3.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  {/* Arrow head */}
+                  <path
+                    d="M265,55 L280,80 L250,85"
+                    stroke="currentColor"
+                    strokeWidth="3.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  {/* Subtle scribble loop on tail */}
+                  <path
+                    d="M35,75 C 25,95 55,100 45,80"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    opacity="0.6"
+                  />
+                </svg>
+              </div>
 
-            {/* Title stack — one absolutely-positioned layer per problem */}
-            <div className="relative z-10 w-full" style={{ height: "42vh" }}>
-              {problemsList.map((problem, index) => (
-                <TitleLayer
-                  key={problem.id}
-                  problem={problem}
-                  isFirst={index === 0}
-                  elRef={(el) => {
-                    titleRefs.current[index] = el;
-                    if (el) el.style.zIndex = index === 0 ? "10" : "1";
-                  }}
-                />
-              ))}
-            </div>
-
-            {/* Progress dots */}
-            <div className="absolute bottom-10 left-[6vw] flex gap-2 z-10">
-              {problemsList.map((_, i) => (
-                <div
-                  key={i}
-                  className="rounded-full transition-all duration-500"
-                  style={{
-                    width: i === activeIndex ? 28 : 7,
-                    height: 7,
-                    backgroundColor:
-                      i === activeIndex
-                        ? "var(--color-accent, #FFC300)"
-                        : "rgba(255,255,255,0.12)",
-                  }}
-                />
-              ))}
             </div>
           </div>
         </div>
 
         {/* RIGHT — peek scroll cards */}
-        {/* overflow-hidden clips peeking neighbours; py gives breathing room */}
-        <div className="w-[55%] flex flex-col overflow-hidden" style={{ paddingTop: "20vh" }}>
+        <div className="w-full md:w-[45%] flex flex-col items-center overflow-hidden md:border-l border-white/5" style={{ paddingTop: "10vh", paddingBottom: "10vh" }}>
           {problemsList.map((problem, index) => (
-            // Slot is ~75vh so next/prev cards bleed in
             <div
               key={problem.id}
               ref={(el) => { cardRefs.current[index] = el; }}
-              className="flex items-center justify-center px-[4vw] py-6"
-              style={{ height: "75vh" }}
+              className="flex items-center justify-center px-[4vw] py-8 md:py-6 w-full min-h-[50vh] md:h-[55vh]"
             >
               {/* Inner box — GSAP animates scale + opacity on this */}
               <div
                 ref={(el) => { innerCardRefs.current[index] = el; }}
-                className="w-full max-w-lg bg-surface-light/25 backdrop-blur-xl border border-white/8 rounded-3xl p-8 md:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.35)] transition-colors duration-300"
-                style={{ willChange: "transform, opacity", transformOrigin: "center" }}
+                className="w-full max-w-[340px] bg-surface-light/10 backdrop-blur-md border border-white/10 rounded-[28px] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.35)] transition-colors duration-300"
+                style={{ willChange: "transform, opacity", transformOrigin: "center left" }}
               >
-                <div className="text-xs font-mono text-muted/40 tracking-widest mb-5 uppercase">
+                <div className="text-[10px] font-mono text-muted/30 tracking-widest mb-4 uppercase">
                   Problem {String(index + 1).padStart(2, "0")}
                 </div>
 
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="text-accent">{problem.icon}</div>
-                  <h4 className="text-xl font-display font-semibold text-accent tracking-tight">
-                    {problem.title}
-                  </h4>
+                {/* Grouping Icon and Animated Title */}
+                <div className="flex items-start gap-4 mb-4">
+                  {/* The Icon */}
+                  <div className="text-accent shrink-0 bg-white/5 p-2.5 rounded-xl border border-white/10 mt-1.5 md:mt-2.5">
+                    {problem.icon}
+                  </div>
+
+                  {/* The Animated Title Layer */}
+                  <div className="flex-1" aria-hidden>
+                    {problem.lines.map((line, li) => (
+                      <div key={li} className="overflow-hidden leading-none mb-0.5">
+                        <div className="word-row flex flex-wrap">
+                          {line.split("").map((char, ci) => (
+                            <span
+                              key={ci}
+                              className="letter inline-block"
+                              style={{
+                                opacity: 0,
+                                transform: "translateY(80px)",
+                                willChange: "transform, opacity",
+                              }}
+                            >
+                              {char === " " ? "\u00A0" : char}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                    <div className="overflow-hidden mt-4">
+                      <div
+                        className="accent-bar h-[2px] w-12 bg-gradient-to-r from-accent to-red-500 rounded-full origin-left opacity-80"
+                        style={{ transform: "scaleX(0)" }}
+                      />
+                    </div>
+                  </div>
                 </div>
 
-                <p className="text-base md:text-lg text-primary/70 leading-[1.75] font-light">
-                  {problem.insight}
-                </p>
+                {/* Insight Description */}
+                <div className="flex flex-col mt-4 gap-3">
+                  <p className="text-[12px] md:text-[13px] text-primary/60 leading-[1.5] font-light">
+                    {problem.insight}
+                  </p>
+                </div>
 
-                <div className="mt-8 pt-6 border-t border-white/8">
-                  <span className="text-xs text-muted/40 font-mono tracking-wider uppercase">
+                <div className="mt-6 pt-4 border-t border-white/5 w-full">
+                  <span className="text-[9px] text-muted/30 font-mono tracking-wider uppercase">
                     The Fix →
                   </span>
                 </div>
@@ -428,19 +325,60 @@ const ProblemsSection = () => {
       {/* ── Letter size ── */}
       <style>{`
         .word-row .letter {
-          font-size: clamp(2.4rem, 4.8vw, 6rem);
+          font-size: clamp(1.8rem, 2.8vw, 32px);
           font-family: var(--font-display, sans-serif);
           font-weight: 700;
           line-height: 1;
           color: var(--color-primary, white);
-          letter-spacing: -0.03em;
+          letter-spacing: -0.04em;
         }
       `}</style>
 
-      {/* ── Wave transition ── */}
-      <div className="w-full overflow-hidden leading-[0] relative h-[100px] pointer-events-none z-40 bg-background">
-        <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-[100vw] h-[100px] transform scale-105 translate-y-[2px] block">
-          <path d="M0 100C0 100 360 0 720 0C1080 0 1440 100 1440 100V100H0V100Z" fill="var(--color-surface)" />
+      {/* ── Transition A: Gold Slash Geometric Cut ── */}
+      <div className="w-full relative pointer-events-none overflow-hidden z-40" style={{ height: '90px', marginBottom: '-1px' }}>
+        <svg
+          viewBox="0 0 1440 90"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full h-full block"
+        >
+          <defs>
+            <linearGradient id="slashGold" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#FFC300" stopOpacity="0" />
+              <stop offset="20%" stopColor="#FFC300" stopOpacity="0.9" />
+              <stop offset="50%" stopColor="#FFD700" stopOpacity="1" />
+              <stop offset="80%" stopColor="#FF5733" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="#FF5733" stopOpacity="0" />
+            </linearGradient>
+            <filter id="slashGlow" x="-20%" y="-200%" width="140%" height="500%">
+              <feGaussianBlur stdDeviation="4" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          {/* Upper fill: background color above the slash */}
+          <polygon points="0,0 1440,0 1440,0 0,90" fill="var(--color-background)" />
+          {/* Lower fill: surface color below the slash (next section = bg-surface for Who) */}
+          <polygon points="0,90 1440,0 1440,90" fill="var(--color-background)" />
+          {/* The glowing slash line */}
+          <line
+            ref={slashLineRef}
+            x1="0" y1="90"
+            x2="1440" y2="0"
+            stroke="url(#slashGold)"
+            strokeWidth="2"
+            filter="url(#slashGlow)"
+          />
+          {/* Secondary softer echo line for depth */}
+          <line
+            x1="0" y1="92"
+            x2="1440" y2="2"
+            stroke="url(#slashGold)"
+            strokeWidth="1"
+            opacity="0.3"
+          />
         </svg>
       </div>
     </div>

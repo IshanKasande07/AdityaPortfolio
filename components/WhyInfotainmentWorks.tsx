@@ -297,7 +297,7 @@ const WhyInfotainmentWorks = () => {
           })}
 
           {/* Final outgoing line overlaying the wave SVG */}
-          <div className="absolute top-full left-0 right-0 flex justify-center h-[260px] pointer-events-none">
+          <div className="absolute top-full left-0 right-0 flex justify-center h-32 pointer-events-none">
             <div className="absolute top-0 bottom-0 w-[2px] bg-white/5"></div>
             <div ref={(el) => addToRefs(el, verticalLinesRef, steps.length)} className="absolute top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#FFC300] to-[#FF5733] origin-top shadow-[0_0_15px_rgba(255,195,0,0.5)] z-0"></div>
           </div>
