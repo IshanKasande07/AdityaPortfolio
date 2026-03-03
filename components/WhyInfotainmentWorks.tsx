@@ -13,9 +13,6 @@ const WhyInfotainmentWorks = () => {
   const svgLinesRef = useRef<(SVGPathElement | null)[]>([]);
   const verticalLinesRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const svgRef = useRef<SVGSVGElement>(null);
-  const pathRef = useRef<SVGPathElement>(null);
-
   const [cardDimensions, setCardDimensions] = useState<{ width: number, height: number }[]>([]);
 
   // Update card dimensions on mount and resize
@@ -46,25 +43,6 @@ const WhyInfotainmentWorks = () => {
     gsap.registerPlugin(ScrollTrigger);
 
     let ctx = gsap.context(() => {
-      // Bottom SVG Curve animation
-      if (pathRef.current && svgRef.current) {
-        const startPath = "M0,50 Q720,150 1440,50";
-        const endPath = "M0,50 Q720,30 1440,50";
-
-        gsap.fromTo(pathRef.current,
-          { attr: { d: startPath } },
-          {
-            attr: { d: endPath },
-            ease: "none",
-            scrollTrigger: {
-              trigger: svgRef.current,
-              start: "top bottom",
-              end: "bottom center",
-              scrub: true,
-            }
-          }
-        );
-      }
 
       const triggerStart = "top center+=15%"; // Trigger when top of element is 15% below the center of viewport
       const triggerEnd = "bottom center+=15%"; // Finish when bottom of element is 15% below the center of viewport
@@ -171,7 +149,7 @@ const WhyInfotainmentWorks = () => {
   };
 
   return (
-    <div className="h-auto w-full pt-25 pb-0 page z-30 min-h-[100vh] bg-surface relative flex flex-col justify-between">
+    <div className="h-auto w-full pt-25 pb-0 z-30 min-h-[100vh] bg-surface relative flex flex-col justify-between">
       <div className="flex flex-col items-center gap-10 mt-10 px-[5vw] mb-20 w-full max-w-4xl mx-auto">
 
         {/* Header */}
@@ -307,10 +285,10 @@ const WhyInfotainmentWorks = () => {
       </div>
 
       <div className="w-full overflow-hidden leading-[0] mt-10 relative h-[100px] z-40 pointer-events-none">
-        <svg ref={svgRef} viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[100px] transform scale-105 translate-y-[2px]">
+        <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[100px] transform scale-105 translate-y-[2px]">
           {/* Transition into background color of the next section */}
           <path d="M0 100C0 100 360 0 720 0C1080 0 1440 100 1440 100V100H0V100Z" fill="var(--color-background)" />
-          <path ref={pathRef} d="M0,50 Q720,150 1440,50" stroke="rgba(255,255,255,0.05)" strokeWidth="2" fill="none" />
+
         </svg>
       </div>
     </div>

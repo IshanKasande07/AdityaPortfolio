@@ -7,9 +7,9 @@
   --color-primary: #FFFFFF;
   --color-muted: #94A3B8;
   --color-accent: #FFC300;
-  --font-sans: "Inter", sans-serif;
-  --font-serif: "Playfair Display", serif;
-  --font-display: "Clash Display", sans-serif;
+  --font-sans: "Urbanist", sans-serif;
+  --font-serif: "Urbanist", sans-serif;
+  --font-display: "Shippori Antique B1", serif;
   --font-mono: "Space Mono", monospace;
 }
 
@@ -24,23 +24,4 @@ body {
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-}
-
-.stack-section {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-  font-weight: bold;
-}
-
-/* Transition D — Kinetic Noise Bleed: drifting noise texture animation */
-@keyframes noiseScroll {
-  0%   { background-position: 0px 0px; }
-  100% { background-position: 200px 200px; }
-}
-
-.noise-scroll {
-  animation: noiseScroll 12s linear infinite;
 }

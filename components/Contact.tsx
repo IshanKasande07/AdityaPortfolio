@@ -1,13 +1,11 @@
 "use client"
 
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import FadeUp from './css/FadeUp'
-import SectionCardLift from './css/SectionCardLift'
 
 const Contact = () => {
 
-    const cardRef = useRef<HTMLDivElement>(null);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [company, setCompany] = useState("");
@@ -97,17 +95,10 @@ const Contact = () => {
 
     return (
         <>
-            {/* Transition B — Floating Card Lift outer shell */}
-            <div className='w-full bg-background pt-10 relative z-50'>
-                <SectionCardLift targetRef={cardRef} />
+            <div className='w-full relative z-50'>
                 <div
-                    ref={cardRef}
-                    className='w-full page flex flex-col items-center justify-center z-40 py-32 min-h-screen relative overflow-hidden
-                        rounded-t-[2.5rem]
-                        border-t border-l border-r border-white/10
-                        bg-surface/98
-                        shadow-[0_-32px_90px_-16px_rgba(0,0,0,0.7),0_-1px_0px_rgba(255,195,0,0.1),inset_0_1px_0_rgba(255,255,255,0.06)]'
-                    style={{ backdropFilter: 'blur(4px)', willChange: 'transform, filter' }}
+                    className='w-full flex flex-col items-center justify-center z-40 py-32 min-h-screen relative overflow-hidden
+                        bg-surface'
                 >
                     {/* Ambient Background Glow */}
                     <div className='absolute bottom-0 right-0 w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] bg-accent/5 rounded-full blur-[120px] pointer-events-none translate-x-1/4 translate-y-1/4'></div>

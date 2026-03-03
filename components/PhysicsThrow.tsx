@@ -30,7 +30,7 @@ export default function PhysicsThrow() {
     // ---------------- SETUP ----------------
     // Calculate initial size
     let width = container.clientWidth;
-    let height = width * 0.5; // 2:1 Aspect Ratio
+    let height = container.clientHeight;
 
     const engine = Engine.create();
     engine.gravity.y = 1;
@@ -99,7 +99,7 @@ export default function PhysicsThrow() {
 
       // 1. Get new dimensions
       const newWidth = container.clientWidth;
-      const newHeight = newWidth * 0.5; // Maintain 2:1 aspect ratio
+      const newHeight = container.clientHeight;
 
       // 2. Update Render Canvas
       render.canvas.width = newWidth;
@@ -150,7 +150,7 @@ export default function PhysicsThrow() {
       */}
       <div
         ref={sceneRef}
-        className="relative w-full max-w-[1200px] aspect-[2/1] max-h-[80vh] cursor-grab active:cursor-grabbing rounded-xl overflow-hidden shadow-2xl shadow-accent/5 ring-1 ring-white/10"
+        className="relative w-full max-w-[1200px] aspect-[2/1] cursor-grab active:cursor-grabbing rounded-xl overflow-hidden shadow-2xl shadow-accent/5 ring-1 ring-white/10"
         style={{ touchAction: "none" }}
       />
     </div>

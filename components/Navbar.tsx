@@ -16,7 +16,7 @@ const Navbar = () => {
 
   return (
     <div
-      className={`fixed top-0 left-0 w-full z-50 grid grid-cols-2 md:grid-cols-3 items-center px-6 md:px-12 py-4 pointer-events-none transition-colors duration-300 text-white`}
+      className={`fixed top-0 left-0 w-full z-[200] grid grid-cols-2 md:grid-cols-3 items-center px-6 md:px-12 py-4 pointer-events-none transition-colors duration-300 text-white`}
     >
       {/* Left: Logo */}
       <div className="flex justify-start pointer-events-auto">

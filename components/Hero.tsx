@@ -24,41 +24,39 @@ export default function Hero() {
     const lastX = useRef<number | null>(null);
 
     return (
-        <div className="page relative min-h-[750px] h-screen w-full bg-background overflow-hidden z-20">
+        <div className="relative min-h-[750px] h-screen w-full bg-background overflow-hidden z-20">
             {/* Noise Overlay */}
             <div className="absolute inset-0 pointer-events-none z-10 opacity-30 mix-blend-overlay" style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }}></div>
 
-            {/* Header Container - Positioned higher up to prevent overlap with the 3D carousel */}
-            <div className='absolute top-[10vh] xl:top-[12vh] 2xl:top-[14vh] left-0 w-full flex flex-col items-center justify-center text-white text-center z-30 px-[5vw] pointer-events-none mt-4 md:mt-2'>
-                <p className='font-mono text-xs md:text-[0.9vw] text-muted tracking-widest uppercase font-semibold pointer-events-auto mb-2 md:mb-3'>
-                    MONARCH MEDIA HOUSE
-                </p>
+            {/* Header Container */}
+            <div className='absolute top-[13vh] left-0 w-full flex flex-col items-center justify-center text-white text-center z-30 px-[5vw] pointer-events-none'>
                 <FadeUp>
-                    <h1 className='text-4xl md:text-[5vw] font-display font-semibold leading-[1.05] tracking-tight pointer-events-auto mb-4 md:mb-5'>
-                        <span className='block text-primary'>We Help Brands Win</span>
-                        <span className='block text-primary'>by <span className='font-serif italic font-normal text-accent'>Educating</span> the Internet.</span>
+                    <h1 className='text-3xl md:text-[4vw] font-display font-semibold leading-[1.1] tracking-tight pointer-events-auto mb-3 md:mb-4'>
+                        <span className='block text-primary'>We Help Brands</span>
+                        <span className='block text-primary'>Win by <span className='font-serif italic font-normal text-accent'>Educating</span></span>
+                        <span className='block text-primary'>the Internet.</span>
                     </h1>
                 </FadeUp>
                 <FadeUpDelay>
-                    <p className='text-sm md:text-[1.2vw] text-muted max-w-4xl pointer-events-auto leading-relaxed'>
-                        Infotainment-led social content that builds authority, drives massive reach, and converts <br className="hidden md:block" /> attention in long-term growth.
+                    <p className='text-sm md:text-[1.1vw] text-muted max-w-3xl pointer-events-auto leading-relaxed mb-1'>
+                        Infotainment-led social content that builds authority, drives massive reach, and converts attention into long-term growth.
                     </p>
                 </FadeUpDelay>
 
-                {/* Buttons updated to pill shapes (rounded-full) */}
-                <div className='flex flex-row gap-5 items-center justify-center mt-6 md:mt-8 pointer-events-auto'>
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className='group px-6 py-3 md:px-[2vw] md:py-[1vw] bg-accent rounded-full text-sm md:text-[1vw] font-semibold text-black hover:bg-yellow-400 transition-all flex items-center justify-center shadow-[0_0_20px_rgba(255,195,0,0.3)]'>
-                        Apply for a Strategy Call <span className='ml-2 text-black font-bold group-hover:translate-x-1 transition-transform'>↗</span>
-                    </motion.button>
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className='px-6 py-3 md:px-[2vw] md:py-[1vw] border border-white/20 rounded-full text-sm md:text-[1vw] font-medium text-white hover:bg-white/5 backdrop-blur-sm transition-all'>
-                        See Our Work
-                    </motion.button>
+                <div className='flex flex-row gap-5 items-center justify-center mt-5 pointer-events-auto'>
+                    <button className='group relative overflow-hidden rounded-full py-4 px-10 border border-white/20'>
+                        {/* Hover Expanding Background */}
+                        <div className="absolute inset-0 bg-accent translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full"></div>
+                        <div className="relative z-10 flex items-center justify-center text-base md:text-[1.1vw] font-medium text-white group-hover:text-black transition-colors duration-300">
+                            Book a Call
+                            <span className='ml-3 flex items-center justify-center transition-transform duration-500 group-hover:translate-x-3'>
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="stroke-current" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </span>
+                        </div>
+                    </button>
                 </div>
             </div>
 

@@ -17,7 +17,9 @@ export default function PageStack() {
     const mm = gsap.matchMedia();
 
     mm.add("(min-width: 1024px)", () => {
-      const pages = gsap.utils.toArray<HTMLElement>(".page");
+      const pages = gsap.utils.toArray<HTMLElement>(".page").filter(
+        (el) => el.dataset.noStack !== "true"
+      );
 
       pages.forEach((page, i) => {
         // Stack z-indices so later pages cover earlier ones
