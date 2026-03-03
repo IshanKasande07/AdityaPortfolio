@@ -73,12 +73,15 @@ export default function Hero() {
                             buttonY.set(0);
                         }}
                         style={{ x: buttonSpringX, y: buttonSpringY }}
-                        className='group relative overflow-hidden rounded-full py-4 px-10 border border-accent bg-accent will-change-transform'
+                        className='group relative overflow-hidden rounded-full py-4 px-10 will-change-transform'
                     >
-                        {/* Hover Expanding Background (kept for structure, but visually it's yellow on yellow now) */}
-                        <div className="absolute inset-0 bg-accent translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full"></div>
+                        {/* Base Yellow Background (Fixed: Moved off the parent so it doesn't bleed through edges) */}
+                        <div className="absolute inset-0 bg-accent rounded-full -z-10"></div>
 
-                        <div className="relative z-10 flex items-center justify-center text-base md:text-[1.1vw] font-medium text-black transition-colors duration-300">
+                        {/* Hover Expanding Background (slide-up #27701B green) */}
+                        <div className="absolute inset-0 bg-[#27701B] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full z-0"></div>
+
+                        <div className="relative z-10 flex items-center justify-center text-base md:text-[1.1vw] font-medium text-black group-hover:text-primary transition-colors duration-300">
                             <span>Book a Call</span>
 
                             {/* Magnetic Arrow Shoot Container */}
