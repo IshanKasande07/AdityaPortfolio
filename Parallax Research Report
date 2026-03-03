@@ -1,0 +1,285 @@
+# Parallax Effect Research: Monarch Media House
+
+## 1. Brand & UX Audit
+
+### Design System (from `globals.css` & components)
+
+| Token | Value | Role |
+|---|---|---|
+| `--color-background` | `#0A0A0E` | Near-black canvas — commands authority |
+| `--color-surface` | `#13131A` | Elevated cards, sections |
+| `--color-surface-light` | `#1C1C26` | Subtle depth layer |
+| `--color-accent` | `#FFC300` | Gold — power, expertise, premium |
+| `--font-display` | `Shippori Antique B1` | Japanese serif — gravitas, uniqueness |
+| `--font-sans` | `Urbanist` | Clean modern body text |
+| `--font-mono` | `Space Mono` | Technical precision details |
+
+### Brand Emotional Intent (from copy analysis)
+The copy across sections tells a **single authority arc**:
+
+```
+Hero → "We Help Brands Win by Educating the Internet"
+  ↓  (validate the premise)
+WhyInfotainment → Attention → Authority → Trust → Demand
+  ↓  (acknowledge the pain)
+ProblemsSection → Low Engagement / Poor Reach / No Authority
+  ↓  (selective partnership signal)
+Who → Which brands is this for?
+  ↓  (close the loop)
+Contact → Turn Your Expertise Into Influence
+```
+
+**The UX feeling they're engineering:** Gravity. The feeling that this agency is the only logical choice for an expert-led brand. Every animation should reinforce **weight, inevitability, and premium control** — not decorativeness.
+
+---
+
+## 2. Current Animation Inventory
+
+### Existing animations per section
+
+| Section | Current Animations | What's Missing |
+|---|---|---|
+| **Hero** | 3D rotating carousel, animated SVG wave boundary, entry blur/scale reveal | Depth parallax, mouse-tracking depth |
+| **WhyInfotainment** | SVG path tracing (gold glowing lines), vertical line draw, card reveal blur | Background layer parallax |
+| **ProblemsSection** | Card scale/opacity scrubbing, letter stagger animation, gold slash pulse | Left panel depth drift, texture parallax |
+| **Who** | GSAP pin + phase swap (for/not-for), icon spring animations | Section entrance parallax |
+| **Contact** | FadeUp entry, input focus animation | Ambient parallax background |
+| **Footer** | Static | — |
+
+> [!IMPORTANT]
+> The site already uses GSAP ScrollTrigger and Framer Motion heavily. **All parallax additions should use these existing libraries** — zero new dependencies needed.
+
+---
+
+## 3. Top 5 Parallax Reference Sites (Awwwards)
+
+### 🥇 1. Festivent — *Layered Scroll Speed Variation*
+- **Award:** Site of the Day (SOTD)
+- **Technique:** Multiple background layers move at different speeds (0.1x–0.9x of scroll speed) to generate convincing Z-depth
+- **UX Effect:** The user *feels* like they're moving through space, not just reading a page
+- **Relevance to MMH:** Perfect model for the Hero section — video carousel is already the foreground, we just need to add slow-drifting background layers
+
+### 🥈 2. FOLLOW.ART — *Mouse-Move Parallax*
+- **Award:** Site of the Day (SOTD)
+- **Technique:** Cursor position maps to subtle X/Y translation of UI layers (2–10px range), creating a "hovering" depth effect. Uses `mousemove` → `clamp(delta * factor, -max, max)` → CSS transform
+- **UX Effect:** The site feels physically responsive, like a living object
+- **Relevance to MMH:** The Who section's center card and the Contact section's ambient glow are ideal candidates — makes the "selective partnership" message feel weighty
+
+### 🥉 3. Cascaid Health — *Segmented Scroll-Lock Parallax Reveals*
+- **Award:** Honorable Mention + Innovation Award
+- **Technique:** Scroll locks into pinned sections; within the pin, internal elements parallax at different rates to create sequential data revelation. Very similar to GSAP `scrub` + `pin`
+- **UX Effect:** The user cannot rush past critical information — it unfolds on their timeline
+- **Relevance to MMH:** MMH already does this in the `Who` section's pin. The WhyInfotainment timeline should adopt this — each card's icon and copy should have internal parallax offset during the pin scroll
+
+### 4. Shopify Design — *Subtle Background Drift*
+- **Award:** Site of the Day (SOTD)
+- **Technique:** Decorative geometric elements (not the content) drift at 0.2x scroll speed in the background. The effect is barely perceptible consciously, but removes the "flat" feeling
+- **UX Effect:** Creates a sense of atmosphere and space without distracting from the content
+- **Relevance to MMH:** The ProblemsSection's sticky left panel ("Problems We Solve" heading) is a dead asset sitting still. Making it subtly drift creates weight.
+
+### 5. A Unified Whole — *Depth-Based Scrollytelling*
+- **Award:** Site of the Day + Developer Award
+- **Technique:** Multiple layers of photography, typography, and texture overlap and move at rates derived from their Z-depth — foreground: 1.0x, midground: 0.6x, background: 0.2x
+- **UX Effect:** Cinematic. The user feels they are "entering" a world, not reading marketing copy
+- **Relevance to MMH:** The Contact section's closing moment — "Turn Your Expertise Into Influence" — deserves this cinematic treatment to make it feel like a threshold crossing
+
+---
+
+## 4. Parallax Placement Recommendations
+
+> [!NOTE]
+> These are ordered from highest brand impact to lowest. Implementation priority is marked.
+
+---
+
+### 🔴 Priority 1 — Hero: Background Layer Depth Parallax
+
+**Where:** Behind the 3D video carousel in `Hero.tsx`
+
+**Effect:** Add 2–3 absolutely-positioned ambient layers (subtle noise/grain texture, a soft gold orb gradient, floating particle dots) that move at fractions of the scroll speed.
+
+| Layer | Speed Multiplier | Content |
+|---|---|---|
+| Background noise texture | `0.1x` | Existing noise overlay, currently static |
+| Gold radial glow | `0.2x` | A `bg-accent/5` circle that drifts up |
+| Floating mark/emblem | `0.3x` | Small "MONARCH" wordmark or geometric icon |
+
+**Code approach:**
+```tsx
+// In Hero.tsx — useScroll + useTransform (Framer Motion)
+const { scrollY } = useScroll();
+const glowY = useTransform(scrollY, [0, 500], [0, -80]);
+const noiseY = useTransform(scrollY, [0, 500], [0, -20]);
+
+// Apply via motion.div style={{ y: glowY }}
+```
+
+**Brand Rationale:** The hero sets the world. If it's flat and static behind the carousel, users don't feel "pulled in." Adding Z-depth to the background transforms the hero from a "header" into a **space you enter**. This is exactly what Festivent does with its festival world.
+
+---
+
+### 🔴 Priority 2 — ProblemsSection: Sticky Left Panel Parallax Text
+
+**Where:** The `"Problems We Solve"` heading in `ProblemsSection.tsx` left panel (already sticky)
+
+**Effect:** The heading text words scroll at slightly different Y speeds — the word "Problems" drifts ~15px slower than "We Solve", creating a visual separation that implies different conceptual weight.
+
+**Additionally:** A faint horizontal rule or noise texture behind the heading drifts at `0.15x` scroll speed.
+
+**Code approach:**
+```tsx
+// GSAP ScrollTrigger scrub on the heading words
+gsap.to(".problem-word-1", {
+  y: -30, ease: "none",
+  scrollTrigger: { trigger: sectionRef.current, start: "top top", end: "bottom bottom", scrub: true }
+});
+gsap.to(".problem-word-2", {
+  y: -15, ease: "none",
+  scrollTrigger: { trigger: sectionRef.current, start: "top top", end: "bottom bottom", scrub: true }
+});
+```
+
+**Brand Rationale:** The sticky left panel currently feels like a static billboard. If the heading itself has internal layered motion, it communicates that even the "problem framing" is dynamic — that MMH thinks differently.
+
+---
+
+### 🔴 Priority 3 — Contact: Ambient Glow Mouse-Parallax
+
+**Where:** The `Contact.tsx` background glow layer (`bg-accent/5` radial blur)
+
+**Effect:** The ambient gold glow in the bottom-right corner subtly tracks the user's mouse position. As they move toward the form, the glow drifts toward their cursor (`±30px` range, spring-animated).
+
+**Code approach:**
+```tsx
+// In Contact.tsx using Framer Motion spring
+const mouseX = useMotionValue(0);
+const mouseY = useMotionValue(0);
+const springX = useSpring(mouseX, { stiffness: 50, damping: 20 });
+const springY = useSpring(mouseY, { stiffness: 50, damping: 20 });
+
+// onMouseMove handler maps clientX/Y to ±30px range
+```
+
+**Brand Rationale:** This is the **conversion section**. The user is deciding whether to reach out. The ambient glow responding to their presence communicates: *this space is responsive to you* — a subliminal echo of the "we are attentive to your brand" message. Mirrors FOLLOW.ART's mouse-parallax technique.
+
+---
+
+### 🟡 Priority 4 — WhyInfotainment: Card Entrance Depth Parallax
+
+**Where:** The 4 step cards in `WhyInfotainmentWorks.tsx`
+
+**Effect:** Each card's icon, heading, and the SVG border-trace lines all have a distinct parallax offset. As the user scrolls through, the icon leads by `20px`, the card content follows, and the connecting line trails. This creates a **staggered depth** within each node.
+
+**Code approach:**
+```tsx
+// Extend existing GSAP context in WhyInfotainmentWorks.tsx
+// Add separate fromTo for icon (faster) vs card body (normal)
+gsap.fromTo(cardIcon, 
+  { y: 40 }, 
+  { y: 0, scrollTrigger: { trigger: card, start: "top 70%", end: "top 30%", scrub: 1 } }
+);
+gsap.fromTo(cardBody, 
+  { y: 20 }, 
+  { y: 0, scrollTrigger: { trigger: card, start: "top 70%", end: "top 30%", scrub: 1 } }
+);
+```
+
+**Brand Rationale:** The Attention → Authority → Trust → Demand chain is the core intellectual argument of the MMH brand. Each card building into focus with layered depth says: *these are not bullet points — they are gravitational stages*.
+
+---
+
+### 🟡 Priority 5 — Hero: Headline Text Parallax on Scroll-Out
+
+**Where:** The headline text block in `Hero.tsx` (currently just fades in with FadeUp)
+
+**Effect:** As the user begins to scroll past the hero, the headline letters drift upward **faster than** the background (at `1.2x` scroll speed vs `1.0x` for the page), while the noise overlay moves at `0.8x`. This creates the sensation of the headline "lifting off" and leaving the space.
+
+**Code approach:**
+```tsx
+const headlineY = useTransform(scrollY, [0, 600], [0, -120]);
+// Apply to the heading container motion.div
+```
+
+**Brand Rationale:** The phrase "We Help Brands Win by Educating the Internet" should not simply slide off screen when the user scrolls. It should *launch* — giving it kinetic authority that carries into the next section.
+
+---
+
+### 🟡 Priority 6 — Who Section: Center Card Mouse-Tracking Depth
+
+**Where:** The center card in `Who.tsx` ("Which brands is this for?")
+
+**Effect:** The center card container subtly tilts on mouse move (3D CSS `rotateX`/`rotateY`, ±3 degrees maximum) responding to cursor position. The surrounding point labels also drift slightly, creating a "galaxy around a nucleus" effect.
+
+**Code approach:**
+```tsx
+// Add mousemove listener to the sectionRef
+// Map cursor offset from card center → rotateX, rotateY (±3deg)
+// Apply via gsap.to(cardEl, { rotateX, rotateY, duration: 0.6, ease: "power2.out" })
+```
+
+**Brand Rationale:** The Who section is the most psychologically powerful — it tells qualified leads "yes, this is you" and unqualified ones "this isn't for you." Making the center card feel dimensional and interactive reinforces that this is a **considered, weighted decision** — not a commodity purchase.
+
+---
+
+### 🟢 Priority 7 — Section Transitions: Parallax Wave Boundaries
+
+**Where:** The animated SVG wave at the bottom of `Hero.tsx` and the transitions between sections
+
+**Effect:** The SVG wave already breathes (morphing path animation). Extend this so the wave's position also parallaxes — as you scroll into it, it rises from `translateY(0)` to `translateY(-20px)`, like a tide coming in.
+
+**Code approach:**
+```tsx
+const waveY = useTransform(scrollY, [400, 700], [0, -20]);
+// Apply to the SVG wave motion.div wrapper
+```
+
+**Brand Rationale:** Small detail, big feel. The wave transition between the hero and the surface sections should feel organic, like the content is a living terrain — not a stack of divs.
+
+---
+
+### 🟢 Priority 8 — Footer: Slow Background Rise
+
+**Where:** The `Footer.tsx` (currently static)
+
+**Effect:** The "MONARCH MEDIA HOUSE" wordmark in the footer slowly rises from `translateY(20px)` to `translateY(0)` as the user scrolls to footer. Very subtle — `0.4s` ease-out. The footer border top also has a gold shimmer that travels left-to-right on scroll-into-view.
+
+**Brand Rationale:** The footer is the brand's final signature. It must feel intentional. The slowness of the rise says: *we don't chase — we arrive*.
+
+---
+
+## 5. Anti-Patterns to Avoid
+
+> [!WARNING]
+> These parallax patterns would **damage** the MMH brand experience.
+
+| Anti-Pattern | Why It Breaks the Brand |
+|---|---|
+| Aggressive bounce/elastic parallax | Authority brands don't bounce. Stiffness damping should be high. |
+| Full-screen background image parallax (classic "slow image scroll") | Dated. Associated with early 2010s sites. |
+| Too many simultaneous parallax zones | Creates visual noise — kills the "gravitas" feeling. Max 2 active parallax zones per scroll position. |
+| Parallax on typography at reading size | Hard to read moving text. Only use on large display text (h1/h2 size). |
+| Directional inconsistency | Some elements going up while others go down destroys the narrative flow. Establish a consistent "upward drift = older content, entering = new content" convention. |
+
+---
+
+## 6. Implementation Principles
+
+### The Monarch Parallax Doctrine
+
+1. **Subtlety over spectacle** — Max offset is `120px` for any layer. Gold brands reveal depth; they don't scream.
+2. **Gold leads, darkness follows** — When layering, the accent-colored element always has the highest speed multiplier (moves furthest = closest to user = most important).
+3. **Spring damping ≥ 20** — All spring-animated parallax should use `damping: 20+` to avoid jitter. Matches brand's deliberate, controlled character.
+4. **Scrub = narrative; spring = presence** — Use `ScrollTrigger.scrub` for story-driven scrollytelling. Use `useSpring` for mouse-interactive depth. Never mix the two on the same element.
+5. **Never fight GSAP pins** — Do not add Framer Motion transforms to elements already controlled by GSAP ScrollTrigger pins (this caused past jitter in `ProblemsSection` ↔ `WhyInfotainment` boundary).
+
+---
+
+## 7. Quick Reference: Libraries Already Available
+
+| Library | Available In | Use For |
+|---|---|---|
+| `framer-motion` | `Hero.tsx`, `Contact.tsx` | `useScroll`, `useTransform`, `useSpring`, mouse-tracking parallax |
+| `gsap` + `ScrollTrigger` | `Who.tsx`, `WhyInfotainmentWorks.tsx`, `ProblemsSection.tsx` | Scrub-based scroll parallax, pinned section internal parallax |
+
+> [!TIP]
+> For new parallax sections (Contact, Footer), **prefer Framer Motion** to keep GSAP context isolated to the pins. GSAP contexts crossing component boundaries were the root cause of previous jitter bugs.

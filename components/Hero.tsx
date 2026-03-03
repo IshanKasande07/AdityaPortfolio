@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import FadeUp from './css/FadeUp';
 import FadeUpDelay from './css/FadeUpDelay';
@@ -23,13 +23,28 @@ export default function Hero() {
     });
     const lastX = useRef<number | null>(null);
 
+    // Magnetic Button Parallax
+    const buttonX = useMotionValue(0);
+    const buttonY = useMotionValue(0);
+    const buttonSpringX = useSpring(buttonX, { stiffness: 150, damping: 15, mass: 0.1 });
+    const buttonSpringY = useSpring(buttonY, { stiffness: 150, damping: 15, mass: 0.1 });
+
+    // Parallax: headline launches, fades, and scales away on scroll
+    const { scrollY } = useScroll();
+    const headlineY = useTransform(scrollY, [0, 500], [0, -220]);
+    const headlineOpacity = useTransform(scrollY, [0, 350], [1, 0]);
+    const headlineScale = useTransform(scrollY, [0, 500], [1, 0.85]);
+
     return (
         <div className="relative min-h-[750px] h-screen w-full bg-background overflow-hidden z-20">
             {/* Noise Overlay */}
             <div className="absolute inset-0 pointer-events-none z-10 opacity-30 mix-blend-overlay" style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }}></div>
 
             {/* Header Container */}
-            <div className='absolute top-[13vh] left-0 w-full flex flex-col items-center justify-center text-white text-center z-30 px-[5vw] pointer-events-none'>
+            <motion.div
+                style={{ y: headlineY, opacity: headlineOpacity, scale: headlineScale }}
+                className='absolute top-[13vh] left-0 w-full flex flex-col items-center justify-center text-white text-center z-30 px-[5vw] pointer-events-none'
+            >
                 <FadeUp>
                     <h1 className='text-3xl md:text-[4vw] font-display font-semibold leading-[1.1] tracking-tight pointer-events-auto mb-3 md:mb-4'>
                         <span className='block text-primary'>We Help Brands</span>
@@ -44,21 +59,48 @@ export default function Hero() {
                 </FadeUpDelay>
 
                 <div className='flex flex-row gap-5 items-center justify-center mt-5 pointer-events-auto'>
-                    <button className='group relative overflow-hidden rounded-full py-4 px-10 border border-white/20'>
-                        {/* Hover Expanding Background */}
+                    <motion.button
+                        onPointerMove={(e) => {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            const centerX = rect.left + rect.width / 2;
+                            const centerY = rect.top + rect.height / 2;
+                            // Pull towards cursor, max ~12px
+                            buttonX.set((e.clientX - centerX) * 0.15);
+                            buttonY.set((e.clientY - centerY) * 0.15);
+                        }}
+                        onPointerLeave={() => {
+                            buttonX.set(0);
+                            buttonY.set(0);
+                        }}
+                        style={{ x: buttonSpringX, y: buttonSpringY }}
+                        className='group relative overflow-hidden rounded-full py-4 px-10 border border-accent bg-accent will-change-transform'
+                    >
+                        {/* Hover Expanding Background (kept for structure, but visually it's yellow on yellow now) */}
                         <div className="absolute inset-0 bg-accent translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full"></div>
-                        <div className="relative z-10 flex items-center justify-center text-base md:text-[1.1vw] font-medium text-white group-hover:text-black transition-colors duration-300">
-                            Book a Call
-                            <span className='ml-3 flex items-center justify-center transition-transform duration-500 group-hover:translate-x-3'>
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="stroke-current" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    <polyline points="12 5 19 12 12 19"></polyline>
-                                </svg>
+
+                        <div className="relative z-10 flex items-center justify-center text-base md:text-[1.1vw] font-medium text-black transition-colors duration-300">
+                            <span>Book a Call</span>
+
+                            {/* Magnetic Arrow Shoot Container */}
+                            <span className='ml-3 relative flex items-center justify-center overflow-hidden w-5 h-5'>
+                                {/* First Arrow (Disappears up-right) */}
+                                <span className='absolute inset-0 flex items-center justify-center -rotate-45 transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-[150%] group-hover:-translate-y-[150%]'>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="stroke-current" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                </span>
+
+                                {/* Second Arrow (Enters from bottom-left) */}
+                                <span className='absolute inset-0 flex items-center justify-center -rotate-45 -translate-x-[150%] translate-y-[150%] transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-0 group-hover:translate-y-0'>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="stroke-current" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                </span>
                             </span>
                         </div>
-                    </button>
+                    </motion.button>
                 </div>
-            </div>
+            </motion.div>
 
             {/* 3D Carousel Section */}
             <div
