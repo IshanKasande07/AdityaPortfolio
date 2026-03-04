@@ -103,7 +103,7 @@ const Contact = () => {
                     {/* Ambient Background Glow */}
                     <div className='absolute bottom-0 right-0 w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] bg-accent/5 rounded-full blur-[120px] pointer-events-none translate-x-1/4 translate-y-1/4'></div>
 
-                    <div className='w-full max-w-[80vw] md:max-w-[50vw] flex flex-col items-center justify-center text-center text-primary mt-10 relative z-10'>
+                    <div id="contact-heading" className='w-full max-w-[80vw] md:max-w-[50vw] flex flex-col items-center justify-center text-center text-primary mt-10 relative z-10'>
                         <FadeUp>
                             <h2 className='text-4xl md:text-[4vw] font-display font-semibold leading-[1.1] tracking-tight'>Turn Your Expertise<br />Into Influence.</h2>
                         </FadeUp>

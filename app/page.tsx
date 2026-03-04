@@ -7,10 +7,13 @@ import WhyInfotainmentWorks from '@/components/WhyInfotainmentWorks'
 import Footer from '@/components/Footer'
 import FlywheelAnimation from '@/components/FlyWheelAnimation'
 import PhysicsThrow from '@/components/PhysicsThrow'
+import FloatingCTA from '@/components/FloatingCTA'
 
 const page = () => {
   return (
     <>
+      {/* Floating sticky CTA — fixed across all sections */}
+      <FloatingCTA />
 
       <Hero />
       <WhyInfotainmentWorks />

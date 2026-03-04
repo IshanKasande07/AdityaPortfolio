@@ -54,7 +54,7 @@ export default function Hero() {
                 </FadeUp>
                 <FadeUpDelay>
                     <p className='text-sm md:text-[1.1vw] text-muted max-w-3xl pointer-events-auto leading-relaxed mb-1'>
-                        Infotainment-led social content that builds authority, drives massive reach, and converts attention into long-term growth.
+                        Attention is the highest currency, we are helping you to mine it
                     </p>
                 </FadeUpDelay>
 
