@@ -64,6 +64,7 @@ const ProblemsSection = () => {
   const innerCardRefs = useRef<(HTMLDivElement | null)[]>([]); // the visible box
 
   const slashLineRef = useRef<SVGLineElement>(null);
+  const transitionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -181,6 +182,23 @@ const ProblemsSection = () => {
             ease: "sine.inOut",
             yoyo: true,
             repeat: -1,
+          }
+        );
+      }
+
+      // ── Geometric Cut Transition Parallax ──
+      if (transitionRef.current) {
+        gsap.fromTo(transitionRef.current,
+          { y: 0 },
+          {
+            y: -20,
+            ease: "none",
+            scrollTrigger: {
+              trigger: transitionRef.current,
+              start: "top bottom",
+              end: "bottom bottom",
+              scrub: true,
+            }
           }
         );
       }
@@ -335,7 +353,7 @@ const ProblemsSection = () => {
       `}</style>
 
       {/* ── Transition A: Gold Slash Geometric Cut ── */}
-      <div className="w-full relative pointer-events-none overflow-hidden z-40" style={{ height: '90px', marginBottom: '-1px' }}>
+      <div ref={transitionRef} className="w-full relative pointer-events-none overflow-hidden z-40" style={{ height: '90px', marginBottom: '-1px' }}>
         <svg
           viewBox="0 0 1440 90"
           preserveAspectRatio="none"

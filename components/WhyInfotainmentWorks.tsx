@@ -12,6 +12,7 @@ const WhyInfotainmentWorks = () => {
   const actionWordRefs = useRef<(HTMLDivElement | null)[]>([]);
   const svgLinesRef = useRef<(SVGPathElement | null)[]>([]);
   const verticalLinesRef = useRef<(HTMLDivElement | null)[]>([]);
+  const waveTransitionRef = useRef<HTMLDivElement>(null);
 
   const [cardDimensions, setCardDimensions] = useState<{ width: number, height: number }[]>([]);
 
@@ -130,6 +131,23 @@ const WhyInfotainmentWorks = () => {
         );
       });
 
+      // Wave transition parallax — rises as user scrolls toward it
+      if (waveTransitionRef.current) {
+        gsap.fromTo(waveTransitionRef.current,
+          { y: 0 },
+          {
+            y: -15,
+            ease: "none",
+            scrollTrigger: {
+              trigger: waveTransitionRef.current,
+              start: "top bottom",
+              end: "bottom bottom",
+              scrub: true,
+            }
+          }
+        );
+      }
+
     }, containerRef);
 
     return () => ctx.revert();
@@ -149,8 +167,8 @@ const WhyInfotainmentWorks = () => {
   };
 
   return (
-    <div className="h-auto w-full pt-25 pb-0 z-30 min-h-[100vh] bg-surface relative flex flex-col justify-between">
-      <div className="flex flex-col items-center gap-10 mt-10 px-[5vw] mb-20 w-full max-w-4xl mx-auto">
+    <div className="h-auto w-full pt-6 pb-0 z-30 min-h-[100vh] bg-surface relative flex flex-col justify-between">
+      <div className="flex flex-col items-center gap-10 mt-0 px-[5vw] mb-20 w-full max-w-4xl mx-auto">
 
         {/* Header */}
         <FadeUp>
@@ -284,12 +302,15 @@ const WhyInfotainmentWorks = () => {
 
       </div>
 
-      <div className="w-full overflow-hidden leading-[0] mt-10 relative h-[100px] z-40 pointer-events-none">
-        <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[100px] transform scale-105 translate-y-[2px]">
-          {/* Transition into background color of the next section */}
-          <path d="M0 100C0 100 360 0 720 0C1080 0 1440 100 1440 100V100H0V100Z" fill="var(--color-background)" />
-
-        </svg>
+      <div ref={waveTransitionRef} className="absolute bottom-[-20px] left-0 w-full overflow-hidden leading-[0] z-40 pointer-events-none drop-shadow-xl will-change-transform transform-gpu">
+        <div className="w-full relative flex flex-col">
+          <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[100px] transform scale-105 translate-y-[2px]">
+            {/* Transition into background color of the next section */}
+            <path d="M0 100C0 100 360 0 720 0C1080 0 1440 100 1440 100V100H0V100Z" fill="var(--color-background)" />
+          </svg>
+          {/* Fill the gap created by the upward parallax translation */}
+          <div className="h-[30px] w-full bg-background" />
+        </div>
       </div>
     </div>
   );

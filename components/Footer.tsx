@@ -1,19 +1,62 @@
+"use client";
+
 import React from "react";
+import { motion } from "framer-motion";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring" as const,
+      stiffness: 70,
+      damping: 20
+    }
+  },
+};
 
 const Footer = () => {
   return (
-    <footer className="py-15 border-t border-white/5 w-full bg-background z-70 text-primary">
-      <div className="w-[80vw] mx-auto px-6">
+    <footer className="relative py-15 border-t border-white/5 w-full bg-background z-70 text-primary overflow-hidden">
+
+      {/* Top Border Shimmer */}
+      <motion.div
+        initial={{ x: "-100%" }}
+        whileInView={{ x: "100%" }}
+        viewport={{ once: true }}
+        transition={{ duration: 2.5, ease: "easeInOut" }}
+        className="absolute top-0 left-0 h-[1px] w-[200px] bg-gradient-to-r from-transparent via-accent to-transparent opacity-50"
+      />
+
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        className="w-[80vw] mx-auto px-6"
+      >
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
 
           {/* Brand */}
-          <div className="text-[1.3vw] font-display font-semibold tracking-wide">
+          <motion.div variants={itemVariants} className="text-[1.3vw] font-display font-semibold tracking-wide">
             MONARCH MEDIA HOUSE
-          </div>
+          </motion.div>
 
           {/* Social links */}
-          <div className="flex items-center gap-6">
+          <motion.div variants={itemVariants} className="flex items-center gap-6">
 
             {/* Instagram */}
             <a
@@ -84,15 +127,17 @@ const Footer = () => {
               </svg>
             </a>
 
-          </div>
+          </motion.div>
 
           {/* Copyright */}
-          <p className="text-[0.9vw] text-muted-foreground">
-            © 2026 Monarch Media House
-          </p>
+          <motion.div variants={itemVariants}>
+            <p className="text-[0.9vw] text-muted-foreground">
+              © 2026 Monarch Media House
+            </p>
+          </motion.div>
 
         </div>
-      </div>
+      </motion.div>
     </footer>
   );
 };

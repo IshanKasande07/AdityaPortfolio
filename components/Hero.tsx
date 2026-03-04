@@ -29,21 +29,36 @@ export default function Hero() {
     const buttonSpringX = useSpring(buttonX, { stiffness: 150, damping: 15, mass: 0.1 });
     const buttonSpringY = useSpring(buttonY, { stiffness: 150, damping: 15, mass: 0.1 });
 
-    // Parallax: headline launches, fades, and scales away on scroll
+    // Parallax: headline fades and sinks deeper on scroll
     const { scrollY } = useScroll();
-    const headlineY = useTransform(scrollY, [0, 500], [0, -220]);
+    const headlineY = useTransform(scrollY, [0, 500], [0, 150]);
     const headlineOpacity = useTransform(scrollY, [0, 350], [1, 0]);
     const headlineScale = useTransform(scrollY, [0, 500], [1, 0.85]);
 
+    // Parallax depth layers — "Entering the World"
+    const noiseY = useTransform(scrollY, [0, 600], [0, 50]);        // L0: deepest, stays almost still relative to viewport
+    const glowY = useTransform(scrollY, [0, 600], [0, 100]);        // L1: ambient gold glow sinks
+    const carouselY = useTransform(scrollY, [0, 800], [0, 350]);    // L3: carousel sinks heavily, getting eclipsed by the next section
+
     return (
         <div className="relative min-h-[750px] h-screen w-full bg-background overflow-hidden z-20">
-            {/* Noise Overlay */}
-            <div className="absolute inset-0 pointer-events-none z-10 opacity-30 mix-blend-overlay" style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }}></div>
+            {/* Noise Overlay — parallax drift */}
+            <motion.div style={{ y: noiseY }} className="absolute inset-0 pointer-events-none z-10 opacity-[0.05] will-change-transform transform-gpu" >
+                <div className="absolute inset-0" style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }} />
+            </motion.div>
+
+            {/* Ambient Gold Glow — parallax drift */}
+            <motion.div
+                style={{ y: glowY }}
+                className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[60vw] h-[60vw] max-w-[700px] max-h-[700px] rounded-full pointer-events-none z-[5] will-change-transform transform-gpu"
+            >
+                <div className="w-full h-full rounded-full bg-accent/[0.03] blur-[100px]" />
+            </motion.div>
 
             {/* Header Container */}
             <motion.div
                 style={{ y: headlineY, opacity: headlineOpacity, scale: headlineScale }}
-                className='absolute top-[13vh] left-0 w-full flex flex-col items-center justify-center text-white text-center z-30 px-[5vw] pointer-events-none'
+                className='absolute top-[13vh] left-0 w-full flex flex-col items-center justify-center text-white text-center z-30 px-[5vw] pointer-events-none will-change-transform transform-gpu'
             >
                 <FadeUp>
                     <h1 className='text-3xl md:text-[4vw] font-display font-semibold leading-[1.1] tracking-tight pointer-events-auto mb-3 md:mb-4'>
@@ -105,10 +120,10 @@ export default function Hero() {
                 </div>
             </motion.div>
 
-            {/* 3D Carousel Section */}
-            <div
-                className="absolute left-0 w-full flex justify-center pointer-events-none z-20"
-                style={{ bottom: "calc(0px + 4.5vw)" }}
+            {/* 3D Carousel Section — parallax recession */}
+            <motion.div
+                style={{ y: carouselY, bottom: "calc(0px + 4.5vw)" }}
+                className="absolute left-0 w-full flex justify-center pointer-events-none z-20 will-change-transform transform-gpu"
             >
                 <motion.div
                     initial={{ scale: 1.25, filter: "blur(15px)", opacity: 0, y: 50 }}
@@ -180,14 +195,11 @@ export default function Hero() {
                         </motion.div>
                     </div>
                 </motion.div>
-            </div>
+            </motion.div>
 
-            {/* The curved bottom boundary overlay - Note: Next section will be surface color */}
-            <div
-                className="absolute bottom-[-1px] left-0 w-full overflow-hidden leading-[0] z-40 pointer-events-none drop-shadow-xl"
-                style={{ height: "calc(100vw * 0.08)" }}
-            >
-                <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-full scale-105 transform translate-y-[2px]">
+            {/* The curved bottom boundary overlay — unified firmly with next section */}
+            <div className="absolute bottom-[-1px] left-0 w-full leading-[0] z-40 pointer-events-none drop-shadow-xl">
+                <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[100px] scale-105 transform translate-y-[2px]">
                     <motion.path
                         animate={{
                             d: [
