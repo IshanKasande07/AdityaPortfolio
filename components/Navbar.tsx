@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -15,8 +16,8 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div
-      className={`fixed top-0 left-0 w-full z-[200] grid grid-cols-2 md:grid-cols-3 items-center px-6 md:px-12 py-4 pointer-events-none transition-colors duration-300 text-white`}
+    <motion.div
+      className={`absolute top-0 left-0 w-full z-[200] grid grid-cols-2 md:grid-cols-3 items-center px-6 md:px-12 py-4 mt-[3px] pointer-events-none transition-colors duration-300 text-white`}
     >
       {/* Left: Logo */}
       <div className="flex justify-start pointer-events-auto">
@@ -82,8 +83,10 @@ const Navbar = () => {
         </button>
       </div>
 
-    </div>
+    </motion.div>
   );
 };
 
 export default Navbar;
+
+

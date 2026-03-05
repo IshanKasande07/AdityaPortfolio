@@ -28,12 +28,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" style={{ backgroundColor: "#F0EDE8" }}>
       <body
         className={`${shipporiAntiqueB1.variable} ${urbanist.variable} antialiased overflow-x-hidden`}
+        style={{ backgroundColor: "#F0EDE8" }}
       >
         <LenisProvider>
-          <Navbar />
           {children}
         </LenisProvider>
       </body>

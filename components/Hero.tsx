@@ -2,8 +2,6 @@
 
 import { motion, useMotionValue, useSpring, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import FadeUp from './css/FadeUp';
-import FadeUpDelay from './css/FadeUpDelay';
 
 const videos = [
     "https://storage.googleapis.com/clova-assets/public/clova-website/clova2/5.mp4",
@@ -60,18 +58,30 @@ export default function Hero() {
                 style={{ y: headlineY, opacity: headlineOpacity, scale: headlineScale }}
                 className='absolute top-[13vh] left-0 w-full flex flex-col items-center justify-center text-white text-center z-30 px-[5vw] pointer-events-none will-change-transform transform-gpu'
             >
-                <FadeUp>
-                    <h1 className='text-3xl md:text-[4vw] font-display font-semibold leading-[1.1] tracking-tight pointer-events-auto mb-3 md:mb-4'>
-                        <span className='block text-primary'>We Help Brands</span>
-                        <span className='block text-primary'>Win by <span className='font-serif italic font-normal text-accent'>Educating</span></span>
-                        <span className='block text-primary'>the Internet.</span>
-                    </h1>
-                </FadeUp>
-                <FadeUpDelay>
-                    <p className='text-sm md:text-[1.1vw] text-muted max-w-3xl pointer-events-auto leading-relaxed mb-1'>
-                        Attention is the highest currency, we are helping you to mine it
-                    </p>
-                </FadeUpDelay>
+                {/* Heading: fades in after reveal and scales down from large to normal */}
+                <motion.h1
+                    initial={{ opacity: 0, scale: 1.35 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{
+                        opacity: { duration: 0.5, delay: 1.9 },
+                        scale: { duration: 2.5, delay: 1.9, ease: [0.16, 1, 0.3, 1] },
+                    }}
+                    style={{ transformOrigin: "center center", backfaceVisibility: "hidden", WebkitFontSmoothing: "antialiased" }}
+                    className='text-3xl md:text-[4vw] font-display font-semibold leading-[1.1] tracking-tight pointer-events-auto mb-3 md:mb-4 will-change-transform transform-gpu'
+                >
+                    <span className='block text-primary'>We Help Brands</span>
+                    <span className='block text-primary'>Win by <span className='font-serif italic font-normal text-accent'>Educating</span></span>
+                    <span className='block text-primary'>the Internet.</span>
+                </motion.h1>
+                {/* Subtitle: staggered after heading */}
+                <motion.p
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 2.5, ease: "easeOut" }}
+                    className='text-sm md:text-[1.1vw] text-muted max-w-3xl pointer-events-auto leading-relaxed mb-1'
+                >
+                    Attention is the highest currency, we are helping you to mine it
+                </motion.p>
 
                 <div className='flex flex-row gap-5 items-center justify-center mt-5 pointer-events-auto'>
                     <motion.button
@@ -126,9 +136,9 @@ export default function Hero() {
                 className="absolute left-0 w-full flex justify-center pointer-events-none z-20 will-change-transform transform-gpu"
             >
                 <motion.div
-                    initial={{ scale: 1.25, filter: "blur(15px)", opacity: 0, y: 50 }}
-                    animate={{ scale: 1, filter: "blur(0px)", opacity: 1, y: 0 }}
-                    transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+                    initial={{ scale: 1.25, opacity: 0, y: 50 }}
+                    animate={{ scale: 1, opacity: 1, y: 0 }}
+                    transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 1.6 }}
                 >
                     <div
                         style={{
@@ -209,7 +219,7 @@ export default function Hero() {
                             ]
                         }}
                         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                        fill="var(--color-surface)"
+                        fill="#F0EDE8"
                     />
                 </svg>
             </div>
