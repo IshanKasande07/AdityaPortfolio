@@ -253,7 +253,14 @@ export default function Who() {
                                     for?
                                 </span>
                             </h2>
-                            <div className="w-14 h-[2px] bg-accent mx-auto mt-5 rounded-full opacity-50" />
+                            <div className="flex gap-2 items-center justify-center mt-6">
+                                {[0, 1].map(i => (
+                                    <div key={i} className="rounded-full transition-all duration-500" style={{
+                                        width: phase === i ? 22 : 6, height: 6,
+                                        backgroundColor: phase === i ? "var(--color-accent, #FFC300)" : "rgba(255,255,255,0.10)",
+                                    }} />
+                                ))}
+                            </div>
                         </div>
                     </div>
 
@@ -275,15 +282,7 @@ export default function Who() {
                     </div>
                 </div>
 
-                {/* Scroll dots */}
-                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-2 items-center">
-                    {[0, 1].map(i => (
-                        <div key={i} className="rounded-full transition-all duration-500" style={{
-                            width: phase === i ? 22 : 6, height: 6,
-                            backgroundColor: phase === i ? "var(--color-accent, #FFC300)" : "rgba(255,255,255,0.10)",
-                        }} />
-                    ))}
-                </div>
+                {/* Scroll dots moved under heading */}
             </div>
         </div>
     )
