@@ -1,7 +1,8 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, useMotionValue, useSpring, useScroll, useTransform, useAnimation } from "framer-motion";
+import { useRef, useEffect } from "react";
+import { useReveal } from "./RevealLayout";
 
 const videos = [
     "https://storage.googleapis.com/clova-assets/public/clova-website/clova2/5.mp4",
@@ -13,6 +14,38 @@ const videos = [
 ];
 
 export default function Hero() {
+    const { revealed, earlyReveal } = useReveal();
+    const headerControls = useAnimation();
+    const contentControls = useAnimation();
+
+    useEffect(() => {
+        if (earlyReveal) {
+            headerControls.start({
+                opacity: 1,
+                scale: 1.5,
+                y: "25vh",
+                transition: { duration: 0.8, ease: "easeOut" }
+            });
+
+            // Start the hold after earlyReveal fires
+            const timer = setTimeout(() => {
+                headerControls.start({
+                    scale: 1,
+                    y: 0,
+                    transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] }
+                });
+                contentControls.start({
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] }
+                });
+            }, 1600);
+
+            return () => clearTimeout(timer);
+        }
+    }, [earlyReveal, headerControls, contentControls]);
+
     const rawRotation = useMotionValue(0);
     const rotation = useSpring(rawRotation, {
         stiffness: 70,
@@ -59,31 +92,100 @@ export default function Hero() {
                 className='absolute top-[13vh] left-0 w-full flex flex-col items-center justify-center text-white text-center z-30 px-[5vw] pointer-events-none will-change-transform transform-gpu'
             >
                 {/* Heading: fades in after reveal and scales down from large to normal */}
-                <motion.h1
-                    initial={{ opacity: 0, scale: 1.35 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{
-                        opacity: { duration: 0.5, delay: 1.9 },
-                        scale: { duration: 2.5, delay: 1.9, ease: [0.16, 1, 0.3, 1] },
-                    }}
-                    style={{ transformOrigin: "center center", backfaceVisibility: "hidden", WebkitFontSmoothing: "antialiased" }}
-                    className='text-3xl md:text-[4vw] font-display font-semibold leading-[1.1] tracking-tight pointer-events-auto mb-3 md:mb-4 will-change-transform transform-gpu'
+                <motion.div
+                    initial={{ opacity: 0, scale: 1.5, y: "25vh" }}
+                    animate={headerControls}
+                    className="flex flex-col items-center justify-center pointer-events-none"
+                    style={{ transformOrigin: "center center" }}
                 >
-                    <span className='block text-primary'>We Help Brands</span>
-                    <span className='block text-primary'>Win by <span className='font-serif italic font-normal text-accent'>Educating</span></span>
-                    <span className='block text-primary'>the Internet.</span>
-                </motion.h1>
-                {/* Subtitle: staggered after heading */}
-                <motion.p
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 2.5, ease: "easeOut" }}
-                    className='text-sm md:text-[1.1vw] text-muted max-w-3xl pointer-events-auto leading-relaxed mb-1'
-                >
-                    Attention is the highest currency, we are helping you to mine it
-                </motion.p>
+                    <motion.div
+                        className="text-3xl md:text-[4vw] font-display font-semibold leading-[1.1] tracking-tight pointer-events-auto mb-3 md:mb-4 will-change-transform transform-gpu flex flex-col items-center"
+                        style={{ backfaceVisibility: "hidden", WebkitFontSmoothing: "antialiased" }}
+                        variants={{
+                            hidden: { opacity: 0 },
+                            visible: {
+                                opacity: 1,
+                                transition: {
+                                    staggerChildren: 0.1,
+                                    delayChildren: 0.1,
+                                }
+                            }
+                        }}
+                        initial="hidden"
+                        // The parent div's layout size change is triggered by headerControls above
+                        // We can just rely on local state or simple string animate prop since it's nested
+                        // To keep it simple, we just tie it to `earlyReveal` since header starts instantly on reveal.
+                        animate={earlyReveal ? "visible" : "hidden"}
+                    >
+                        {/* Line 1 */}
+                        <div className="flex flex-wrap justify-center gap-[0.3em]">
+                            {["We", "Help", "Brands"].map((word, i) => (
+                                <div key={i} className="overflow-hidden inline-block relative py-1">
+                                    <motion.span
+                                        variants={{
+                                            hidden: { y: "110%", rotate: 2 },
+                                            visible: { y: "0%", rotate: 0, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } }
+                                        }}
+                                        className="inline-block text-primary origin-bottom-left"
+                                    >
+                                        {word}
+                                    </motion.span>
+                                </div>
+                            ))}
+                        </div>
+                        {/* Line 2 */}
+                        <div className="flex flex-wrap justify-center gap-[0.3em]">
+                            {["Win", "by", "Educating"].map((word, i) => (
+                                <div key={i} className="overflow-hidden inline-block relative py-1">
+                                    <motion.span
+                                        variants={{
+                                            hidden: { y: "110%", rotate: 2 },
+                                            visible: { y: "0%", rotate: 0, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } }
+                                        }}
+                                        className={`inline-block origin-bottom-left ${word === 'Educating' ? 'font-serif italic font-normal text-accent' : 'text-primary'}`}
+                                    >
+                                        {word}
+                                    </motion.span>
+                                </div>
+                            ))}
+                        </div>
+                        {/* Line 3 */}
+                        <div className="flex flex-wrap justify-center gap-[0.3em]">
+                            {["the", "Internet."].map((word, i) => (
+                                <div key={i} className="overflow-hidden inline-block relative py-1">
+                                    <motion.span
+                                        variants={{
+                                            hidden: { y: "110%", rotate: 2 },
+                                            visible: { y: "0%", rotate: 0, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } }
+                                        }}
+                                        className="inline-block text-primary origin-bottom-left"
+                                    >
+                                        {word}
+                                    </motion.span>
+                                </div>
+                            ))}
+                        </div>
+                    </motion.div>
 
-                <div className='flex flex-row gap-5 items-center justify-center mt-5 pointer-events-auto'>
+                    {/* Subtitle */}
+                    <motion.p
+                        variants={{
+                            hidden: { opacity: 0, y: 15 },
+                            visible: { opacity: 1, y: 0, transition: { duration: 1, ease: "easeOut", delay: 0.8 } }
+                        }}
+                        initial="hidden"
+                        animate="visible"
+                        className='text-sm md:text-[1.1vw] text-muted max-w-3xl pointer-events-auto leading-relaxed mb-1'
+                    >
+                        Attention is the highest currency, we are helping you to mine it
+                    </motion.p>
+                </motion.div>
+
+                <motion.div
+                    initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                    animate={contentControls}
+                    className='flex flex-row gap-5 items-center justify-center mt-5 pointer-events-auto'
+                >
                     <motion.button
                         onPointerMove={(e) => {
                             const rect = e.currentTarget.getBoundingClientRect();
@@ -127,7 +229,7 @@ export default function Hero() {
                             </span>
                         </div>
                     </motion.button>
-                </div>
+                </motion.div>
             </motion.div>
 
             {/* 3D Carousel Section — parallax recession */}
@@ -137,8 +239,7 @@ export default function Hero() {
             >
                 <motion.div
                     initial={{ scale: 1.25, opacity: 0, y: 50 }}
-                    animate={{ scale: 1, opacity: 1, y: 0 }}
-                    transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 1.6 }}
+                    animate={contentControls}
                 >
                     <div
                         style={{
@@ -148,7 +249,6 @@ export default function Hero() {
                         }}
                         className="relative pointer-events-auto"
                     >
-                        {/* world */}
                         <motion.div
                             onPointerDown={(e) => {
                                 lastX.current = e.clientX;
@@ -173,7 +273,8 @@ export default function Hero() {
                             }}
                             className="relative w-[900px] h-[520px]"
                         >
-                            {videos.map((src, i) => {
+                            {/* Defer heavy video mounting until the clip-path animation is almost done */}
+                            {earlyReveal && videos.map((src, i) => {
                                 const angle = (360 / videos.length) * i;
                                 const scale = 1.2;
                                 return (
@@ -182,14 +283,14 @@ export default function Hero() {
                                         style={{
                                             transformStyle: "preserve-3d",
                                             transform: `
-                        rotateY(${angle}deg)
-                        translateZ(510px)
-                        scale(${scale})
-                    `,
+                                                rotateY(${angle}deg)
+                                                translateZ(510px)
+                                                scale(${scale})
+                                            `,
                                         }}
-                                        className="absolute inset-0 flex items-center justify-center"
+                                        className="absolute inset-0 flex items-center justify-center transform-gpu"
                                     >
-                                        <div style={{ transform: "rotateY(180deg)" }}>
+                                        <div style={{ transform: "rotateY(180deg) translateZ(0)" }} className="transform-gpu">
                                             <video
                                                 src={src}
                                                 autoPlay

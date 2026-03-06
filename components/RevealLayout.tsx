@@ -1,7 +1,18 @@
 "use client";
 
-import React, { useState, useEffect, ReactNode } from "react";
+import React, { useState, useEffect, ReactNode, createContext, useContext } from "react";
 import { motion } from "framer-motion";
+
+interface RevealContextType {
+    revealed: boolean;
+    earlyReveal: boolean;
+}
+
+const RevealContext = createContext<RevealContextType>({ revealed: false, earlyReveal: false });
+
+export function useReveal() {
+    return useContext(RevealContext);
+}
 
 interface RevealLayoutProps {
     children: ReactNode;
@@ -14,10 +25,17 @@ const CREAM = "#F0EDE8";
 
 export default function RevealLayout({ children }: RevealLayoutProps) {
     const [revealed, setRevealed] = useState(false);
+    const [earlyReveal, setEarlyReveal] = useState(false);
 
     useEffect(() => {
         document.body.style.backgroundColor = CREAM;
         document.documentElement.style.backgroundColor = CREAM;
+
+        const timer = setTimeout(() => {
+            setEarlyReveal(true);
+        }, 1100);
+
+        return () => clearTimeout(timer);
     }, []);
 
     useEffect(() => {
@@ -53,7 +71,8 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
                 transition={{ duration: 1.6, ease: [0.76, 0, 0.24, 1] }}
                 onAnimationComplete={() => setRevealed(true)}
                 style={{
-                    willChange: "clip-path",
+                    willChange: "clip-path, transform",
+                    transform: "translateZ(0)",
                     position: revealed ? "relative" : "fixed",
                     inset: revealed ? "auto" : 0,
                     margin: revealed ? `${BORDER_PX}px` : undefined,
@@ -63,7 +82,9 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
                     zIndex: revealed ? "auto" : 50,
                 }}
             >
-                {children}
+                <RevealContext.Provider value={{ revealed, earlyReveal }}>
+                    {children}
+                </RevealContext.Provider>
             </motion.div>
 
             {!revealed && <div style={{ height: "100vh" }} />}
