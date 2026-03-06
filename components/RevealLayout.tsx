@@ -73,21 +73,15 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
                 style={{
                     willChange: "clip-path, transform",
                     transform: "translateZ(0)",
-                    position: revealed ? "relative" : "fixed",
-                    inset: revealed ? "auto" : 0,
-                    margin: revealed ? `${BORDER_PX}px` : undefined,
-                    width: revealed ? `calc(100% - ${BORDER_PX * 2}px)` : "100%",
-                    borderRadius: revealed ? RADIUS : undefined,
-                    overflow: "hidden",
-                    zIndex: revealed ? "auto" : 50,
+                    position: "relative",
+                    width: "100%",
+                    zIndex: 50,
                 }}
             >
                 <RevealContext.Provider value={{ revealed, earlyReveal }}>
                     {children}
                 </RevealContext.Provider>
             </motion.div>
-
-            {!revealed && <div style={{ height: "100vh" }} />}
         </div>
     );
 }

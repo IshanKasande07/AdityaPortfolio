@@ -32,13 +32,13 @@ export default function Hero() {
                 headerControls.start({
                     scale: 1,
                     y: 0,
-                    transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] }
+                    transition: { duration: 1.2, ease: [0.76, 0, 0.24, 1] }
                 });
                 contentControls.start({
                     opacity: 1,
                     y: 0,
                     scale: 1,
-                    transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] }
+                    transition: { duration: 1.2, ease: [0.76, 0, 0.24, 1] }
                 });
             }, 1600);
 
@@ -89,82 +89,56 @@ export default function Hero() {
             {/* Header Container */}
             <motion.div
                 style={{ y: headlineY, opacity: headlineOpacity, scale: headlineScale }}
-                className='absolute top-[13vh] left-0 w-full flex flex-col items-center justify-center text-white text-center z-30 px-[5vw] pointer-events-none will-change-transform transform-gpu'
+                className='absolute top-[13vh] left-0 w-full flex flex-col items-center justify-center text-white text-center z-30 px-[5vw] pointer-events-none'
             >
-                {/* Heading: fades in after reveal and scales down from large to normal */}
+                {/* FIX 2: ENTRANCE WRAPPER 
+                   This child div handles ONLY the initial "reveal" animation.
+                   Adding 'transform-gpu' and 'backface-visibility' stops the text jitter.
+                */}
                 <motion.div
                     initial={{ opacity: 0, scale: 1.5, y: "25vh" }}
                     animate={headerControls}
-                    className="flex flex-col items-center justify-center pointer-events-none"
-                    style={{ transformOrigin: "center center" }}
+                    className="flex flex-col items-center justify-center pointer-events-none transform-gpu"
+                    style={{
+                        transformOrigin: "center center",
+                        backfaceVisibility: "hidden",
+                        WebkitBackfaceVisibility: "hidden"
+                    }}
                 >
                     <motion.div
-                        className="text-3xl md:text-[4vw] font-display font-semibold leading-[1.1] tracking-tight pointer-events-auto mb-3 md:mb-4 will-change-transform transform-gpu flex flex-col items-center"
-                        style={{ backfaceVisibility: "hidden", WebkitFontSmoothing: "antialiased" }}
-                        variants={{
-                            hidden: { opacity: 0 },
-                            visible: {
-                                opacity: 1,
-                                transition: {
-                                    staggerChildren: 0.1,
-                                    delayChildren: 0.1,
-                                }
-                            }
-                        }}
-                        initial="hidden"
-                        // The parent div's layout size change is triggered by headerControls above
-                        // We can just rely on local state or simple string animate prop since it's nested
-                        // To keep it simple, we just tie it to `earlyReveal` since header starts instantly on reveal.
+                        className="text-3xl md:text-[4vw] font-display font-semibold leading-[1.1] tracking-tight pointer-events-auto mb-3 md:mb-4 flex flex-col items-center"
                         animate={earlyReveal ? "visible" : "hidden"}
                     >
-                        {/* Line 1 */}
-                        <div className="flex flex-wrap justify-center gap-[0.3em]">
-                            {["We", "Help", "Brands"].map((word, i) => (
-                                <div key={i} className="overflow-hidden inline-block relative py-1">
-                                    <motion.span
-                                        variants={{
-                                            hidden: { y: "110%", rotate: 2 },
-                                            visible: { y: "0%", rotate: 0, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } }
-                                        }}
-                                        className="inline-block text-primary origin-bottom-left"
-                                    >
-                                        {word}
-                                    </motion.span>
-                                </div>
-                            ))}
-                        </div>
-                        {/* Line 2 */}
-                        <div className="flex flex-wrap justify-center gap-[0.3em]">
-                            {["Win", "by", "Educating"].map((word, i) => (
-                                <div key={i} className="overflow-hidden inline-block relative py-1">
-                                    <motion.span
-                                        variants={{
-                                            hidden: { y: "110%", rotate: 2 },
-                                            visible: { y: "0%", rotate: 0, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } }
-                                        }}
-                                        className={`inline-block origin-bottom-left ${word === 'Educating' ? 'font-serif italic font-normal text-accent' : 'text-primary'}`}
-                                    >
-                                        {word}
-                                    </motion.span>
-                                </div>
-                            ))}
-                        </div>
-                        {/* Line 3 */}
-                        <div className="flex flex-wrap justify-center gap-[0.3em]">
-                            {["the", "Internet."].map((word, i) => (
-                                <div key={i} className="overflow-hidden inline-block relative py-1">
-                                    <motion.span
-                                        variants={{
-                                            hidden: { y: "110%", rotate: 2 },
-                                            visible: { y: "0%", rotate: 0, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } }
-                                        }}
-                                        className="inline-block text-primary origin-bottom-left"
-                                    >
-                                        {word}
-                                    </motion.span>
-                                </div>
-                            ))}
-                        </div>
+                        {/* Lines are split to prevent massive layout shifts during staggered reveal */}
+                        {[
+                            ["We", "Help", "Brands"],
+                            ["Win", "by", "Educating"],
+                            ["the", "Internet."]
+                        ].map((line, lineIdx) => (
+                            <div key={lineIdx} className="flex flex-wrap justify-center gap-[0.3em]">
+                                {line.map((word, i) => (
+                                    <div key={i} className="overflow-hidden inline-block relative py-1">
+                                        <motion.span
+                                            variants={{
+                                                hidden: { y: "110%" },
+                                                visible: {
+                                                    y: "0%",
+                                                    transition: {
+                                                        duration: 1.1,
+                                                        ease: [0.76, 0, 0.24, 1],
+                                                        delay: (lineIdx * 0.1) + (i * 0.05) // Manual stagger for more control
+                                                    }
+                                                }
+                                            }}
+                                            className={`inline-block origin-bottom-left will-change-transform transform-gpu ${word === 'Educating' ? 'font-serif italic font-normal text-accent' : 'text-primary'}`}
+                                            style={{ backfaceVisibility: "hidden" }}
+                                        >
+                                            {word}
+                                        </motion.span>
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
                     </motion.div>
 
                     {/* Subtitle */}
@@ -273,8 +247,8 @@ export default function Hero() {
                             }}
                             className="relative w-[900px] h-[520px]"
                         >
-                            {/* Defer heavy video mounting until the clip-path animation is almost done */}
-                            {earlyReveal && videos.map((src, i) => {
+                            {/* Defer heavy video mounting until the clip-path animation is 100% complete (revealed) */}
+                            {revealed && videos.map((src, i) => {
                                 const angle = (360 / videos.length) * i;
                                 const scale = 1.2;
                                 return (
@@ -297,6 +271,7 @@ export default function Hero() {
                                                 loop
                                                 muted
                                                 playsInline
+                                                preload="metadata"
                                                 className="w-[420px] h-[300px] rounded-xl object-cover shadow-[0_0_30px_rgba(0,0,0,0.8)] select-none border border-white/10"
                                             />
                                         </div>
