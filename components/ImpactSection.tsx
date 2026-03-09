@@ -8,7 +8,7 @@ import { TrendingUp, Users, Zap } from "lucide-react";
 gsap.registerPlugin(ScrollTrigger);
 
 const ImpactSection = () => {
-    const sectionRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLElement>(null);
     const ringRef = useRef<SVGSVGElement>(null);
     const arrowsRef = useRef<HTMLDivElement>(null);
 
@@ -16,17 +16,17 @@ const ImpactSection = () => {
     const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
 
     useEffect(() => {
-        if (!sectionRef.current) return;
+        if (!containerRef.current) return;
 
         const ctx = gsap.context(() => {
             const tl = gsap.timeline({
                 scrollTrigger: {
-                    trigger: sectionRef.current,
+                    trigger: containerRef.current,
                     start: "top top",
-                    end: "+=4000",
+                    end: "bottom bottom", // Ties perfectly to the 400vh container
                     scrub: 1,
-                    pin: true,
-                    pinSpacing: true,
+                    // No pinning used! We rely on native CSS `sticky` below. 
+                    // This creates a flawless, zero-jitter scroll without fixed-to-absolute layout leaping.
                 }
             });
 
@@ -84,7 +84,7 @@ const ImpactSection = () => {
                 duration: 0.25,
                 ease: "power2.in"
             }, 0.75);
-        }, sectionRef);
+        }, containerRef);
 
         return () => ctx.revert();
     }, []);
@@ -108,8 +108,8 @@ const ImpactSection = () => {
     ];
 
     return (
-        <section id="impact" className="relative w-full bg-black isolate" style={{ zIndex: 1 }}>
-            <div ref={sectionRef} className="h-screen w-full overflow-hidden flex items-center justify-center relative">
+        <section id="impact" ref={containerRef} className="relative w-full h-[400vh] bg-black">
+            <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
 
                 {/* Background Ellipse */}
                 <svg

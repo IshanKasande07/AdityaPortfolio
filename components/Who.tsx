@@ -111,9 +111,7 @@ export default function Who() {
             ScrollTrigger.create({
                 trigger: pinWrapRef.current,
                 start: "top top",
-                end: "+=100%",
-                pin: sectionRef.current,
-                anticipatePin: 1,
+                end: "bottom bottom",
                 onUpdate(self) {
                     const np = self.progress >= 0.48 ? 1 : 0
                     if (np !== phaseRef.current) {
@@ -207,10 +205,11 @@ export default function Who() {
     }
 
     return (
-        <div ref={pinWrapRef} className="relative w-full" style={{ height: "200vh" }}>
+        <section ref={pinWrapRef} className="relative w-full h-[200vh] bg-background text-white select-none overflow-hidden">
+            {/* The actual pinned content area */}
             <div
                 ref={sectionRef}
-                className="relative w-full h-screen overflow-hidden bg-background flex items-center justify-center border-b border-white/5"
+                className="sticky top-0 w-full h-screen overflow-hidden flex flex-col justify-center py-20 border-b border-white/5"
             >
                 {/* Subtle ambient */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[45vw] h-[45vh] rounded-full pointer-events-none"
@@ -284,6 +283,6 @@ export default function Who() {
 
                 {/* Scroll dots moved under heading */}
             </div>
-        </div>
+        </section>
     )
 }

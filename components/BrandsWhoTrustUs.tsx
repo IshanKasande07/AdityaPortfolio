@@ -147,7 +147,7 @@ const MagneticLogo = ({ src, mouseX, mouseY, isLarge, manualScale = 1 }: any) =>
                 transformPerspective: 1000,
                 transformStyle: "preserve-3d",
             }}
-            className="flex-shrink-0 flex flex-col items-center justify-center p-6 border border-white/5 rounded-2xl bg-surface-light/30 backdrop-blur-md will-change-transform ease-out w-40 h-28 md:w-56 md:h-36 mx-3"
+            className="flex-shrink-0 flex flex-col items-center justify-center p-4 md:p-5 border border-white/5 rounded-2xl bg-surface-light/30 backdrop-blur-md will-change-transform ease-out w-32 h-24 md:w-48 md:h-32 mx-2 md:mx-3"
         >
             <motion.div
                 style={{ filter: dropShadow }}
@@ -227,7 +227,7 @@ const ParallaxCarousel = ({ items, baseVelocity = 1 }: any) => {
 
     return (
         <div
-            className="overflow-hidden m-0 whitespace-nowrap flex flex-nowrap perspective-[1000px] py-4 w-full"
+            className="overflow-hidden m-0 whitespace-nowrap flex flex-nowrap perspective-[1000px] py-2 w-full"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
         >
@@ -254,13 +254,13 @@ const BrandsWhoTrustUs = () => {
 
     return (
         <section
-            className="w-full relative py-20 bg-background z-20 overflow-hidden"
+            className="w-full relative pt-12 md:pt-16 pb-8 md:pb-10 bg-background z-20 overflow-hidden"
         >
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/5 to-transparent pointer-events-none opacity-20"></div>
 
             <div className="w-full relative">
                 <FadeUp>
-                    <div className="text-center mb-12 relative z-10 px-6">
+                    <div className="text-center mb-6 relative z-10 px-6">
                         <h2 className="text-3xl md:text-4xl font-display font-semibold text-primary tracking-tight">Brands Who Trust Us</h2>
                         <div className="w-16 h-1 bg-gradient-to-r from-accent to-red-500 mx-auto mt-4 rounded-full"></div>
                         <p className="max-w-2xl mx-auto mt-6 text-lg text-muted font-light leading-relaxed">
@@ -269,7 +269,7 @@ const BrandsWhoTrustUs = () => {
                     </div>
                 </FadeUp>
 
-                <div className="relative z-10 w-full flex flex-col gap-6 mt-6 overflow-hidden max-w-full">
+                <div className="relative z-10 w-full flex flex-col gap-2 mt-2 overflow-hidden max-w-full">
                     {/* Left fading mask for smooth cutoffs at screen edges */}
                     <div className="absolute left-0 top-0 bottom-0 w-12 md:w-32 bg-gradient-to-r from-background to-transparent z-20 pointer-events-none"></div>
                     {/* Right fading mask */}
