@@ -7,151 +7,111 @@ import { Sparkles, Brain, Heart, Zap } from "lucide-react";
 import FadeUp from "./css/FadeUp";
 
 const WhyInfotainmentWorks = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const svgPathsRef = useRef<(SVGPathElement | null)[]>([]);
+  const connectingLinesRef = useRef<(SVGLineElement | null)[]>([]);
   const actionWordRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const svgLinesRef = useRef<(SVGPathElement | null)[]>([]);
-  const verticalLinesRef = useRef<(HTMLDivElement | null)[]>([]);
+  const incomingLineRef = useRef<SVGLineElement>(null);
   const waveTransitionRef = useRef<HTMLDivElement>(null);
 
   const [cardDimensions, setCardDimensions] = useState<{ width: number, height: number }[]>([]);
 
-  // Update card dimensions on mount and resize
+  // Capture dimensions to build accurate SVG paths
   useEffect(() => {
     const updateDimensions = () => {
       if (cardRefs.current) {
-        const dims = cardRefs.current.map(card => {
-          if (card) {
-            return { width: card.offsetWidth, height: card.offsetHeight };
-          }
-          return { width: 0, height: 0 };
-        });
+        const dims = cardRefs.current.map(card => ({
+          width: card?.offsetWidth || 320,
+          height: card?.offsetHeight || 200
+        }));
         setCardDimensions(dims);
       }
     };
-
     updateDimensions();
     window.addEventListener('resize', updateDimensions);
-    // Slight delay to ensure fonts/layout are fully rendered
-    setTimeout(updateDimensions, 100);
-
-    return () => window.removeEventListener('resize', updateDimensions);
+    const timeOut = setTimeout(updateDimensions, 150);
+    return () => {
+      window.removeEventListener('resize', updateDimensions);
+      clearTimeout(timeOut);
+    }
   }, []);
 
   useEffect(() => {
-    if (typeof window === 'undefined' || cardDimensions.length === 0) return;
-
+    if (!cardDimensions.length) return;
     gsap.registerPlugin(ScrollTrigger);
 
+    const container = containerRef.current;
+    if (!container) return;
+
     let ctx = gsap.context(() => {
-
-      const triggerStart = "top center+=15%"; // Trigger when top of element is 15% below the center of viewport
-      const triggerEnd = "bottom center+=15%"; // Finish when bottom of element is 15% below the center of viewport
-
-      // Vertical connecting lines animation
-      verticalLinesRef.current.forEach((line) => {
-        if (!line || !line.parentElement) return;
-        gsap.fromTo(line,
-          { scaleY: 0 },
-          {
-            scaleY: 1,
-            ease: "none",
-            scrollTrigger: {
-              trigger: line.parentElement, // Use parent container for accurate height measurement
-              start: triggerStart,
-              end: triggerEnd,
-              scrub: true,
-            }
-          }
-        );
+      // Create a master timeline locked purely to vertical scrolling
+      // We removed horizontal panning to keep everything completely still as requested.
+      const masterTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: container,
+          start: "top top",
+          end: "bottom bottom", // Ties perfectly to the 300vh container
+          scrub: 1,
+          // No pinning used! We rely on native CSS `sticky` below. 
+        }
       });
 
-      // Split tracing animations around cards
-      svgLinesRef.current.forEach((path, index) => {
-        if (!path) return;
-
-        // Use the corresponding card as the trigger
-        const card = cardRefs.current[Math.floor(index / 2)];
-        if (!card) return;
-
-        // Path length is critical for the drawing animation, strokeDasharray is set in inline style
-        gsap.fromTo(path,
-          { strokeDashoffset: 1000 }, // We use 1000 in the pathLength attribute
-          {
-            strokeDashoffset: 0,
-            ease: "none",
-            scrollTrigger: {
-              trigger: card,
-              start: triggerStart,
-              end: triggerEnd,
-              scrub: true,
-            }
-          }
-        );
-      });
-
-      // Action Words Animation
-      actionWordRefs.current.forEach((word) => {
-        if (!word) return;
-        gsap.fromTo(word,
-          { opacity: 0, y: -20, color: "rgba(255, 255, 255, 0.2)" },
-          {
-            opacity: 1,
-            y: 0,
-            color: "#FFC300",
-            duration: 0.4,
-            scrollTrigger: {
-              trigger: word,
-              start: "center center+=15%",
-              toggleActions: "play none none reverse"
-            }
-          }
-        );
-      });
-
-      // Card Content Reveal Animation (triggers mostly after line finishes tracing)
-      cardRefs.current.forEach((card) => {
-        if (!card) return;
-
-        gsap.fromTo(card,
-          { opacity: 0, scale: 0.95, filter: "blur(10px)" },
-          {
-            opacity: 1,
-            scale: 1,
-            filter: "blur(0px)",
-            duration: 0.8,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: card,
-              // Start revealing right after the tracing finishes
-              start: "center center+=15%",
-              toggleActions: "play none none reverse"
-            }
-          }
-        );
-      });
-
-      // Wave transition parallax — rises as user scrolls toward it
-      if (waveTransitionRef.current) {
-        gsap.fromTo(waveTransitionRef.current,
-          { y: 0 },
-          {
-            y: -15,
-            ease: "none",
-            scrollTrigger: {
-              trigger: waveTransitionRef.current,
-              start: "top bottom",
-              end: "bottom bottom",
-              scrub: true,
-            }
-          }
+      // A. Draw Initial Unifying Incoming Line first
+      if (incomingLineRef.current) {
+        masterTl.fromTo(incomingLineRef.current,
+          { strokeDashoffset: 100 },
+          { strokeDashoffset: 0, ease: "none", duration: 0.5 }
         );
       }
 
-    }, containerRef);
+      steps.forEach((_, i) => {
+        const card = cardRefs.current[i];
+        const topPath = svgPathsRef.current[i * 2];
+        const bottomPath = svgPathsRef.current[i * 2 + 1];
+        const connLine = connectingLinesRef.current[i];
+        const actionWord = actionWordRefs.current[i]; // Remember: action words point to the next line segment
+
+        // B. Split and Trace Card Borders (The split)
+        if (topPath && bottomPath) {
+          masterTl.fromTo([topPath, bottomPath],
+            { strokeDashoffset: 100 },
+            { strokeDashoffset: 0, ease: "none", duration: 1 }
+          );
+        }
+
+        // C. Reveal Card (Happens as borders are finishing drawing)
+        if (card) {
+          masterTl.to(card, {
+            opacity: 1,
+            filter: "blur(0px)",
+            scale: 1,
+            duration: 0.5,
+            ease: "power2.out"
+          }, "-=0.3"); // Overlap card pop with end of border trace
+        }
+
+        // D. Draw Outgoing Connecting Line (The joining)
+        if (connLine) {
+          masterTl.fromTo(connLine,
+            { strokeDashoffset: 100 },
+            { strokeDashoffset: 0, ease: "none", duration: 0.8 }
+          );
+
+          if (actionWord) {
+            masterTl.fromTo(actionWord,
+              { opacity: 0, scale: 0.8 },
+              { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" },
+              "-=0.4"
+            );
+          }
+        }
+      });
+    });
 
     return () => ctx.revert();
-  }, [cardDimensions]); // Re-run animations when card dimensions change
+  }, [cardDimensions]);
 
   const steps = [
     { label: "Attention", icon: <Zap className="w-5 h-5 text-accent" />, actionWord: null },
@@ -161,158 +121,130 @@ const WhyInfotainmentWorks = () => {
   ];
 
   const addToRefs = (el: any, refArray: React.MutableRefObject<any[]>, index: number) => {
-    if (el) {
-      refArray.current[index] = el;
-    }
+    if (el) refArray.current[index] = el;
   };
 
   return (
-    <div className="h-auto w-full pt-6 pb-0 z-30 min-h-[100vh] bg-surface relative flex flex-col justify-between">
-      <div className="flex flex-col items-center gap-10 mt-0 px-[5vw] mb-20 w-full max-w-4xl mx-auto">
+    <section id="infotainment" ref={containerRef} className="relative w-full h-[300vh] bg-surface z-10">
+      <div className="sticky top-0 h-screen w-full overflow-hidden isolate">
 
-        {/* Header */}
-        <FadeUp>
-          <div className="text-center mb-10">
+        {/* Header — anchored to top */}
+        <div className="absolute top-10 md:top-14 left-0 w-full text-center z-50">
+          <FadeUp>
             <h2 className="text-4xl md:text-[4vw] font-display font-semibold text-primary tracking-tight">Why Infotainment Works</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-accent to-red-500 mx-auto mt-6 rounded-full"></div>
-            <p className="max-w-2xl mx-auto mt-8 text-lg md:text-xl text-muted font-light leading-relaxed">
+            <div className="w-24 h-1 bg-gradient-to-r from-accent to-red-500 mx-auto mt-5 rounded-full"></div>
+            <p className="max-w-2xl mx-auto mt-5 text-base md:text-lg text-muted font-light leading-relaxed px-4">
               Anyone can entertain. Anyone can educate. Very few can do both — <span className="text-accent font-medium">consistently</span>.
             </p>
-          </div>
-        </FadeUp>
+          </FadeUp>
+        </div>
 
-        {/* Timeline Structure */}
-        <div ref={containerRef} className="relative w-full flex flex-col items-center z-50">
+        {/* Card Row — centered in viewport, well above the wave border */}
+        <div className="absolute top-[55%] left-0 right-0 -translate-y-1/2 flex items-center justify-center">
+          <div className="flex flex-nowrap items-center">
 
-          {/* Initial incoming line */}
-          <div className="relative w-full flex justify-center h-32">
-            <div className="absolute top-0 bottom-0 w-[2px] bg-white/5"></div>
-            <div ref={(el) => addToRefs(el, verticalLinesRef, 0)} className="absolute top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#FF5733] to-[#FFC300] origin-top shadow-[0_0_15px_rgba(255,195,0,0.5)] z-0"></div>
-          </div>
+            {/* Lead-in line — same width as connectors */}
+            <div className="shrink-0 w-[56px] md:w-[72px] flex items-center justify-center">
+              <svg width="100%" height="100%" viewBox="0 0 72 4" preserveAspectRatio="none" style={{ overflow: 'visible' }}>
+                <line
+                  ref={incomingLineRef}
+                  x1="0" y1="2" x2="72" y2="2"
+                  stroke="#FFC300" strokeWidth="2"
+                  pathLength="100" strokeDasharray="100" strokeDashoffset="100"
+                  style={{ filter: 'drop-shadow(0 0 6px rgba(255,195,0,0.7))' }}
+                />
+              </svg>
+            </div>
 
-          {/* Timeline Items */}
-          {steps.map((step, index) => {
-            const dims = cardDimensions[index] || { width: 0, height: 0 };
-            const radius = 16; // border-radius of card (rounded-2xl is usually 16px or 1rem)
-            const w = dims.width;
-            const h = dims.height;
+            {steps.map((step, index) => {
+              const { width: w, height: h } = cardDimensions[index] || { width: 180, height: 140 };
+              const r = 14;
+              const midY = h / 2;
+              const topPathD = `M 0 ${midY} L 0 ${r} Q 0 0 ${r} 0 L ${w - r} 0 Q ${w} 0 ${w} ${r} L ${w} ${midY}`;
+              const bottomPathD = `M 0 ${midY} L 0 ${h - r} Q 0 ${h} ${r} ${h} L ${w - r} ${h} Q ${w} ${h} ${w} ${h - r} L ${w} ${midY}`;
 
-            // Generate SVG paths for tracing the borders
-            // Left Path: Start top-center -> left -> bottom-left -> bottom-center
-            const leftPathD = w > 0 ? `
-              M ${w / 2} 0 
-              L ${radius} 0 
-              Q 0 0 0 ${radius} 
-              L 0 ${h - radius} 
-              Q 0 ${h} ${radius} ${h} 
-              L ${w / 2} ${h}
-            ` : "";
+              return (
+                <div key={index} className="flex flex-row items-center shrink-0">
 
-            // Right Path: Start top-center -> right -> bottom-right -> bottom-center
-            const rightPathD = w > 0 ? `
-              M ${w / 2} 0 
-              L ${w - radius} 0 
-              Q ${w} 0 ${w} ${radius} 
-              L ${w} ${h - radius} 
-              Q ${w} ${h} ${w - radius} ${h} 
-              L ${w / 2} ${h}
-            ` : "";
+                  {/* Card wrapper with border-tracing SVG */}
+                  <div className="relative shrink-0">
+                    {/* SVG overlay for the card border trace — uses viewBox matching card size, overflow visible for glow */}
+                    <svg
+                      className="absolute inset-0 pointer-events-none"
+                      width={w} height={h}
+                      viewBox={`0 0 ${w} ${h}`}
+                      style={{ overflow: 'visible', filter: 'drop-shadow(0 0 6px rgba(255,195,0,0.7))' }}
+                    >
+                      <path
+                        ref={(el) => addToRefs(el, svgPathsRef, index * 2)}
+                        d={topPathD}
+                        fill="none" stroke="#FFC300" strokeWidth="2"
+                        pathLength="100" strokeDasharray="100" strokeDashoffset="100"
+                      />
+                      <path
+                        ref={(el) => addToRefs(el, svgPathsRef, index * 2 + 1)}
+                        d={bottomPathD}
+                        fill="none" stroke="#FFC300" strokeWidth="2"
+                        pathLength="100" strokeDasharray="100" strokeDashoffset="100"
+                      />
+                    </svg>
 
-            return (
-              <div key={index} className="relative flex flex-col items-center w-full">
-
-                {/* Center SVG Tracing Container (placed absolutely behind the card) */}
-                <div
-                  className={`absolute top-0 left-1/2 -translate-x-1/2 transition-opacity duration-300 ${w > 0 ? 'opacity-100' : 'opacity-0'}`}
-                  style={{ width: w || "100%", height: h || "100%" }}
-                >
-                  <svg className="w-full h-full absolute inset-0 overflow-visible" style={{ zIndex: -1 }}>
-                    {/* Background subtle paths */}
-                    <path d={leftPathD} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="2" />
-                    <path d={rightPathD} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="2" />
-
-                    {/* Glowing animated paths */}
-                    <path
-                      ref={(el) => addToRefs(el, svgLinesRef, index * 2)}
-                      d={leftPathD}
-                      fill="none"
-                      stroke="#FFC300"
-                      strokeWidth="2"
-                      pathLength="1000"
-                      style={{ strokeDasharray: 1000, strokeDashoffset: 1000, filter: 'drop-shadow(0px 0px 8px rgba(255, 195, 0, 0.6))' }}
-                    />
-                    <path
-                      ref={(el) => addToRefs(el, svgLinesRef, index * 2 + 1)}
-                      d={rightPathD}
-                      fill="none"
-                      stroke="#FFC300"
-                      strokeWidth="2"
-                      pathLength="1000"
-                      style={{ strokeDasharray: 1000, strokeDashoffset: 1000, filter: 'drop-shadow(0px 0px 8px rgba(255, 195, 0, 0.6))' }}
-                    />
-                  </svg>
-                </div>
-
-                {/* The actual card */}
-                <div
-                  ref={(el) => addToRefs(el, cardRefs, index)}
-                  className={`p-8 md:p-10 rounded-2xl bg-surface-light/30 border border-white/5 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] relative overflow-hidden group transition-colors duration-500 w-full md:w-2/3 max-w-[600px] text-center flex flex-col items-center`}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                  <div className={`w-12 h-12 rounded-full bg-surface-light/50 border border-white/10 flex items-center justify-center mb-4 shadow-lg z-10`}>
-                    {step.icon}
+                    {/* The actual card */}
+                    <div
+                      ref={(el) => addToRefs(el, cardRefs, index)}
+                      className="w-[160px] md:w-[180px] p-5 md:p-6 rounded-[14px] bg-surface-light/30 border border-white/5 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] text-center flex flex-col items-center group relative z-10 opacity-0 scale-95 blur-[10px] transform-gpu"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[14px]"></div>
+                      <div className="w-10 h-10 rounded-full bg-surface-light/50 border border-white/10 flex items-center justify-center mb-4 shadow-lg z-10 transition-transform duration-500 group-hover:scale-110">
+                        {step.icon}
+                      </div>
+                      <h3 className="text-base md:text-lg font-display font-semibold text-primary tracking-tight z-10">
+                        {step.label}
+                      </h3>
+                    </div>
                   </div>
 
-                  <h3 className="text-2xl md:text-3xl font-display font-semibold text-primary tracking-tight z-10">
-                    {step.label}
-                  </h3>
-                </div>
-
-                {/* Connecting Vertical Line & Action Word to next card */}
-                {index < steps.length - 1 && (
-                  <div className="relative w-full h-40 flex items-center justify-center z-10">
-                    {/* Background faint line */}
-                    <div className="absolute top-0 bottom-0 w-[2px] bg-white/5"></div>
-                    {/* Animated vertical connecting line */}
-                    <div ref={(el) => addToRefs(el, verticalLinesRef, index + 1)} className="absolute top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#FFC300] to-[#FF5733] origin-top shadow-[0_0_15px_rgba(255,195,0,0.5)] z-0"></div>
-
-                    {/* Action Word integrated on the line */}
-                    {steps[index + 1].actionWord && (
+                  {/* Connector line after card */}
+                  <div className="w-[56px] md:w-[72px] flex items-center justify-center shrink-0 relative">
+                    <svg width="100%" height="4" viewBox="0 0 72 4" preserveAspectRatio="none" style={{ overflow: 'visible' }}>
+                      <line
+                        ref={(el) => addToRefs(el, connectingLinesRef, index)}
+                        x1="0" y1="2" x2="72" y2="2"
+                        stroke="#FFC300" strokeWidth="2" fill="none"
+                        pathLength="100" strokeDasharray="100" strokeDashoffset="100"
+                        style={{ filter: 'drop-shadow(0 0 6px rgba(255,195,0,0.7))' }}
+                      />
+                    </svg>
+                    {index < steps.length - 1 && steps[index + 1].actionWord && (
                       <div
                         ref={(el) => addToRefs(el, actionWordRefs, index)}
-                        className="bg-surface px-4 py-1 text-sm md:text-base font-mono font-medium tracking-widest uppercase border border-white/5 rounded-full shadow-[0_0_15px_rgba(255,195,0,0.2)] z-10 relative"
+                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-mono text-[9px] md:text-[10px] font-medium text-accent tracking-widest uppercase px-2 py-1 border border-[#FFC300]/30 rounded-full bg-surface z-20 opacity-0 scale-90"
+                        style={{ boxShadow: '0 0 12px rgba(255,195,0,0.2)' }}
                       >
                         {steps[index + 1].actionWord}
                       </div>
                     )}
                   </div>
-                )}
-              </div>
-            );
-          })}
-
-          {/* Final outgoing line overlaying the wave SVG */}
-          <div className="absolute top-full left-0 right-0 flex justify-center h-32 pointer-events-none">
-            <div className="absolute top-0 bottom-0 w-[2px] bg-white/5"></div>
-            <div ref={(el) => addToRefs(el, verticalLinesRef, steps.length)} className="absolute top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#FFC300] to-[#FF5733] origin-top shadow-[0_0_15px_rgba(255,195,0,0.5)] z-0"></div>
+                </div>
+              );
+            })}
           </div>
+        </div>
 
+        {/* Wave transition linking into the next section (Problems) */}
+        <div ref={waveTransitionRef} className="absolute bottom-[-20px] left-0 w-full overflow-hidden leading-[0] z-40 pointer-events-none drop-shadow-xl will-change-transform transform-gpu">
+          <div className="w-full relative flex flex-col">
+            <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[100px] transform scale-105 translate-y-[2px]">
+              {/* Transition into background color of the next section */}
+              <path d="M0 100C0 100 360 0 720 0C1080 0 1440 100 1440 100V100H0V100Z" fill="var(--color-background)" />
+            </svg>
+            {/* Fill the gap created by the upward parallax translation */}
+            <div className="h-[30px] w-full bg-background" />
+          </div>
         </div>
 
       </div>
-
-      <div ref={waveTransitionRef} className="absolute bottom-[-20px] left-0 w-full overflow-hidden leading-[0] z-40 pointer-events-none drop-shadow-xl will-change-transform transform-gpu">
-        <div className="w-full relative flex flex-col">
-          <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[100px] transform scale-105 translate-y-[2px]">
-            {/* Transition into background color of the next section */}
-            <path d="M0 100C0 100 360 0 720 0C1080 0 1440 100 1440 100V100H0V100Z" fill="var(--color-background)" />
-          </svg>
-          {/* Fill the gap created by the upward parallax translation */}
-          <div className="h-[30px] w-full bg-background" />
-        </div>
-      </div>
-    </div>
+    </section>
   );
 };
 

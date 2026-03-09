@@ -37,14 +37,14 @@ const Footer = () => {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // Hardware accelerated parallax move
+      // Hardware accelerated parallax move - more aggressive
       gsap.fromTo(
         videoRef.current,
         {
-          yPercent: -20,
+          yPercent: -40,
         },
         {
-          yPercent: 20,
+          yPercent: 40,
           ease: "none",
           scrollTrigger: {
             trigger: footerRef.current,
@@ -77,10 +77,10 @@ const Footer = () => {
       {/* Massive Parallax Video Mask Section */}
       <div className="relative w-full h-[60vh] md:h-[80vh] flex items-center justify-center overflow-hidden border-t border-white/5 bg-background">
 
-        {/* 1. Underlying Parallax Video */}
+        {/* 1. Underlying Parallax Video - Increased height and offset to support aggressive parallax */}
         <div
           ref={videoRef}
-          className="absolute top-[-20%] left-0 w-full h-[140%] z-0 will-change-transform"
+          className="absolute top-[-40%] left-0 w-full h-[180%] z-0 will-change-transform"
         >
           <video
             src="https://storage.googleapis.com/clova-assets/public/clova-website/clova2/5.mp4"

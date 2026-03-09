@@ -205,7 +205,7 @@ export default function Who() {
     }
 
     return (
-        <section ref={pinWrapRef} className="relative w-full h-[200vh] bg-background text-white select-none overflow-hidden">
+        <section ref={pinWrapRef} className="relative w-full h-[200vh] bg-background text-white select-none">
             {/* The actual pinned content area */}
             <div
                 ref={sectionRef}
@@ -244,7 +244,7 @@ export default function Who() {
                                 <span
                                     ref={notWordRef}
                                     className="font-display font-semibold italic"
-                                    style={{ display: "inline-block", width: 0, overflow: "hidden", opacity: 0, whiteSpace: "nowrap", verticalAlign: "baseline", fontSize: "clamp(1.8rem, 3vw, 3.5rem)", lineHeight: "inherit", position: "relative", top: "0.32em", color: "#f87171" }}
+                                    style={{ display: "inline-block", width: 0, overflow: "hidden", opacity: 0, whiteSpace: "nowrap", verticalAlign: "bottom", color: "#f87171" }}
                                 >
                                     not{" "}
                                 </span>{" "}
