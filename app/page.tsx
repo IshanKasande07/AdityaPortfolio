@@ -9,6 +9,8 @@ import PhysicsThrow from '@/components/PhysicsThrow'
 import FloatingCTA from '@/components/FloatingCTA'
 import RevealLayout from '@/components/RevealLayout'
 import Navbar from '@/components/Navbar'
+import BrandsWhoTrustUs from '@/components/BrandsWhoTrustUs'
+import ImpactSection from '@/components/ImpactSection'
 
 const page = () => {
   return (
@@ -20,6 +22,9 @@ const page = () => {
         <Navbar />
         <Hero />
       </RevealLayout>
+
+      <BrandsWhoTrustUs />
+      <ImpactSection />
 
       <WhyInfotainmentWorks />
       <ProblemsSection />
