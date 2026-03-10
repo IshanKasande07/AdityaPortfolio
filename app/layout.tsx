@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Shippori_Antique_B1, Urbanist } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
 import LenisProvider from "./providers/LenisProvider";
 
 const shipporiAntiqueB1 = Shippori_Antique_B1({
