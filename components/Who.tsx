@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { motion } from 'framer-motion'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -136,28 +137,28 @@ export default function Who() {
 
         return (
             <div key={i} ref={el => { pointRefs.current[i] = el }}
-                className="relative" style={{ maxWidth: "clamp(200px, 25vw, 360px)", textAlign: isRight ? "right" : "left" }}>
+                className="relative" style={{ maxWidth: "clamp(180px, 20vw, 280px)", textAlign: isRight ? "right" : "left" }}>
 
                 {/* Persistent line + swapping icon */}
                 <div className={`flex items-center gap-2.5 mb-2.5 ${isRight ? "flex-row-reverse" : ""}`}>
-                    <div className="relative w-6 h-6 flex flex-shrink-0 items-center justify-center">
-                        <span className="icon-for text-emerald-400 text-lg absolute">✓</span>
-                        <span className="icon-not text-red-400 text-lg absolute" style={{ opacity: 0, transform: "scale(0.5)" }}>×</span>
+                    <div className="relative w-5 h-5 flex flex-shrink-0 items-center justify-center">
+                        <span className="icon-for text-emerald-400 text-base absolute">✓</span>
+                        <span className="icon-not text-red-400 text-base absolute" style={{ opacity: 0, transform: "scale(0.5)" }}>×</span>
                     </div>
                     <div className="point-line h-[1px] flex-1 bg-white/6" style={{ transition: "background-color 0.4s ease" }} />
                 </div>
 
                 {/* Swapping text + large icons */}
                 <div className="relative" style={{ minHeight: "1.8em" }}>
-                    <div className="txt-for flex flex-col gap-3" style={{ willChange: "transform, opacity", alignItems: isRight ? "flex-end" : "flex-start" }}>
-                        <IconFor className="icon-for-large text-emerald-400/80 w-8 h-8 md:w-10 md:h-10" />
-                        <p className="font-display font-medium text-primary/80 text-2xl md:text-[1.8vw] leading-snug">
+                    <div className="txt-for flex flex-col gap-2.5" style={{ willChange: "transform, opacity", alignItems: isRight ? "flex-end" : "flex-start" }}>
+                        <IconFor className="icon-for-large text-emerald-400/80 w-6 h-6 md:w-8 md:h-8" />
+                        <p className="font-display font-medium text-primary/80 text-lg md:text-[1.4vw] leading-snug">
                             {forPoints[i].text}
                         </p>
                     </div>
-                    <div className="txt-not absolute inset-x-0 top-0 flex flex-col gap-3" style={{ opacity: 0, willChange: "transform, opacity", alignItems: isRight ? "flex-end" : "flex-start" }}>
-                        <IconNot className="icon-not-large text-red-400/80 w-8 h-8 md:w-10 md:h-10" />
-                        <p className="font-display font-medium text-primary/80 text-2xl md:text-[1.8vw] leading-snug">
+                    <div className="txt-not absolute inset-x-0 top-0 flex flex-col gap-2.5" style={{ opacity: 0, willChange: "transform, opacity", alignItems: isRight ? "flex-end" : "flex-start" }}>
+                        <IconNot className="icon-not-large text-red-400/80 w-6 h-6 md:w-8 md:h-8" />
+                        <p className="font-display font-medium text-primary/80 text-lg md:text-[1.4vw] leading-snug">
                             {notForPoints[i].text}
                         </p>
                     </div>
@@ -174,19 +175,19 @@ export default function Who() {
 
         return (
             <div key={i} ref={el => { pointRefs.current[i] = el }}
-                className={`relative ${i === 2 ? "-mt-8 md:-mt-12" : ""}`} style={{ maxWidth: "clamp(200px, 25vw, 360px)", textAlign: isRight ? "right" : "left" }}>
+                className={`relative ${i === 2 ? "-mt-8 md:-mt-12" : ""}`} style={{ maxWidth: "clamp(180px, 20vw, 280px)", textAlign: isRight ? "right" : "left" }}>
 
                 {/* Swapping text + large icons */}
                 <div className="relative mb-2.5" style={{ minHeight: "1.8em" }}>
-                    <div className="txt-for flex flex-col-reverse gap-3" style={{ willChange: "transform, opacity", alignItems: isRight ? "flex-end" : "flex-start" }}>
-                        <IconFor className="icon-for-large text-emerald-400/80 w-8 h-8 md:w-10 md:h-10" />
-                        <p className="font-display font-medium text-primary/80 text-2xl md:text-[1.8vw] leading-snug">
+                    <div className="txt-for flex flex-col-reverse gap-2.5" style={{ willChange: "transform, opacity", alignItems: isRight ? "flex-end" : "flex-start" }}>
+                        <IconFor className="icon-for-large text-emerald-400/80 w-6 h-6 md:w-8 md:h-8" />
+                        <p className="font-display font-medium text-primary/80 text-lg md:text-[1.4vw] leading-snug">
                             {forPoints[i].text}
                         </p>
                     </div>
-                    <div className="txt-not absolute inset-x-0 bottom-0 flex flex-col-reverse gap-3" style={{ opacity: 0, willChange: "transform, opacity", alignItems: isRight ? "flex-end" : "flex-start" }}>
-                        <IconNot className="icon-not-large text-red-400/80 w-8 h-8 md:w-10 md:h-10" />
-                        <p className="font-display font-medium text-primary/80 text-2xl md:text-[1.8vw] leading-snug">
+                    <div className="txt-not absolute inset-x-0 bottom-0 flex flex-col-reverse gap-2.5" style={{ opacity: 0, willChange: "transform, opacity", alignItems: isRight ? "flex-end" : "flex-start" }}>
+                        <IconNot className="icon-not-large text-red-400/80 w-6 h-6 md:w-8 md:h-8" />
+                        <p className="font-display font-medium text-primary/80 text-lg md:text-[1.4vw] leading-snug">
                             {notForPoints[i].text}
                         </p>
                     </div>
@@ -195,9 +196,9 @@ export default function Who() {
                 {/* Persistent line + swapping icon */}
                 <div className={`flex items-center gap-2.5 ${isRight ? "flex-row-reverse" : ""}`}>
                     <div className="point-line h-[1px] flex-1 bg-white/6" style={{ transition: "background-color 0.4s ease" }} />
-                    <div className="relative w-6 h-6 flex flex-shrink-0 items-center justify-center">
-                        <span className="icon-for text-emerald-400 text-lg absolute">✓</span>
-                        <span className="icon-not text-red-400 text-lg absolute" style={{ opacity: 0, transform: "scale(0.5)" }}>×</span>
+                    <div className="relative w-5 h-5 flex flex-shrink-0 items-center justify-center">
+                        <span className="icon-for text-emerald-400 text-base absolute">✓</span>
+                        <span className="icon-not text-red-400 text-base absolute" style={{ opacity: 0, transform: "scale(0.5)" }}>×</span>
                     </div>
                 </div>
             </div>
@@ -205,42 +206,71 @@ export default function Who() {
     }
 
     return (
-        <section ref={pinWrapRef} className="relative w-full h-[200vh] bg-background text-white select-none">
+        <section id="about" ref={pinWrapRef} className="relative w-full h-[200vh] bg-background text-white select-none">
             {/* The actual pinned content area */}
             <div
                 ref={sectionRef}
-                className="sticky top-0 w-full h-screen overflow-hidden flex flex-col justify-center py-20 border-b border-white/5"
+                className="sticky top-0 w-full h-screen overflow-hidden flex flex-col justify-center py-8 md:py-12 border-b border-white/5"
             >
                 {/* Subtle ambient */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[45vw] h-[45vh] rounded-full pointer-events-none"
                     style={{ background: "radial-gradient(ellipse, rgba(255,195,0,0.025) 0%, transparent 70%)" }} />
 
+                {/* ─── Heading ─── */}
+                <div className="w-full text-center absolute top-[10%] md:top-[12%] left-0 right-0 z-20">
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: "-100px" }}
+                        className="flex justify-center gap-[0.3em] font-display font-semibold text-primary tracking-tight text-3xl md:text-5xl"
+                    >
+                        {["Who", "is", "this", "for"].map((word, i) => (
+                            <div key={i} className="overflow-hidden inline-block relative py-1">
+                                <motion.span
+                                    variants={{
+                                        hidden: { y: "110%" },
+                                        visible: {
+                                            y: "0%",
+                                            transition: {
+                                                duration: 1.1,
+                                                ease: [0.76, 0, 0.24, 1],
+                                                delay: i * 0.05
+                                            }
+                                        }
+                                    }}
+                                    className="inline-block origin-bottom-left will-change-transform transform-gpu"
+                                    style={{ backfaceVisibility: "hidden" }}
+                                >
+                                    {word}
+                                </motion.span>
+                            </div>
+                        ))}
+                    </motion.div>
+                    <motion.div
+                        initial={{ scaleX: 0, opacity: 0 }}
+                        whileInView={{ scaleX: 1, opacity: 1 }}
+                        transition={{ duration: 1, delay: 0.4, ease: [0.76, 0, 0.24, 1] }}
+                        viewport={{ once: true }}
+                        className="w-16 h-1 bg-gradient-to-r from-accent to-red-500 mx-auto mt-4 md:mt-6 rounded-full origin-center"
+                    />
+                </div>
+
                 {/* ─── Main layout ─── */}
-                <div className="relative w-full max-w-[82vw] mx-auto flex flex-col items-center justify-center gap-8 md:gap-10">
+                <div className="relative w-full max-w-[82vw] mx-auto flex flex-col items-center justify-center gap-6 md:gap-8 mt-16 md:mt-24">
 
                     {/* Top row — points 0 & 1 */}
                     <div className="w-full flex justify-between items-end px-2 md:px-8 translate-y-8 md:translate-y-12">
                         {[0, 1].map(i => renderTopPoint(i))}
                     </div>
 
-                    {/* Arrows between top row and centre */}
-                    <div className="w-full flex justify-between px-16 md:px-28 -my-4 md:-my-5 pointer-events-none" style={{ zIndex: 5 }}>
-                        <svg className="translate-x-8 md:translate-x-12" width="60" height="40" viewBox="0 0 60 40" fill="none" style={{ opacity: 0.35 }}>
-                            <path d="M 10 4 Q 30 4 40 20 Q 48 32 55 32" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-                            <path d="M 50 28 L 56 33 L 50 36" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-                        </svg>
-                        <svg className="-translate-x-8 md:-translate-x-12" width="60" height="40" viewBox="0 0 60 40" fill="none" style={{ opacity: 0.35 }}>
-                            <path d="M 50 4 Q 30 4 20 20 Q 12 32 5 32" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-                            <path d="M 10 28 L 4 33 L 10 36" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-                        </svg>
-                    </div>
+
 
                     {/* ─── Centre ─── */}
                     <div className="relative text-center">
-                        <div className="px-10 py-8 md:px-16 md:py-11 rounded-3xl border border-white/6 bg-surface-light/15 backdrop-blur-sm">
+                        <div className="px-10 py-6 md:px-16 md:py-8 rounded-3xl border border-white/6 bg-surface-light/15 backdrop-blur-sm">
                             <h2 className="font-display font-semibold text-primary tracking-tight leading-tight"
                                 style={{ fontSize: "clamp(1.8rem, 3vw, 3.5rem)" }}>
-                                Which brands is this{" "}
+                                Brands{" "}
                                 <span
                                     ref={notWordRef}
                                     className="font-display font-semibold italic"
@@ -249,7 +279,7 @@ export default function Who() {
                                     not{" "}
                                 </span>{" "}
                                 <span ref={forWordRef} className="font-display font-semibold italic" style={{ color: "var(--color-accent, #FFC300)", transition: "none" }}>
-                                    for?
+                                    looking for
                                 </span>
                             </h2>
                             <div className="flex gap-2 items-center justify-center mt-6">
@@ -263,17 +293,7 @@ export default function Who() {
                         </div>
                     </div>
 
-                    {/* Arrows between centre and bottom row */}
-                    <div className="w-full flex justify-between px-16 md:px-28 -mt-10 mb-4 md:-mt-14 md:mb-6 pointer-events-none" style={{ zIndex: 5 }}>
-                        <svg width="60" height="40" viewBox="0 0 60 40" fill="none" style={{ opacity: 0.35 }}>
-                            <path d="M 10 36 Q 30 36 40 20 Q 48 8 55 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-                            <path d="M 50 4 L 56 9 L 50 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-                        </svg>
-                        <svg width="60" height="40" viewBox="0 0 60 40" fill="none" style={{ opacity: 0.35 }}>
-                            <path d="M 50 36 Q 30 36 20 20 Q 12 8 5 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-                            <path d="M 10 4 L 4 9 L 10 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-                        </svg>
-                    </div>
+
 
                     {/* Bottom row — points 2 & 3 */}
                     <div className="w-full flex justify-between items-start px-2 md:px-8">

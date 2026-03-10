@@ -34,17 +34,23 @@ const Navbar = () => {
         <div
           className={`flex items-center gap-6 backdrop-blur-2xl rounded-full px-6 py-2 transition-all duration-300 bg-transparent border border-white/20 shadow-[0_4px_24px_0_rgba(255,255,255,0.05)] text-white`}
         >
-          <button className={`text-sm font-medium transition-colors hover:text-accent`}>
+          <button onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })} className={`text-sm font-medium transition-colors hover:text-accent`}>
             Work
           </button>
-          <button className={`text-sm font-medium transition-colors hover:text-accent`}>
+          <button onClick={() => {
+            const el = document.getElementById('impact');
+            if (el) {
+              const sectionTop = el.offsetTop;
+              // The header fully appears at ~8% of the 600vh scroll range
+              // Scroll to that exact point so "Our Services" is fully enlarged
+              const offset = el.offsetHeight * 0.04;
+              window.scrollTo({ top: sectionTop + offset, behavior: 'smooth' });
+            }
+          }} className={`text-sm font-medium transition-colors hover:text-accent`}>
             Services
           </button>
-          <button className={`text-sm font-medium transition-colors hover:text-accent`}>
+          <button onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })} className={`text-sm font-medium transition-colors hover:text-accent`}>
             About
-          </button>
-          <button className={`text-sm font-medium transition-colors hover:text-accent`}>
-            Contact
           </button>
         </div>
       </div>
@@ -52,6 +58,7 @@ const Navbar = () => {
       {/* Right: Button */}
       <div className="hidden md:flex justify-end pointer-events-auto">
         <button
+          onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'instant' })}
           className={`px-5 py-2.5 rounded-full border text-sm font-medium transition-all flex items-center gap-2 backdrop-blur-sm border-white/30 hover:bg-white hover:text-black bg-transparent text-white`}
         >
           Book a Call <span className="text-xs">↗</span>

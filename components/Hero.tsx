@@ -72,7 +72,7 @@ export default function Hero() {
     const carouselY = useTransform(scrollY, [0, 800], [0, 350]);    // L3: carousel sinks heavily, getting eclipsed by the next section
 
     return (
-        <div className="relative min-h-[750px] h-screen w-full bg-background overflow-hidden z-20">
+        <div id="work" className="relative min-h-[750px] h-screen w-full bg-background overflow-hidden z-20">
             {/* Noise Overlay — parallax drift */}
             <motion.div style={{ y: noiseY }} className="absolute inset-0 pointer-events-none z-10 opacity-[0.05] will-change-transform transform-gpu" >
                 <div className="absolute inset-0" style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }} />
@@ -161,6 +161,7 @@ export default function Hero() {
                     className='flex flex-row gap-5 items-center justify-center mt-5 pointer-events-auto'
                 >
                     <motion.button
+                        onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'instant' })}
                         onPointerMove={(e) => {
                             const rect = e.currentTarget.getBoundingClientRect();
                             const centerX = rect.left + rect.width / 2;
