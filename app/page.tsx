@@ -16,10 +16,10 @@ const page = () => {
   return (
     <>
       <FloatingCTA />
+      <Navbar />
 
-      {/* Navbar + Hero as one clipped card — cream border on all 4 sides */}
+      {/* Hero as one clipped card — cream border on all 4 sides */}
       <RevealLayout>
-        <Navbar />
         <Hero />
       </RevealLayout>
 

@@ -38,126 +38,20 @@ const brandLogos = [
     { src: "/logos/vandan white .png", scale: 2.0 }
 ];
 
-const MagneticLogo = ({ src, mouseX, mouseY, isLarge, manualScale = 1 }: any) => {
-    const ref = useRef<HTMLDivElement>(null);
-
-    // Create a local motion value for the rect bounds so it doesn't trigger React renders
-    const rectX = useMotionValue(0);
-    const rectY = useMotionValue(0);
-    const rectW = useMotionValue(0);
-    const rectH = useMotionValue(0);
-
-    // We only update the bounds when the mouse actually moves, rather than 60fps regardless of interaction
-    useEffect(() => {
-        const updateBounds = () => {
-            if (ref.current) {
-                const bounds = ref.current.getBoundingClientRect();
-                rectX.set(bounds.left);
-                rectY.set(bounds.top);
-                rectW.set(bounds.width);
-                rectH.set(bounds.height);
-            }
-        }
-
-        // Initial set
-        updateBounds();
-
-        // Only update on resize or scroll, NOT on a continuous RAF loop
-        window.addEventListener('resize', updateBounds, { passive: true });
-        return () => window.removeEventListener('resize', updateBounds);
-    }, [rectX, rectY, rectW, rectH]);
-
-    // Create localized distance calculation that evaluates quickly outside the main thread
-    const distance = useTransform([mouseX, mouseY, rectX, rectY, rectW, rectH], ([mX, mY, rX, rY, rW, rH]: any) => {
-        if (!rW || mX === -1000) return 1000;
-        const centerX = rX + rW / 2;
-        const centerY = rY + rH / 2;
-        return Math.sqrt(Math.pow(mX - centerX, 2) + Math.pow(mY - centerY, 2));
-    });
-
-    // Calculate 3D tilt
-    const rotateX = useTransform([mouseX, mouseY, rectX, rectY, rectW, rectH], ([mX, mY, rX, rY, rW, rH]: any) => {
-        if (!rW || mX === -1000) return 0;
-        const centerX = rX + rW / 2;
-        const centerY = rY + rH / 2;
-        const dist = Math.sqrt(Math.pow(mX - centerX, 2) + Math.pow(mY - centerY, 2));
-        if (dist > 300) return 0;
-
-        const dy = mY - centerY;
-        return (dy / 10) * -1;
-    });
-
-    const rotateY = useTransform([mouseX, mouseY, rectX, rectY, rectW, rectH], ([mX, mY, rX, rY, rW, rH]: any) => {
-        if (!rW || mX === -1000) return 0;
-        const centerX = rX + rW / 2;
-        const centerY = rY + rH / 2;
-        const dist = Math.sqrt(Math.pow(mX - centerX, 2) + Math.pow(mY - centerY, 2));
-        if (dist > 300) return 0;
-
-        const dx = mX - centerX;
-        return (dx / 10);
-    });
-
-    // Smooth pop out when nearby
-    const scale = useTransform(distance, (d: any) => {
-        if (d > 250) return 1;
-        return 1 + ((250 - d) / 250) * 0.1;
-    });
-
-    // Opacity transitions from dim to full
-    const opacity = useTransform(distance, (d: any) => {
-        if (d > 200) return 0.4;
-        return 0.4 + ((200 - d) / 200) * 0.6;
-    });
-
-    // Luminous Gold glow effect based on proximity
-    const dropShadow = useTransform(distance, (d: any) => {
-        if (d > 150) return "drop-shadow(0px 0px 0px rgba(255, 195, 0, 0))";
-        const intensity = (150 - d) / 150;
-        return `drop-shadow(0px 0px ${20 * intensity}px rgba(255, 195, 0, ${0.7 * intensity}))`;
-    });
-
-    // Subtle border highlight interpolation
-    const borderColor = useTransform(distance, [0, 150], ["rgba(255, 195, 0, 0)", "rgba(255, 195, 0, 0.4)"]);
-
-    const hoverImgFilter = useTransform(distance, (d: any) => {
-        if (d > 150) return "grayscale(100%) brightness(1.5)";
-        const intensity = (150 - d) / 150;
-        return `grayscale(${100 - (intensity * 100)}%) brightness(${1.5 - (intensity * 0.5)})`;
-    });
-
-    const handleLocalMouseMove = () => {
-        if (ref.current) {
-            const bounds = ref.current.getBoundingClientRect();
-            rectX.set(bounds.left);
-            rectY.set(bounds.top);
-        }
-    }
-
+const MagneticLogo = ({ src, isLarge, manualScale = 1 }: any) => {
+    // 60FPS math and continuous spring bounds tracking was causing severe scroll lag.
+    // Replaced with highly efficient Framer Motion CSS hover states.
     return (
         <motion.div
-            ref={ref}
-            onMouseMove={handleLocalMouseMove}
-            style={{
-                rotateX,
-                rotateY,
-                scale,
-                opacity,
-                borderColor,
-                transformPerspective: 1000,
-                transformStyle: "preserve-3d",
-            }}
-            className="flex-shrink-0 flex flex-col items-center justify-center p-4 md:p-5 border border-white/5 rounded-2xl bg-surface-light/30 backdrop-blur-md will-change-transform ease-out w-32 h-24 md:w-48 md:h-32 mx-2 md:mx-3"
+            className="flex-shrink-0 flex flex-col items-center justify-center p-4 md:p-5 border border-white/5 rounded-2xl bg-surface-light/30 backdrop-blur-md w-32 h-24 md:w-48 md:h-32 mx-2 md:mx-3 cursor-pointer group"
+            whileHover={{ scale: 1.1, borderColor: "rgba(255, 195, 0, 0.4)" }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
         >
             <motion.div
-                style={{ filter: dropShadow }}
-                className={`relative w-full h-full flex items-center justify-center transition-transform duration-500 ease-out`}
+                className={`relative w-full h-full flex items-center justify-center transition-all duration-300 ease-out grayscale group-hover:grayscale-0 group-hover:drop-shadow-[0_0_15px_rgba(255,195,0,0.5)]`}
+                style={{ transform: `scale(${isLarge ? 1.7 * manualScale : 1 * manualScale})` }}
             >
-                {/* Apply manualScale via style to dynamically combine with hover filters */}
-                <motion.div
-                    style={{ filter: hoverImgFilter, transform: `scale(${isLarge ? 1.7 * manualScale : 1 * manualScale})` }}
-                    className="relative w-full h-full"
-                >
+                <div className="relative w-full h-full">
                     <Image
                         src={src}
                         alt="Trusted Brand"
@@ -165,7 +59,7 @@ const MagneticLogo = ({ src, mouseX, mouseY, isLarge, manualScale = 1 }: any) =>
                         className="object-contain"
                         sizes="(max-width: 768px) 33vw, 20vw"
                     />
-                </motion.div>
+                </div>
             </motion.div>
         </motion.div>
     );
@@ -177,7 +71,7 @@ interface ParallaxCarouselProps {
 }
 
 const ParallaxCarousel = ({ items, baseVelocity = 1 }: any) => {
-    // Parallax logic remains identical, highly performant hardware accelerated translation
+    // Parallax logic restored to allow scroll-based acceleration!
     const baseX = useMotionValue(0);
     const { scrollY } = useScroll();
     const scrollVelocity = useVelocity(scrollY);
@@ -208,36 +102,15 @@ const ParallaxCarousel = ({ items, baseVelocity = 1 }: any) => {
 
     const duplicatedItems = [...items, ...items];
 
-    const localMouseX = useMotionValue(-1000);
-    const localMouseY = useMotionValue(-1000);
-
-    // Low friction spring for the magnetic effect so it feels localized and lightweight
-    const smoothMouseX = useSpring(localMouseX, { damping: 40, stiffness: 300, mass: 0.1 });
-    const smoothMouseY = useSpring(localMouseY, { damping: 40, stiffness: 300, mass: 0.1 });
-
-    const handleMouseMove = (e: React.MouseEvent) => {
-        localMouseX.set(e.clientX);
-        localMouseY.set(e.clientY);
-    };
-
-    const handleMouseLeave = () => {
-        localMouseX.set(-1000);
-        localMouseY.set(-1000);
-    };
-
     return (
         <div
-            className="overflow-hidden m-0 whitespace-nowrap flex flex-nowrap perspective-[1000px] py-2 w-full"
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
+            className="overflow-hidden m-0 whitespace-nowrap flex flex-nowrap py-2 w-full"
         >
             <motion.div className="flex whitespace-nowrap flex-nowrap w-max will-change-transform" style={{ x }}>
                 {duplicatedItems.map((item, i) => (
-                    <div key={`${item.src}-${i}`} style={{ transformStyle: "preserve-3d" }}>
+                    <div key={`${item.src}-${i}`}>
                         <MagneticLogo
                             src={item.src}
-                            mouseX={smoothMouseX}
-                            mouseY={smoothMouseY}
                             isLarge={baseVelocity < 0} // Row 1 is baseVelocity -2, make it large natively
                             manualScale={item.scale || 1}
                         />
