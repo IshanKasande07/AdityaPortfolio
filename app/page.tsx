@@ -7,18 +7,19 @@ import WhyInfotainmentWorks from '@/components/WhyInfotainmentWorks'
 import Footer from '@/components/Footer'
 import PhysicsThrow from '@/components/PhysicsThrow'
 import FloatingCTA from '@/components/FloatingCTA'
-import RevealLayout from '@/components/RevealLayout'
+import RevealLayout, { RevealProvider } from '@/components/RevealLayout'
 import Navbar from '@/components/Navbar'
 import BrandsWhoTrustUs from '@/components/BrandsWhoTrustUs'
 import ImpactSection from '@/components/ImpactSection'
 
 const page = () => {
   return (
-    <>
+    <RevealProvider>
       <FloatingCTA />
+      <Navbar />
+
       {/* Hero as one clipped card — cream border on all 4 sides */}
       <RevealLayout>
-        <Navbar />
         <Hero />
       </RevealLayout>
 
@@ -35,7 +36,7 @@ const page = () => {
       <PhysicsThrow />
 
       <Footer />
-    </>
+    </RevealProvider>
   )
 }
 

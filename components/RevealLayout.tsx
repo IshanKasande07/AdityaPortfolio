@@ -6,9 +6,10 @@ import { motion } from "framer-motion";
 interface RevealContextType {
     revealed: boolean;
     earlyReveal: boolean;
+    setRevealed: (v: boolean) => void;
 }
 
-const RevealContext = createContext<RevealContextType>({ revealed: false, earlyReveal: false });
+const RevealContext = createContext<RevealContextType>({ revealed: false, earlyReveal: false, setRevealed: () => { } });
 
 export function useReveal() {
     return useContext(RevealContext);
@@ -23,7 +24,8 @@ const BORDER_PX = 7;
 const RADIUS = "20px";
 const CREAM = "#F0EDE8";
 
-export default function RevealLayout({ children }: RevealLayoutProps) {
+// Provider: wraps the entire page so any component can read reveal state
+export function RevealProvider({ children }: { children: ReactNode }) {
     const [revealed, setRevealed] = useState(false);
     const [earlyReveal, setEarlyReveal] = useState(false);
 
@@ -46,21 +48,21 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
     }, [revealed]);
 
     return (
-        /*
-         * Outer shell: cream — all 4 sides visible as a premium bordered card.
-         * The Navbar is INSIDE the clip, so it reveals as part of the hero card
-         * (matching IntegratedBio's design exactly).
-         */
+        <RevealContext.Provider value={{ revealed, earlyReveal, setRevealed }}>
+            {children}
+        </RevealContext.Provider>
+    );
+}
+
+// Layout: just the clip-path animation shell — wraps only the Hero
+export default function RevealLayout({ children }: RevealLayoutProps) {
+    const { setRevealed } = useReveal();
+
+    return (
         <div
             className="relative w-full overflow-hidden"
             style={{ backgroundColor: CREAM, minHeight: "100vh" }}
         >
-            {/*
-       * position:fixed during animation → clip-path % is viewport-relative
-       * so the pill is exactly centred in the viewport.
-       * position:absolute children (Navbar) ARE clipped by this clip-path.
-       * After animation → position:relative restores normal document flow.
-       */}
             <motion.div
                 initial={{
                     clipPath: "inset(49.99% 49.9% 49.99% 49.9% round 9999px)",
@@ -78,9 +80,7 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
                     zIndex: 50,
                 }}
             >
-                <RevealContext.Provider value={{ revealed, earlyReveal }}>
-                    {children}
-                </RevealContext.Provider>
+                {children}
             </motion.div>
         </div>
     );

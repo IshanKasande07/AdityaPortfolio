@@ -206,16 +206,21 @@ const ImpactSection = () => {
                     </div>
                 </div>
 
-                {/* Background Ellipse */}
+                {/* Background Ellipse — short axis matches circle diameter */}
                 <svg
-                    className="absolute w-full max-w-[1418px] opacity-40 pointer-events-none"
-                    viewBox="0 0 1418 525"
+                    className="absolute opacity-70 pointer-events-none"
+                    style={{
+                        height: "min(65vw, 50vh, 400px)",
+                        width: "calc(min(65vw, 50vh, 400px) * 2.7)",
+                    }}
+                    viewBox="0 0 1080 400"
                     fill="none"
+                    preserveAspectRatio="none"
                 >
                     <ellipse
-                        cx="709" cy="262.5" rx="708" ry="261.5"
-                        stroke="rgba(255,255,255,0.3)"
-                        strokeWidth="2"
+                        cx="540" cy="200" rx="539" ry="199"
+                        stroke="rgba(255,255,255,0.5)"
+                        strokeWidth="1.5"
                         strokeDasharray="0.1 3"
                         strokeLinecap="round"
                     />
