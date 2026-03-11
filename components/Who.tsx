@@ -206,7 +206,7 @@ export default function Who() {
     }
 
     return (
-        <section id="about" ref={pinWrapRef} className="relative w-full h-[200vh] bg-background text-white select-none">
+        <section id="who" ref={pinWrapRef} className="relative w-full h-[200vh] bg-background text-white select-none">
             {/* The actual pinned content area */}
             <div
                 ref={sectionRef}

@@ -23,8 +23,8 @@ const VIEWPORT_PAD_Y = 70;
 // Per-item manual nudges (px) applied AFTER orbit clamping for fine-tuning placement
 // [dx_extra, dy_extra]  — positive x = right, positive y = down
 const ORBIT_NUDGE: [number, number][] = [
-    [0, 30],   // 0: Social Media   — pull down to clear sticky navbar
-    [-20, 0],   // 1: Post Production — very slight left nudge
+    [0, 28],   // 0: Social Media   — pull down to clear sticky navbar
+    [-11, 10],   // 1: Post Production — very slight left nudge
     [10, 0],   // 2: Creative Strategy
     [-10, 0],   // 3: Performance Marketing
     [20, 0],   // 4: SEO — very slight right nudge

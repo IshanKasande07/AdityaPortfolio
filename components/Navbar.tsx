@@ -2,10 +2,13 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useReveal } from "./RevealLayout";
+import { useRouter, usePathname } from "next/navigation";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const { revealed } = useReveal();
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,12 +26,12 @@ const Navbar = () => {
     >
       {/* Left: Logo */}
       <div className="flex justify-start pointer-events-auto">
-        <a
-          href="#"
+        <button
+          onClick={() => router.push('/')}
           className="text-xl md:text-2xl font-display font-semibold tracking-wide"
         >
           MONARCH MEDIA HOUSE
-        </a>
+        </button>
       </div>
 
       {/* Center: Liquid Glass Pill-shaped Navbar (Perfectly Centered via Grid) */}
@@ -36,22 +39,39 @@ const Navbar = () => {
         <div
           className={`flex items-center gap-6 backdrop-blur-2xl rounded-full px-6 py-2 transition-all duration-300 bg-transparent border border-white/20 shadow-[0_4px_24px_0_rgba(255,255,255,0.05)] text-white`}
         >
-          <button onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })} className={`text-sm font-medium transition-colors hover:text-accent`}>
+          <button 
+            onClick={() => {
+              if (pathname !== "/") {
+                router.push("/#work");
+              } else {
+                document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })
+              }
+            }} 
+            className={`text-sm font-medium transition-colors hover:text-accent`}
+          >
             Work
           </button>
-          <button onClick={() => {
-            const el = document.getElementById('impact');
-            if (el) {
-              const sectionTop = el.offsetTop;
-              // The header fully appears at ~8% of the 600vh scroll range
-              // Scroll to that exact point so "Our Services" is fully enlarged
-              const offset = el.offsetHeight * 0.04;
-              window.scrollTo({ top: sectionTop + offset, behavior: 'smooth' });
-            }
-          }} className={`text-sm font-medium transition-colors hover:text-accent`}>
+          <button 
+            onClick={() => {
+              if (pathname !== "/") {
+                router.push("/#impact");
+              } else {
+                const el = document.getElementById('impact');
+                if (el) {
+                  const sectionTop = el.offsetTop;
+                  const offset = el.offsetHeight * 0.04;
+                  window.scrollTo({ top: sectionTop + offset, behavior: 'smooth' });
+                }
+              }
+            }} 
+            className={`text-sm font-medium transition-colors hover:text-accent`}
+          >
             Services
           </button>
-          <button onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })} className={`text-sm font-medium transition-colors hover:text-accent`}>
+          <button 
+            onClick={() => router.push('/about')} 
+            className={`text-sm font-medium transition-colors hover:text-accent`}
+          >
             About
           </button>
         </div>

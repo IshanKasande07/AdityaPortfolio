@@ -83,8 +83,8 @@ const ProblemsSection = () => {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: card,
-            start: "top 85%",    // When card enters bottom of screen
-            end: "bottom 15%",   // When card leaves top of screen
+            start: "top 95%",    // Starts animating as soon as the top of the card enters
+            end: "bottom 5%",    // Finishes animating right before the bottom leaves
             scrub: true,         // Smooth scrubbing
           }
         });
@@ -93,18 +93,18 @@ const ProblemsSection = () => {
           scale: 1,
           opacity: 1,
           ease: "power2.out",
-          duration: 0.4        // Scales up as it comes in
+          duration: 0.2       // Scales up very quickly at the start
         })
           .to(inner, {
             scale: 1,
             opacity: 1,
-            duration: 0.2        // Holds at full scale while in middle
+            duration: 0.6       // Holds at full scale for the majority of the scroll
           })
           .to(inner, {
             scale: 0.85,
             opacity: 0.35,
             ease: "power2.in",
-            duration: 0.4        // Scales down as it leaves
+            duration: 0.2       // Scales down quickly at the end
           });
 
         // ── Title Animation (like the old left section) ──
@@ -113,8 +113,8 @@ const ProblemsSection = () => {
 
         ScrollTrigger.create({
           trigger: card,
-          start: "top 65%",
-          end: "bottom 35%",
+          start: "top 80%",
+          end: "bottom 20%",
           onEnter: () => {
             gsap.fromTo(
               letters,
@@ -209,7 +209,7 @@ const ProblemsSection = () => {
   }, []);
 
   return (
-    <div ref={sectionRef} className="relative w-full bg-background pt-20 md:pt-32">
+    <div ref={sectionRef} className="relative w-full bg-background pt-0">
       {/* ── Split columns ── */}
       <div className="flex flex-col md:flex-row w-full">
 
@@ -278,7 +278,7 @@ const ProblemsSection = () => {
               {/* Inner box — GSAP animates scale + opacity on this */}
               <div
                 ref={(el) => { innerCardRefs.current[index] = el; }}
-                className="w-full max-w-[340px] bg-surface-light/10 backdrop-blur-md border border-white/10 rounded-[28px] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.35)] transition-colors duration-300"
+                className="w-full max-w-[340px] bg-surface-light/10 backdrop-blur-md rounded-[28px] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.35)] transition-colors duration-300"
                 style={{ willChange: "transform, opacity", transformOrigin: "center left" }}
               >
                 <div className="text-[10px] font-mono text-muted/30 tracking-widest mb-4 uppercase">

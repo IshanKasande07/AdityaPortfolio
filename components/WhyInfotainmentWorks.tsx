@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Sparkles, Brain, Heart, Zap } from "lucide-react";
-import FadeUp from "./css/FadeUp";
 
 const WhyInfotainmentWorks = () => {
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -113,6 +113,12 @@ const WhyInfotainmentWorks = () => {
     return () => ctx.revert();
   }, [cardDimensions]);
 
+  // Parallax setup for the subtle vertical sway
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
   const steps = [
     { label: "Attention", icon: <Zap className="w-5 h-5 text-accent" />, actionWord: null },
     { label: "Authority", icon: <Brain className="w-5 h-5 text-accent" />, actionWord: "Builds" },
@@ -125,22 +131,11 @@ const WhyInfotainmentWorks = () => {
   };
 
   return (
-    <section id="infotainment" ref={containerRef} className="relative w-full h-[300vh] bg-surface z-10">
-      <div className="sticky top-0 h-screen w-full overflow-hidden isolate">
+    <section id="infotainment" ref={containerRef} className="relative w-full h-[250vh] bg-black z-10">
+      <div className="sticky top-0 h-screen w-full overflow-hidden isolate flex flex-col justify-center">
 
-        {/* Header — anchored to top */}
-        <div className="absolute top-10 md:top-14 left-0 w-full text-center z-50">
-          <FadeUp>
-            <h2 className="text-4xl md:text-[4vw] font-display font-semibold text-primary tracking-tight">Why Infotainment Works</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-accent to-red-500 mx-auto mt-5 rounded-full"></div>
-            <p className="max-w-2xl mx-auto mt-5 text-base md:text-lg text-muted font-light leading-relaxed px-4">
-              Anyone can entertain. Anyone can educate. Very few can do both — <span className="text-accent font-medium">consistently</span>.
-            </p>
-          </FadeUp>
-        </div>
-
-        {/* Card Row — centered in viewport, well above the wave border */}
-        <div className="absolute top-[55%] left-0 right-0 -translate-y-1/2 flex items-center justify-center">
+        {/* Card Row — moved up slightly to make room for heading below */}
+        <div className="absolute top-[35%] md:top-[40%] left-0 right-0 -translate-y-1/2 flex items-center justify-center">
           <div className="flex flex-nowrap items-center">
 
             {/* Lead-in line — same width as connectors */}
@@ -192,7 +187,7 @@ const WhyInfotainmentWorks = () => {
                     {/* The actual card */}
                     <div
                       ref={(el) => addToRefs(el, cardRefs, index)}
-                      className="w-[160px] md:w-[180px] p-5 md:p-6 rounded-[14px] bg-surface-light/30 border border-white/5 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] text-center flex flex-col items-center group relative z-10 opacity-0 scale-95 blur-[10px] transform-gpu"
+                      className="w-[160px] md:w-[180px] p-5 md:p-6 rounded-[14px] bg-surface/60 border border-white/5 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] text-center flex flex-col items-center group relative z-10 opacity-0 scale-95 blur-[10px] transform-gpu"
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[14px]"></div>
                       <div className="w-10 h-10 rounded-full bg-surface-light/50 border border-white/10 flex items-center justify-center mb-4 shadow-lg z-10 transition-transform duration-500 group-hover:scale-110">
@@ -229,6 +224,43 @@ const WhyInfotainmentWorks = () => {
               );
             })}
           </div>
+        </div>
+
+        {/* Header — Masking reveal (stationary) */}
+        <div 
+            className="absolute bottom-[10%] right-8 md:right-16 text-right z-50 flex flex-col items-end"
+        >
+            <div className="overflow-hidden py-2">
+                <motion.h2 
+                    initial={{ y: "110%", opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ margin: "-10%" }}
+                    transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
+                    className="text-3xl md:text-[3.75vw] font-display font-semibold text-primary tracking-tight leading-tight"
+                >
+                    Why Infotainment Works
+                </motion.h2>
+            </div>
+            
+            <motion.div 
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ margin: "-10%" }}
+                transition={{ duration: 1, delay: 0.4, ease: "circOut" }}
+                className="w-32 h-1 bg-gradient-to-l from-accent to-red-500 mt-4 rounded-full origin-right" 
+            />
+            
+            <div className="overflow-hidden py-2 max-w-xl outline-none mt-4">
+                <motion.p 
+                    initial={{ y: "100%", opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ margin: "-10%" }}
+                    transition={{ duration: 0.8, delay: 0.2, ease: [0.33, 1, 0.68, 1] }}
+                    className="text-lg md:text-xl text-muted font-light leading-relaxed"
+                >
+                  Anyone can entertain. Anyone can educate. Very few can do both — <span className="text-accent font-medium">consistently</span>.
+                </motion.p>
+            </div>
         </div>
 
         {/* Wave transition linking into the next section (Problems) */}
