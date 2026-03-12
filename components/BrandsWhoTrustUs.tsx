@@ -10,7 +10,8 @@ import {
     useScroll,
     useVelocity,
     useAnimationFrame,
-    wrap
+    wrap,
+    useInView
 } from "framer-motion";
 import FadeUp from "./css/FadeUp";
 
@@ -40,14 +41,17 @@ const brandLogos = [
 
 const MagneticLogo = ({ src, isLarge, manualScale = 1 }: any) => {
     // 60FPS math and continuous spring bounds tracking was causing severe scroll lag.
-    // Replaced with highly efficient Framer Motion CSS hover states.
+    // Replaced with highly efficient CSS hover states instead of Framer Motion `whileHover`.
+    // Removed backdrop-blur-md as rendering 40+ blur layers simultaneously kills first paint.
     return (
-        <motion.div
-            className="flex-shrink-0 flex flex-col items-center justify-center p-4 md:p-5 border border-white/5 rounded-2xl bg-surface-light/30 backdrop-blur-md w-32 h-24 md:w-48 md:h-32 mx-2 md:mx-3 cursor-pointer group"
-            whileHover={{ scale: 1.1, borderColor: "rgba(255, 195, 0, 0.4)" }}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+        <div
+            className="flex-shrink-0 flex flex-col items-center justify-center p-4 md:p-5 border border-white/5 rounded-2xl bg-surface-light/40 w-32 h-24 md:w-48 md:h-32 mx-2 md:mx-3 cursor-pointer group hover:scale-[1.1] hover:border-[rgba(255,195,0,0.4)] transition-all duration-300 ease-out will-change-transform"
+            style={{
+                WebkitBackfaceVisibility: "hidden",
+                backfaceVisibility: "hidden"
+            }}
         >
-            <motion.div
+            <div
                 className={`relative w-full h-full flex items-center justify-center transition-all duration-300 ease-out grayscale group-hover:grayscale-0 group-hover:drop-shadow-[0_0_15px_rgba(255,195,0,0.5)]`}
                 style={{ transform: `scale(${isLarge ? 1.7 * manualScale : 1 * manualScale})` }}
             >
@@ -58,45 +62,51 @@ const MagneticLogo = ({ src, isLarge, manualScale = 1 }: any) => {
                         fill
                         className="object-contain"
                         sizes="(max-width: 768px) 33vw, 20vw"
+                        loading="lazy"
                     />
                 </div>
-            </motion.div>
-        </motion.div>
+            </div>
+        </div>
     );
 };
 
 interface ParallaxCarouselProps {
     items: { src: string; scale?: number }[];
     baseVelocity: number;
+    velocityFactor: any; // MotionValue
 }
 
-const ParallaxCarousel = ({ items, baseVelocity = 1 }: any) => {
+const ParallaxCarousel = ({ items, baseVelocity = 1, velocityFactor }: ParallaxCarouselProps) => {
     // Parallax logic restored to allow scroll-based acceleration!
     const baseX = useMotionValue(0);
-    const { scrollY } = useScroll();
-    const scrollVelocity = useVelocity(scrollY);
-    const smoothVelocity = useSpring(scrollVelocity, {
-        damping: 50,
-        stiffness: 400
-    });
-    const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], {
-        clamp: false
-    });
-
     const x = useTransform(baseX, (v) => `${wrap(-50, 0, v)}%`);
 
     const directionFactor = useRef<number>(1);
 
-    useAnimationFrame((t, delta) => {
-        let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
+    // Performance optimization: only run animation when in view
+    const containerRef = useRef<HTMLDivElement>(null);
+    const isInView = useInView(containerRef, { margin: "200px" }); // Pre-load slightly before visible
 
+    useAnimationFrame((t, delta) => {
+        if (!isInView) return; // Skip calculation when off-screen
+
+        // CLAMP INTRODUCED HERE:
+        // Framer Motion provides a huge delta on the first frame a component renders or when tabs switch.
+        // We cap it at 50ms so the carousel doesn't instantly jump half the screen's distance.
+        const cappedDelta = Math.min(delta, 50);
+
+        let moveBy = directionFactor.current * baseVelocity * (cappedDelta / 1000);
+
+        // When scrolling down, standard direction. When scrolling up, reverse.
         if (velocityFactor.get() < 0) {
             directionFactor.current = -1;
         } else if (velocityFactor.get() > 0) {
             directionFactor.current = 1;
         }
 
-        moveBy += directionFactor.current * moveBy * velocityFactor.get();
+        // Add scroll-based speed burst. Math.abs ensures we don't double-negative the logic.
+        moveBy += directionFactor.current * baseVelocity * (cappedDelta / 1000) * Math.abs(velocityFactor.get());
+
         baseX.set(baseX.get() + moveBy);
     });
 
@@ -104,9 +114,14 @@ const ParallaxCarousel = ({ items, baseVelocity = 1 }: any) => {
 
     return (
         <div
+            ref={containerRef}
             className="overflow-hidden m-0 whitespace-nowrap flex flex-nowrap py-2 w-full"
+            style={{ contain: "layout style paint" }} // Hint browser that this section is independent
         >
-            <motion.div className="flex whitespace-nowrap flex-nowrap w-max will-change-transform" style={{ x }}>
+            <motion.div
+                className="flex whitespace-nowrap flex-nowrap w-max will-change-transform"
+                style={{ x }}
+            >
                 {duplicatedItems.map((item, i) => (
                     <div key={`${item.src}-${i}`}>
                         <MagneticLogo
@@ -124,6 +139,20 @@ const ParallaxCarousel = ({ items, baseVelocity = 1 }: any) => {
 const BrandsWhoTrustUs = () => {
     const row1 = brandLogos.slice(0, 11);
     const row2 = brandLogos.slice(11);
+
+    // Compute scroll velocity physics ONCE for both carousels to halve CPU overhead
+    const { scrollY } = useScroll();
+    const scrollVelocity = useVelocity(scrollY);
+    const smoothVelocity = useSpring(scrollVelocity, {
+        damping: 50,
+        stiffness: 400
+    });
+
+    // CLAMP INTRODUCED HERE:
+    // Capped at 5x multiplier so violently flicking the scroll wheel doesn't produce an astronomical velocity.
+    const velocityFactor = useTransform(smoothVelocity, [-1000, 1000], [-5, 5], {
+        clamp: true
+    });
 
     return (
         <section
@@ -152,12 +181,14 @@ const BrandsWhoTrustUs = () => {
                     <ParallaxCarousel
                         items={row1}
                         baseVelocity={-2}
+                        velocityFactor={velocityFactor}
                     />
 
                     {/* Row 2 scrolling right */}
                     <ParallaxCarousel
                         items={row2}
                         baseVelocity={2}
+                        velocityFactor={velocityFactor}
                     />
                 </div>
             </div>
