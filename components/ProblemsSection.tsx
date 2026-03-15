@@ -223,7 +223,7 @@ const ProblemsSection = () => {
                 style={{ fontSize: "clamp(3.5rem, 6vw, 7.5rem)" }}
               >
                 Problems<br />
-                We&nbsp;&nbsp;&nbsp;Solve
+                We&nbsp;&nbsp;Solve
               </h2>
 
               {/* Scribbled Arching Arrow (hidden on mobile, visible on md+) */}

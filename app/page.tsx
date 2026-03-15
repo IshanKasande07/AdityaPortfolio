@@ -4,6 +4,7 @@ import Contact from '@/components/Contact'
 import Who from '@/components/Who'
 import ProblemsSection from '@/components/ProblemsSection'
 import WhyInfotainmentWorks from '@/components/WhyInfotainmentWorks'
+import ResultsSection from '@/components/ResultsSection'
 import Footer from '@/components/Footer'
 import PhysicsThrow from '@/components/PhysicsThrow'
 import FloatingCTA from '@/components/FloatingCTA'
@@ -27,6 +28,7 @@ const page = () => {
       <ImpactSection />
 
       <WhyInfotainmentWorks />
+      <ResultsSection />
       <ProblemsSection />
       <Who />
 

@@ -1,16 +1,18 @@
 "use client";
 
 import { motion, useMotionValue, useSpring, useScroll, useTransform, useAnimation } from "framer-motion";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useReveal } from "./RevealLayout";
 
 const videos = [
-    "https://storage.googleapis.com/clova-assets/public/clova-website/clova2/5.mp4",
-    "https://storage.googleapis.com/clova-assets/public/clova-website/clova2/9.mp4",
-    "https://storage.googleapis.com/clova-assets/public/clova-website/clova2/2.mp4",
-    "https://storage.googleapis.com/clova-assets/public/clova-website/clova2/3.mp4",
-    "https://storage.googleapis.com/clova-assets/public/clova-website/clova2/4.mp4",
-    "https://storage.googleapis.com/clova-assets/public/clova-website/clova2/7.mp4",
+    "https://glq1banjnszesnxr.public.blob.vercel-storage.com/01_Origins%20x%20Nandini%20%28%20Final%20%29%20%20copy.mp4",
+    "https://glq1banjnszesnxr.public.blob.vercel-storage.com/Bipsun%20copy.mp4",
+    "https://glq1banjnszesnxr.public.blob.vercel-storage.com/Chatter%20Box%20v2%20copy.mp4",
+    "https://glq1banjnszesnxr.public.blob.vercel-storage.com/Deccan%20Gymkhana%20%20copy.mp4",
+    "https://glq1banjnszesnxr.public.blob.vercel-storage.com/Image%20Analysis%20copy.mp4",
+    "https://glq1banjnszesnxr.public.blob.vercel-storage.com/Scaler%20Trailer%20Reel%20copy.mp4",
+    "https://glq1banjnszesnxr.public.blob.vercel-storage.com/electricity%20bill%20copy.mp4",
+    "https://glq1banjnszesnxr.public.blob.vercel-storage.com/solar%20tax%20copy.mp4",
 ];
 
 export default function Hero() {
@@ -24,6 +26,8 @@ export default function Hero() {
                 opacity: 1,
                 scale: 1.5,
                 y: "25vh",
+                rotateZ: 0.01,
+                z: 0.01,
                 transition: { duration: 0.8, ease: "easeOut" }
             });
 
@@ -32,12 +36,16 @@ export default function Hero() {
                 headerControls.start({
                     scale: 1,
                     y: 0,
+                    rotateZ: 0.01,
+                    z: 0.01,
                     transition: { duration: 1.2, ease: [0.76, 0, 0.24, 1] }
                 });
                 contentControls.start({
                     opacity: 1,
                     y: 0,
                     scale: 1,
+                    rotateZ: 0.01,
+                    z: 0.01,
                     transition: { duration: 1.2, ease: [0.76, 0, 0.24, 1] }
                 });
             }, 1600);
@@ -59,6 +67,28 @@ export default function Hero() {
     const buttonY = useMotionValue(0);
     const buttonSpringX = useSpring(buttonX, { stiffness: 150, damping: 15, mass: 0.1 });
     const buttonSpringY = useSpring(buttonY, { stiffness: 150, damping: 15, mass: 0.1 });
+
+    const [btnTop, setBtnTop] = useState<number | string>("auto");
+
+    useEffect(() => {
+        const updatePosition = () => {
+            if (window.innerWidth >= 1440) {
+                // For monitors/large screens, we need more clearance because of the border
+                // 130px offset keeps it nicely above the cream border
+                setBtnTop(window.innerHeight - 130);
+            } else if (window.innerWidth >= 1024) {
+                // For laptops, a 90px offset places it slightly higher than before
+                setBtnTop(window.innerHeight - 90);
+            } else {
+                // On small/medium screens, clear JS height and let CSS handle absolute positioning from the bottom
+                setBtnTop("auto");
+            }
+        };
+        
+        updatePosition();
+        window.addEventListener('resize', updatePosition);
+        return () => window.removeEventListener('resize', updatePosition);
+    }, []);
 
     // Parallax: headline fades and sinks deeper on scroll
     const { scrollY } = useScroll();
@@ -96,33 +126,34 @@ export default function Hero() {
                    Adding 'transform-gpu' and 'backface-visibility' stops the text jitter.
                 */}
                 <motion.div
-                    initial={{ opacity: 0, scale: 1.5, y: "25vh" }}
+                    initial={{ opacity: 0, scale: 1.5, y: "25vh", rotateZ: 0.01, z: 0.01 }}
                     animate={headerControls}
-                    className="flex flex-col items-center justify-center pointer-events-none transform-gpu"
+                    className="flex flex-col items-center justify-center pointer-events-none"
                     style={{
-                        transformOrigin: "center center",
+                        transformStyle: "preserve-3d",
                         backfaceVisibility: "hidden",
                         WebkitBackfaceVisibility: "hidden"
                     }}
                 >
                     <motion.div
-                        className="text-3xl md:text-[4vw] font-display font-semibold leading-[1.1] tracking-tight pointer-events-auto mb-3 md:mb-4 flex flex-col items-center"
+                        className="text-3xl md:text-[4vw] font-medium leading-[1.1] tracking-tight pointer-events-auto mb-3 md:mb-4 flex flex-col items-center"
+                        style={{ fontFamily: 'var(--font-tiempos-headline), serif' }}
                         animate={earlyReveal ? "visible" : "hidden"}
                     >
                         {/* Lines are split to prevent massive layout shifts during staggered reveal */}
                         {[
-                            ["We", "Help", "Brands"],
-                            ["Win", "by", "Educating"],
-                            ["the", "Internet."]
+                            ["Why", "just", "create", "content", "?"],
+                            ["-","Build", "Narratives"]
                         ].map((line, lineIdx) => (
                             <div key={lineIdx} className="flex flex-wrap justify-center gap-[0.3em]">
                                 {line.map((word, i) => (
-                                    <div key={i} className="overflow-hidden inline-block relative py-1">
+                                    <div key={i} className="overflow-hidden inline-block relative py-1 px-1 -mx-1">
                                         <motion.span
                                             variants={{
-                                                hidden: { y: "110%" },
+                                                hidden: { y: "110%", rotateX: 10 },
                                                 visible: {
                                                     y: "0%",
+                                                    rotateX: 0,
                                                     transition: {
                                                         duration: 1.1,
                                                         ease: [0.76, 0, 0.24, 1],
@@ -130,8 +161,13 @@ export default function Hero() {
                                                     }
                                                 }
                                             }}
-                                            className={`inline-block origin-bottom-left will-change-transform transform-gpu ${word === 'Educating' ? 'font-serif italic font-normal text-accent' : 'text-primary'}`}
-                                            style={{ backfaceVisibility: "hidden" }}
+                                            className={`inline-block will-change-transform ${lineIdx === 1 ? 'italic font-normal text-accent' : 'text-primary'}`}
+                                            style={{ 
+                                                backfaceVisibility: "hidden", 
+                                                WebkitBackfaceVisibility: "hidden",
+                                                transformOrigin: "bottom center",
+                                                transformStyle: "preserve-3d" 
+                                            }}
                                         >
                                             {word}
                                         </motion.span>
@@ -154,57 +190,6 @@ export default function Hero() {
                         Attention is the highest currency, we are helping you to mine it
                     </motion.p>
                 </motion.div>
-
-                <motion.div
-                    initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                    animate={contentControls}
-                    className='flex flex-row gap-5 items-center justify-center mt-5 pointer-events-auto'
-                >
-                    <motion.button
-                        onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'instant' })}
-                        onPointerMove={(e) => {
-                            const rect = e.currentTarget.getBoundingClientRect();
-                            const centerX = rect.left + rect.width / 2;
-                            const centerY = rect.top + rect.height / 2;
-                            // Pull towards cursor, max ~12px
-                            buttonX.set((e.clientX - centerX) * 0.15);
-                            buttonY.set((e.clientY - centerY) * 0.15);
-                        }}
-                        onPointerLeave={() => {
-                            buttonX.set(0);
-                            buttonY.set(0);
-                        }}
-                        style={{ x: buttonSpringX, y: buttonSpringY }}
-                        className='group relative overflow-hidden rounded-full py-4 px-10 will-change-transform'
-                    >
-                        {/* Base Yellow Background (Fixed: Moved off the parent so it doesn't bleed through edges) */}
-                        <div className="absolute inset-0 bg-accent rounded-full -z-10"></div>
-
-                        {/* Hover Expanding Background (slide-up #27701B green) */}
-                        <div className="absolute inset-0 bg-[#27701B] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full z-0"></div>
-
-                        <div className="relative z-10 flex items-center justify-center text-base md:text-[1.1vw] font-medium text-black group-hover:text-primary transition-colors duration-300">
-                            <span>Book a Call</span>
-
-                            {/* Magnetic Arrow Shoot Container */}
-                            <span className='ml-3 relative flex items-center justify-center overflow-hidden w-5 h-5'>
-                                {/* First Arrow (Disappears up-right) */}
-                                <span className='absolute inset-0 flex items-center justify-center -rotate-45 transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-[150%] group-hover:-translate-y-[150%]'>
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="stroke-current" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M5 12h14M12 5l7 7-7 7" />
-                                    </svg>
-                                </span>
-
-                                {/* Second Arrow (Enters from bottom-left) */}
-                                <span className='absolute inset-0 flex items-center justify-center -rotate-45 -translate-x-[150%] translate-y-[150%] transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-0 group-hover:translate-y-0'>
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="stroke-current" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M5 12h14M12 5l7 7-7 7" />
-                                    </svg>
-                                </span>
-                            </span>
-                        </div>
-                    </motion.button>
-                </motion.div>
             </motion.div>
 
             {/* 3D Carousel Section — parallax recession */}
@@ -213,13 +198,13 @@ export default function Hero() {
                 className="absolute left-0 w-full flex justify-center pointer-events-none z-20 will-change-transform transform-gpu"
             >
                 <motion.div
-                    initial={{ scale: 1.25, opacity: 0, y: 50 }}
+                    initial={{ scale: 1.25, opacity: 0, y: 50, rotateZ: 0.01, z: 0.01 }}
                     animate={contentControls}
                 >
                     <div
                         style={{
-                            perspective: "460px",
-                            transform: "scale(clamp(0.3, 100vw / 1900, 0.85))",
+                            perspective: "500px",
+                            transform: "scale(clamp(0.2, 100vw / 3000, 0.45))",
                             transformOrigin: "bottom center"
                         }}
                         className="relative pointer-events-auto"
@@ -259,7 +244,7 @@ export default function Hero() {
                                             transformStyle: "preserve-3d",
                                             transform: `
                                                 rotateY(${angle}deg)
-                                                translateZ(510px)
+                                                translateZ(550px)
                                                 scale(${scale})
                                             `,
                                         }}
@@ -273,7 +258,7 @@ export default function Hero() {
                                                 muted
                                                 playsInline
                                                 preload="metadata"
-                                                className="w-[420px] h-[300px] rounded-xl object-cover shadow-[0_0_30px_rgba(0,0,0,0.8)] select-none border border-white/10"
+                                                className="w-[280px] h-[435px] rounded-xl object-cover shadow-[0_0_30px_rgba(0,0,0,0.8)] select-none border border-white/10"
                                             />
                                         </div>
                                     </div>
@@ -284,22 +269,60 @@ export default function Hero() {
                 </motion.div>
             </motion.div>
 
-            {/* The curved bottom boundary overlay — unified firmly with next section */}
-            <div className="absolute bottom-[-1px] left-0 w-full leading-[0] z-40 pointer-events-none drop-shadow-xl">
-                <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[100px] scale-105 transform translate-y-[2px]">
-                    <motion.path
-                        animate={{
-                            d: [
-                                "M0 100C0 100 360 0 720 0C1080 0 1440 100 1440 100V100H0V100Z",
-                                "M0 100C0 100 360 15 720 15C1080 15 1440 100 1440 100V100H0V100Z",
-                                "M0 100C0 100 360 0 720 0C1080 0 1440 100 1440 100V100H0V100Z",
-                            ]
-                        }}
-                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                        fill="#F0EDE8"
-                    />
-                </svg>
-            </div>
+            {/* Repositioned CTA Button — dynamically placed for large screens, CSS positioned for small/med */}
+            <motion.div
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                animate={contentControls}
+                style={{ y: carouselY, top: btnTop }}
+                className='absolute bottom-[5vw] lg:bottom-auto left-0 w-full flex flex-col items-center justify-center z-[100] pointer-events-auto'
+            >
+                <motion.button
+                    onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'instant' })}
+                    onPointerMove={(e) => {
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        const centerX = rect.left + rect.width / 2;
+                        const centerY = rect.top + rect.height / 2;
+                        // Pull towards cursor, max ~12px
+                        buttonX.set((e.clientX - centerX) * 0.15);
+                        buttonY.set((e.clientY - centerY) * 0.15);
+                    }}
+                    onPointerLeave={() => {
+                        buttonX.set(0);
+                        buttonY.set(0);
+                    }}
+                    style={{ x: buttonSpringX, y: buttonSpringY }}
+                    className='group relative overflow-hidden rounded-full py-4 px-10 will-change-transform'
+                >
+                    {/* Base Yellow Background */}
+                    <div className="absolute inset-0 bg-accent rounded-full -z-10"></div>
+
+                    {/* Hover Expanding Background */}
+                    <div className="absolute inset-0 bg-[#27701B] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full z-0"></div>
+
+                    <div className="relative z-10 flex items-center justify-center text-base md:text-[1.1vw] font-medium text-black group-hover:text-primary transition-colors duration-300">
+                        <span>Book a Call</span>
+
+                        {/* Magnetic Arrow Shoot Container */}
+                        <span className='ml-3 relative flex items-center justify-center overflow-hidden w-5 h-5'>
+                            {/* First Arrow */}
+                            <span className='absolute inset-0 flex items-center justify-center -rotate-45 transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-[150%] group-hover:-translate-y-[150%]'>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="stroke-current" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                            </span>
+
+                            {/* Second Arrow */}
+                            <span className='absolute inset-0 flex items-center justify-center -rotate-45 -translate-x-[150%] translate-y-[150%] transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-0 group-hover:translate-y-0'>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="stroke-current" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                            </span>
+                        </span>
+                    </div>
+                </motion.button>
+            </motion.div>
+
+
         </div>
     );
 }

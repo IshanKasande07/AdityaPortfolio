@@ -7,10 +7,11 @@
   --color-primary: #FFFFFF;
   --color-muted: #94A3B8;
   --color-accent: #FFC300;
-  --font-sans: "Urbanist", sans-serif;
-  --font-serif: "Urbanist", sans-serif;
-  --font-display: "Shippori Antique B1", serif;
-  --font-mono: "Space Mono", monospace;
+  --font-sans: var(--font-space-grotesk), sans-serif;
+  --font-serif: var(--font-space-grotesk), sans-serif;
+  --font-display: var(--font-space-grotesk), sans-serif;
+  --font-mono: var(--font-space-grotesk), monospace;
+  --font-tiempos: var(--font-tiempos-headline), serif;
 }
 
 body {

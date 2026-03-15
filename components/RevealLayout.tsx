@@ -22,7 +22,7 @@ interface RevealLayoutProps {
 // Uniform cream border on all 4 sides — Navbar lives INSIDE the card
 const BORDER_PX = 7;
 const RADIUS = "20px";
-const CREAM = "#F0EDE8";
+const CREAM = "#EFEBDF";
 
 // Provider: wraps the entire page so any component can read reveal state
 export function RevealProvider({ children }: { children: ReactNode }) {

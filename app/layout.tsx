@@ -1,19 +1,49 @@
 import type { Metadata } from "next";
-import { Shippori_Antique_B1, Urbanist } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import LenisProvider from "./providers/LenisProvider";
 
-const shipporiAntiqueB1 = Shippori_Antique_B1({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-display",
-  weight: ["400"],
+  variable: "--font-space-grotesk",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
-const urbanist = Urbanist({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
-  style: ["normal", "italic"],
+const tiemposHeadline = localFont({
+  src: [
+    {
+      path: "../font/TiemposHeadline-Light.otf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../font/TiemposHeadline-Regular.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../font/TiemposHeadline-Medium.otf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../font/TiemposHeadline-Semibold.otf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../font/TiemposHeadline-Bold.otf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../font/TiemposHeadline-Black.otf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-tiempos-headline",
 });
 
 export const metadata: Metadata = {
@@ -27,9 +57,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" style={{ backgroundColor: "#F0EDE8" }}>
+    <html lang="en" className={`${spaceGrotesk.variable} ${tiemposHeadline.variable}`} style={{ backgroundColor: "#F0EDE8" }}>
       <body
-        className={`${shipporiAntiqueB1.variable} ${urbanist.variable} antialiased overflow-x-hidden`}
+        className="antialiased overflow-x-hidden"
         style={{ backgroundColor: "#F0EDE8" }}
       >
         <LenisProvider>
