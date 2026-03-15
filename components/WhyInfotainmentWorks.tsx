@@ -227,41 +227,57 @@ const WhyInfotainmentWorks = () => {
         </div>
 
         {/* Header — Masking reveal (stationary) */}
-        <div 
-            className="absolute bottom-[10%] right-8 md:right-16 text-right z-50 flex flex-col items-end"
+        <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false }}
+            className="absolute bottom-[10%] left-0 w-full px-8 md:px-16 z-50 pointer-events-none flex justify-center"
         >
-            <div className="overflow-hidden py-2">
-                <motion.h2 
-                    initial={{ y: "110%", opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    viewport={{ margin: "-10%" }}
-                    transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
-                    className="text-3xl md:text-[3.75vw] font-display font-semibold text-primary tracking-tight leading-tight"
-                >
-                    Why Infotainment Works
-                </motion.h2>
+            <div className="w-full max-w-[1280px] flex flex-col items-end text-right pointer-events-auto">
+                <div className="overflow-hidden py-2">
+                    <motion.h2 
+                        variants={{
+                            hidden: { y: "110%", opacity: 0 },
+                            visible: { 
+                                y: 0, 
+                                opacity: 1, 
+                                transition: { duration: 0.8, ease: [0.33, 1, 0.68, 1] } 
+                            }
+                        }}
+                        className="text-3xl md:text-[3.75vw] 2xl:text-[60px] font-display font-semibold text-primary tracking-tight leading-tight"
+                    >
+                        Why Infotainment Works
+                    </motion.h2>
+                </div>
+                
+                <motion.div 
+                    variants={{
+                        hidden: { scaleX: 0 },
+                        visible: { 
+                            scaleX: 1, 
+                            transition: { duration: 1, delay: 0.4, ease: "circOut" } 
+                        }
+                    }}
+                    className="w-32 h-1 bg-gradient-to-l from-accent to-red-500 mt-4 rounded-full origin-right" 
+                />
+                
+                <div className="overflow-hidden py-2 max-w-xl outline-none mt-4">
+                    <motion.p 
+                        variants={{
+                            hidden: { y: "100%", opacity: 0 },
+                            visible: { 
+                                y: 0, 
+                                opacity: 1, 
+                                transition: { duration: 0.8, delay: 0.2, ease: [0.33, 1, 0.68, 1] } 
+                            }
+                        }}
+                        className="text-lg md:text-xl text-muted font-light leading-relaxed"
+                    >
+                      Anyone can entertain. Anyone can educate. Very few can do both — <span className="text-accent font-medium">consistently</span>.
+                    </motion.p>
+                </div>
             </div>
-            
-            <motion.div 
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                viewport={{ margin: "-10%" }}
-                transition={{ duration: 1, delay: 0.4, ease: "circOut" }}
-                className="w-32 h-1 bg-gradient-to-l from-accent to-red-500 mt-4 rounded-full origin-right" 
-            />
-            
-            <div className="overflow-hidden py-2 max-w-xl outline-none mt-4">
-                <motion.p 
-                    initial={{ y: "100%", opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    viewport={{ margin: "-10%" }}
-                    transition={{ duration: 0.8, delay: 0.2, ease: [0.33, 1, 0.68, 1] }}
-                    className="text-lg md:text-xl text-muted font-light leading-relaxed"
-                >
-                  Anyone can entertain. Anyone can educate. Very few can do both — <span className="text-accent font-medium">consistently</span>.
-                </motion.p>
-            </div>
-        </div>
+        </motion.div>
 
         {/* Wave transition linking into the next section (Problems) */}
         <div ref={waveTransitionRef} className="absolute bottom-[-20px] left-0 w-full overflow-hidden leading-[0] z-40 pointer-events-none drop-shadow-xl will-change-transform transform-gpu">

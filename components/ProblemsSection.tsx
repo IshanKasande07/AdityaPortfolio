@@ -211,12 +211,12 @@ const ProblemsSection = () => {
   return (
     <div ref={sectionRef} className="relative w-full bg-background pt-0">
       {/* ── Split columns ── */}
-      <div className="flex flex-col md:flex-row w-full">
+      <div className="flex flex-col md:flex-row w-full max-w-[1536px] mx-auto">
 
         {/* LEFT — sticky title panel */}
         <div className="w-full md:w-[55%] shrink-0">
-          <div className="md:sticky md:top-0 h-auto md:h-screen flex flex-col items-start justify-center px-[6vw] py-12 md:py-0 border-b md:border-b-0 md:border-r border-white/5">
-            <div className="relative z-10 w-full pl-0 md:pl-[2vw]">
+          <div className="md:sticky md:top-0 h-auto md:h-screen flex flex-col items-start justify-center px-[6%] py-12 md:py-0 border-b md:border-b-0 md:border-r border-white/5">
+            <div className="relative z-10 w-full pl-0 md:pl-[4%]">
 
               <h2
                 className="font-display font-bold text-primary tracking-[-0.03em] leading-[1.05]"
@@ -227,7 +227,7 @@ const ProblemsSection = () => {
               </h2>
 
               {/* Scribbled Arching Arrow (hidden on mobile, visible on md+) */}
-              <div className="hidden md:block absolute -top-[100%] left-[95%] w-[30vw] md:w-[35vw] h-auto opacity-70 pointer-events-none z-0 transform -translate-x-1/2">
+              <div className="hidden md:block absolute -top-[100%] left-[95%] w-[35vw] max-w-[500px] h-auto opacity-70 pointer-events-none z-0 transform -translate-x-1/2">
                 <svg
                   viewBox="0 0 300 120"
                   fill="none"
@@ -273,7 +273,7 @@ const ProblemsSection = () => {
             <div
               key={problem.id}
               ref={(el) => { cardRefs.current[index] = el; }}
-              className="flex items-center justify-center px-[4vw] py-8 md:py-6 w-full min-h-[50vh] md:h-[55vh]"
+              className="flex items-center justify-center px-[4%] py-8 md:py-6 w-full min-h-[50vh] md:h-[55vh]"
             >
               {/* Inner box — GSAP animates scale + opacity on this */}
               <div
