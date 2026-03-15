@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { useReveal } from "./RevealLayout";
 import { useRouter, usePathname } from "next/navigation";
 
+import Image from "next/image";
+
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const { revealed } = useReveal();
@@ -28,9 +30,16 @@ const Navbar = () => {
       <div className="flex justify-start pointer-events-auto">
         <button
           onClick={() => router.push('/')}
-          className="text-xl md:text-2xl font-display font-semibold tracking-wide"
+          className="flex items-center"
         >
-          MONARCH MEDIA HOUSE
+          <Image 
+            src="/brandlogo/Monarch White.png" 
+            alt="Monarch Media House" 
+            width={72} 
+            height={40} 
+            className="object-contain h-10 w-auto"
+            priority
+          />
         </button>
       </div>
 

@@ -185,7 +185,7 @@ export default function Hero() {
                         }}
                         initial="hidden"
                         animate="visible"
-                        className='text-sm md:text-[1.1vw] text-muted max-w-3xl pointer-events-auto leading-relaxed mb-1'
+                        className='text-sm md:text-[1.1vw] text-[#EFEBDF] max-w-3xl pointer-events-auto leading-relaxed mb-1'
                     >
                         Attention is the highest currency, we are helping you to mine it
                     </motion.p>

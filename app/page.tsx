@@ -35,7 +35,7 @@ const page = () => {
       {/* Transition B — Contact card-lift (self-contained within Contact.tsx) */}
       <Contact />
 
-      <PhysicsThrow />
+      {/* <PhysicsThrow /> */}
 
       <Footer />
     </RevealProvider>

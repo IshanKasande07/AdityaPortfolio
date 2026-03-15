@@ -140,7 +140,7 @@ const Contact = () => {
                             <div className="absolute inset-0 bg-accent translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full"></div>
 
                             <div className="relative z-10 flex items-center justify-center text-lg md:text-[1.2vw] font-medium text-white group-hover:text-black transition-colors duration-300">
-                                {isSubmitting ? "Submitting..." : "Apply For a Strategy Call"}
+                                {isSubmitting ? "Submitting..." : "Let's Talk"}
                                 <span className='ml-3 flex items-center justify-center transition-transform duration-500 group-hover:translate-x-3'>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="stroke-current border-current" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                         <line x1="5" y1="12" x2="19" y2="12"></line>

@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -114,9 +115,15 @@ const Footer = () => {
             {/* Brand */}
             <motion.div
               variants={itemVariants}
-              className="text-[24px] md:text-[1.3vw] font-display font-semibold tracking-wide"
+              className="flex items-center"
             >
-              MONARCH MEDIA HOUSE
+              <Image 
+                src="/brandlogo/Monarch White.png" 
+                alt="Monarch Media House" 
+                width={120} 
+                height={50} 
+                className="object-contain h-12 w-auto"
+              />
             </motion.div>
 
             {/* Social links */}
