@@ -23,7 +23,10 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: revealed ? 1 : 0 }}
+      transition={{ duration: 0.8, ease: "easeInOut" }}
       className={`${revealed ? 'fixed' : 'absolute'} top-0 left-0 w-full z-[200] grid grid-cols-2 md:grid-cols-3 items-center px-6 md:px-12 py-4 mt-[3px] pointer-events-none transition-colors duration-300 text-white`}
     >
       {/* Left: Logo */}
@@ -121,7 +124,7 @@ const Navbar = () => {
         </button>
       </div>
 
-    </div>
+    </motion.div>
   );
 };
 
