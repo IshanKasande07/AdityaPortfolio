@@ -296,7 +296,6 @@ export default function Hero() {
                                                     muted
                                                     playsInline
                                                     preload="none"
-                                                    decoding="async"
                                                     disablePictureInPicture
                                                     className="w-[280px] h-[435px] rounded-xl object-cover shadow-[0_0_30px_rgba(0,0,0,0.8)] select-none border border-white/10"
                                                 />
