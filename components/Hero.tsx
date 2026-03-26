@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useSpring, useScroll, useTransform, useAnimation } from "framer-motion";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useReveal } from "./RevealLayout";
 
 const videos = [
@@ -15,50 +15,70 @@ const videos = [
     "https://glq1banjnszesnxr.public.blob.vercel-storage.com/solar%20tax%20copy.mp4",
 ];
 
+const headingLines = [
+    ["Why", "just", "create", "content", "?"],
+    ["-", "Build", "Narratives"],
+];
+
 export default function Hero() {
     const { revealed, earlyReveal } = useReveal();
 
-    const headerYControls = useAnimation();
-    const headerScaleControls = useAnimation();
+    const headerControls = useAnimation();
     const contentControls = useAnimation();
     const containerRef = useRef<HTMLDivElement>(null);
+
+    // FIX — parallax gate: stays false during entire entry animation,
+    // flips true only after Phase 2 finishes (1200ms delay + 1500ms duration).
+    // While false, the scroll transform style is not attached to the element
+    // so those useTransform subscriptions cost nothing during the move.
+    const [parallaxReady, setParallaxReady] = useState(false);
 
     useEffect(() => {
         if (earlyReveal) {
             const startY = typeof window !== 'undefined' ? window.innerHeight * 0.25 : 200;
 
             // Phase 1
-            headerYControls.start({
-                opacity: 1, // <--- THE MISSING FIX: This was missing, causing the text to stay invisible!
+            headerControls.start({
+                opacity: 1,
                 y: startY,
-                transition: { duration: 0.8, ease: "easeOut" },
-            });
-            headerScaleControls.start({
                 scale: 1.5,
                 transition: { duration: 0.8, ease: "easeOut" },
             });
 
-            // Phase 2
-            const timer = setTimeout(() => {
-                headerYControls.start({
-                    y: 0,
-                    transition: { duration: 1.0, ease: [0.16, 1, 0.3, 1] },
-                });
-                headerScaleControls.start({
-                    scale: 1,
-                    transition: { duration: 1.0, ease: [0.16, 1, 0.3, 1] },
-                });
-                contentControls.start({
-                    opacity: 1,
+            // Phase 2 — starts at 1200ms (words done at ~1110ms)
+            const phaseTwo = setTimeout(() => {
+                headerControls.start({
                     y: 0,
                     scale: 1,
-                    transition: { duration: 1.0, ease: [0.16, 1, 0.3, 1] },
+                    transition: { duration: 1.5, ease: [0.16, 1, 0.3, 1] },
                 });
-            }, 750);
 
-            return () => clearTimeout(timer);
+                // Carousel + button — offset 250ms so compositor isn't
+                // bootstrapping new layers at frame 0 of the heading move
+                const contentTimer = setTimeout(() => {
+                    contentControls.start({
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        transition: { duration: 1.5, ease: [0.16, 1, 0.3, 1] },
+                    });
+                }, 250);
+
+                // FIX — attach parallax only after Phase 2 is fully complete.
+                // 1500ms = Phase 2 duration. Small 100ms buffer for safety.
+                const parallaxTimer = setTimeout(() => {
+                    setParallaxReady(true);
+                }, 1600);
+
+                return () => {
+                    clearTimeout(contentTimer);
+                    clearTimeout(parallaxTimer);
+                };
+            }, 1200);
+
+            return () => clearTimeout(phaseTwo);
         }
-    }, [earlyReveal, headerYControls, headerScaleControls, contentControls]);
+    }, [earlyReveal, headerControls, contentControls]);
 
     const rawRotation = useMotionValue(0);
     const rotation = useSpring(rawRotation, { stiffness: 70, damping: 20, mass: 1 });
@@ -103,6 +123,40 @@ export default function Hero() {
             id="work"
             className="relative min-h-[750px] h-screen w-full bg-background overflow-hidden z-20"
         >
+            <style>{`
+                @keyframes wordReveal {
+                    from { transform: translateY(120%); opacity: 0; }
+                    to   { transform: translateY(0%);   opacity: 1; }
+                }
+                /* FIX — subtitle uses same mechanism as words: CSS keyframe,
+                   runs off main thread, zero Framer Motion overhead,
+                   completely invisible to parent headerControls compositor layer */
+                @keyframes subtitleReveal {
+                    from { transform: translateY(15px); opacity: 0; }
+                    to   { transform: translateY(0px);  opacity: 1; }
+                }
+                .word-reveal {
+                    display: inline-block;
+                    opacity: 0;
+                    will-change: transform, opacity;
+                    animation: wordReveal 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                    animation-play-state: paused;
+                }
+                .word-reveal.playing {
+                    animation-play-state: running;
+                }
+                .subtitle-reveal {
+                    opacity: 0;
+                    will-change: transform, opacity;
+                    /* delay 0.6s matches original motion.p variant delay exactly */
+                    animation: subtitleReveal 0.8s ease-out 0.6s forwards;
+                    animation-play-state: paused;
+                }
+                .subtitle-reveal.playing {
+                    animation-play-state: running;
+                }
+            `}</style>
+
             {revealed && (
                 <motion.div
                     initial={{ opacity: 0 }}
@@ -138,94 +192,72 @@ export default function Hero() {
                 </motion.div>
             )}
 
-            {/* Scroll Parallax Wrapper */}
+            {/* Scroll Parallax Wrapper
+                FIX — parallaxReady gates the style prop entirely.
+                During entry animation: no style → no useTransform subscriptions
+                being evaluated on every frame while headerControls is moving.
+                After entry completes: style snaps in — scroll parallax works
+                exactly as before, user hasn't scrolled yet so no visual pop. */}
             <motion.div
-                style={{
+                style={parallaxReady ? {
                     y: headlineY,
                     opacity: headlineOpacity,
                     scale: headlineScale,
-                }}
+                } : undefined}
                 className="absolute top-[13vh] left-0 w-full flex flex-col items-center justify-center text-white text-center z-30 px-[5vw] pointer-events-none"
             >
-                {/* Y-Translation Wrapper */}
+                {/* One motion.div, one controller, one GPU layer */}
                 <motion.div
-                    initial={{ opacity: 0, y: "25vh" }}
-                    animate={headerYControls}
+                    initial={{ opacity: 0, y: "25vh", scale: 1.5 }}
+                    animate={headerControls}
+                    style={{
+                        transformOrigin: "top center",
+                        willChange: "transform, opacity",
+                        WebkitFontSmoothing: "antialiased",
+                    }}
                     className="w-full flex flex-col items-center justify-center pointer-events-none"
                 >
-                    {/* Scale Wrapper */}
-                    <motion.div
-                        initial={{ scale: 1.5 }}
-                        animate={headerScaleControls}
-                        style={{
-                            transformOrigin: "top center",
-                            willChange: "transform",
-                            WebkitFontSmoothing: "antialiased",
-                        }}
-                        className="flex flex-col items-center justify-center"
+                    <div
+                        className="text-3xl md:text-[4vw] font-medium leading-[1.1] tracking-tight pointer-events-auto mb-3 md:mb-4 flex flex-col items-center"
+                        style={{ fontFamily: "var(--font-tiempos-headline), serif" }}
                     >
-                        <motion.div
-                            className="text-3xl md:text-[4vw] font-medium leading-[1.1] tracking-tight pointer-events-auto mb-3 md:mb-4 flex flex-col items-center"
-                            style={{ fontFamily: "var(--font-tiempos-headline), serif" }}
-                            animate={earlyReveal ? "visible" : "hidden"}
-                        >
-                            {[
-                                ["Why", "just", "create", "content", "?"],
-                                ["-", "Build", "Narratives"],
-                            ].map((line, lineIdx) => (
-                                <div
-                                    key={lineIdx}
-                                    className="flex flex-wrap justify-center gap-[0.3em] overflow-visible"
-                                >
-                                    {line.map((word, i) => (
-                                        <div
-                                            key={i}
-                                            className="overflow-hidden inline-flex relative py-1 px-1 -mx-1"
-                                            style={{ WebkitTransform: "translateZ(0)" }}
+                        {headingLines.map((line, lineIdx) => (
+                            <div
+                                key={lineIdx}
+                                className="flex flex-wrap justify-center gap-[0.3em] overflow-visible"
+                            >
+                                {line.map((word, i) => (
+                                    <div
+                                        key={i}
+                                        className="overflow-hidden inline-flex relative py-1 px-1 -mx-1"
+                                        style={{ WebkitTransform: "translateZ(0)" }}
+                                    >
+                                        <span
+                                            className={`word-reveal ${earlyReveal ? "playing" : ""} ${lineIdx === 1
+                                                    ? "italic font-normal text-accent"
+                                                    : "text-primary"
+                                                }`}
+                                            style={{
+                                                animationDelay: `${lineIdx * 0.1 + i * 0.04}s`,
+                                            }}
                                         >
-                                            <motion.span
-                                                variants={{
-                                                    hidden: { y: "120%", opacity: 0, z: 0 },
-                                                    visible: {
-                                                        y: "0%",
-                                                        opacity: 1,
-                                                        z: 0,
-                                                        transition: {
-                                                            duration: 0.85,
-                                                            ease: [0.16, 1, 0.3, 1],
-                                                            delay: lineIdx * 0.1 + i * 0.04,
-                                                        },
-                                                    },
-                                                }}
-                                                className={`inline-block will-change-transform ${lineIdx === 1
-                                                        ? "italic font-normal text-accent"
-                                                        : "text-primary"
-                                                    }`}
-                                            >
-                                                {word}
-                                            </motion.span>
-                                        </div>
-                                    ))}
-                                </div>
-                            ))}
-                        </motion.div>
+                                            {word}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
 
-                        <motion.p
-                            variants={{
-                                hidden: { opacity: 0, y: 15 },
-                                visible: {
-                                    opacity: 1,
-                                    y: 0,
-                                    transition: { duration: 0.8, ease: "easeOut", delay: 0.6 },
-                                },
-                            }}
-                            initial="hidden"
-                            animate="visible"
-                            className="text-sm md:text-[1.1vw] text-[#EFEBDF] max-w-3xl pointer-events-auto leading-relaxed mb-1"
-                        >
-                            Attention is the highest currency, we are helping you to mine it
-                        </motion.p>
-                    </motion.div>
+                    {/* FIX — plain <p> with CSS animation instead of motion.p.
+                        Exact same values: duration 0.8s, ease-out, delay 0.6s.
+                        Triggered by earlyReveal class swap, not a JS animation instance.
+                        No Framer Motion child inside an animating parent = no conflict. */}
+                    <p
+                        className={`subtitle-reveal ${earlyReveal ? "playing" : ""} text-sm md:text-[1.1vw] text-[#EFEBDF] max-w-3xl pointer-events-auto leading-relaxed mb-1`}
+                    >
+                        Attention is the highest currency, we are helping you to mine it
+                    </p>
                 </motion.div>
             </motion.div>
 
@@ -249,9 +281,7 @@ export default function Hero() {
                         className="relative pointer-events-auto"
                     >
                         <motion.div
-                            onPointerDown={(e) => {
-                                lastX.current = e.clientX;
-                            }}
+                            onPointerDown={(e) => { lastX.current = e.clientX; }}
                             onPointerMove={(e) => {
                                 if (lastX.current !== null) {
                                     const delta = e.clientX - lastX.current;
@@ -259,12 +289,8 @@ export default function Hero() {
                                     lastX.current = e.clientX;
                                 }
                             }}
-                            onPointerUp={() => {
-                                lastX.current = null;
-                            }}
-                            onPointerLeave={() => {
-                                lastX.current = null;
-                            }}
+                            onPointerUp={() => { lastX.current = null; }}
+                            onPointerLeave={() => { lastX.current = null; }}
                             style={{
                                 rotateY: rotation,
                                 transformStyle: "preserve-3d",
@@ -284,11 +310,7 @@ export default function Hero() {
                                             }}
                                             className="absolute inset-0 flex items-center justify-center"
                                         >
-                                            <div
-                                                style={{
-                                                    transform: "rotateY(180deg) translateZ(0)",
-                                                }}
-                                            >
+                                            <div style={{ transform: "rotateY(180deg) translateZ(0)" }}>
                                                 <video
                                                     src={src}
                                                     autoPlay
@@ -341,26 +363,12 @@ export default function Hero() {
                         <span>Book a Call</span>
                         <span className="ml-3 relative flex items-center justify-center overflow-hidden w-5 h-5">
                             <span className="absolute inset-0 flex items-center justify-center -rotate-45 transition-transform duration-700 group-hover:translate-x-[150%] group-hover:-translate-y-[150%]">
-                                <svg
-                                    width="20"
-                                    height="20"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2.5"
-                                >
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                     <path d="M5 12h14M12 5l7 7-7 7" />
                                 </svg>
                             </span>
                             <span className="absolute inset-0 flex items-center justify-center -rotate-45 -translate-x-[150%] translate-y-[150%] transition-transform duration-700 group-hover:translate-x-0 group-hover:translate-y-0">
-                                <svg
-                                    width="20"
-                                    height="20"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2.5"
-                                >
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                     <path d="M5 12h14M12 5l7 7-7 7" />
                                 </svg>
                             </span>
