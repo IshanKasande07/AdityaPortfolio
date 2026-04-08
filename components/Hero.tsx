@@ -5,14 +5,14 @@ import { useRef, useEffect, useState } from "react";
 import { useReveal } from "./RevealLayout";
 
 const videos = [
-    "https://glq1banjnszesnxr.public.blob.vercel-storage.com/01_Origins%20x%20Nandini%20%28%20Final%20%29%20%20copy.mp4",
-    "https://glq1banjnszesnxr.public.blob.vercel-storage.com/Bipsun%20copy.mp4",
-    "https://glq1banjnszesnxr.public.blob.vercel-storage.com/Chatter%20Box%20v2%20copy.mp4",
-    "https://glq1banjnszesnxr.public.blob.vercel-storage.com/Deccan%20Gymkhana%20%20copy.mp4",
-    "https://glq1banjnszesnxr.public.blob.vercel-storage.com/Image%20Analysis%20copy.mp4",
-    "https://glq1banjnszesnxr.public.blob.vercel-storage.com/Scaler%20Trailer%20Reel%20copy.mp4",
-    "https://glq1banjnszesnxr.public.blob.vercel-storage.com/electricity%20bill%20copy.mp4",
-    "https://glq1banjnszesnxr.public.blob.vercel-storage.com/solar%20tax%20copy.mp4",
+    "https://6w6pzjonpzupwyh4.public.blob.vercel-storage.com/01_Origins%20x%20Nandini%20%28%20Final%20%29%20%20copy%20%281%29.mp4",
+    "https://6w6pzjonpzupwyh4.public.blob.vercel-storage.com/Bipsun%20copy.mp4",
+    "https://6w6pzjonpzupwyh4.public.blob.vercel-storage.com/Chatter%20Box%20v2%20copy.mp4",
+    "https://6w6pzjonpzupwyh4.public.blob.vercel-storage.com/Deccan%20Gymkhana%20%20copy.mp4",
+    "https://6w6pzjonpzupwyh4.public.blob.vercel-storage.com/Image%20Analysis%20copy.mp4",
+    "https://6w6pzjonpzupwyh4.public.blob.vercel-storage.com/Scaler%20Trailer%20Reel%20copy.mp4",
+    "https://6w6pzjonpzupwyh4.public.blob.vercel-storage.com/electricity%20bill%20copy.mp4",
+    "https://6w6pzjonpzupwyh4.public.blob.vercel-storage.com/solar%20tax%20copy.mp4",
 ];
 
 const headingLines = [
@@ -234,8 +234,8 @@ export default function Hero() {
                                     >
                                         <span
                                             className={`word-reveal ${earlyReveal ? "playing" : ""} ${lineIdx === 1
-                                                    ? "italic font-normal text-accent"
-                                                    : "text-primary"
+                                                ? "italic font-normal text-accent"
+                                                : "text-primary"
                                                 }`}
                                             style={{
                                                 animationDelay: `${lineIdx * 0.1 + i * 0.04}s`,
