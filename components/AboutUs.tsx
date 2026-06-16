@@ -160,15 +160,9 @@ export default function AboutUs() {
 
         {/* About Us Pill */}
         <div className="flex justify-center mt-12 md:mt-24 mb-16 md:mb-24">
-          <motion.div
-            initial={{ opacity: 0, scaleX: 0 }}
-            whileInView={{ opacity: 1, scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="px-14 py-4 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-lg md:text-xl uppercase tracking-[0.3em] font-semibold shadow-[0_8px_32px_rgba(255,255,255,0.08)]"
-          >
+          <div className="px-14 py-4 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-lg md:text-xl uppercase tracking-[0.3em] font-semibold shadow-[0_8px_32px_rgba(255,255,255,0.08)]">
             About Us
-          </motion.div>
+          </div>
         </div>
 
         {/* 3. Co-founder photos */}

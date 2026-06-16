@@ -89,6 +89,12 @@ const Navbar = () => {
           >
             About
           </button>
+          <button 
+            onClick={() => router.push('/contact')} 
+            className={`text-sm font-medium transition-colors hover:text-accent`}
+          >
+            Contact
+          </button>
         </div>
       </div>
 

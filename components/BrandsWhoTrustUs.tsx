@@ -45,7 +45,7 @@ const MagneticLogo = ({ src, isLarge, manualScale = 1 }: any) => {
     // Removed backdrop-blur-md as rendering 40+ blur layers simultaneously kills first paint.
     return (
         <div
-            className="flex-shrink-0 flex flex-col items-center justify-center p-4 md:p-5 border border-white/5 rounded-2xl bg-surface-light/40 w-32 h-24 md:w-48 md:h-32 mx-2 md:mx-3 cursor-pointer group hover:scale-[1.1] hover:border-[rgba(255,195,0,0.4)] transition-all duration-300 ease-out will-change-transform"
+            className="flex-shrink-0 flex flex-col items-center justify-center p-4 md:p-5 border border-white/5 rounded-2xl bg-surface-light/40 w-32 h-24 md:w-48 md:h-32 mx-2 md:mx-3 group hover:scale-[1.1] hover:border-[rgba(255,195,0,0.4)] transition-all duration-300 ease-out will-change-transform"
             style={{
                 WebkitBackfaceVisibility: "hidden",
                 backfaceVisibility: "hidden"

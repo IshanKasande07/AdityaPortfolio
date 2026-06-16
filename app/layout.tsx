@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import Script from "next/script";
 import "./globals.css";
 import LenisProvider from "./providers/LenisProvider";
+import CustomCursor from "@/components/CustomCursor";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -90,6 +91,7 @@ export default function RootLayout({
           `}
         </Script>
         <LenisProvider>
+          <CustomCursor />
           {children}
         </LenisProvider>
       </body>

@@ -14,10 +14,25 @@
   --font-tiempos: var(--font-tiempos-headline), serif;
 }
 
-body {
-  background-color: var(--color-background);
-  color: var(--color-primary);
-  font-family: var(--font-sans);
+@layer base {
+  html, body {
+    cursor: none !important;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-primary);
+    font-family: var(--font-sans);
+  }
+}
+
+
+@layer utilities {
+  *, *::before, *::after,
+  a, button, input, textarea, select, label,
+  [role="button"] {
+    cursor: none !important;
+  }
 }
 
 .playfair-display-font {
