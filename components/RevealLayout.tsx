@@ -45,7 +45,7 @@ export function RevealProvider({ children }: { children: ReactNode }) {
 
         const timer = setTimeout(() => {
             setEarlyReveal(true);
-        }, 1100);
+        }, 1600); // Increased from 1100 to 1600 to account for the 500ms animation delay
 
         return () => clearTimeout(timer);
     }, []);
@@ -96,12 +96,12 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
         >
             <motion.div
                 initial={{
-                    clipPath: "inset(49.99% 49.9% 49.99% 49.9% round 9999px)",
+                    clipPath: "inset(49.99% 49.9% 49.99% 49.9% round 100px)",
                 }}
                 animate={{
                     clipPath: `inset(${BORDER_PX}px ${BORDER_PX}px ${BORDER_PX}px ${BORDER_PX}px round ${RADIUS})`,
                 }}
-                transition={{ duration: 1.6, ease: [0.76, 0, 0.24, 1] }}
+                transition={{ delay: 0.5, duration: 1.6, ease: [0.65, 0, 0.35, 1] }}
                 onAnimationComplete={() => setRevealed(true)}
                 style={{
                     // PERF FIX #3: will-change: clip-path promotes this element to its

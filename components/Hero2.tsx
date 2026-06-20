@@ -180,7 +180,7 @@ export default function Hero2() {
                     <motion.div
                         className="absolute inset-0 z-0"
                         style={{
-                            backgroundImage: "url('/heroassets/Sky.png')",
+                            backgroundImage: "url('/heroassets/Sky.webp')",
                             backgroundSize: "cover",
                             backgroundPosition: "top center",
                             backgroundRepeat: "no-repeat",
@@ -188,7 +188,7 @@ export default function Hero2() {
                             y: parallaxReady ? combinedSkyY : 0,
                             scale: 1.05,
                             transformOrigin: "center",
-                            willChange: "transform",
+                            willChange: parallaxReady ? "transform" : "auto",
                         }}
                     />
 
@@ -199,12 +199,12 @@ export default function Hero2() {
                         y: parallaxReady ? combinedBridgeBehindY : 0,
                         scale: 1.05,
                         transformOrigin: "center",
-                        willChange: "transform",
+                        willChange: parallaxReady ? "transform" : "auto",
                     }}
                     className="absolute inset-0 z-[10]"
                 >
                     <img
-                        src="/heroassets/Bridge Behind.png"
+                        src="/heroassets/Bridge Behind.webp"
                         alt=""
                         className="absolute w-full h-full object-cover object-center"
                         style={{ top: "0" }}
@@ -219,12 +219,12 @@ export default function Hero2() {
                         y: parallaxReady ? combinedBridgeBottomCloudY : 0,
                         scale: 1.05,
                         transformOrigin: "bottom center",
-                        willChange: "transform",
+                        willChange: parallaxReady ? "transform" : "auto",
                     }}
                     className="absolute inset-x-0 bottom-0 z-[15] flex justify-center pointer-events-none"
                 >
                     <img
-                        src="/heroassets/Bridge Bottom Cloud_.png"
+                        src="/heroassets/Bridge Bottom Cloud_.webp"
                         alt=""
                         className="object-contain object-bottom"
                         style={{ width: "25vw", height: "auto" }}
@@ -239,12 +239,12 @@ export default function Hero2() {
                         y: parallaxReady ? combinedBridgeY : 0,
                         scale: 1.05,
                         transformOrigin: "bottom center",
-                        willChange: "transform",
+                        willChange: parallaxReady ? "transform" : "auto",
                     }}
                     className="absolute inset-0 z-[20]"
                 >
                     <img
-                        src="/heroassets/Bridge.png"
+                        src="/heroassets/Bridge.webp"
                         alt=""
                         className="absolute w-full object-cover object-bottom"
                         style={{ height: "102%", top: "2vh" }}
@@ -259,12 +259,12 @@ export default function Hero2() {
                         y: parallaxReady ? combinedCloudY : 0,
                         scale: 1.05,
                         transformOrigin: "bottom center",
-                        willChange: "transform",
+                        willChange: parallaxReady ? "transform" : "auto",
                     }}
                     className="absolute inset-0 z-[30]"
                 >
                     <img
-                        src="/heroassets/CLoud.png"
+                        src="/heroassets/CLoud.webp"
                         alt=""
                         draggable={false}
                         className="absolute bottom-0 left-0 w-full"
@@ -281,12 +281,12 @@ export default function Hero2() {
                         y: parallaxReady ? combinedLeftMountainY : 0,
                         scale: 1.1,
                         transformOrigin: "bottom center",
-                        willChange: "transform",
+                        willChange: parallaxReady ? "transform" : "auto",
                     }}
                     className="absolute inset-0 z-[40]"
                 >
                     <img
-                        src="/heroassets/LEft Mountaim.png"
+                        src="/heroassets/LEft Mountaim.webp"
                         alt=""
                         draggable={false}
                         className="absolute bottom-0 left-0"
@@ -305,12 +305,12 @@ export default function Hero2() {
                         y: parallaxReady ? combinedRightMountainY : 0,
                         scale: 1.1,
                         transformOrigin: "bottom center",
-                        willChange: "transform",
+                        willChange: parallaxReady ? "transform" : "auto",
                     }}
                     className="absolute inset-0 z-[40]"
                 >
                     <img
-                        src="/heroassets/Right Mountaim.png"
+                        src="/heroassets/Right Mountaim.webp"
                         alt=""
                         draggable={false}
                         className="absolute bottom-0 right-0"
