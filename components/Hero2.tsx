@@ -104,13 +104,13 @@ export default function Hero2() {
     const mountainsMouseY = useTransform(smoothMouseY, [-1, 1], [-50, 50]);
 
     // Combined Y transforms (Scroll + Mouse)
-    const combinedSkyY = useTransform([skyScrollY, skyMouseY], ([s, m]) => s + m);
-    const combinedBridgeBehindY = useTransform([bridgeBehindY, bridgeBehindMouseY], ([s, m]) => s + m);
-    const combinedBridgeBottomCloudY = useTransform([bridgeBottomCloudY, bridgeBottomCloudMouseY], ([s, m]) => s + m);
-    const combinedBridgeY = useTransform([bridgeY, bridgeMouseY], ([s, m]) => s + m);
-    const combinedCloudY = useTransform([cloudY, cloudMouseY], ([s, m]) => s + m);
-    const combinedLeftMountainY = useTransform([mountainsY, mountainsMouseY], ([s, m]) => s + m);
-    const combinedRightMountainY = useTransform([mountainsY, mountainsMouseY], ([s, m]) => s + m);
+    const combinedSkyY = useTransform([skyScrollY, skyMouseY], ([s, m]: any) => s + m);
+    const combinedBridgeBehindY = useTransform([bridgeBehindY, bridgeBehindMouseY], ([s, m]: any) => s + m);
+    const combinedBridgeBottomCloudY = useTransform([bridgeBottomCloudY, bridgeBottomCloudMouseY], ([s, m]: any) => s + m);
+    const combinedBridgeY = useTransform([bridgeY, bridgeMouseY], ([s, m]: any) => s + m);
+    const combinedCloudY = useTransform([cloudY, cloudMouseY], ([s, m]: any) => s + m);
+    const combinedLeftMountainY = useTransform([mountainsY, mountainsMouseY], ([s, m]: any) => s + m);
+    const combinedRightMountainY = useTransform([mountainsY, mountainsMouseY], ([s, m]: any) => s + m);
 
     // Text parallax — moves fastest and fades out
     const textY = useTransform(scrollYProgress, [0, 0.5], [0, -200]);
