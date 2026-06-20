@@ -128,9 +128,6 @@ export default function Hero() {
                     from { transform: translateY(120%); opacity: 0; }
                     to   { transform: translateY(0%);   opacity: 1; }
                 }
-                /* FIX — subtitle uses same mechanism as words: CSS keyframe,
-                   runs off main thread, zero Framer Motion overhead,
-                   completely invisible to parent headerControls compositor layer */
                 @keyframes subtitleReveal {
                     from { transform: translateY(15px); opacity: 0; }
                     to   { transform: translateY(0px);  opacity: 1; }
@@ -148,7 +145,6 @@ export default function Hero() {
                 .subtitle-reveal {
                     opacity: 0;
                     will-change: transform, opacity;
-                    /* delay 0.6s matches original motion.p variant delay exactly */
                     animation: subtitleReveal 0.8s ease-out 0.6s forwards;
                     animation-play-state: paused;
                 }

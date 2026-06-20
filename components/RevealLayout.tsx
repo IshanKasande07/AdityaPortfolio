@@ -56,6 +56,15 @@ export function RevealProvider({ children }: { children: ReactNode }) {
             document.documentElement.style.backgroundColor = "#0A0A0E";
             // Restore scroll after the clip-path animation has fully completed.
             document.body.style.overflowY = "";
+
+            // The reappearance of the scrollbar changes window width (and potentially document height).
+            // We must force GSAP to recalculate all trigger offsets, otherwise sections like ImpactSection
+            // will have delayed or incorrect start points.
+            setTimeout(() => {
+                import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
+                    ScrollTrigger.refresh();
+                });
+            }, 100);
         }
     }, [revealed]);
 

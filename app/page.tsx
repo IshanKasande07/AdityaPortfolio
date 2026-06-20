@@ -1,5 +1,5 @@
 import React from 'react'
-import Hero from '@/components/Hero'
+import Hero2 from '@/components/Hero2'
 import Contact from '@/components/Contact'
 import Who from '@/components/Who'
 import ProblemsSection from '@/components/ProblemsSection'
@@ -21,7 +21,7 @@ const page = () => {
 
       {/* Hero as one clipped card — cream border on all 4 sides */}
       <RevealLayout>
-        <Hero />
+        <Hero2 />
       </RevealLayout>
 
       <BrandsWhoTrustUs />

@@ -99,7 +99,7 @@ const ImpactSection = () => {
                     tl.fromTo(
                         headerRef.current,
                         { autoAlpha: 0, x: -100 },
-                        { autoAlpha: 1, x: 0, duration: 0.1, ease: "power2.out" },
+                        { autoAlpha: 1, x: 0, duration: 0.01, ease: "power2.out" },
                         0
                     );
                 }
@@ -113,11 +113,11 @@ const ImpactSection = () => {
                 // After 0.20   : group stays parked indefinitely (no more tweens)
 
                 // Adjusted slot timing to allow the "Our Services" header to appear FIRST alone.
-                // We reserve the first 0.08 of the scroll for just the header sliding in.
-                const SLOT = 0.18; // Compress the 5 items slightly so they still fit under 1.0
+                // We reserve the first 0.01 of the scroll for just the header sliding in.
+                const SLOT = 0.19; // Compress the 5 items slightly so they still fit under 1.0
 
                 contents.forEach((_, idx) => {
-                    const base = 0.08 + (idx * SLOT);
+                    const base = 0.01 + (idx * SLOT);
                     const groupEl = groupRefs.current[idx];
                     const subEl = subRefs.current[idx];
 
