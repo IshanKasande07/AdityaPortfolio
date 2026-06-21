@@ -26,10 +26,21 @@ export default function Hero2() {
     useEffect(() => {
         // Check for touch-primary device (mobile/tablet)
         const mql = window.matchMedia("(pointer: coarse)");
-        setIsTouchDevice(mql.matches);
+        if (mql.matches) {
+            setIsTouchDevice(true);
+        }
         const handler = (e: MediaQueryListEvent) => setIsTouchDevice(e.matches);
         mql.addEventListener("change", handler);
-        return () => mql.removeEventListener("change", handler);
+
+        const handleTouchStart = () => {
+            setIsTouchDevice(true);
+        };
+        window.addEventListener("touchstart", handleTouchStart, { passive: true });
+
+        return () => {
+            mql.removeEventListener("change", handler);
+            window.removeEventListener("touchstart", handleTouchStart);
+        };
     }, []);
 
     useEffect(() => {
@@ -201,8 +212,8 @@ export default function Hero2() {
                         backgroundSize: "cover",
                         backgroundPosition: "top center",
                         backgroundRepeat: "no-repeat",
-                        x: skyMouseX,
-                        y: combinedSkyY,
+                        x: isTouchDevice ? 0 : skyMouseX,
+                        y: isTouchDevice ? skyScrollY : combinedSkyY,
                         z: 0.01,
                         scale: 1.05,
                         transformOrigin: "center",
@@ -213,8 +224,8 @@ export default function Hero2() {
                 {/* ========== LAYER 1: Bridge Behind (slowest parallax) ========== */}
                 <motion.div
                     style={{
-                        x: bridgeBehindMouseX,
-                        y: combinedBridgeBehindY,
+                        x: isTouchDevice ? 0 : bridgeBehindMouseX,
+                        y: isTouchDevice ? bridgeBehindY : combinedBridgeBehindY,
                         z: 0.01,
                         scale: 1.05,
                         transformOrigin: "center",
@@ -235,8 +246,8 @@ export default function Hero2() {
                 {/* ========== LAYER 1.5: Bridge Bottom Cloud ========== */}
                 <motion.div
                     style={{
-                        x: bridgeBottomCloudMouseX,
-                        y: combinedBridgeBottomCloudY,
+                        x: isTouchDevice ? 0 : bridgeBottomCloudMouseX,
+                        y: isTouchDevice ? bridgeBottomCloudY : combinedBridgeBottomCloudY,
                         z: 0.01,
                         scale: 1.05,
                         transformOrigin: "bottom center",
@@ -257,8 +268,8 @@ export default function Hero2() {
                 {/* ========== LAYER 2: Bridge (medium parallax) ========== */}
                 <motion.div
                     style={{
-                        x: bridgeMouseX,
-                        y: combinedBridgeY,
+                        x: isTouchDevice ? 0 : bridgeMouseX,
+                        y: isTouchDevice ? bridgeY : combinedBridgeY,
                         z: 0.01,
                         scale: 1.05,
                         transformOrigin: "bottom center",
@@ -279,8 +290,8 @@ export default function Hero2() {
                 {/* ========== LAYER 3: Cloud (medium-fast parallax) ========== */}
                 <motion.div
                     style={{
-                        x: cloudMouseX,
-                        y: combinedCloudY,
+                        x: isTouchDevice ? 0 : cloudMouseX,
+                        y: isTouchDevice ? cloudY : combinedCloudY,
                         z: 0.01,
                         scale: 1.15,
                         transformOrigin: "center",
@@ -301,8 +312,8 @@ export default function Hero2() {
                 {/* ========== LAYER 4: Left Mountain (fast parallax, bottom-left) ========== */}
                 <motion.div
                     style={{
-                        x: mountainsMouseX,
-                        y: combinedLeftMountainY,
+                        x: isTouchDevice ? 0 : mountainsMouseX,
+                        y: isTouchDevice ? mountainsY : combinedLeftMountainY,
                         z: 0.01,
                         scale: 1.2,
                         transformOrigin: "bottom left",
@@ -323,8 +334,8 @@ export default function Hero2() {
                 {/* ========== LAYER 4: Right Mountain (fast parallax, bottom-right) ========== */}
                 <motion.div
                     style={{
-                        x: mountainsMouseX,
-                        y: combinedRightMountainY,
+                        x: isTouchDevice ? 0 : mountainsMouseX,
+                        y: isTouchDevice ? mountainsY : combinedRightMountainY,
                         z: 0.01,
                         scale: 1.2,
                         transformOrigin: "bottom right",
