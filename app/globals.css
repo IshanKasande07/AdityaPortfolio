@@ -15,8 +15,10 @@
 }
 
 @layer base {
-  html, body {
-    cursor: none !important;
+  @media (pointer: fine) {
+    html, body {
+      cursor: none !important;
+    }
   }
 
   body {
@@ -28,10 +30,12 @@
 
 
 @layer utilities {
-  *, *::before, *::after,
-  a, button, input, textarea, select, label,
-  [role="button"] {
-    cursor: none !important;
+  @media (pointer: fine) {
+    *, *::before, *::after,
+    a, button, input, textarea, select, label,
+    [role="button"] {
+      cursor: none !important;
+    }
   }
 }
 

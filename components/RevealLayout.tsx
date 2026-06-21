@@ -175,6 +175,15 @@ export function RevealProvider({ children }: { children: ReactNode }) {
     const [earlyReveal, setEarlyReveal] = useState(false);
 
     useEffect(() => {
+        const isMobile = window.innerWidth < 768;
+        if (isMobile) {
+            setRevealed(true);
+            setEarlyReveal(true);
+            document.body.style.backgroundColor = "#0A0A0E";
+            document.documentElement.style.backgroundColor = "#0A0A0E";
+            return;
+        }
+
         document.body.style.backgroundColor = CREAM;
         document.documentElement.style.backgroundColor = CREAM;
 
@@ -195,6 +204,9 @@ export function RevealProvider({ children }: { children: ReactNode }) {
     }, []);
 
     useEffect(() => {
+        const isMobile = window.innerWidth < 768;
+        if (isMobile) return;
+
         if (revealed) {
             document.body.style.backgroundColor = "#0A0A0E";
             document.documentElement.style.backgroundColor = "#0A0A0E";
@@ -224,6 +236,12 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
     const [startPath, setStartPath] = useState<string | null>(null);
 
     useEffect(() => {
+        const isMobile = window.innerWidth < 768;
+        if (isMobile) {
+            setRevealed(true);
+            return;
+        }
+
         // FIX 2: Mathematically Stable Geometry
         // Instead of 49.99% (which creates a sub-pixel box that crashes the hardware renderer),
         // we define an exact, renderable starting pill size in pixels.
@@ -234,18 +252,33 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
         const yPx = (window.innerHeight - initialHeight) / 2;
 
         setStartPath(`inset(${yPx}px ${xPx}px ${yPx}px ${xPx}px round 100px)`);
-    }, []);
+    }, [setRevealed]);
 
     return (
         <div
-            className="relative w-full overflow-hidden"
+            className="reveal-parent-container relative w-full overflow-hidden"
             style={{
                 backgroundColor: CREAM,
                 minHeight: "100vh",
                 contain: "layout",
             }}
         >
+            <style>{`
+                @media (max-width: 768px) {
+                    .reveal-parent-container {
+                        background-color: #0A0A0E !important;
+                        contain: none !important;
+                    }
+                    .reveal-animated-div {
+                        clip-path: none !important;
+                        will-change: auto !important;
+                        transform: none !important;
+                        contain: none !important;
+                    }
+                }
+            `}</style>
             <motion.div
+                className="reveal-animated-div"
                 initial={{
                     // Fallback state for the first split-second frame before math calculates
                     clipPath: startPath || "inset(49.5% 45% 49.5% 45% round 100px)",

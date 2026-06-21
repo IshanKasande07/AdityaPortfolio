@@ -13,7 +13,16 @@ const CustomCursor = () => {
     const x = useSpring(cursorX, { stiffness: 500, damping: 30, mass: 0.4 });
     const y = useSpring(cursorY, { stiffness: 500, damping: 30, mass: 0.4 });
 
+    const [isTouchDevice, setIsTouchDevice] = useState(false);
+
     useEffect(() => {
+        const mql = window.matchMedia("(pointer: coarse)");
+        setIsTouchDevice(mql.matches);
+    }, []);
+
+    useEffect(() => {
+        if (isTouchDevice) return;
+
         const move = (e: MouseEvent) => {
             cursorX.set(e.clientX);
             cursorY.set(e.clientY);
@@ -41,11 +50,13 @@ const CustomCursor = () => {
             document.removeEventListener("mouseleave", leave);
             document.removeEventListener("mouseenter", enter);
         };
-    }, [cursorX, cursorY, isVisible]);
+    }, [cursorX, cursorY, isVisible, isTouchDevice]);
+
+    if (isTouchDevice) return null;
 
     return (
         <motion.div
-            className="fixed top-0 left-0 pointer-events-none z-[99999] rounded-full"
+            className="fixed top-0 left-0 pointer-events-none z-[99999] rounded-full hidden md:block"
             style={{
                 x,
                 y,

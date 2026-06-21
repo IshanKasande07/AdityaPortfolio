@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useReveal } from "./RevealLayout";
 import { useRouter, usePathname } from "next/navigation";
 
@@ -8,6 +8,7 @@ import Image from "next/image";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const { revealed } = useReveal();
   const router = useRouter();
   const pathname = usePathname();
@@ -21,6 +22,17 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
 
   const isHomePage = pathname === "/";
   const shouldBeVisible = revealed || !isHomePage;
@@ -111,6 +123,7 @@ const Navbar = () => {
       {/* Mobile menu button */}
       <div className="flex justify-end md:hidden pointer-events-auto text-white">
         <button
+          onClick={() => setIsOpen(true)}
           className="p-2 transition-colors duration-300"
           aria-label="Toggle menu"
         >
@@ -132,6 +145,109 @@ const Navbar = () => {
           </svg>
         </button>
       </div>
+
+      {/* Mobile menu Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="fixed inset-0 z-[250] bg-[#0A0A0E]/95 backdrop-blur-3xl flex flex-col justify-between p-8 md:hidden pointer-events-auto"
+          >
+            {/* Top row with Logo and Close button */}
+            <div className="flex justify-between items-center w-full">
+              <Image 
+                src="/brandlogo/Monarch White.png" 
+                alt="Monarch Media House" 
+                width={72} 
+                height={40} 
+                className="object-contain h-10 w-auto"
+              />
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-2 text-white/70 hover:text-white"
+                aria-label="Close menu"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-6 h-6"
+                >
+                  <line x1="18" x2="6" y1="6" y2="18" />
+                  <line x1="6" x2="18" y1="6" y2="18" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Vertical Menu Items */}
+            <div className="flex flex-col gap-8 my-auto text-left">
+              {[
+                { name: "Work", target: "#work" },
+                { name: "Services", target: "#impact" },
+                { name: "About", path: "/about" },
+                { name: "Contact", path: "/contact" },
+              ].map((item, index) => (
+                <motion.button
+                  key={item.name}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + index * 0.05 }}
+                  onClick={() => {
+                    setIsOpen(false);
+                    if (item.path) {
+                      router.push(item.path);
+                    } else if (item.target) {
+                      if (pathname !== "/") {
+                        router.push(`/${item.target}`);
+                      } else {
+                        if (item.target === "#impact") {
+                          const el = document.getElementById("impact");
+                          if (el) {
+                            const sectionTop = el.offsetTop;
+                            const offset = el.offsetHeight * 0.04;
+                            window.scrollTo({ top: sectionTop + offset, behavior: "smooth" });
+                          }
+                        } else {
+                          document.getElementById(item.target.replace("#", ""))?.scrollIntoView({ behavior: "smooth" });
+                        }
+                      }
+                    }
+                  }}
+                  className="text-4xl font-semibold text-white/80 hover:text-white hover:translate-x-2 transition-all duration-300"
+                >
+                  {item.name}
+                </motion.button>
+              ))}
+            </div>
+
+            {/* CTA button at the bottom */}
+            <div className="w-full pb-8">
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  if (pathname !== "/") {
+                    router.push("/#contact");
+                  } else {
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="w-full py-4 rounded-full border border-white/20 bg-white text-black font-semibold text-center hover:bg-transparent hover:text-white transition-all duration-300"
+              >
+                Book a Call ↗
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </motion.div>
   );
