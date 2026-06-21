@@ -66,7 +66,7 @@ export default function AboutUs() {
   };
 
   return (
-    <section id="about" className="relative w-full pt-12 pb-24 mb-12 bg-background text-white select-none overflow-hidden" ref={containerRef}>
+    <section id="about" className="relative w-full pt-12 pb-24 mb-12 bg-background text-primary select-none overflow-hidden" ref={containerRef}>
       {/* Decorative Background Elements */}
       <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-accent/5 blur-[120px] rounded-full pointer-events-none -translate-y-1/2 translate-x-1/3" />
       <div className="absolute bottom-1/4 left-0 w-[40vw] h-[40vh] bg-[#5D3FD3]/5 blur-[120px] rounded-full pointer-events-none translate-y-1/2 -translate-x-1/3" />
@@ -93,66 +93,66 @@ export default function AboutUs() {
           className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 auto-rows-[220px] md:auto-rows-[260px] max-w-7xl mx-auto w-full"
         >
           {/* Card 1: Hero */}
-          <motion.div variants={itemVariants} className="md:col-span-2 md:row-span-2 flex flex-col justify-center p-8 md:p-14 rounded-[2rem] bg-gradient-to-br from-white/[0.08] to-transparent border border-white/10 backdrop-blur-lg relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500 shadow-xl">
+          <motion.div variants={itemVariants} className="md:col-span-2 md:row-span-2 flex flex-col justify-center p-8 md:p-14 rounded-[2rem] bg-gradient-to-br from-primary/[0.08] to-transparent border border-primary/10 backdrop-blur-lg relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500 shadow-xl">
             <div className="absolute inset-0 bg-gradient-to-tr from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-accent/20 blur-[80px] rounded-full group-hover:bg-accent/30 transition-colors duration-700 pointer-events-none" />
             <h3 className="text-4xl md:text-5xl lg:text-6xl font-display font-semibold mb-6 flex flex-col gap-1 tracking-tight">
               <span>Infotainment</span>
               <span className="text-accent italic">Driven!</span>
             </h3>
-            <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-lg mt-2 font-medium">
+            <p className="text-lg md:text-xl text-primary/70 leading-relaxed max-w-lg mt-2 font-medium">
               We take brands from ground zero to building their brand pillars, strategy and optimise for longevity. Our aim is to build a narrative around your 5 year goal!
             </p>
           </motion.div>
 
           {/* Card 2: Projects */}
-          <motion.div variants={itemVariants} className="md:col-span-1 md:row-span-1 flex flex-col p-8 rounded-[2rem] bg-[#141414] border border-white/5 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:border-white/20 hover:shadow-[0_8px_32px_rgba(255,255,255,0.05)] justify-between">
+          <motion.div variants={itemVariants} className="md:col-span-1 md:row-span-1 flex flex-col p-8 rounded-[2rem] bg-[#11250E] border border-primary/5 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:border-primary/20 hover:shadow-[0_8px_32px_rgba(17,37,14,0.05)] justify-between">
             <div>
               <h4 className="text-5xl lg:text-6xl font-display font-semibold mb-1">
                 <Counter value={50} />+
               </h4>
-              <span className="text-white/80 font-medium uppercase tracking-wider text-xs md:text-sm">Projects</span>
+              <span className="text-primary/80 font-medium uppercase tracking-wider text-xs md:text-sm">Projects</span>
             </div>
-            <p className="text-sm text-white/50 leading-relaxed mt-4">
+            <p className="text-sm text-primary/50 leading-relaxed mt-4">
               Across creative strategy, Performance Marketing, SEO, Video Production and Post Production.
             </p>
           </motion.div>
 
           {/* Card 3: Team */}
           <motion.div variants={itemVariants} className="md:col-span-1 md:row-span-1 flex flex-col p-8 rounded-[2rem] bg-[#5330D0] border border-[#5330D0]/50 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:shadow-[0_12px_40px_rgba(83,48,208,0.4)] justify-between">
-            <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-50" />
+            <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent opacity-50" />
             <div className="relative z-10">
-              <h4 className="text-5xl lg:text-6xl font-display font-semibold mb-1 text-white">7+</h4>
-              <span className="text-white/90 font-medium uppercase tracking-wider text-xs md:text-sm">Team Members</span>
+              <h4 className="text-5xl lg:text-6xl font-display font-semibold mb-1 text-primary">7+</h4>
+              <span className="text-primary/90 font-medium uppercase tracking-wider text-xs md:text-sm">Team Members</span>
             </div>
-            <p className="text-sm text-white/80 leading-relaxed mt-4 relative z-10">
+            <p className="text-sm text-primary/80 leading-relaxed mt-4 relative z-10">
               A lean team of high performers who aim to deliver the best of the best work.
             </p>
           </motion.div>
 
           {/* Card 4: Clients */}
-          <motion.div variants={itemVariants} className="md:col-span-1 md:row-span-1 flex flex-col p-8 rounded-[2rem] bg-gradient-to-tr from-[#111] to-[#1c1c1c] border border-white/5 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:border-accent/40 justify-between">
+          <motion.div variants={itemVariants} className="md:col-span-1 md:row-span-1 flex flex-col p-8 rounded-[2rem] bg-gradient-to-tr from-[#111] to-[#1c1c1c] border border-primary/5 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:border-accent/40 justify-between">
             <div>
               <h4 className="text-5xl lg:text-6xl font-display font-semibold mb-1">
                 <Counter value={20} />+
               </h4>
-              <span className="text-white/80 font-medium uppercase tracking-wider text-xs md:text-sm">Clients</span>
+              <span className="text-primary/80 font-medium uppercase tracking-wider text-xs md:text-sm">Clients</span>
             </div>
-            <p className="text-sm text-white/50 leading-relaxed mt-4">
+            <p className="text-sm text-primary/50 leading-relaxed mt-4">
               Across Healthcare, entertainment, AI Startups, Architects and Beyond
             </p>
           </motion.div>
 
           {/* Card 5: Impressions */}
-          <motion.div variants={itemVariants} className="md:col-span-1 md:row-span-1 flex flex-col p-8 rounded-[2rem] bg-[#0A0A0A] border border-white/10 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:border-accent justify-between shadow-lg">
+          <motion.div variants={itemVariants} className="md:col-span-1 md:row-span-1 flex flex-col p-8 rounded-[2rem] bg-[#0A0A0A] border border-primary/10 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:border-accent justify-between shadow-lg">
             <div className="absolute -top-12 -right-12 p-8 opacity-20 blur-2xl rounded-full bg-accent w-40 h-40 group-hover:opacity-40 transition-opacity duration-700" />
             <div className="relative z-10">
               <h4 className="text-5xl lg:text-6xl font-display font-semibold mb-1 text-accent drop-shadow-md">
                 10M+
               </h4>
-              <span className="text-white/80 font-medium uppercase tracking-wider text-xs md:text-sm">Impressions</span>
+              <span className="text-primary/80 font-medium uppercase tracking-wider text-xs md:text-sm">Impressions</span>
             </div>
-            <p className="text-sm text-white/60 leading-relaxed mt-4 relative z-10">
+            <p className="text-sm text-primary/60 leading-relaxed mt-4 relative z-10">
               Generated over 10M+ views across campaigns. Helped accounts go from 3K to 100K views in a week.
             </p>
           </motion.div>
@@ -160,7 +160,7 @@ export default function AboutUs() {
 
         {/* About Us Pill */}
         <div className="flex justify-center mt-12 md:mt-24 mb-16 md:mb-24">
-          <div className="px-14 py-4 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-lg md:text-xl uppercase tracking-[0.3em] font-semibold shadow-[0_8px_32px_rgba(255,255,255,0.08)]">
+          <div className="px-14 py-4 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-md text-lg md:text-xl uppercase tracking-[0.3em] font-semibold shadow-[0_8px_32px_rgba(17,37,14,0.08)]">
             About Us
           </div>
         </div>
@@ -198,23 +198,23 @@ export default function AboutUs() {
             transition={{ duration: 0.8 }}
             className="will-change-transform"
           >
-            <h3 className="text-2xl md:text-4xl font-display font-medium leading-relaxed text-white/90">
+            <h3 className="text-2xl md:text-4xl font-display font-medium leading-relaxed text-primary/90">
               Monarch Media House is an <span className="text-accent italic">Infotainment First</span> Creative agency helping brands create their distribution through organic, paid & collaborative content.
             </h3>
             <div className="h-[1px] w-24 bg-gradient-to-r from-transparent via-white/20 to-transparent mx-auto my-10" />
-            <p className="text-white/60 text-lg md:text-2xl leading-relaxed max-w-4xl mx-auto font-light">
+            <p className="text-primary/60 text-lg md:text-2xl leading-relaxed max-w-4xl mx-auto font-light">
               Our aim is to help brands adapt with the new ways of building{" "}
-              <span className="text-white font-medium">content systems and funnels</span>{" "}
+              <span className="text-primary font-medium">content systems and funnels</span>{" "}
               while keeping the traditional channels active. We work with{" "}
-              <span className="text-white font-medium">B2B businesses, AI startups, Architects and creators</span>{" "}
+              <span className="text-primary font-medium">B2B businesses, AI startups, Architects and creators</span>{" "}
               building brands.
             </p>
             <div className="h-[1px] w-24 bg-gradient-to-r from-transparent via-white/20 to-transparent mx-auto my-10" />
-            <p className="text-white/60 text-lg md:text-2xl leading-relaxed max-w-4xl mx-auto font-light">
+            <p className="text-primary/60 text-lg md:text-2xl leading-relaxed max-w-4xl mx-auto font-light">
               At Monarch, we don't believe in posting for the sake of posting. We focus on{" "}
-              <span className="text-white font-medium">content that educates, sparks conversation, and builds real brand presence.</span>
+              <span className="text-primary font-medium">content that educates, sparks conversation, and builds real brand presence.</span>
             </p>
-            <p className="mt-8 text-md md:text-lg text-white/40 italic font-light tracking-wide">
+            <p className="mt-8 text-md md:text-lg text-primary/40 italic font-light tracking-wide">
               Internet rewards clarity, creativity and consistency. That's what we are here to build :)
             </p>
           </motion.div>
@@ -235,8 +235,8 @@ function FounderCard({ name, title, img1, img2 }: { name: string, title: string,
         transition={{ duration: 0.7, type: "spring", bounce: 0.4 }}
         className="w-full relative flex flex-col items-center"
       >
-        <div className="relative w-[80%] max-w-[320px] aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-white/5 border border-white/10 mb-8 shadow-2xl transform-gpu">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/10 to-transparent opacity-20" />
+        <div className="relative w-[80%] max-w-[320px] aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-primary/5 border border-primary/10 mb-8 shadow-2xl transform-gpu">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 to-transparent opacity-20" />
 
           {/* Image 1 (Fades out on hover) */}
           <Image
@@ -259,11 +259,11 @@ function FounderCard({ name, title, img1, img2 }: { name: string, title: string,
 
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/80 via-transparent to-transparent opacity-50 group-hover:opacity-60 transition-opacity duration-500 pointer-events-none" />
-          <div className="absolute inset-0 rounded-[2.5rem] border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+          <div className="absolute inset-0 rounded-[2.5rem] border border-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
         </div>
 
         <div className="text-center transform transition-all duration-500 group-hover:-translate-y-3">
-          <h4 className="text-3xl md:text-4xl font-display font-semibold mb-3 tracking-tight text-white/90 group-hover:text-white transition-colors">{name}</h4>
+          <h4 className="text-3xl md:text-4xl font-display font-semibold mb-3 tracking-tight text-primary/90 group-hover:text-primary transition-colors">{name}</h4>
           <div className="flex items-center justify-center gap-4">
             <span className="w-10 h-[1px] bg-accent/40 group-hover:bg-accent/80 transition-colors duration-500" />
             <p className="text-accent uppercase tracking-[0.2em] text-sm font-medium">{title}</p>

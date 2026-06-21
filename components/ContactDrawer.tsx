@@ -154,7 +154,7 @@ export default function ContactDrawer({ isOpen, onClose }: ContactDrawerProps) {
                         animate="visible"
                         exit="exit"
                         className="fixed right-0 top-0 h-full w-[min(500px,90vw)] z-[10001]
-                            bg-surface/95 backdrop-blur-xl border-l border-white/10
+                            bg-surface/95 backdrop-blur-xl border-l border-primary/10
                             flex flex-col overflow-y-auto"
                         style={{ willChange: "transform", transform: "translate3d(0,0,0)" }}
                     >
@@ -169,7 +169,7 @@ export default function ContactDrawer({ isOpen, onClose }: ContactDrawerProps) {
                             <motion.button
                                 variants={fieldVariants}
                                 onClick={onClose}
-                                className="w-10 h-10 flex items-center justify-center rounded-full border border-white/20 text-muted hover:text-primary hover:border-accent transition-colors duration-200"
+                                className="w-10 h-10 flex items-center justify-center rounded-full border border-primary/20 text-muted hover:text-primary hover:border-accent transition-colors duration-200"
                                 aria-label="Close drawer"
                             >
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="stroke-current" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -199,7 +199,7 @@ export default function ContactDrawer({ isOpen, onClose }: ContactDrawerProps) {
                                                 onFocus={() => setIsFocusedField(f.key)}
                                                 onBlur={() => setIsFocusedField(null)}
                                                 placeholder={f.placeholder}
-                                                className="w-full bg-transparent text-primary px-0 py-2.5 border-b border-white/15 focus:outline-none placeholder-white/10 text-sm transition-colors"
+                                                className="w-full bg-transparent text-primary px-0 py-2.5 border-b border-primary/15 focus:outline-none placeholder-primary/30 text-sm transition-colors"
                                             />
                                             {/* Expanding accent underline */}
                                             <motion.div
@@ -225,7 +225,7 @@ export default function ContactDrawer({ isOpen, onClose }: ContactDrawerProps) {
                                         onFocus={() => setIsFocusedField("message")}
                                         onBlur={() => setIsFocusedField(null)}
                                         placeholder="Tell us about your brand, audience and content goals..."
-                                        className="w-full bg-transparent text-primary px-0 py-2.5 border-b border-white/15 focus:outline-none min-h-[100px] resize-none placeholder-white/10 text-sm transition-colors"
+                                        className="w-full bg-transparent text-primary px-0 py-2.5 border-b border-primary/15 focus:outline-none min-h-[100px] resize-none placeholder-primary/30 text-sm transition-colors"
                                     />
                                     <motion.div
                                         initial={false}
@@ -241,11 +241,11 @@ export default function ContactDrawer({ isOpen, onClose }: ContactDrawerProps) {
                                 <button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="group relative w-full overflow-hidden rounded-full py-4 px-8 border border-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="group relative w-full overflow-hidden rounded-full py-4 px-8 border border-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {/* Hover fill */}
                                     <div className="absolute inset-0 bg-accent translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full" />
-                                    <div className="relative z-10 flex items-center justify-center text-sm font-medium text-white group-hover:text-black transition-colors duration-300">
+                                    <div className="relative z-10 flex items-center justify-center text-sm font-medium text-primary group-hover:text-background transition-colors duration-300">
                                         {isSubmitting ? "Submitting..." : "Send Message"}
                                         <span className="ml-2 flex items-center transition-transform duration-500 group-hover:translate-x-2">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="stroke-current" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

@@ -59,7 +59,7 @@ export default function Who() {
             })
             if (forWordRef.current) {
                 gsap.to(forWordRef.current, {
-                    color: "#FFC300", duration: 0.4, ease: "power2.in",
+                    color: "#89A236", duration: 0.4, ease: "power2.in",
                 })
             }
         }
@@ -99,7 +99,7 @@ export default function Who() {
                 if (iconFor) gsap.to(iconFor, { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: "back.out(1.7)", delay: delay + 0.15, force3D: true, overwrite: true })
                 if (iconNotLg) gsap.to(iconNotLg, { opacity: 0, scale: 0.3, rotation: 45, duration: 0.25, delay, force3D: true, overwrite: true })
                 if (iconForLg) gsap.to(iconForLg, { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: "back.out(1.7)", delay: delay + 0.15, force3D: true, overwrite: true })
-                if (line) gsap.to(line, { backgroundColor: "rgba(255, 255, 255, 0.06)", duration: 0.4, delay: delay + 0.15, overwrite: true }) // Back to subtle white
+                if (line) gsap.to(line, { backgroundColor: "rgba(17, 37, 14, 0.06)", duration: 0.4, delay: delay + 0.15, overwrite: true }) // Back to subtle forest
             }
         })
     }
@@ -145,7 +145,7 @@ export default function Who() {
                         <span className="icon-for text-emerald-400 text-base absolute">✓</span>
                         <span className="icon-not text-red-400 text-base absolute" style={{ opacity: 0, transform: "scale(0.5)" }}>×</span>
                     </div>
-                    <div className="point-line h-[1px] flex-1 bg-white/6" style={{ transition: "background-color 0.4s ease" }} />
+                    <div className="point-line h-[1px] flex-1 bg-primary/6" style={{ transition: "background-color 0.4s ease" }} />
                 </div>
 
                 {/* Swapping text + large icons */}
@@ -195,7 +195,7 @@ export default function Who() {
 
                 {/* Persistent line + swapping icon */}
                 <div className={`flex items-center gap-2.5 ${isRight ? "flex-row-reverse" : ""}`}>
-                    <div className="point-line h-[1px] flex-1 bg-white/6" style={{ transition: "background-color 0.4s ease" }} />
+                    <div className="point-line h-[1px] flex-1 bg-primary/6" style={{ transition: "background-color 0.4s ease" }} />
                     <div className="relative w-5 h-5 flex flex-shrink-0 items-center justify-center">
                         <span className="icon-for text-emerald-400 text-base absolute">✓</span>
                         <span className="icon-not text-red-400 text-base absolute" style={{ opacity: 0, transform: "scale(0.5)" }}>×</span>
@@ -206,15 +206,15 @@ export default function Who() {
     }
 
     return (
-        <section id="who" ref={pinWrapRef} className="relative w-full h-[200vh] bg-background text-white select-none">
+        <section id="who" ref={pinWrapRef} className="relative w-full h-[200vh] bg-background text-primary select-none">
             {/* The actual pinned content area */}
             <div
                 ref={sectionRef}
-                className="sticky top-0 w-full h-screen overflow-hidden flex flex-col justify-center py-8 md:py-12 border-b border-white/5"
+                className="sticky top-0 w-full h-screen overflow-hidden flex flex-col justify-center py-8 md:py-12 border-b border-primary/5"
             >
                 {/* Subtle ambient */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[45vw] h-[45vh] rounded-full pointer-events-none"
-                    style={{ background: "radial-gradient(ellipse, rgba(255,195,0,0.025) 0%, transparent 70%)" }} />
+                    style={{ background: "radial-gradient(ellipse, rgba(137,162,54,0.025) 0%, transparent 70%)" }} />
 
                 {/* ─── Heading ─── */}
                 <div className="w-full text-center absolute top-[10%] md:top-[12%] left-0 right-0 z-20">
@@ -251,7 +251,7 @@ export default function Who() {
                         whileInView={{ scaleX: 1, opacity: 1 }}
                         transition={{ duration: 1, delay: 0.4, ease: [0.76, 0, 0.24, 1] }}
                         viewport={{ once: true }}
-                        className="w-16 h-1 bg-gradient-to-r from-accent to-red-500 mx-auto mt-4 md:mt-6 rounded-full origin-center"
+                        className="w-16 h-1 bg-gradient-to-r from-accent to-surface-light mx-auto mt-4 md:mt-6 rounded-full origin-center"
                     />
                 </div>
 
@@ -267,7 +267,7 @@ export default function Who() {
 
                     {/* ─── Centre ─── */}
                     <div className="relative text-center">
-                        <div className="px-10 py-6 md:px-16 md:py-8 rounded-3xl border border-white/6 bg-surface-light/15 backdrop-blur-sm">
+                        <div className="px-10 py-6 md:px-16 md:py-8 rounded-3xl border border-primary/6 bg-surface-light/15 backdrop-blur-sm">
                             <h2 className="font-display font-semibold text-primary tracking-tight leading-tight"
                                 style={{ fontSize: "clamp(1.8rem, 3vw, 3.5rem)" }}>
                                 Brands{" "}
@@ -278,7 +278,7 @@ export default function Who() {
                                 >
                                     not{" "}
                                 </span>{" "}
-                                <span ref={forWordRef} className="font-display font-semibold italic" style={{ color: "var(--color-accent, #FFC300)", transition: "none" }}>
+                                <span ref={forWordRef} className="font-display font-semibold italic" style={{ color: "var(--color-accent, #89A236)", transition: "none" }}>
                                     looking for
                                 </span>
                             </h2>
@@ -286,7 +286,7 @@ export default function Who() {
                                 {[0, 1].map(i => (
                                     <div key={i} className="rounded-full transition-all duration-500" style={{
                                         width: phase === i ? 22 : 6, height: 6,
-                                        backgroundColor: phase === i ? "var(--color-accent, #FFC300)" : "rgba(255,255,255,0.10)",
+                                        backgroundColor: phase === i ? "var(--color-accent, #89A236)" : "rgba(17,37,14,0.10)",
                                     }} />
                                 ))}
                             </div>

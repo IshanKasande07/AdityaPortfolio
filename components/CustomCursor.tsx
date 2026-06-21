@@ -65,7 +65,7 @@ const CustomCursor = () => {
                 opacity: isVisible ? 1 : 0,
                 width: isHovering ? 21 : 16,
                 height: isHovering ? 21 : 16,
-                backgroundColor: isHovering ? "#FFC300" : "#FFFFFF",
+                backgroundColor: isHovering ? "#89A236" : "#11250E",
                 transition:
                     "width 0.3s cubic-bezier(0.16,1,0.3,1), height 0.3s cubic-bezier(0.16,1,0.3,1), background-color 0.25s ease, opacity 0.25s ease",
             }}

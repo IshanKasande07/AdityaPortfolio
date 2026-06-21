@@ -45,8 +45,8 @@ export default function NoiseDivider({
                 style={{
                     top: '50%',
                     transform: 'translateY(-50%)',
-                    background: `linear-gradient(to right, transparent, rgba(255,195,0,${accentOpacity}), rgba(255,87,51,${accentOpacity * 0.8}), transparent)`,
-                    boxShadow: `0 0 18px 4px rgba(255,195,0,${accentOpacity * 0.5})`,
+                    background: `linear-gradient(to right, transparent, rgba(137,162,54,${accentOpacity}), rgba(255,87,51,${accentOpacity * 0.8}), transparent)`,
+                    boxShadow: `0 0 18px 4px rgba(137,162,54,${accentOpacity * 0.5})`,
                 }}
             />
 
@@ -56,7 +56,7 @@ export default function NoiseDivider({
                 style={{
                     top: 'calc(50% + 8px)',
                     transform: 'translateY(-50%)',
-                    background: `linear-gradient(to right, transparent, rgba(255,195,0,${accentOpacity * 0.4}), transparent)`,
+                    background: `linear-gradient(to right, transparent, rgba(137,162,54,${accentOpacity * 0.4}), transparent)`,
                 }}
             />
         </div>

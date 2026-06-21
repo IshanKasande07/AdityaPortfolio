@@ -76,7 +76,7 @@ const Footer = () => {
       />
 
       {/* Massive Parallax Video Mask Section */}
-      <div className="relative w-full h-[60vh] md:h-[80vh] flex items-center justify-center overflow-hidden border-t border-white/5 bg-background">
+      <div className="relative w-full h-[60vh] md:h-[80vh] flex items-center justify-center overflow-hidden border-t border-primary/5 bg-background">
 
         {/* 1. Underlying Parallax Video - Increased height and offset to support aggressive parallax */}
         <div
@@ -95,7 +95,7 @@ const Footer = () => {
 
         {/* 2. Multiply Layer with Pure White Text & Black background */}
         <div className="absolute inset-0 z-10 bg-black flex items-center justify-center mix-blend-multiply pointer-events-none">
-          <h2 className="text-white font-display font-bold text-[15vw] leading-[0.85] tracking-tighter text-center uppercase whitespace-nowrap">
+          <h2 className="text-primary font-display font-bold text-[15vw] leading-[0.85] tracking-tighter text-center uppercase whitespace-nowrap">
             READY TO<br />
             DOMINATE?
           </h2>
@@ -103,7 +103,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Section: Brand, Social Links, Copyright */}
-      <div className="relative z-20 w-full bg-background border-t border-white/5 py-10 md:py-15">
+      <div className="relative z-20 w-full bg-background border-t border-primary/5 py-10 md:py-15">
         <motion.div
           variants={containerVariants}
           initial="hidden"

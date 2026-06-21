@@ -43,7 +43,7 @@ export default function PhysicsThrow() {
         width,
         height,
         wireframes: false,
-        background: "#0A0A0E",
+        background: "#F8F3E6",
         pixelRatio: window.devicePixelRatio,
       },
     });
@@ -51,7 +51,7 @@ export default function PhysicsThrow() {
 
     // ---------------- WALLS ----------------
     // We make the floor/ceiling HUGE (10,000px) so we don't have to stretch them, only move them.
-    const wallOptions = { isStatic: true, render: { fillStyle: "#0A0A0E" } };
+    const wallOptions = { isStatic: true, render: { fillStyle: "#F8F3E6" } };
 
     const floor = Bodies.rectangle(width / 2, height + 50, 10000, 100, wallOptions);
     const ceiling = Bodies.rectangle(width / 2, -50, 10000, 100, wallOptions);
@@ -67,7 +67,7 @@ export default function PhysicsThrow() {
       density: 0.04,
       restitution: 0.8,
       frictionAir: 0.005,
-      render: { fillStyle: "#FFC300" }, // Set the ball to Primary Accent (Gold)
+      render: { fillStyle: "#89A236" }, // Set the ball to Primary Accent (Gold)
     });
 
     const blocksData = [{ x: 0.72, h: 80 }, { x: 0.78, h: 130 }, { x: 0.84, h: 60 }];

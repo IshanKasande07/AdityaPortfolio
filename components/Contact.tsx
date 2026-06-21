@@ -10,7 +10,7 @@ const Contact = () => {
             <div id="contact" className='w-full relative z-50'>
                 <div
                     className='w-full flex flex-col items-center justify-center z-40 py-32 min-h-screen relative overflow-hidden
-                        bg-surface'
+                        bg-background'
                 >
                     {/* Ambient Background Glow */}
                     <div className='absolute bottom-0 right-0 w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] bg-accent/5 rounded-full blur-[120px] pointer-events-none translate-x-1/4 translate-y-1/4'></div>

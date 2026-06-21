@@ -65,7 +65,7 @@ export default function ResultsSection() {
         <section 
             id="results" 
             ref={containerRef}
-            className="w-full py-12 md:py-16 bg-background border-y border-white/5 relative overflow-hidden"
+            className="w-full py-12 md:py-16 bg-background border-y border-primary/5 relative overflow-hidden"
         >
             {/* Subtle radial glow matching the site aesthetic */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-accent/5 blur-[120px] rounded-full pointer-events-none" />

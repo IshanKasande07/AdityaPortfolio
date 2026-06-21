@@ -372,7 +372,7 @@ export default function Hero2() {
                 {/* ========== LAYER 5: Text Overlay + CTA (highest z) ========== */}
                 <motion.div
                     style={{ y: textY, opacity: textOpacity, scale: textScale, z: 0.01 }}
-                    className="absolute top-[10vh] md:top-[13vh] left-0 w-full flex flex-col items-center justify-center text-white text-center z-[50] px-6 md:px-[5vw] pointer-events-none"
+                    className="absolute top-[10vh] md:top-[13vh] left-0 w-full flex flex-col items-center justify-center text-primary text-center z-[50] px-6 md:px-[5vw] pointer-events-none"
                 >
                     <motion.div
                         initial={{ opacity: 0, y: "25vh", scale: 1.5 }}
@@ -408,7 +408,7 @@ export default function Hero2() {
                             ))}
                         </div>
 
-                        <p className={`subtitle-reveal ${earlyReveal ? "playing" : ""} text-xs sm:text-sm md:text-[1.1vw] text-[#EFEBDF] max-w-[90vw] md:max-w-3xl pointer-events-auto leading-relaxed mb-1 px-4 md:px-0`}>
+                        <p className={`subtitle-reveal ${earlyReveal ? "playing" : ""} text-xs sm:text-sm md:text-[1.1vw] text-[#F8F3E6] max-w-[90vw] md:max-w-3xl pointer-events-auto leading-relaxed mb-1 px-4 md:px-0`}>
                             Attention is the highest currency, we are helping you to mine it
                         </p>
                     </motion.div>
@@ -439,7 +439,7 @@ export default function Hero2() {
                     >
                         <div className="absolute inset-0 bg-accent rounded-full -z-10" />
                         <div className="absolute inset-0 bg-[#27701B] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full z-0" />
-                        <div className="relative z-10 flex items-center justify-center text-sm md:text-[1.1vw] font-medium text-black group-hover:text-primary transition-colors duration-300">
+                        <div className="relative z-10 flex items-center justify-center text-sm md:text-[1.1vw] font-medium text-black group-hover:text-white transition-colors duration-300">
                             <span>Book a Call</span>
                             <span className="ml-3 relative flex items-center justify-center overflow-hidden w-5 h-5">
                                 <span className="absolute inset-0 flex items-center justify-center -rotate-45 transition-transform duration-700 group-hover:translate-x-[150%] group-hover:-translate-y-[150%]">

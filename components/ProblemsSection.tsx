@@ -215,7 +215,7 @@ const ProblemsSection = () => {
 
         {/* LEFT — sticky title panel */}
         <div className="w-full md:w-[55%] shrink-0">
-          <div className="md:sticky md:top-0 h-auto md:h-screen flex flex-col items-start justify-center px-[6%] py-12 md:py-0 border-b md:border-b-0 md:border-r border-white/5">
+          <div className="md:sticky md:top-0 h-auto md:h-screen flex flex-col items-start justify-center px-[6%] py-12 md:py-0 border-b md:border-b-0 md:border-r border-primary/5">
             <div className="relative z-10 w-full pl-0 md:pl-[4%]">
 
               <h2
@@ -232,7 +232,7 @@ const ProblemsSection = () => {
                   viewBox="0 0 300 120"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-full h-full text-accent drop-shadow-[0_0_12px_rgba(255,195,0,0.4)]"
+                  className="w-full h-full text-accent drop-shadow-[0_0_12px_rgba(137,162,54,0.4)]"
                   style={{ vectorEffect: "non-scaling-stroke" }}
                 >
                   {/* Arrow main curved arch (starts left bottoms, arches right) */}
@@ -268,7 +268,7 @@ const ProblemsSection = () => {
         </div>
 
         {/* RIGHT — peek scroll cards */}
-        <div className="w-full md:w-[45%] flex flex-col items-center overflow-hidden md:border-l border-white/5" style={{ paddingTop: "10vh", paddingBottom: "10vh" }}>
+        <div className="w-full md:w-[45%] flex flex-col items-center overflow-hidden md:border-l border-primary/5" style={{ paddingTop: "10vh", paddingBottom: "10vh" }}>
           {problemsList.map((problem, index) => (
             <div
               key={problem.id}
@@ -288,7 +288,7 @@ const ProblemsSection = () => {
                 {/* Grouping Icon and Animated Title */}
                 <div className="flex items-start gap-4 mb-4">
                   {/* The Icon */}
-                  <div className="text-accent shrink-0 bg-white/5 p-2.5 rounded-xl border border-white/10 mt-1.5 md:mt-2.5">
+                  <div className="text-accent shrink-0 bg-primary/5 p-2.5 rounded-xl border border-primary/10 mt-1.5 md:mt-2.5">
                     {problem.icon}
                   </div>
 
@@ -315,7 +315,7 @@ const ProblemsSection = () => {
                     ))}
                     <div className="overflow-hidden mt-4">
                       <div
-                        className="accent-bar h-[2px] w-12 bg-gradient-to-r from-accent to-red-500 rounded-full origin-left opacity-80"
+                        className="accent-bar h-[2px] w-12 bg-gradient-to-r from-accent to-surface-light rounded-full origin-left opacity-80"
                         style={{ transform: "scaleX(0)" }}
                       />
                     </div>
@@ -329,7 +329,7 @@ const ProblemsSection = () => {
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-white/5 w-full">
+                <div className="mt-6 pt-4 border-t border-primary/5 w-full">
                   <span className="text-[9px] text-muted/30 font-mono tracking-wider uppercase">
                     The Fix →
                   </span>
@@ -362,8 +362,8 @@ const ProblemsSection = () => {
         >
           <defs>
             <linearGradient id="slashGold" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#FFC300" stopOpacity="0" />
-              <stop offset="20%" stopColor="#FFC300" stopOpacity="0.9" />
+              <stop offset="0%" stopColor="#89A236" stopOpacity="0" />
+              <stop offset="20%" stopColor="#89A236" stopOpacity="0.9" />
               <stop offset="50%" stopColor="#FFD700" stopOpacity="1" />
               <stop offset="80%" stopColor="#FF5733" stopOpacity="0.9" />
               <stop offset="100%" stopColor="#FF5733" stopOpacity="0" />

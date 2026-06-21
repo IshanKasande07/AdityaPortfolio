@@ -182,7 +182,7 @@ export default function Hero() {
                         className="w-full h-full rounded-full"
                         style={{
                             background:
-                                "radial-gradient(circle, rgba(255,195,0,0.055) 0%, rgba(255,195,0,0.015) 45%, transparent 70%)",
+                                "radial-gradient(circle, rgba(137,162,54,0.055) 0%, rgba(137,162,54,0.015) 45%, transparent 70%)",
                         }}
                     />
                 </motion.div>
@@ -200,7 +200,7 @@ export default function Hero() {
                     opacity: headlineOpacity,
                     scale: headlineScale,
                 } : undefined}
-                className="absolute top-[13vh] left-0 w-full flex flex-col items-center justify-center text-white text-center z-30 px-[5vw] pointer-events-none"
+                className="absolute top-[13vh] left-0 w-full flex flex-col items-center justify-center text-primary text-center z-30 px-[5vw] pointer-events-none"
             >
                 {/* One motion.div, one controller, one GPU layer */}
                 <motion.div
@@ -250,7 +250,7 @@ export default function Hero() {
                         Triggered by earlyReveal class swap, not a JS animation instance.
                         No Framer Motion child inside an animating parent = no conflict. */}
                     <p
-                        className={`subtitle-reveal ${earlyReveal ? "playing" : ""} text-sm md:text-[1.1vw] text-[#EFEBDF] max-w-3xl pointer-events-auto leading-relaxed mb-1`}
+                        className={`subtitle-reveal ${earlyReveal ? "playing" : ""} text-sm md:text-[1.1vw] text-[#F8F3E6] max-w-3xl pointer-events-auto leading-relaxed mb-1`}
                     >
                         Attention is the highest currency, we are helping you to mine it
                     </p>
@@ -315,7 +315,7 @@ export default function Hero() {
                                                     playsInline
                                                     preload="none"
                                                     disablePictureInPicture
-                                                    className="w-[280px] h-[435px] rounded-xl object-cover shadow-[0_0_30px_rgba(0,0,0,0.8)] select-none border border-white/10"
+                                                    className="w-[280px] h-[435px] rounded-xl object-cover shadow-[0_0_30px_rgba(0,0,0,0.8)] select-none border border-primary/10"
                                                 />
                                             </div>
                                         </div>
@@ -355,7 +355,7 @@ export default function Hero() {
                 >
                     <div className="absolute inset-0 bg-accent rounded-full -z-10" />
                     <div className="absolute inset-0 bg-[#27701B] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full z-0" />
-                    <div className="relative z-10 flex items-center justify-center text-base md:text-[1.1vw] font-medium text-black group-hover:text-primary transition-colors duration-300">
+                    <div className="relative z-10 flex items-center justify-center text-base md:text-[1.1vw] font-medium text-black group-hover:text-white transition-colors duration-300">
                         <span>Book a Call</span>
                         <span className="ml-3 relative flex items-center justify-center overflow-hidden w-5 h-5">
                             <span className="absolute inset-0 flex items-center justify-center -rotate-45 transition-transform duration-700 group-hover:translate-x-[150%] group-hover:-translate-y-[150%]">

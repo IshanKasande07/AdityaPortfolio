@@ -25,7 +25,7 @@
 
 // const BORDER_PX = 7;
 // const RADIUS = "20px";
-// const CREAM = "#EFEBDF";
+// const CREAM = "#F8F3E6";
 
 // export function RevealProvider({ children }: { children: ReactNode }) {
 //     const [revealed, setRevealed] = useState(false);
@@ -52,8 +52,8 @@
 
 //     useEffect(() => {
 //         if (revealed) {
-//             document.body.style.backgroundColor = "#0A0A0E";
-//             document.documentElement.style.backgroundColor = "#0A0A0E";
+//             document.body.style.backgroundColor = "#11250E";
+//             document.documentElement.style.backgroundColor = "#11250E";
 //             // Restore scroll after the clip-path animation has fully completed.
 //             document.body.style.overflowY = "";
 
@@ -166,9 +166,9 @@ interface RevealLayoutProps {
     children: ReactNode;
 }
 
-const BORDER_PX = 7;
+const BORDER_PX = 18;
 const RADIUS = "20px";
-const CREAM = "#EFEBDF";
+const CREAM = "#F8F3E6";
 
 export function RevealProvider({ children }: { children: ReactNode }) {
     const [revealed, setRevealed] = useState(false);
@@ -179,8 +179,8 @@ export function RevealProvider({ children }: { children: ReactNode }) {
         if (isMobile) {
             setRevealed(true);
             setEarlyReveal(true);
-            document.body.style.backgroundColor = "#0A0A0E";
-            document.documentElement.style.backgroundColor = "#0A0A0E";
+            document.body.style.backgroundColor = CREAM;
+            document.documentElement.style.backgroundColor = CREAM;
             return;
         }
 
@@ -208,8 +208,8 @@ export function RevealProvider({ children }: { children: ReactNode }) {
         if (isMobile) return;
 
         if (revealed) {
-            document.body.style.backgroundColor = "#0A0A0E";
-            document.documentElement.style.backgroundColor = "#0A0A0E";
+            document.body.style.backgroundColor = CREAM;
+            document.documentElement.style.backgroundColor = CREAM;
 
             document.body.style.paddingRight = "0px";
             document.body.style.overflow = "";
@@ -266,7 +266,7 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
             <style>{`
                 @media (max-width: 768px) {
                     .reveal-parent-container {
-                        background-color: #0A0A0E !important;
+                        background-color: #F8F3E6 !important;
                         contain: none !important;
                     }
                     .reveal-animated-div {

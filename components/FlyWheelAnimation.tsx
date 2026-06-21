@@ -28,7 +28,7 @@ export default function FlywheelScrollAnimation() {
   return (
 <div
   ref={ref}
-  className="relative min-h-[300vh] w-full bg-black text-white"
+  className="relative min-h-[300vh] w-full bg-background text-primary"
 >
   {/* sticky center */}
   <div className="sticky top-10 h-screen flex items-center justify-center">

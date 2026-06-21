@@ -17,7 +17,7 @@ export default function ThreeDCarousel() {
   const lastX = useRef<number | null>(null);
 
   return (
-    <div className="page relative min-h-screen w-full bg-black overflow-hidden flex items-center justify-center z-20">
+    <div className="page relative min-h-screen w-full bg-background overflow-hidden flex items-center justify-center z-20">
 
       {/* perspective */}
       <div

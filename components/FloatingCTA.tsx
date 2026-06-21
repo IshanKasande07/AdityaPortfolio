@@ -267,8 +267,8 @@ export default function FloatingCTA() {
                         </feMerge>
                     </filter>
                     <linearGradient id="trail-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#FFC300" stopOpacity="0.2" />
-                        <stop offset="100%" stopColor="#FFC300" stopOpacity="1" />
+                        <stop offset="0%" stopColor="#89A236" stopOpacity="0.2" />
+                        <stop offset="100%" stopColor="#89A236" stopOpacity="1" />
                     </linearGradient>
                 </defs>
                 <path
@@ -285,7 +285,7 @@ export default function FloatingCTA() {
             {/* The Arrow */}
             <div ref={arrowWrapperRef} className="fixed top-0 left-0 z-[10002] pointer-events-none opacity-0">
                 <div ref={arrowInnerRef} className="flex items-center justify-center w-10 h-10 rounded-full"
-                    style={{ background: "#FFC300", boxShadow: "0 0 30px rgba(255,195,0,0.7)" }}>
+                    style={{ background: "#89A236", boxShadow: "0 0 30px rgba(137,162,54,0.7)" }}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="3">
                         <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>

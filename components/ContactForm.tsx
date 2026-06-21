@@ -64,7 +64,7 @@ const ContactForm = () => {
                             onFocus={() => setIsFocused(true)}
                             onBlur={() => setIsFocused(false)}
                             placeholder={placeholder}
-                            className='w-full bg-transparent text-primary px-0 py-3 border-b border-white/20 focus:outline-none min-h-[12vh] resize-none placeholder-white/10 transition-colors'
+                            className='w-full bg-transparent text-primary px-0 py-3 border-b border-primary/20 focus:outline-none min-h-[12vh] resize-none placeholder-primary/30 transition-colors'
                         />
                     ) : (
                         <input
@@ -74,7 +74,7 @@ const ContactForm = () => {
                             onFocus={() => setIsFocused(true)}
                             onBlur={() => setIsFocused(false)}
                             placeholder={placeholder}
-                            className='w-full bg-transparent text-primary px-0 py-3 border-b border-white/20 focus:outline-none placeholder-white/10 transition-colors'
+                            className='w-full bg-transparent text-primary px-0 py-3 border-b border-primary/20 focus:outline-none placeholder-primary/30 transition-colors'
                         />
                     )}
                     <motion.div
@@ -110,12 +110,12 @@ const ContactForm = () => {
             <button
                 type='submit'
                 disabled={isSubmitting}
-                className='group relative w-full overflow-hidden rounded-full py-5 md:py-6 px-9 border border-white/20 mt-4 disabled:opacity-50 disabled:cursor-not-allowed'
+                className='group relative w-full overflow-hidden rounded-full py-5 md:py-6 px-9 border border-primary/20 mt-4 disabled:opacity-50 disabled:cursor-not-allowed'
             >
                 {/* Hover Expanding Background */}
                 <div className="absolute inset-0 bg-accent translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full"></div>
 
-                <div className="relative z-10 flex items-center justify-center text-lg md:text-[1.2vw] font-medium text-white group-hover:text-black transition-colors duration-300">
+                <div className="relative z-10 flex items-center justify-center text-lg md:text-[1.2vw] font-medium text-primary group-hover:text-background transition-colors duration-300">
                     {isSubmitting ? "Submitting..." : "Let's Talk"}
                     <span className='ml-3 flex items-center justify-center transition-transform duration-500 group-hover:translate-x-3'>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="stroke-current border-current" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

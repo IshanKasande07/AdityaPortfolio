@@ -131,7 +131,7 @@ const WhyInfotainmentWorks = () => {
   };
 
   return (
-    <section id="infotainment" ref={containerRef} className="relative w-full h-[250vh] bg-black z-10">
+    <section id="infotainment" ref={containerRef} className="relative w-full h-[250vh] bg-background z-10">
       <div className="sticky top-0 h-screen w-full overflow-hidden isolate flex flex-col justify-center">
 
         {/* Card Row — moved up slightly to make room for heading below */}
@@ -144,9 +144,9 @@ const WhyInfotainmentWorks = () => {
                 <line
                   ref={incomingLineRef}
                   x1="0" y1="2" x2="72" y2="2"
-                  stroke="#FFC300" strokeWidth="2"
+                  stroke="#89A236" strokeWidth="2"
                   pathLength="100" strokeDasharray="100" strokeDashoffset="100"
-                  style={{ filter: 'drop-shadow(0 0 6px rgba(255,195,0,0.7))' }}
+                  style={{ filter: 'drop-shadow(0 0 6px rgba(137,162,54,0.7))' }}
                 />
               </svg>
             </div>
@@ -168,18 +168,18 @@ const WhyInfotainmentWorks = () => {
                       className="absolute inset-0 pointer-events-none"
                       width={w} height={h}
                       viewBox={`0 0 ${w} ${h}`}
-                      style={{ overflow: 'visible', filter: 'drop-shadow(0 0 6px rgba(255,195,0,0.7))' }}
+                      style={{ overflow: 'visible', filter: 'drop-shadow(0 0 6px rgba(137,162,54,0.7))' }}
                     >
                       <path
                         ref={(el) => addToRefs(el, svgPathsRef, index * 2)}
                         d={topPathD}
-                        fill="none" stroke="#FFC300" strokeWidth="2"
+                        fill="none" stroke="#89A236" strokeWidth="2"
                         pathLength="100" strokeDasharray="100" strokeDashoffset="100"
                       />
                       <path
                         ref={(el) => addToRefs(el, svgPathsRef, index * 2 + 1)}
                         d={bottomPathD}
-                        fill="none" stroke="#FFC300" strokeWidth="2"
+                        fill="none" stroke="#89A236" strokeWidth="2"
                         pathLength="100" strokeDasharray="100" strokeDashoffset="100"
                       />
                     </svg>
@@ -187,10 +187,10 @@ const WhyInfotainmentWorks = () => {
                     {/* The actual card */}
                     <div
                       ref={(el) => addToRefs(el, cardRefs, index)}
-                      className="w-[160px] md:w-[180px] p-5 md:p-6 rounded-[14px] bg-surface/60 border border-white/5 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] text-center flex flex-col items-center group relative z-10 opacity-0 scale-95 blur-[10px] transform-gpu"
+                      className="w-[160px] md:w-[180px] p-5 md:p-6 rounded-[14px] bg-surface/60 border border-primary/5 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] text-center flex flex-col items-center group relative z-10 opacity-0 scale-95 blur-[10px] transform-gpu"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[14px]"></div>
-                      <div className="w-10 h-10 rounded-full bg-surface-light/50 border border-white/10 flex items-center justify-center mb-4 shadow-lg z-10 transition-transform duration-500 group-hover:scale-110">
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[14px]"></div>
+                      <div className="w-10 h-10 rounded-full bg-surface-light/50 border border-primary/10 flex items-center justify-center mb-4 shadow-lg z-10 transition-transform duration-500 group-hover:scale-110">
                         {step.icon}
                       </div>
                       <h3 className="text-base md:text-lg font-display font-semibold text-primary tracking-tight z-10">
@@ -205,16 +205,16 @@ const WhyInfotainmentWorks = () => {
                       <line
                         ref={(el) => addToRefs(el, connectingLinesRef, index)}
                         x1="0" y1="2" x2="72" y2="2"
-                        stroke="#FFC300" strokeWidth="2" fill="none"
+                        stroke="#89A236" strokeWidth="2" fill="none"
                         pathLength="100" strokeDasharray="100" strokeDashoffset="100"
-                        style={{ filter: 'drop-shadow(0 0 6px rgba(255,195,0,0.7))' }}
+                        style={{ filter: 'drop-shadow(0 0 6px rgba(137,162,54,0.7))' }}
                       />
                     </svg>
                     {index < steps.length - 1 && steps[index + 1].actionWord && (
                       <div
                         ref={(el) => addToRefs(el, actionWordRefs, index)}
-                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-mono text-[9px] md:text-[10px] font-medium text-accent tracking-widest uppercase px-2 py-1 border border-[#FFC300]/30 rounded-full bg-surface z-20 opacity-0 scale-90"
-                        style={{ boxShadow: '0 0 12px rgba(255,195,0,0.2)' }}
+                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-mono text-[9px] md:text-[10px] font-medium text-accent tracking-widest uppercase px-2 py-1 border border-[#89A236]/30 rounded-full bg-surface z-20 opacity-0 scale-90"
+                        style={{ boxShadow: '0 0 12px rgba(137,162,54,0.2)' }}
                       >
                         {steps[index + 1].actionWord}
                       </div>
@@ -258,7 +258,7 @@ const WhyInfotainmentWorks = () => {
                             transition: { duration: 1, delay: 0.4, ease: "circOut" } 
                         }
                     }}
-                    className="w-32 h-1 bg-gradient-to-l from-accent to-red-500 mt-4 rounded-full origin-right" 
+                    className="w-32 h-1 bg-gradient-to-l from-accent to-surface-light mt-4 rounded-full origin-right" 
                 />
                 
                 <div className="overflow-hidden py-2 max-w-xl outline-none mt-4">

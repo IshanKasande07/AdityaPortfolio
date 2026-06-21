@@ -186,7 +186,7 @@ const ImpactSection = () => {
     }, []);
 
     return (
-        <section id="impact" ref={containerRef} className="relative w-full h-[600vh] bg-black">
+        <section id="impact" ref={containerRef} className="relative w-full h-[600vh] bg-background">
             <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
 
                 {/* Header Top Mid Left */}
@@ -194,13 +194,13 @@ const ImpactSection = () => {
                     ref={headerRef}
                     className="absolute top-[12%] md:top-[16%] left-[4%] md:left-[5%] flex flex-col items-start opacity-0 pointer-events-none z-30"
                 >
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-light text-white tracking-wide leading-tight drop-shadow-md">
+                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-light text-primary tracking-wide leading-tight drop-shadow-md">
                         Our<br />
-                        <span className="text-accent italic font-normal drop-shadow-[0_0_12px_rgba(255,195,0,0.4)]">Services</span>
+                        <span className="text-accent italic font-normal drop-shadow-[0_0_12px_rgba(137,162,54,0.4)]">Services</span>
                     </h2>
                     <div className="mt-6 flex flex-col items-center gap-4 ml-6">
-                        <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-medium text-white/50">Scroll</span>
-                        <div className="animate-bounce drop-shadow-[0_0_8px_rgba(255,195,0,0.6)]">
+                        <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-medium text-primary/50">Scroll</span>
+                        <div className="animate-bounce drop-shadow-[0_0_8px_rgba(137,162,54,0.6)]">
                             <ArrowDown className="w-4 h-4 md:w-5 md:h-5 text-accent" strokeWidth={1.5} />
                         </div>
                     </div>
@@ -219,7 +219,7 @@ const ImpactSection = () => {
                 >
                     <ellipse
                         cx="540" cy="200" rx="539" ry="199"
-                        stroke="rgba(255,255,255,0.5)"
+                        stroke="rgba(17, 37, 14, 0.35)"
                         strokeWidth="1.5"
                         strokeDasharray="0.1 3"
                         strokeLinecap="round"
@@ -236,7 +236,7 @@ const ImpactSection = () => {
                 >
                     <circle
                         cx="271" cy="270" r="269"
-                        stroke="rgba(255,255,255,0.5)"
+                        stroke="rgba(17, 37, 14, 0.35)"
                         strokeWidth="2"
                         strokeDasharray="0.1 3"
                         strokeLinecap="round"
@@ -256,7 +256,7 @@ const ImpactSection = () => {
                         "top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 rotate-0",
                     ].map((cls, i) => (
                         <div key={i} className={`absolute ${cls}`}>
-                            <svg width="16" height="14" viewBox="0 0 16 14" fill="none" className="fill-white">
+                            <svg width="16" height="14" viewBox="0 0 16 14" fill="none" className="fill-primary">
                                 <path d="M8 0L16 14H0L8 0Z" />
                             </svg>
                         </div>
@@ -285,7 +285,7 @@ const ImpactSection = () => {
                             <div>{content.icon}</div>
 
                             {/* Heading */}
-                            <h2 className="text-[22px] font-display font-semibold text-[#F5F5F0] tracking-tight text-center leading-tight">
+                            <h2 className="text-[22px] font-display font-semibold text-primary tracking-tight text-center leading-tight">
                                 {content.title}
                             </h2>
 
@@ -294,7 +294,7 @@ const ImpactSection = () => {
                                 ref={el => { subRefs.current[idx] = el; }}
                                 className="w-full"
                             >
-                                <p className="text-[13px] text-[#9CA3AF] font-light leading-relaxed text-center">
+                                <p className="text-[13px] text-muted font-light leading-relaxed text-center">
                                     {content.desc}
                                 </p>
                             </div>
