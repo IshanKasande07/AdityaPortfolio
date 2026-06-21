@@ -182,15 +182,22 @@ export default function Hero2() {
                 .subtitle-reveal.playing {
                     animation-play-state: running;
                 }
+                .hero-sky-bg {
+                    background-image: url('/heroassets/Sky.webp');
+                }
+                @media (max-width: 768px) {
+                    .hero-sky-bg {
+                        background-image: url('/heroassets/vertical-hero.webp');
+                    }
+                }
             `}</style>
 
             <div className="absolute inset-0 w-full h-full" style={{ transformStyle: "preserve-3d" }}>
 
                 {/* ========== LAYER 0: Sky (deepest background) ========== */}
                 <motion.div
-                    className="absolute inset-0 z-0 pointer-events-none"
+                    className="absolute inset-0 z-0 pointer-events-none hero-sky-bg"
                     style={{
-                        backgroundImage: "url('/heroassets/Sky.webp')",
                         backgroundSize: "cover",
                         backgroundPosition: "top center",
                         backgroundRepeat: "no-repeat",
@@ -213,7 +220,7 @@ export default function Hero2() {
                         transformOrigin: "center",
                         willChange: "transform",
                     }}
-                    className="absolute inset-0 z-[10] pointer-events-none"
+                    className="absolute inset-0 z-[10] pointer-events-none hidden md:block"
                 >
                     <img
                         src="/heroassets/Bridge Behind.webp"
@@ -235,14 +242,14 @@ export default function Hero2() {
                         transformOrigin: "bottom center",
                         willChange: "transform",
                     }}
-                    className="absolute inset-x-0 bottom-0 z-[15] flex justify-center pointer-events-none"
+                    className="absolute inset-x-0 bottom-0 z-[15] hidden md:flex justify-center pointer-events-none"
                 >
                     <img
                         src="/heroassets/Bridge Bottom Cloud_.webp"
                         alt=""
                         decoding="async"
                         className="object-contain object-bottom"
-                        style={{ width: "clamp(120px, 25vw, 500px)", height: "auto" }}
+                        style={{ width: "clamp(140px, 30vw, 800px)", height: "auto", clipPath: "inset(15% 0 0 0)" }}
                         draggable={false}
                     />
                 </motion.div>
@@ -257,7 +264,7 @@ export default function Hero2() {
                         transformOrigin: "bottom center",
                         willChange: "transform",
                     }}
-                    className="absolute inset-0 z-[20] pointer-events-none"
+                    className="absolute inset-0 z-[20] pointer-events-none hidden md:block"
                 >
                     <img
                         src="/heroassets/Bridge.webp"
@@ -279,7 +286,7 @@ export default function Hero2() {
                         transformOrigin: "center",
                         willChange: "transform",
                     }}
-                    className="absolute inset-0 -bottom-32 z-[30] pointer-events-none"
+                    className="absolute inset-0 -bottom-32 z-[30] pointer-events-none hidden md:block"
                 >
                     <img
                         src="/heroassets/CLoud.webp"
@@ -301,7 +308,7 @@ export default function Hero2() {
                         transformOrigin: "bottom left",
                         willChange: "transform",
                     }}
-                    className="absolute inset-0 -bottom-20 -left-20 z-[40] pointer-events-none"
+                    className="absolute inset-0 -bottom-20 -left-20 z-[40] pointer-events-none hidden md:block"
                 >
                     <img
                         src="/heroassets/LEft Mountaim.webp"
@@ -323,7 +330,7 @@ export default function Hero2() {
                         transformOrigin: "bottom right",
                         willChange: "transform",
                     }}
-                    className="absolute inset-0 -bottom-20 -right-20 z-[40] pointer-events-none"
+                    className="absolute inset-0 -bottom-20 -right-20 z-[40] pointer-events-none hidden md:block"
                 >
                     <img
                         src="/heroassets/Right Mountaim.webp"
