@@ -249,11 +249,9 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
                 initial={{
                     // Fallback state for the first split-second frame before math calculates
                     clipPath: startPath || "inset(49.5% 45% 49.5% 45% round 100px)",
-                    WebkitClipPath: startPath || "inset(49.5% 45% 49.5% 45% round 100px)",
                 }}
                 animate={startPath ? {
                     clipPath: `inset(${BORDER_PX}px ${BORDER_PX}px ${BORDER_PX}px ${BORDER_PX}px round ${RADIUS})`,
-                    WebkitClipPath: `inset(${BORDER_PX}px ${BORDER_PX}px ${BORDER_PX}px ${BORDER_PX}px round ${RADIUS})`,
                 } : {}}
                 // FIX 3: The Boot-Up Buffer
                 // Added delay: 0.4. This forces the animation to wait until the CPU has entirely 
