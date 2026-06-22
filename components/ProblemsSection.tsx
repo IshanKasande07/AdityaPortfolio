@@ -69,106 +69,115 @@ const ProblemsSection = () => {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const ctx = gsap.context(() => {
+    const observers: IntersectionObserver[] = [];
+    let timerId: ReturnType<typeof setTimeout>;
+
+    const setupObservers = () => {
+      // Re-set all cards to hidden AFTER layout has settled
+      cardRefs.current.forEach((card, index) => {
+        const inner = innerCardRefs.current[index];
+        if (!inner) return;
+        gsap.set(inner, { scale: 0.85, opacity: 0, y: 20 });
+        const letters = inner.querySelectorAll(".letter");
+        const bar = inner.querySelector(".accent-bar");
+        gsap.set(letters, { y: 60, opacity: 0 });
+        if (bar) gsap.set(bar, { scaleX: 0 });
+      });
+
+      // Tell GSAP to recalculate all ScrollTriggers now that layout is settled
+      ScrollTrigger.refresh();
+
+      // NOW start observing
       cardRefs.current.forEach((card, index) => {
         if (!card) return;
         const inner = innerCardRefs.current[index];
-
         if (!inner) return;
 
-        // Reset any inline styles first from previous renders
-        gsap.set(inner, { scale: 0.85, opacity: 0.35 });
-
-        // Create a single scrolling timeline spanning the card's journey across the viewport
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: card,
-            start: "top 95%",    // Starts animating as soon as the top of the card enters
-            end: "bottom 5%",    // Finishes animating right before the bottom leaves
-            scrub: true,         // Smooth scrubbing
-          }
-        });
-
-        tl.to(inner, {
-          scale: 1,
-          opacity: 1,
-          ease: "power2.out",
-          duration: 0.2       // Scales up very quickly at the start
-        })
-          .to(inner, {
-            scale: 1,
-            opacity: 1,
-            duration: 0.6       // Holds at full scale for the majority of the scroll
-          })
-          .to(inner, {
-            scale: 0.85,
-            opacity: 0.35,
-            ease: "power2.in",
-            duration: 0.2       // Scales down quickly at the end
-          });
-
-        // ── Title Animation (like the old left section) ──
         const letters = inner.querySelectorAll(".letter");
         const bar = inner.querySelector(".accent-bar");
 
-        ScrollTrigger.create({
-          trigger: card,
-          start: "top 80%",
-          end: "bottom 20%",
-          onEnter: () => {
-            gsap.fromTo(
-              letters,
-              { y: 80, opacity: 0 },
-              {
-                y: 0,
-                opacity: 1,
-                duration: 0.8,
-                ease: "power3.out",
-                stagger: { each: 0.03, from: "start" },
-                overwrite: true,
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                // ── Card reveal ──
+                gsap.to(inner, {
+                  scale: 1,
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.6,
+                  ease: "power3.out",
+                  overwrite: true,
+                });
+                // ── Letter stagger reveal (simultaneous) ──
+                gsap.to(letters, {
+                  y: 0,
+                  opacity: 1,
+                  duration: 0.7,
+                  ease: "power3.out",
+                  stagger: { each: 0.03, from: "start" },
+                  delay: 0.1,
+                  overwrite: true,
+                });
+                // ── Accent bar ──
+                if (bar) {
+                  gsap.to(bar, {
+                    scaleX: 1,
+                    duration: 0.6,
+                    ease: "power3.out",
+                    delay: 0.3,
+                    overwrite: true,
+                  });
+                }
+              } else {
+                // ── Exit: fade back to hidden ──
+                gsap.to(inner, {
+                  scale: 0.85,
+                  opacity: 0,
+                  y: 20,
+                  duration: 0.4,
+                  ease: "power2.in",
+                  overwrite: true,
+                });
+                gsap.to(letters, {
+                  y: 60,
+                  opacity: 0,
+                  duration: 0.3,
+                  ease: "power2.in",
+                  stagger: { each: 0.02, from: "end" },
+                  overwrite: true,
+                });
+                if (bar) {
+                  gsap.to(bar, {
+                    scaleX: 0,
+                    duration: 0.3,
+                    ease: "power2.in",
+                    overwrite: true,
+                  });
+                }
               }
-            );
-            if (bar) gsap.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power3.out", delay: 0.2, overwrite: true });
-          },
-          onLeave: () => {
-            gsap.to(letters, {
-              y: -80,
-              opacity: 0,
-              duration: 0.4,
-              ease: "power2.in",
-              stagger: { each: 0.02, from: "end" },
-              overwrite: true,
             });
-            if (bar) gsap.to(bar, { scaleX: 0, duration: 0.3, ease: "power2.in", overwrite: true });
           },
-          onEnterBack: () => {
-            gsap.fromTo(
-              letters,
-              { y: -80, opacity: 0 },
-              {
-                y: 0,
-                opacity: 1,
-                duration: 0.8,
-                ease: "power3.out",
-                stagger: { each: 0.03, from: "start" },
-                overwrite: true,
-              }
-            );
-            if (bar) gsap.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power3.out", delay: 0.2, overwrite: true });
-          },
-          onLeaveBack: () => {
-            gsap.to(letters, {
-              y: 80,
-              opacity: 0,
-              duration: 0.4,
-              ease: "power2.in",
-              stagger: { each: 0.02, from: "end" },
-              overwrite: true,
-            });
-            if (bar) gsap.to(bar, { scaleX: 0, duration: 0.3, ease: "power2.in", overwrite: true });
-          },
-        });
+          {
+            threshold: 0.15,
+            rootMargin: "0px 0px -5% 0px",
+          }
+        );
+
+        observer.observe(card);
+        observers.push(observer);
       });
+    };
+
+    // Delay by 500ms — lets GSAP pin-spacers from sections above (WhyInfotainmentWorks)
+    // finish inserting into the DOM before we start observing, preventing
+    // false-positive intersection fires that animate cards before user reaches section.
+    timerId = setTimeout(() => {
+      requestAnimationFrame(setupObservers);
+    }, 500);
+
+
+    const ctx = gsap.context(() => {
 
       // ── Gold Slash: looping glow pulse ──
       if (slashLineRef.current) {
@@ -198,6 +207,7 @@ const ProblemsSection = () => {
               start: "top bottom",
               end: "bottom bottom",
               scrub: true,
+              invalidateOnRefresh: true,
             }
           }
         );
@@ -205,7 +215,11 @@ const ProblemsSection = () => {
 
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      clearTimeout(timerId);
+      observers.forEach((obs) => obs.disconnect());
+      ctx.revert();
+    };
   }, []);
 
   return (

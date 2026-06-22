@@ -11,7 +11,7 @@ import FloatingCTA from '@/components/FloatingCTA'
 import RevealLayout, { RevealProvider } from '@/components/RevealLayout'
 import Navbar from '@/components/Navbar'
 import BrandsWhoTrustUs from '@/components/BrandsWhoTrustUs'
-import ImpactSection from '@/components/ImpactSection'
+import OurServices from '@/components/OurServices'
 
 const page = () => {
   return (
@@ -25,7 +25,7 @@ const page = () => {
       </RevealLayout>
 
       <BrandsWhoTrustUs />
-      <ImpactSection />
+      <OurServices />
 
       <WhyInfotainmentWorks />
       <ResultsSection />

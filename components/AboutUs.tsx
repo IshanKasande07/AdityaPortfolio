@@ -19,17 +19,11 @@ function Counter({ value, direction = "up" }: { value: number; direction?: "up" 
     }
   }, [motionValue, isInView, value, direction]);
 
-  useEffect(() => {
-    springValue.on("change", (latest) => {
-      if (ref.current) {
-        ref.current.textContent = Intl.NumberFormat("en-US").format(
-          Math.round(latest)
-        );
-      }
-    });
-  }, [springValue]);
+  const displayValue = useTransform(springValue, (latest) =>
+    Intl.NumberFormat("en-US").format(Math.round(latest))
+  );
 
-  return <span ref={ref} />;
+  return <motion.span ref={ref}>{displayValue}</motion.span>;
 }
 
 export default function AboutUs() {

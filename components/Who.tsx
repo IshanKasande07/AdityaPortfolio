@@ -108,24 +108,43 @@ export default function Who() {
     useEffect(() => {
         if (typeof window === "undefined") return
 
-        const ctx = gsap.context(() => {
-            ScrollTrigger.create({
-                trigger: pinWrapRef.current,
-                start: "top top",
-                end: "bottom bottom",
-                onUpdate(self) {
-                    const np = self.progress >= 0.48 ? 1 : 0
-                    if (np !== phaseRef.current) {
-                        const dir: 1 | -1 = np > phaseRef.current ? 1 : -1
-                        phaseRef.current = np
-                        setPhase(np)
-                        swapPhase(np, dir)
-                    }
-                },
-            })
-        }, pinWrapRef)
+        let timerId: ReturnType<typeof setTimeout>
+        let ctx: gsap.Context
 
-        return () => ctx.revert()
+        const setup = () => {
+            ctx = gsap.context(() => {
+                ScrollTrigger.create({
+                    trigger: pinWrapRef.current,
+                    pin: true,           // GSAP owns pinning — no CSS sticky desync
+                    start: "top top",
+                    end: "+=1200",        // Scroll distance for the phase swap
+                    invalidateOnRefresh: true,
+                    onUpdate(self) {
+                        const np = self.progress >= 0.48 ? 1 : 0
+                        if (np !== phaseRef.current) {
+                            const dir: 1 | -1 = np > phaseRef.current ? 1 : -1
+                            phaseRef.current = np
+                            setPhase(np)
+                            swapPhase(np, dir)
+                        }
+                    },
+                })
+            }, pinWrapRef)
+
+            // Recalculate all downstream ScrollTriggers after pin-spacer is inserted
+            requestAnimationFrame(() => ScrollTrigger.refresh())
+        }
+
+        // Delay setup so pin-spacers from sections above (WhyInfotainmentWorks)
+        // have already settled in the DOM before we calculate positions.
+        timerId = setTimeout(() => {
+            requestAnimationFrame(setup)
+        }, 500)
+
+        return () => {
+            clearTimeout(timerId)
+            ctx?.revert()
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -206,12 +225,13 @@ export default function Who() {
     }
 
     return (
-        <section id="who" ref={pinWrapRef} className="relative w-full h-[200vh] bg-background text-primary select-none">
-            {/* The actual pinned content area */}
-            <div
-                ref={sectionRef}
-                className="sticky top-0 w-full h-screen overflow-hidden flex flex-col justify-center py-8 md:py-12 border-b border-primary/5"
-            >
+        <section id="who" className="relative w-full bg-background text-primary select-none">
+            {/* GSAP pins this inner wrapper — no CSS sticky needed */}
+            <div ref={pinWrapRef} className="relative w-full h-screen">
+                <div
+                    ref={sectionRef}
+                    className="h-full w-full overflow-hidden flex flex-col justify-center py-8 md:py-12 border-b border-primary/5"
+                >
                 {/* Subtle ambient */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[45vw] h-[45vh] rounded-full pointer-events-none"
                     style={{ background: "radial-gradient(ellipse, rgba(137,162,54,0.025) 0%, transparent 70%)" }} />
@@ -302,6 +322,7 @@ export default function Who() {
                 </div>
 
                 {/* Scroll dots moved under heading */}
+            </div>
             </div>
         </section>
     )
