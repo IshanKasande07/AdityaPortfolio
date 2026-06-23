@@ -57,12 +57,20 @@ const OurServices = () => {
 
                 ScrollTrigger.create({
                     trigger: textEl,
-                    start: "top 60%",
-                    end: "bottom 40%",
-                    onEnter: () => setActiveIndex(idx),
-                    onEnterBack: () => setActiveIndex(idx),
+                    start: "top 50%",
+                    end: "bottom 50%",
+                    onToggle: (self) => {
+                        if (self.isActive) {
+                            setActiveIndex(idx);
+                        }
+                    }
                 });
             });
+
+            // Refresh ScrollTrigger to ensure all layout/fonts have settled
+            setTimeout(() => {
+                ScrollTrigger.refresh();
+            }, 500);
         }, sectionRef);
 
         return () => ctx.revert();
@@ -155,38 +163,40 @@ const OurServices = () => {
             <div className="relative w-full max-w-[1040px] mx-auto px-6 md:px-16 flex flex-col lg:flex-row gap-12 lg:gap-0">
 
                 {/* Left Column — Scrolling Text Items */}
-                <div className="lg:w-[50%] relative">
+                <div className="lg:w-[50%] relative pl-6 md:pl-12">
                     {services.map((service, idx) => (
                         <div
                             key={idx}
                             ref={(el) => { textRefs.current[idx] = el; }}
-                            className="py-8 md:py-10 border-t border-primary/10 first:border-t-0"
+                            className="py-4 md:py-5 border-t border-primary/10 first:border-t-0"
                         >
                             <div
                                 className="transition-opacity duration-500"
-                                style={{ opacity: activeIndex === idx ? 1 : 0.35 }}
+                                style={{ opacity: 1 }}
                             >
                                 {/* Number */}
-                                <span className="text-xs md:text-sm font-mono text-accent tracking-[0.3em] uppercase mb-4 block">
+                                <span className="text-xs md:text-sm font-mono text-accent tracking-[0.3em] uppercase mb-2 block">
                                     {service.number}
                                 </span>
 
                                 {/* Title */}
-                                <h3 className="text-lg md:text-xl lg:text-2xl font-display font-semibold text-primary tracking-tight leading-tight mb-3">
+                                <h3 className="text-xl lg:text-2xl font-display font-semibold text-primary tracking-tight leading-tight mb-2">
                                     {service.title}
                                 </h3>
 
                                 {/* Description */}
-                                <p className="text-xs md:text-sm text-muted font-light leading-relaxed max-w-sm">
+                                <p className="text-[13px] md:text-sm text-muted font-light leading-relaxed max-w-sm">
                                     {service.desc}
                                 </p>
                             </div>
                         </div>
                     ))}
+                    {/* Spacer inside left column so the flex row stays tall enough for SEO to reach vertical center */}
+                    <div className="h-[40vh]" />
                 </div>
 
                 {/* Right Column — Sticky Icon Container */}
-                <div className="hidden lg:block lg:w-[50%]">
+                <div className="hidden lg:block lg:w-[50%] pt-32">
                     <div
                         ref={stickyContainerRef}
                         className="sticky top-[50vh] -translate-y-1/2 ml-12 xl:ml-20"
@@ -258,8 +268,7 @@ const OurServices = () => {
                 </div>
             </div>
 
-            {/* Bottom spacer so the last item can fully scroll through */}
-            <div className="h-24 md:h-32" />
+
         </section>
     );
 };

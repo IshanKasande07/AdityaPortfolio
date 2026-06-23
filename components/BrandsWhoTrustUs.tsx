@@ -164,7 +164,7 @@ const BrandsWhoTrustUs = () => {
 
                 <div className="w-full relative">
                     <FadeUp>
-                        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-12 mb-10 relative z-10 px-6 md:px-4 max-w-[1040px] mx-auto w-full">
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-12 mb-10 relative z-10 px-6 md:px-16 max-w-[1040px] mx-auto w-full">
                             <div className="flex flex-col items-start">
                                 <div className="inline-block bg-primary text-background px-3 py-1.5 rounded-lg text-sm font-medium mb-4 shadow-sm border border-primary/10">
                                     Our Clients

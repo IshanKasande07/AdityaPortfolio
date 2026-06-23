@@ -14,7 +14,6 @@ const WhyInfotainmentWorks = () => {
   const connectingLinesRef = useRef<(SVGLineElement | null)[]>([]);
   const actionWordRefs = useRef<(HTMLDivElement | null)[]>([]);
   const incomingLineRef = useRef<SVGLineElement>(null);
-  const waveTransitionRef = useRef<HTMLDivElement>(null);
 
   const [cardDimensions, setCardDimensions] = useState<{ width: number, height: number }[]>([]);
 
@@ -192,32 +191,32 @@ const WhyInfotainmentWorks = () => {
                       className="absolute inset-0 pointer-events-none"
                       width={w} height={h}
                       viewBox={`0 0 ${w} ${h}`}
-                      style={{ overflow: 'visible', filter: 'drop-shadow(0 0 4px rgba(164,198,57,0.4))' }}
+                      style={{ overflow: 'visible', filter: 'drop-shadow(0 0 4px rgba(137,162,54,0.4))' }}
                     >
                       <path
                         ref={(el) => addToRefs(el, svgPathsRef, index * 2)}
                         d={topPathD}
-                        fill="none" stroke="#A4C639" strokeWidth="2"
+                        fill="none" stroke="#89A236" strokeWidth="2"
                         pathLength="100" strokeDasharray="100" strokeDashoffset="100"
                       />
                       <path
                         ref={(el) => addToRefs(el, svgPathsRef, index * 2 + 1)}
                         d={bottomPathD}
-                        fill="none" stroke="#A4C639" strokeWidth="2"
+                        fill="none" stroke="#89A236" strokeWidth="2"
                         pathLength="100" strokeDasharray="100" strokeDashoffset="100"
                       />
                     </svg>
-
+ 
                     {/* The actual card */}
                     <div
                       ref={(el) => addToRefs(el, cardRefs, index)}
-                      className="w-[130px] md:w-[150px] p-3 md:p-4 rounded-[14px] bg-[#182410] border border-black/10 shadow-xl text-center flex flex-col items-center group relative z-10 opacity-0 scale-95 blur-[10px] transform-gpu"
+                      className="w-[130px] md:w-[150px] p-3 md:p-4 rounded-[14px] bg-[#F8F3E6] border border-black/5 shadow-xl text-center flex flex-col items-center group relative z-10 opacity-0 scale-95 blur-[10px] transform-gpu"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[14px]"></div>
-                      <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-3 shadow-inner z-10 transition-transform duration-500 group-hover:scale-110 text-[#A4C639]">
+                      <div className="absolute inset-0 bg-gradient-to-br from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[14px]"></div>
+                      <div className="w-8 h-8 rounded-full bg-[#89A236]/10 border border-[#89A236]/20 flex items-center justify-center mb-3 shadow-inner z-10 transition-transform duration-500 group-hover:scale-110 text-[#89A236]">
                         {step.icon}
                       </div>
-                      <h3 className="text-sm md:text-base font-display font-semibold text-[#A4C639] tracking-wide z-10">
+                      <h3 className="text-sm md:text-base font-display font-semibold text-[#89A236] tracking-wide z-10">
                         {step.label}
                       </h3>
                     </div>
@@ -229,9 +228,9 @@ const WhyInfotainmentWorks = () => {
                       <line
                         ref={(el) => addToRefs(el, connectingLinesRef, index)}
                         x1="0" y1="2" x2="48" y2="2"
-                        stroke="#A4C639" strokeWidth="2" fill="none"
+                        stroke="#89A236" strokeWidth="2" fill="none"
                         pathLength="100" strokeDasharray="100" strokeDashoffset="100"
-                        style={{ filter: 'drop-shadow(0 0 4px rgba(164,198,57,0.4))' }}
+                        style={{ filter: 'drop-shadow(0 0 4px rgba(137,162,54,0.4))' }}
                       />
                     </svg>
                     {index < steps.length - 1 && steps[index + 1].actionWord && (
@@ -303,18 +302,6 @@ const WhyInfotainmentWorks = () => {
             </div>
         </motion.div>
       </div>
-      </div>
-
-      {/* Wave transition linking into the next section (Problems) */}
-      <div ref={waveTransitionRef} className="absolute bottom-[-20px] left-0 w-full overflow-hidden leading-[0] z-40 pointer-events-none drop-shadow-xl will-change-transform transform-gpu">
-        <div className="w-full relative flex flex-col">
-          <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[100px] transform scale-105 translate-y-[2px]">
-            {/* Transition into background color of the next section */}
-            <path d="M0 100C0 100 360 0 720 0C1080 0 1440 100 1440 100V100H0V100Z" fill="var(--color-background)" />
-          </svg>
-          {/* Fill the gap created by the upward parallax translation */}
-          <div className="h-[30px] w-full bg-background" />
-        </div>
       </div>
     </section>
   );
