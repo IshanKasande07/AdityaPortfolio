@@ -2,6 +2,7 @@
 
 import { motion, useMotionValue, useSpring, useScroll, useTransform, useAnimation } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
+import Image from "next/image";
 import { useReveal } from "./RevealLayout";
 
 const headingLines = [
@@ -9,7 +10,7 @@ const headingLines = [
     ["-", "Build", "Narratives"],
 ];
 
-const smoothTransform = ([s, m]: any) => Math.round((s + m) * 10) / 10;
+const combineTransforms = ([s, m]: number[]) => s + m;
 
 export default function Hero2() {
     const { revealed, earlyReveal } = useReveal();
@@ -18,23 +19,17 @@ export default function Hero2() {
     const contentControls = useAnimation();
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Strict lock state that defaults to false — prevents mouse parallax during reveal
     const [parallaxUnlocked, setParallaxUnlocked] = useState(false);
-    // Detect touch devices to disable mouse parallax entirely
     const [isTouchDevice, setIsTouchDevice] = useState(false);
 
     useEffect(() => {
-        // Check for touch-primary device (mobile/tablet)
         const mql = window.matchMedia("(pointer: coarse)");
-        if (mql.matches) {
-            setIsTouchDevice(true);
-        }
+        if (mql.matches) setIsTouchDevice(true);
+
         const handler = (e: MediaQueryListEvent) => setIsTouchDevice(e.matches);
         mql.addEventListener("change", handler);
 
-        const handleTouchStart = () => {
-            setIsTouchDevice(true);
-        };
+        const handleTouchStart = () => setIsTouchDevice(true);
         window.addEventListener("touchstart", handleTouchStart, { passive: true });
 
         return () => {
@@ -47,7 +42,6 @@ export default function Hero2() {
         if (earlyReveal) {
             const startY = typeof window !== 'undefined' ? window.innerHeight * 0.25 : 200;
 
-            // Phase 1: Initial fade in
             headerControls.start({
                 opacity: 1,
                 y: startY,
@@ -56,14 +50,12 @@ export default function Hero2() {
             });
 
             const phaseTwo = setTimeout(() => {
-                // Phase 2: Move to center
                 headerControls.start({
                     y: 0,
                     scale: 1,
                     transition: { duration: 1.5, ease: [0.16, 1, 0.3, 1] },
                 });
 
-                // Content Button fade in
                 const contentTimer = setTimeout(() => {
                     contentControls.start({
                         opacity: 1,
@@ -73,7 +65,6 @@ export default function Hero2() {
                     });
                 }, 250);
 
-                // Unlock mouse parallax ONLY after all animations finish
                 const unlockTimer = setTimeout(() => {
                     setParallaxUnlocked(true);
                 }, 1800);
@@ -124,13 +115,13 @@ export default function Hero2() {
     const mountainsMouseX = useTransform(smoothMouseX, [-1, 1], [-50, 50]);
     const mountainsMouseY = useTransform(smoothMouseY, [-1, 1], [-50, 50]);
 
-    const combinedSkyY = useTransform([skyScrollY, skyMouseY], smoothTransform);
-    const combinedBridgeBehindY = useTransform([bridgeBehindY, bridgeBehindMouseY], smoothTransform);
-    const combinedBridgeBottomCloudY = useTransform([bridgeBottomCloudY, bridgeBottomCloudMouseY], smoothTransform);
-    const combinedBridgeY = useTransform([bridgeY, bridgeMouseY], smoothTransform);
-    const combinedCloudY = useTransform([cloudY, cloudMouseY], smoothTransform);
-    const combinedLeftMountainY = useTransform([mountainsY, mountainsMouseY], smoothTransform);
-    const combinedRightMountainY = useTransform([mountainsY, mountainsMouseY], smoothTransform);
+    const combinedSkyY = useTransform([skyScrollY, skyMouseY], combineTransforms);
+    const combinedBridgeBehindY = useTransform([bridgeBehindY, bridgeBehindMouseY], combineTransforms);
+    const combinedBridgeBottomCloudY = useTransform([bridgeBottomCloudY, bridgeBottomCloudMouseY], combineTransforms);
+    const combinedBridgeY = useTransform([bridgeY, bridgeMouseY], combineTransforms);
+    const combinedCloudY = useTransform([cloudY, cloudMouseY], combineTransforms);
+    const combinedLeftMountainY = useTransform([mountainsY, mountainsMouseY], combineTransforms);
+    const combinedRightMountainY = useTransform([mountainsY, mountainsMouseY], combineTransforms);
 
     const textY = useTransform(scrollYProgress, [0, 0.5], [0, -200]);
     const textOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0]);
@@ -142,7 +133,6 @@ export default function Hero2() {
     const buttonSpringY = useSpring(buttonY, { stiffness: 150, damping: 15, mass: 0.1 });
 
     const handlePointerMove = (e: React.PointerEvent) => {
-        // No mouse parallax on touch devices or while reveal is playing
         if (isTouchDevice || !parallaxUnlocked) return;
 
         const { clientX, clientY } = e;
@@ -157,7 +147,7 @@ export default function Hero2() {
         <div
             ref={containerRef}
             id="work"
-            className="relative w-full h-screen overflow-hidden bg-background z-20"
+            className="relative overflow-hidden bg-background z-20 w-full h-[100vh] md:w-[calc(100%-36px)] md:h-[calc(100vh-36px)] md:m-[18px] md:rounded-[20px]"
             onPointerMove={handlePointerMove}
             onPointerLeave={() => {
                 mouseX.set(0);
@@ -205,7 +195,7 @@ export default function Hero2() {
 
             <div className="absolute inset-0 w-full h-full" style={{ transformStyle: "preserve-3d" }}>
 
-                {/* ========== LAYER 0: Sky (deepest background) ========== */}
+                {/* ========== LAYER 0: Sky ========== */}
                 <motion.div
                     className="absolute inset-0 z-0 pointer-events-none hero-sky-bg"
                     style={{
@@ -217,11 +207,10 @@ export default function Hero2() {
                         z: 0.01,
                         scale: 1.05,
                         transformOrigin: "center",
-                        willChange: "transform",
                     }}
                 />
 
-                {/* ========== LAYER 1: Bridge Behind (slowest parallax) ========== */}
+                {/* ========== LAYER 1: Bridge Behind ========== */}
                 <motion.div
                     style={{
                         x: isTouchDevice ? 0 : bridgeBehindMouseX,
@@ -229,17 +218,17 @@ export default function Hero2() {
                         z: 0.01,
                         scale: 1.05,
                         transformOrigin: "center",
-                        willChange: "transform",
                     }}
                     className="absolute inset-0 z-[10] pointer-events-none hidden md:block"
                 >
-                    <img
+                    <Image
                         src="/heroassets/Bridge Behind.webp"
-                        alt=""
-                        decoding="async"
-                        className="absolute w-full h-full object-cover object-center"
-                        style={{ top: "0" }}
+                        alt="Bridge Background"
+                        fill
+                        priority
+                        className="object-cover object-center"
                         draggable={false}
+                        sizes="100vw"
                     />
                 </motion.div>
 
@@ -251,21 +240,22 @@ export default function Hero2() {
                         z: 0.01,
                         scale: 1.05,
                         transformOrigin: "bottom center",
-                        willChange: "transform",
                     }}
                     className="absolute inset-x-0 bottom-0 z-[15] hidden md:flex justify-center pointer-events-none"
                 >
-                    <img
+                    <Image
                         src="/heroassets/Bridge Bottom Cloud_.webp"
-                        alt=""
-                        decoding="async"
+                        alt="Cloud Layer"
+                        width={800}
+                        height={400}
+                        priority
                         className="object-contain object-bottom"
                         style={{ width: "clamp(140px, 30vw, 800px)", height: "auto", clipPath: "inset(15% 0 0 0)" }}
                         draggable={false}
                     />
                 </motion.div>
 
-                {/* ========== LAYER 2: Bridge (medium parallax) ========== */}
+                {/* ========== LAYER 2: Bridge ========== */}
                 <motion.div
                     style={{
                         x: isTouchDevice ? 0 : bridgeMouseX,
@@ -273,21 +263,23 @@ export default function Hero2() {
                         z: 0.01,
                         scale: 1.05,
                         transformOrigin: "bottom center",
-                        willChange: "transform",
+                        height: "102%",
+                        top: "2vh",
                     }}
-                    className="absolute inset-0 z-[20] pointer-events-none hidden md:block"
+                    className="absolute left-0 w-full z-[20] pointer-events-none hidden md:block"
                 >
-                    <img
+                    <Image
                         src="/heroassets/Bridge.webp"
-                        alt=""
-                        decoding="async"
-                        className="absolute w-full object-cover object-bottom"
-                        style={{ height: "102%", top: "2vh" }}
+                        alt="Bridge Overlay"
+                        fill
+                        priority
+                        className="object-cover object-bottom"
                         draggable={false}
+                        sizes="100vw"
                     />
                 </motion.div>
 
-                {/* ========== LAYER 3: Cloud (medium-fast parallax) ========== */}
+                {/* ========== LAYER 3: Cloud ========== */}
                 <motion.div
                     style={{
                         x: isTouchDevice ? 0 : cloudMouseX,
@@ -295,21 +287,22 @@ export default function Hero2() {
                         z: 0.01,
                         scale: 1.15,
                         transformOrigin: "center",
-                        willChange: "transform",
                     }}
                     className="absolute inset-0 -bottom-32 z-[30] pointer-events-none hidden md:block"
                 >
-                    <img
+                    <Image
                         src="/heroassets/CLoud.webp"
-                        alt=""
-                        decoding="async"
-                        draggable={false}
+                        alt="Cloud Overlay"
+                        width={1200}
+                        height={400}
+                        priority
                         className="absolute bottom-[18vh] left-1/2 -translate-x-1/2"
                         style={{ width: "130%", height: "auto" }}
+                        draggable={false}
                     />
                 </motion.div>
 
-                {/* ========== LAYER 4: Left Mountain (fast parallax, bottom-left) ========== */}
+                {/* ========== LAYER 4: Left Mountain ========== */}
                 <motion.div
                     style={{
                         x: isTouchDevice ? 0 : mountainsMouseX,
@@ -317,21 +310,22 @@ export default function Hero2() {
                         z: 0.01,
                         scale: 1.2,
                         transformOrigin: "bottom left",
-                        willChange: "transform",
                     }}
                     className="absolute inset-0 -bottom-20 -left-20 z-[40] pointer-events-none hidden md:block"
                 >
-                    <img
+                    <Image
                         src="/heroassets/LEft Mountaim.webp"
-                        alt=""
-                        decoding="async"
-                        draggable={false}
+                        alt="Left Mountain"
+                        width={600}
+                        height={600}
+                        priority
                         className="absolute bottom-0 left-0"
                         style={{ width: "clamp(120px, 27vw, 540px)", height: "auto", maxWidth: "none" }}
+                        draggable={false}
                     />
                 </motion.div>
 
-                {/* ========== LAYER 4: Right Mountain (fast parallax, bottom-right) ========== */}
+                {/* ========== LAYER 4: Right Mountain ========== */}
                 <motion.div
                     style={{
                         x: isTouchDevice ? 0 : mountainsMouseX,
@@ -339,17 +333,18 @@ export default function Hero2() {
                         z: 0.01,
                         scale: 1.2,
                         transformOrigin: "bottom right",
-                        willChange: "transform",
                     }}
                     className="absolute inset-0 -bottom-20 -right-20 z-[40] pointer-events-none hidden md:block"
                 >
-                    <img
+                    <Image
                         src="/heroassets/Right Mountaim.webp"
-                        alt=""
-                        decoding="async"
-                        draggable={false}
+                        alt="Right Mountain"
+                        width={800}
+                        height={800}
+                        priority
                         className="absolute bottom-0 right-0"
                         style={{ width: "clamp(160px, 35vw, 700px)", height: "auto", maxWidth: "none" }}
+                        draggable={false}
                     />
                 </motion.div>
 
@@ -369,7 +364,7 @@ export default function Hero2() {
                     </motion.div>
                 )}
 
-                {/* ========== LAYER 5: Text Overlay + CTA (highest z) ========== */}
+                {/* ========== LAYER 5: Text Overlay + CTA ========== */}
                 <motion.div
                     style={{ y: textY, opacity: textOpacity, scale: textScale, z: 0.01 }}
                     className="absolute top-[10vh] md:top-[13vh] left-0 w-full flex flex-col items-center justify-center text-primary text-center z-[50] px-6 md:px-[5vw] pointer-events-none"
@@ -386,7 +381,7 @@ export default function Hero2() {
                     >
                         <div
                             className="text-[8vw] sm:text-[5.5vw] md:text-[4vw] font-medium leading-[1.1] tracking-tight pointer-events-auto mb-3 md:mb-4 flex flex-col items-center"
-                            style={{ fontFamily: "var(--font-tiempos-headline), serif" }}
+                            style={{ fontFamily: "var(--font-tiempos-headline), serif", display: "swap" }}
                         >
                             {headingLines.map((line, lineIdx) => (
                                 <div key={lineIdx} className="flex flex-wrap justify-center gap-[0.3em] overflow-visible">
@@ -424,7 +419,6 @@ export default function Hero2() {
                     <motion.button
                         onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "instant" })}
                         onPointerMove={(e) => {
-                            // No button hover physics on touch or during reveal
                             if (isTouchDevice || !parallaxUnlocked) return;
                             const rect = e.currentTarget.getBoundingClientRect();
                             buttonX.set((e.clientX - (rect.left + rect.width / 2)) * 0.15);
