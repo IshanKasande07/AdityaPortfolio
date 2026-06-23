@@ -20,7 +20,7 @@ const problemsList: Problem[] = [
     id: "engagement",
     title: "Low Engagement",
     lines: ["Low", "Engagement"],
-    icon: <TrendingDown className="w-6 h-6" />,
+    icon: <TrendingDown className="w-5 h-5" />,
     insight:
       "Low engagement isn't a platform problem. It's a value problem. When you educate, people engage. Stop talking about yourself and start talking about what they want to know.",
   },
@@ -28,7 +28,7 @@ const problemsList: Problem[] = [
     id: "reach",
     title: "Poor Reach",
     lines: ["Poor", "Reach"],
-    icon: <Zap className="w-6 h-6" />,
+    icon: <Zap className="w-5 h-5" />,
     insight:
       "Algorithms reward content people actually want to consume. Education is inherently shareable and saveable. It's the ultimate organic growth engine.",
   },
@@ -36,7 +36,7 @@ const problemsList: Problem[] = [
     id: "retention",
     title: "Low Retention",
     lines: ["Low", "Retention"],
-    icon: <Clock className="w-6 h-6" />,
+    icon: <Clock className="w-5 h-5" />,
     insight:
       "People scroll past entertainment. They stop for insight. Retention follows value. A 5-minute deep dive easily outperforms a 15-second gimmick.",
   },
@@ -44,7 +44,7 @@ const problemsList: Problem[] = [
     id: "authority",
     title: "No Authority",
     lines: ["No", "Authority"],
-    icon: <Shield className="w-6 h-6" />,
+    icon: <Shield className="w-5 h-5" />,
     insight:
       "You can't buy authority. You earn it by teaching what others don't know. Trust is built when you consistently give away the secrets.",
   },
@@ -52,7 +52,7 @@ const problemsList: Problem[] = [
     id: "fatigue",
     title: "Content Fatigue",
     lines: ["Content", "Fatigue"],
-    icon: <Coffee className="w-6 h-6" />,
+    icon: <Coffee className="w-5 h-5" />,
     insight:
       "Fatigue comes from creating content that doesn't matter. Purpose eliminates burnout. Changing your focus from 'going viral' to 'how many can I help' changes the game.",
   },
@@ -225,23 +225,23 @@ const ProblemsSection = () => {
   return (
     <div ref={sectionRef} className="relative w-full bg-background pt-0">
       {/* ── Split columns ── */}
-      <div className="flex flex-col md:flex-row w-full max-w-[1536px] mx-auto">
+      <div className="flex flex-col md:flex-row w-full max-w-[1040px] mx-auto">
 
         {/* LEFT — sticky title panel */}
         <div className="w-full md:w-[55%] shrink-0">
-          <div className="md:sticky md:top-0 h-auto md:h-screen flex flex-col items-start justify-center px-[6%] py-12 md:py-0 border-b md:border-b-0 md:border-r border-primary/5">
-            <div className="relative z-10 w-full pl-0 md:pl-[4%]">
+          <div className="md:sticky md:top-0 h-auto md:h-screen flex flex-col items-start justify-center px-6 md:px-16 py-12 md:py-0 border-b md:border-b-0 md:border-r border-primary/5">
+            <div className="relative z-10 w-full pl-0">
 
               <h2
                 className="font-display font-bold text-primary tracking-[-0.03em] leading-[1.05]"
-                style={{ fontSize: "clamp(3.5rem, 6vw, 7.5rem)" }}
+                style={{ fontSize: "clamp(2.5rem, 4.5vw, 5rem)" }}
               >
                 Problems<br />
                 We&nbsp;&nbsp;Solve
               </h2>
 
               {/* Scribbled Arching Arrow (hidden on mobile, visible on md+) */}
-              <div className="hidden md:block absolute -top-[100%] left-[95%] w-[35vw] max-w-[500px] h-auto opacity-70 pointer-events-none z-0 transform -translate-x-1/2">
+              <div className="hidden md:block absolute -top-[80%] left-[90%] w-[25vw] max-w-[350px] h-auto opacity-70 pointer-events-none z-0 transform -translate-x-1/2">
                 <svg
                   viewBox="0 0 300 120"
                   fill="none"
@@ -287,22 +287,22 @@ const ProblemsSection = () => {
             <div
               key={problem.id}
               ref={(el) => { cardRefs.current[index] = el; }}
-              className="flex items-center justify-center px-[4%] py-8 md:py-6 w-full min-h-[50vh] md:h-[55vh]"
+              className="flex items-center justify-center px-[4%] py-6 md:py-4 w-full min-h-[40vh] md:h-[45vh]"
             >
               {/* Inner box — GSAP animates scale + opacity on this */}
               <div
                 ref={(el) => { innerCardRefs.current[index] = el; }}
-                className="w-full max-w-[340px] bg-surface-light/10 backdrop-blur-md rounded-[28px] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.35)] transition-colors duration-300"
+                className="w-full max-w-[280px] bg-surface-light/10 backdrop-blur-md rounded-[24px] p-4 md:p-5 shadow-[0_20px_60px_rgba(0,0,0,0.35)] transition-colors duration-300"
                 style={{ willChange: "transform, opacity", transformOrigin: "center left" }}
               >
-                <div className="text-[10px] font-mono text-muted/30 tracking-widest mb-4 uppercase">
+                <div className="text-[9px] font-mono text-muted/30 tracking-widest mb-3 uppercase">
                   Problem {String(index + 1).padStart(2, "0")}
                 </div>
 
                 {/* Grouping Icon and Animated Title */}
-                <div className="flex items-start gap-4 mb-4">
+                <div className="flex items-start gap-3 mb-3">
                   {/* The Icon */}
-                  <div className="text-accent shrink-0 bg-primary/5 p-2.5 rounded-xl border border-primary/10 mt-1.5 md:mt-2.5">
+                  <div className="text-accent shrink-0 bg-primary/5 p-2 rounded-lg border border-primary/10 mt-1.5 md:mt-2">
                     {problem.icon}
                   </div>
 
@@ -337,13 +337,13 @@ const ProblemsSection = () => {
                 </div>
 
                 {/* Insight Description */}
-                <div className="flex flex-col mt-4 gap-3">
-                  <p className="text-[12px] md:text-[13px] text-primary/60 leading-[1.5] font-light">
+                <div className="flex flex-col mt-3 gap-2">
+                  <p className="text-[11px] md:text-[12px] text-primary/60 leading-[1.5] font-light">
                     {problem.insight}
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-primary/5 w-full">
+                <div className="mt-4 pt-3 border-t border-primary/5 w-full">
                   <span className="text-[9px] text-muted/30 font-mono tracking-wider uppercase">
                     The Fix →
                   </span>
@@ -357,7 +357,7 @@ const ProblemsSection = () => {
       {/* ── Letter size ── */}
       <style>{`
         .word-row .letter {
-          font-size: clamp(1.8rem, 2.8vw, 32px);
+          font-size: clamp(1.4rem, 2.2vw, 24px);
           font-family: var(--font-display, sans-serif);
           font-weight: 700;
           line-height: 1;

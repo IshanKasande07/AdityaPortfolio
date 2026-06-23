@@ -3,6 +3,7 @@
 @theme {
   /* ── Nature-Inspired Palette ─────────────────────────── */
   --color-background: #F8F3E6;       /* Bright Sky & Sunlight       */
+  --color-background-alt: #E1D8C4;   /* Darker Cream for Alt Sections */
   --color-mist: #DDE6EA;             /* Mist & Clouds               */
   --color-mountain: #9CB6C4;         /* Distant Hazy Mountains      */
   --color-surface: #11250E;          /* Deep Forest & Valley Shadows */
