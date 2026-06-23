@@ -8,7 +8,7 @@ import { Sparkles, Brain, Heart, Zap } from "lucide-react";
 
 const WhyInfotainmentWorks = () => {
   const triggerRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const svgPathsRef = useRef<(SVGPathElement | null)[]>([]);
   const connectingLinesRef = useRef<(SVGLineElement | null)[]>([]);
