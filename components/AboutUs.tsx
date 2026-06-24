@@ -60,12 +60,12 @@ export default function AboutUs() {
   };
 
   return (
-    <section id="about" className="relative w-full pt-12 pb-24 mb-12 bg-background text-primary select-none overflow-hidden" ref={containerRef}>
+    <section id="about" className="relative w-full pt-6 pb-24 mb-12 bg-background text-primary select-none overflow-hidden" ref={containerRef}>
       {/* Decorative Background Elements */}
       <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-accent/5 blur-[120px] rounded-full pointer-events-none -translate-y-1/2 translate-x-1/3" />
       <div className="absolute bottom-1/4 left-0 w-[40vw] h-[40vh] bg-[#5D3FD3]/5 blur-[120px] rounded-full pointer-events-none translate-y-1/2 -translate-x-1/3" />
 
-      <div className="w-full px-8 md:px-[8vw] lg:px-[12vw] mx-auto flex flex-col gap-10 md:gap-16 relative z-10 max-w-[1400px]">
+      <div className="w-full px-8 md:px-[8vw] lg:px-[12vw] mx-auto flex flex-col gap-6 md:gap-8 relative z-10 max-w-[1400px]">
 
         {/* 1. "Behind the Monarch" header */}
         <div className="flex flex-col items-center justify-center text-center">
@@ -79,28 +79,52 @@ export default function AboutUs() {
           </motion.h2>
         </div>
 
-        {/* 2. Bento Grid */}
+        {/* 2. Bento Grid — Asymmetric Layout */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-5 auto-rows-[180px] md:auto-rows-[220px] w-full mx-auto"
+          className="bento-grid w-full mx-auto"
         >
-          {/* Card 1: Hero */}
-          <motion.div variants={itemVariants} className="md:col-span-2 md:row-span-2 flex flex-col justify-center p-6 md:p-10 rounded-[2rem] bg-gradient-to-br from-primary/[0.08] to-transparent border border-primary/10 backdrop-blur-lg relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500 shadow-xl">
+          {/* Card 1: Hero — wide text card */}
+          <motion.div
+            variants={itemVariants}
+            className="bento-hero flex flex-col justify-center px-10 py-8 md:px-16 md:py-12 rounded-[2rem] bg-gradient-to-br from-primary/[0.08] to-transparent border border-primary/10 backdrop-blur-lg relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500 shadow-xl"
+          >
             <div className="absolute inset-0 bg-gradient-to-tr from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-accent/20 blur-[80px] rounded-full group-hover:bg-accent/30 transition-colors duration-700 pointer-events-none" />
-            <h3 className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold mb-4 flex flex-col gap-1 tracking-tight">
+            <h3 className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold mb-4 flex flex-col gap-1 tracking-tight relative z-10">
               <span>Infotainment</span>
               <span className="text-accent italic">Driven!</span>
             </h3>
-            <p className="text-base md:text-lg text-primary/70 leading-relaxed max-w-lg mt-2 font-medium">
+            <p className="text-base md:text-lg text-primary/70 leading-relaxed max-w-xl mt-2 font-medium relative z-10">
               We take brands from ground zero to building their brand pillars, strategy and optimise for longevity. Our aim is to build a narrative around your 5 year goal!
             </p>
           </motion.div>
 
-          {/* Card 2: Projects */}
-          <motion.div variants={itemVariants} className="md:col-span-1 md:row-span-1 flex flex-col p-6 rounded-[2rem] bg-[#11250E] border border-white/5 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:border-white/20 hover:shadow-[0_8px_32px_rgba(17,37,14,0.05)] justify-between">
+          {/* Card 2: Image — Dog with sunglasses (portrait, tall — spans 2 rows on desktop) */}
+          <motion.div
+            variants={itemVariants}
+            className="bento-img1 rounded-[2rem] relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:shadow-[0_16px_48px_rgba(0,0,0,0.15)]"
+          >
+            <Image
+              src="/bento/image.png"
+              alt="Creative vibes — Dog with sunglasses at laptop"
+              fill
+              className="object-cover object-center transition-transform duration-700 group-hover:scale-105 will-change-transform"
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute bottom-0 left-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+              <span className="text-white/90 text-sm font-medium uppercase tracking-wider">Creative Energy</span>
+            </div>
+          </motion.div>
+
+          {/* Card 3: Projects — dark green */}
+          <motion.div
+            variants={itemVariants}
+            className="bento-projects flex flex-col p-6 md:p-7 rounded-[2rem] bg-[#11250E] border border-white/5 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:border-white/20 hover:shadow-[0_8px_32px_rgba(17,37,14,0.15)] justify-between"
+          >
             <div>
               <h4 className="text-4xl lg:text-5xl font-display font-semibold mb-1 text-white">
                 <Counter value={50} />+
@@ -112,8 +136,11 @@ export default function AboutUs() {
             </p>
           </motion.div>
 
-          {/* Card 3: Team */}
-          <motion.div variants={itemVariants} className="md:col-span-1 md:row-span-1 flex flex-col p-6 rounded-[2rem] bg-[#5330D0] border border-[#5330D0]/50 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:shadow-[0_12px_40px_rgba(83,48,208,0.4)] justify-between">
+          {/* Card 4: Team — purple */}
+          <motion.div
+            variants={itemVariants}
+            className="bento-team flex flex-col p-6 md:p-7 rounded-[2rem] bg-[#5330D0] border border-[#5330D0]/50 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:shadow-[0_12px_40px_rgba(83,48,208,0.4)] justify-between"
+          >
             <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-50" />
             <div className="relative z-10">
               <h4 className="text-4xl lg:text-5xl font-display font-semibold mb-1 text-white">7+</h4>
@@ -124,8 +151,11 @@ export default function AboutUs() {
             </p>
           </motion.div>
 
-          {/* Card 4: Clients */}
-          <motion.div variants={itemVariants} className="md:col-span-1 md:row-span-1 flex flex-col p-6 rounded-[2rem] bg-gradient-to-tr from-[#111] to-[#1c1c1c] border border-white/5 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:border-accent/40 justify-between">
+          {/* Card 5: Clients — dark */}
+          <motion.div
+            variants={itemVariants}
+            className="bento-clients flex flex-col p-6 md:p-7 rounded-[2rem] bg-gradient-to-tr from-[#111] to-[#1c1c1c] border border-white/5 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:border-accent/40 justify-between"
+          >
             <div>
               <h4 className="text-4xl lg:text-5xl font-display font-semibold mb-1 text-white">
                 <Counter value={20} />+
@@ -137,8 +167,11 @@ export default function AboutUs() {
             </p>
           </motion.div>
 
-          {/* Card 5: Impressions */}
-          <motion.div variants={itemVariants} className="md:col-span-1 md:row-span-1 flex flex-col p-6 rounded-[2rem] bg-[#0A0A0A] border border-white/10 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:border-accent justify-between shadow-lg">
+          {/* Card 6: Impressions — accent glow */}
+          <motion.div
+            variants={itemVariants}
+            className="bento-impress flex flex-col p-6 md:p-7 rounded-[2rem] bg-[#0A0A0A] border border-white/10 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:border-accent justify-between shadow-lg"
+          >
             <div className="absolute -top-12 -right-12 p-8 opacity-20 blur-2xl rounded-full bg-accent w-40 h-40 group-hover:opacity-40 transition-opacity duration-700" />
             <div className="relative z-10">
               <h4 className="text-4xl lg:text-5xl font-display font-semibold mb-1 text-accent drop-shadow-md">
@@ -149,6 +182,25 @@ export default function AboutUs() {
             <p className="text-xs md:text-sm text-white/60 leading-relaxed mt-4 relative z-10">
               Generated over 10M+ views across campaigns. Helped accounts go from 3K to 100K views in a week.
             </p>
+          </motion.div>
+
+          {/* Card 7: Image — One Way signs (wide, spans bottom on desktop) */}
+          <motion.div
+            variants={itemVariants}
+            className="bento-img2 rounded-[2rem] relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:shadow-[0_16px_48px_rgba(0,0,0,0.15)]"
+          >
+            <Image
+              src="/bento/image copy.png"
+              alt="Our direction — One Way signs"
+              fill
+              className="object-cover object-center transition-transform duration-700 group-hover:scale-105 will-change-transform"
+              sizes="(max-width: 768px) 100vw, 66vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+              <span className="text-white/60 text-xs font-medium uppercase tracking-[0.2em]">Our Philosophy</span>
+              <h4 className="text-2xl md:text-3xl font-display font-semibold text-white mt-1 tracking-tight">One Direction.<br/><span className="text-accent italic">Forward.</span></h4>
+            </div>
           </motion.div>
         </motion.div>
 

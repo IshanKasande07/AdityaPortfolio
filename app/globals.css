@@ -50,3 +50,68 @@
   font-weight: 400;
   font-style: normal;
 }
+
+/* ── Bento Grid Layout ─────────────────────────── */
+
+/* Mobile: stacked column layout */
+.bento-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.bento-hero     { min-height: 240px; }
+.bento-img1     { min-height: 320px; position: relative; }
+.bento-projects { min-height: 180px; }
+.bento-team     { min-height: 180px; }
+.bento-clients  { min-height: 180px; }
+.bento-impress  { min-height: 180px; }
+.bento-img2     { min-height: 280px; position: relative; }
+
+/* Desktop: 2-row landscape-oriented rectangle */
+@media (min-width: 768px) {
+  .bento-grid {
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 340px 260px;
+    gap: 18px;
+  }
+
+  /* Row 1: Dog image (4 cols) + Hero text (5 cols) + Projects (3 cols) */
+  .bento-hero {
+    grid-column: 5 / 10;
+    grid-row: 1 / 2;
+    min-height: unset;
+  }
+  .bento-img1 {
+    grid-column: 1 / 5;
+    grid-row: 1 / 2;
+    min-height: unset;
+  }
+  .bento-projects {
+    grid-column: 10 / 13;
+    grid-row: 1 / 2;
+    min-height: unset;
+  }
+
+  /* Row 2: Team (3 cols) + Clients (3 cols) + Impressions (3 cols) + Signs image (3 cols) */
+  .bento-team {
+    grid-column: 1 / 4;
+    grid-row: 2 / 3;
+    min-height: unset;
+  }
+  .bento-clients {
+    grid-column: 4 / 7;
+    grid-row: 2 / 3;
+    min-height: unset;
+  }
+  .bento-impress {
+    grid-column: 7 / 10;
+    grid-row: 2 / 3;
+    min-height: unset;
+  }
+  .bento-img2 {
+    grid-column: 10 / 13;
+    grid-row: 2 / 3;
+    min-height: unset;
+  }
+}

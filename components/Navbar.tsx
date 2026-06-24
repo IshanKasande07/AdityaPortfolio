@@ -55,7 +55,7 @@ const Navbar = () => {
             alt="Monarch Media House" 
             width={72} 
             height={40} 
-            className="object-contain h-10 w-auto"
+            className="object-contain h-10 w-auto invert"
             priority
           />
         </button>
