@@ -154,7 +154,7 @@ export default function ContactDrawer({ isOpen, onClose }: ContactDrawerProps) {
                         animate="visible"
                         exit="exit"
                         className="fixed right-0 top-0 h-full w-[min(500px,90vw)] z-[10001]
-                            bg-surface/95 backdrop-blur-xl border-l border-primary/10
+                            bg-background/95 backdrop-blur-xl border-l border-primary/10
                             flex flex-col overflow-y-auto"
                         style={{ willChange: "transform", transform: "translate3d(0,0,0)" }}
                     >
