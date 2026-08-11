@@ -147,17 +147,21 @@ const OurServices = () => {
             className="relative bg-background w-full"
         >
             {/* Section Header */}
-            <div className="w-full max-w-[1040px] mx-auto px-6 md:px-16 pt-28 md:pt-40 pb-4">
-                <div className="md:pl-6">
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-light text-primary tracking-wide leading-tight">
-                        Our{" "}
-                        <span className="text-accent italic font-normal drop-shadow-[0_0_12px_rgba(137,162,54,0.4)]">
-                            Services
-                        </span>
-                    </h2>
-                    <p className="mt-3 text-xs md:text-sm text-muted max-w-md font-light leading-relaxed">
-                        A full-stack creative arsenal built to transform your brand presence.
-                    </p>
+            <div className="w-full max-w-[1040px] mx-auto px-6 md:px-16 pt-24 md:pt-36 pb-10">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-12 relative z-10 w-full">
+                    <div className="flex flex-col items-start">
+                        <div className="inline-block bg-primary text-background px-3 py-1.5 rounded-lg text-sm font-medium mb-4 shadow-sm border border-primary/10">
+                            Our Expertise
+                        </div>
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium text-primary tracking-tight leading-tight">
+                            Our Services.
+                        </h2>
+                    </div>
+                    <div className="md:max-w-md lg:max-w-lg md:pb-1">
+                        <p className="text-base md:text-lg text-gray-600 font-light leading-relaxed">
+                            A full-stack creative arsenal built to transform your brand presence into <span className="text-primary font-medium">market authority</span>.
+                        </p>
+                    </div>
                 </div>
             </div>
 

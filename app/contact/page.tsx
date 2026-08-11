@@ -30,62 +30,53 @@ const slangSegments: SlangWord[] = [
     { text: "fill the form.", italic: true },
 ];
 
-const ItalicHoverWord = ({ text }: { text: string }) => {
+const ItalicHoverWord = ({ text, onHover }: { text: string; onHover: (el: HTMLElement | null) => void }) => {
     const ref = useRef<HTMLSpanElement>(null);
-    const glowX = useMotionValue(0);
-    const glowY = useMotionValue(0);
-    const springX = useSpring(glowX, { stiffness: 300, damping: 20 });
-    const springY = useSpring(glowY, { stiffness: 300, damping: 20 });
 
     return (
         <motion.span
             ref={ref}
             data-cursor-hover
-            onMouseMove={(e) => {
-                const rect = ref.current?.getBoundingClientRect();
-                if (!rect) return;
-                glowX.set(e.clientX - rect.left);
-                glowY.set(e.clientY - rect.top);
-            }}
-            onMouseLeave={() => {
-                glowX.set(0);
-                glowY.set(0);
-            }}
-            whileHover={{ color: "#FFC300", scale: 1.02 }}
+            onMouseEnter={() => onHover(ref.current)}
+            onMouseMove={() => onHover(ref.current)}
+            onMouseLeave={() => onHover(null)}
+            whileHover={{ color: "#997300", scale: 1.03 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
             style={{
                 fontFamily: "'Georgia', 'Times New Roman', serif",
                 fontStyle: "italic",
-                display: "inline",
+                display: "inline-block",
                 position: "relative",
-                borderBottom: "1px solid rgba(255,195,0,0.0)",
+                borderBottom: "1px solid rgba(153,115,0,0.3)",
                 paddingBottom: "1px",
                 transition: "border-color 0.3s ease",
+                zIndex: 1,
             }}
         >
-            {/* Glow blob */}
-            <motion.span
-                aria-hidden
-                style={{
-                    position: "absolute",
-                    left: springX,
-                    top: springY,
-                    translateX: "-50%",
-                    translateY: "-50%",
-                    width: 70,
-                    height: 70,
-                    borderRadius: "50%",
-                    background: "radial-gradient(circle, rgba(255,195,0,0.18) 0%, transparent 70%)",
-                    pointerEvents: "none",
-                    zIndex: 0,
-                }}
-            />
-            <span style={{ position: "relative", zIndex: 1 }}>{text}</span>
+            {text}
         </motion.span>
     );
 };
 
 export default function ContactPage() {
+    const panelRef = useRef<HTMLDivElement>(null);
+    const [targetPos, setTargetPos] = React.useState<{ x: number; y: number; side: "left" | "right" } | null>(null);
+
+    const handleHover = (el: HTMLElement | null) => {
+        if (!el || !panelRef.current) {
+            setTargetPos(null);
+            return;
+        }
+        const wordRect = el.getBoundingClientRect();
+        const panelRect = panelRef.current.getBoundingClientRect();
+
+        const x = wordRect.left - panelRect.left + wordRect.width / 2;
+        const y = wordRect.top - panelRect.top + wordRect.height / 2;
+        const side = x < panelRect.width / 2 ? "left" : "right";
+
+        setTargetPos({ x, y, side });
+    };
+
     return (
         // Native window scrolling wrapper
         <div className="bg-background min-h-screen text-white flex flex-col">
@@ -136,32 +127,64 @@ export default function ContactPage() {
                 </div>
 
                 {/* RIGHT — sticky, extends behind navbar for seamless bg */}
-                <div className="hidden lg:flex w-1/2 flex-col items-center justify-center relative sticky top-0 h-screen overflow-hidden">
+                <div ref={panelRef} className="hidden lg:flex w-1/2 flex-col items-center justify-center relative sticky top-0 h-screen overflow-hidden">
                     {/* Background image */}
                     <img
-                        src="/contact-bg.png"
+                        src="/heroassets/light_mode_contact.png"
                         alt=""
                         aria-hidden="true"
                         className="absolute inset-0 w-full h-full object-cover pointer-events-none"
                     />
 
-                    {/* Dark overlay gradient — ensures text readability */}
+                    {/* Thin light overlay gradient — ensures slight text readability without drowning the image */}
                     <div
                         className="absolute inset-0 pointer-events-none"
                         style={{
-                            background: "linear-gradient(135deg, rgba(10,10,14,0.82) 0%, rgba(10,10,14,0.65) 50%, rgba(10,10,14,0.78) 100%)",
+                            background: "linear-gradient(135deg, rgba(248,243,230,0.6) 0%, rgba(248,243,230,0.3) 50%, rgba(248,243,230,0.6) 100%)",
                         }}
                     />
 
-
-
-                    {/* Decorative circle */}
+                    {/* Interactive Gliding Blobs (Idle at Far Left and Far Right, Glide Behind Text on Hover) */}
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 1.5, delay: 0.6 }}
-                        className="absolute top-12 right-12 w-20 h-20 rounded-full border border-accent/15 pointer-events-none z-10"
-                        style={{ background: "radial-gradient(circle, rgba(255,195,0,0.06) 0%, transparent 70%)" }}
+                        className="absolute pointer-events-none rounded-full -translate-x-1/2 -translate-y-1/2 z-10"
+                        animate={{
+                            left: targetPos && targetPos.side === "left" ? targetPos.x : "5%",
+                            top: targetPos && targetPos.side === "left" ? targetPos.y : "45%",
+                            scale: targetPos && targetPos.side === "left" ? 1.3 : 1,
+                            opacity: targetPos && targetPos.side === "left" ? 0.35 : 0.2,
+                        }}
+                        transition={{
+                            type: "spring",
+                            stiffness: 140,
+                            damping: 20,
+                            mass: 0.8,
+                        }}
+                        style={{
+                            width: 170,
+                            height: 170,
+                            background: "radial-gradient(circle, rgba(153,115,0,0.35) 0%, transparent 70%)",
+                        }}
+                    />
+
+                    <motion.div
+                        className="absolute pointer-events-none rounded-full -translate-x-1/2 -translate-y-1/2 z-10"
+                        animate={{
+                            left: targetPos && targetPos.side === "right" ? targetPos.x : "95%",
+                            top: targetPos && targetPos.side === "right" ? targetPos.y : "55%",
+                            scale: targetPos && targetPos.side === "right" ? 1.3 : 1,
+                            opacity: targetPos && targetPos.side === "right" ? 0.35 : 0.2,
+                        }}
+                        transition={{
+                            type: "spring",
+                            stiffness: 140,
+                            damping: 20,
+                            mass: 0.8,
+                        }}
+                        style={{
+                            width: 170,
+                            height: 170,
+                            background: "radial-gradient(circle, rgba(153,115,0,0.35) 0%, transparent 70%)",
+                        }}
                     />
 
                     {/* Content — centred */}
@@ -171,7 +194,7 @@ export default function ContactPage() {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.9, delay: 0.45 }}
-                            className="text-xs font-mono uppercase tracking-[0.25em] text-white/50 mb-6"
+                            className="text-sm font-mono uppercase tracking-[0.25em] text-primary/80 font-semibold mb-6"
                         >
                             Real talk
                         </motion.p>
@@ -181,7 +204,7 @@ export default function ContactPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 1.35, delay: 0.6 }}
-                            className="text-base md:text-[1.05rem] leading-[1.75] text-white/90 font-display font-normal"
+                            className="text-lg md:text-[1.2rem] leading-[1.7] text-primary font-display font-medium"
                             style={{ letterSpacing: "-0.005em" }}
                         >
                             {slangSegments.map((seg, i) => {
@@ -189,7 +212,7 @@ export default function ContactPage() {
                                     return <span key={i}><br /><br /></span>;
                                 }
                                 if (seg.italic) {
-                                    return <ItalicHoverWord key={i} text={seg.text} />;
+                                    return <ItalicHoverWord key={i} text={seg.text} onHover={handleHover} />;
                                 }
                                 return <span key={i}>{seg.text}</span>;
                             })}
@@ -207,7 +230,7 @@ export default function ContactPage() {
                             initial={{ opacity: 0, y: 8 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.9, delay: 1.8 }}
-                            className="mt-5 text-xs text-white/40 font-mono tracking-wide"
+                            className="mt-5 text-sm text-primary/70 font-mono tracking-wide font-medium"
                         >
                             Monarch Media House — we do it differently.
                         </motion.p>

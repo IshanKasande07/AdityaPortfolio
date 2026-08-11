@@ -24,6 +24,7 @@ interface RevealLayoutProps {
     children: ReactNode;
 }
 
+const BORDER_TOP_PX = 80;
 const BORDER_PX = 18;
 const RADIUS = "20px";
 const CREAM = "#F8F3E6";
@@ -108,7 +109,7 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
 
         setPaths({
             start: `inset(${insetY}px ${insetX}px ${insetY}px ${insetX}px round 100px)`,
-            end: `inset(${BORDER_PX}px ${BORDER_PX}px ${BORDER_PX}px ${BORDER_PX}px round ${RADIUS})`
+            end: `inset(${BORDER_TOP_PX}px ${BORDER_PX}px ${BORDER_PX}px ${BORDER_PX}px round ${RADIUS})`
         });
 
         // 2. The Decode Buffer

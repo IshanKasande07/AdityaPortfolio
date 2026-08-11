@@ -7,9 +7,9 @@ import ContactForm from './ContactForm'
 const Contact = () => {
     return (
         <>
-            <div id="contact" className='w-full relative z-50'>
+            <div id="contact" className='w-full relative z-10'>
                 <div
-                    className='w-full flex flex-col items-center justify-center z-40 py-32 min-h-screen relative overflow-hidden
+                    className='w-full flex flex-col items-center justify-center z-10 py-32 min-h-screen relative overflow-hidden
                         bg-background'
                 >
                     {/* Ambient Background Glow */}

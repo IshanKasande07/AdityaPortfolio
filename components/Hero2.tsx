@@ -147,7 +147,7 @@ export default function Hero2() {
         <div
             ref={containerRef}
             id="work"
-            className="relative overflow-hidden bg-background z-20 w-full h-[100vh] md:w-[calc(100%-36px)] md:h-[calc(100vh-36px)] md:m-[18px] md:rounded-[20px]"
+            className="relative overflow-hidden bg-background z-20 w-full h-[calc(100vh-84px)] mt-[72px] mb-[12px] rounded-[16px] md:w-[calc(100%-36px)] md:h-[calc(100vh-98px)] md:mt-[80px] md:mb-[18px] md:mx-[18px] md:rounded-[20px]"
             onPointerMove={handlePointerMove}
             onPointerLeave={() => {
                 mouseX.set(0);
@@ -367,7 +367,7 @@ export default function Hero2() {
                 {/* ========== LAYER 5: Text Overlay + CTA ========== */}
                 <motion.div
                     style={{ y: textY, opacity: textOpacity, scale: textScale, z: 0.01 }}
-                    className="absolute top-[10vh] md:top-[13vh] left-0 w-full flex flex-col items-center justify-center text-primary text-center z-[50] px-6 md:px-[5vw] pointer-events-none"
+                    className="absolute top-[6vh] md:top-[8vh] left-0 w-full flex flex-col items-center justify-center text-primary text-center z-[50] px-6 md:px-[5vw] pointer-events-none"
                 >
                     <motion.div
                         initial={{ opacity: 0, y: "25vh", scale: 1.5 }}
