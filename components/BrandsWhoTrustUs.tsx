@@ -158,13 +158,13 @@ const BrandsWhoTrustUs = () => {
 
             <section
                 ref={containerRef}
-                className="w-full relative pt-10 md:pt-12 pb-8 md:pb-10 bg-background z-20"
+                className="w-full relative pt-10 md:pt-12 pb-16 md:pb-20 bg-background z-20"
             >
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/5 to-transparent pointer-events-none opacity-20"></div>
 
                 <div className="w-full relative">
                     <FadeUp>
-                        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-12 mb-10 relative z-10 px-6 md:px-16 max-w-[1040px] mx-auto w-full">
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-12 mb-10 relative z-10 px-6 md:px-16 max-w-[1070px] mx-auto w-full">
                             <div className="flex flex-col items-start">
                                 <div className="inline-block bg-primary text-background px-3 py-1.5 rounded-lg text-sm font-medium mb-4 shadow-sm border border-primary/10">
                                     Our Clients
@@ -181,7 +181,7 @@ const BrandsWhoTrustUs = () => {
                         </div>
                     </FadeUp>
 
-                    <div className="relative z-10 w-full max-w-[880px] mx-auto flex flex-col gap-2 mt-2 overflow-hidden">
+                    <div className="relative z-10 w-full max-w-[910px] mx-auto flex flex-col gap-2 mt-2 overflow-hidden">
                         {/* Left fading mask */}
                         <div className="absolute left-0 top-0 bottom-0 w-20 md:w-[170px] bg-gradient-to-r from-background via-background/40 to-transparent z-20 pointer-events-none"></div>
                         {/* Right fading mask */}

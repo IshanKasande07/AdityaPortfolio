@@ -24,7 +24,7 @@ interface RevealLayoutProps {
     children: ReactNode;
 }
 
-const BORDER_TOP_PX = 80;
+const BORDER_TOP_PX = 66;
 const BORDER_PX = 18;
 const RADIUS = "20px";
 const CREAM = "#F8F3E6";

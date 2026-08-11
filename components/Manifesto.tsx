@@ -104,7 +104,7 @@ export default function Manifesto() {
                 }}
             />
 
-            <div className="relative w-full max-w-[1200px] mx-auto px-6 md:px-12 lg:px-16 py-24 md:py-32 lg:py-40 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div className="relative w-full max-w-[1070px] mx-auto px-6 md:px-16 py-24 md:py-32 lg:py-40 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                 
                 {/* ── Left Column: Text ── */}
                 <div className="flex flex-col items-start">

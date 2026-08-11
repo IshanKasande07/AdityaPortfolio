@@ -83,7 +83,7 @@ export default function ResultsSection() {
             {/* Subtle radial glow matching the site aesthetic */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
 
-            <div className="w-full max-w-[1040px] mx-auto px-6 md:px-16 relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
+            <div className="w-full max-w-[1070px] mx-auto px-6 md:px-16 relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
                 {/* Heading Left Side */}
                 <motion.div 
                     initial={{ opacity: 0, x: -20 }}

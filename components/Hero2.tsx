@@ -147,7 +147,7 @@ export default function Hero2() {
         <div
             ref={containerRef}
             id="work"
-            className="relative overflow-hidden bg-background z-20 w-full h-[calc(100vh-84px)] mt-[72px] mb-[12px] rounded-[16px] md:w-[calc(100%-36px)] md:h-[calc(100vh-98px)] md:mt-[80px] md:mb-[18px] md:mx-[18px] md:rounded-[20px]"
+            className="relative overflow-hidden bg-background z-20 w-full h-[calc(100vh-72px)] mt-[60px] mb-[12px] rounded-[16px] md:w-[calc(100%-36px)] md:h-[calc(100vh-84px)] md:mt-[66px] md:mb-[18px] md:mx-[18px] md:rounded-[20px]"
             onPointerMove={handlePointerMove}
             onPointerLeave={() => {
                 mouseX.set(0);

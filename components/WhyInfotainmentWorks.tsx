@@ -154,7 +154,7 @@ const WhyInfotainmentWorks = () => {
     <section id="infotainment" className="relative w-full bg-background z-10">
       <div ref={containerRef} className="relative w-full h-screen flex items-center justify-center px-4 md:px-8">
         {/* Lighter yellow-green rounded box container */}
-        <div className="w-full h-[70vh] max-h-[550px] max-w-[1000px] rounded-[32px] overflow-hidden isolate flex flex-col justify-center relative bg-[#4C3BBE]"
+        <div className="w-full h-[70vh] max-h-[550px] max-w-[1070px] rounded-[32px] overflow-hidden isolate flex flex-col justify-center relative bg-[#4C3BBE]"
              style={{ border: "1px solid rgba(17, 37, 14, 0.15)" }}>
 
         {/* Card Row — moved up slightly to make room for heading below */}

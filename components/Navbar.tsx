@@ -42,7 +42,7 @@ const Navbar = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: shouldBeVisible ? 1 : 0 }}
       transition={{ duration: 0.8, ease: "easeInOut" }}
-      className={`${shouldBeVisible ? 'fixed' : 'absolute'} top-0 left-0 w-full z-[200] grid grid-cols-2 md:grid-cols-3 items-center px-6 md:px-12 py-4 mt-[3px] pointer-events-none transition-colors duration-300 text-primary`}
+      className={`${shouldBeVisible ? 'fixed' : 'absolute'} top-0 left-0 w-full z-[200] grid grid-cols-2 md:grid-cols-3 items-center px-6 md:px-12 py-2.5 md:py-3.5 mt-0 pointer-events-none transition-colors duration-300 text-primary`}
     >
       {/* Left: Logo */}
       <div className="flex justify-start pointer-events-auto">

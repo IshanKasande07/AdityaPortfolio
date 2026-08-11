@@ -3,6 +3,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion, AnimatePresence } from "framer-motion";
 import { Share2, Film, Lightbulb, BarChart3, Search } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -43,103 +44,54 @@ const services = [
 const OurServices = () => {
     const sectionRef = useRef<HTMLElement>(null);
     const stickyContainerRef = useRef<HTMLDivElement>(null);
-    const iconRefs = useRef<(HTMLDivElement | null)[]>([]);
     const textRefs = useRef<(HTMLDivElement | null)[]>([]);
     const [activeIndex, setActiveIndex] = useState(0);
 
     useEffect(() => {
         if (!sectionRef.current) return;
 
-        const ctx = gsap.context(() => {
-            // Each text block triggers its corresponding icon
-            textRefs.current.forEach((textEl, idx) => {
-                if (!textEl) return;
+        const updateActiveIndex = () => {
+            const targetY = window.innerHeight * 0.5;
+            let closestIdx = 0;
+            let minDistance = Infinity;
 
-                ScrollTrigger.create({
-                    trigger: textEl,
-                    start: "top 50%",
-                    end: "bottom 50%",
-                    onToggle: (self) => {
-                        if (self.isActive) {
-                            setActiveIndex(idx);
-                        }
-                    }
-                });
+            textRefs.current.forEach((el, idx) => {
+                if (!el) return;
+                const rect = el.getBoundingClientRect();
+                const elCenter = rect.top + rect.height / 2;
+                const distance = Math.abs(elCenter - targetY);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestIdx = idx;
+                }
             });
 
-            // Refresh ScrollTrigger to ensure all layout/fonts have settled
-            setTimeout(() => {
-                ScrollTrigger.refresh();
-            }, 500);
+            setActiveIndex((prev) => (prev !== closestIdx ? closestIdx : prev));
+        };
+
+        const ctx = gsap.context(() => {
+            ScrollTrigger.create({
+                trigger: sectionRef.current,
+                start: "top bottom",
+                end: "bottom top",
+                onUpdate: updateActiveIndex,
+                onRefresh: updateActiveIndex,
+            });
+
+            updateActiveIndex();
+            setTimeout(updateActiveIndex, 100);
+            setTimeout(updateActiveIndex, 500);
         }, sectionRef);
 
-        return () => ctx.revert();
+        window.addEventListener("scroll", updateActiveIndex, { passive: true });
+        window.addEventListener("resize", updateActiveIndex, { passive: true });
+
+        return () => {
+            ctx.revert();
+            window.removeEventListener("scroll", updateActiveIndex);
+            window.removeEventListener("resize", updateActiveIndex);
+        };
     }, []);
-
-    // Animate icons when activeIndex changes
-    useEffect(() => {
-        iconRefs.current.forEach((iconEl, idx) => {
-            if (!iconEl) return;
-
-            if (idx === activeIndex) {
-                // Active state — lift up, scale, darken, shadow
-                gsap.to(iconEl, {
-                    y: -18,
-                    scale: 1.12,
-                    duration: 0.5,
-                    ease: "power3.out",
-                    overwrite: true,
-                });
-                gsap.to(iconEl.querySelector(".icon-bg"), {
-                    backgroundColor: "#11250E",
-                    duration: 0.5,
-                    ease: "power3.out",
-                    overwrite: true,
-                });
-                gsap.to(iconEl.querySelector(".icon-svg"), {
-                    color: "#F8F3E6",
-                    duration: 0.5,
-                    ease: "power3.out",
-                    overwrite: true,
-                });
-                gsap.to(iconEl.querySelector(".icon-shadow"), {
-                    opacity: 1,
-                    scaleX: 1,
-                    duration: 0.5,
-                    ease: "power3.out",
-                    overwrite: true,
-                });
-            } else {
-                // Inactive state — settle down, desaturate
-                gsap.to(iconEl, {
-                    y: 0,
-                    scale: 1,
-                    duration: 0.5,
-                    ease: "power3.out",
-                    overwrite: true,
-                });
-                gsap.to(iconEl.querySelector(".icon-bg"), {
-                    backgroundColor: "rgba(17, 37, 14, 0.06)",
-                    duration: 0.5,
-                    ease: "power3.out",
-                    overwrite: true,
-                });
-                gsap.to(iconEl.querySelector(".icon-svg"), {
-                    color: "rgba(17, 37, 14, 0.3)",
-                    duration: 0.5,
-                    ease: "power3.out",
-                    overwrite: true,
-                });
-                gsap.to(iconEl.querySelector(".icon-shadow"), {
-                    opacity: 0,
-                    scaleX: 0.6,
-                    duration: 0.5,
-                    ease: "power3.out",
-                    overwrite: true,
-                });
-            }
-        });
-    }, [activeIndex]);
 
     return (
         <section
@@ -147,7 +99,7 @@ const OurServices = () => {
             className="relative bg-background w-full"
         >
             {/* Section Header */}
-            <div className="w-full max-w-[1040px] mx-auto px-6 md:px-16 pt-24 md:pt-36 pb-10">
+            <div className="w-full max-w-[1070px] mx-auto px-6 md:px-16 pt-24 md:pt-36 pb-10">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-12 relative z-10 w-full">
                     <div className="flex flex-col items-start">
                         <div className="inline-block bg-primary text-background px-3 py-1.5 rounded-lg text-sm font-medium mb-4 shadow-sm border border-primary/10">
@@ -166,37 +118,37 @@ const OurServices = () => {
             </div>
 
             {/* Two Column Layout */}
-            <div className="relative w-full max-w-[1040px] mx-auto px-6 md:px-16 flex flex-col lg:flex-row gap-12 lg:gap-0">
+            <div className="relative w-full max-w-[1070px] mx-auto px-6 md:px-16 flex flex-col lg:flex-row gap-12 lg:gap-0">
 
                 {/* Left Column — Scrolling Text Items */}
                 <div className="lg:w-[50%] relative pl-6 md:pl-6">
-                    {services.map((service, idx) => (
-                        <div
-                            key={idx}
-                            ref={(el) => { textRefs.current[idx] = el; }}
-                            className="py-4 md:py-5 border-t border-primary/10 first:border-t-0"
-                        >
+                    {services.map((service, idx) => {
+                        const isActive = idx === activeIndex;
+                        return (
                             <div
-                                className="transition-opacity duration-500"
-                                style={{ opacity: 1 }}
+                                key={idx}
+                                ref={(el) => { textRefs.current[idx] = el; }}
+                                className="py-6 md:py-8 border-t border-primary/10 first:border-t-0"
                             >
-                                {/* Number */}
-                                <span className="text-xs md:text-sm font-mono text-accent tracking-[0.3em] uppercase mb-2 block">
-                                    {service.number}
-                                </span>
+                                <div className={`transition-all duration-300 ${isActive ? "opacity-100 translate-x-1" : "opacity-50"}`}>
+                                    {/* Number */}
+                                    <span className={`text-xs md:text-sm font-mono tracking-[0.3em] uppercase mb-2 block transition-colors duration-300 ${isActive ? "text-accent font-semibold" : "text-accent/60"}`}>
+                                        {service.number}
+                                    </span>
 
-                                {/* Title */}
-                                <h3 className="text-xl lg:text-2xl font-display font-semibold text-primary tracking-tight leading-tight mb-2">
-                                    {service.title}
-                                </h3>
+                                    {/* Title */}
+                                    <h3 className={`text-xl lg:text-2xl font-display font-semibold tracking-tight leading-tight mb-2 transition-colors duration-300 ${isActive ? "text-primary" : "text-primary/70"}`}>
+                                        {service.title}
+                                    </h3>
 
-                                {/* Description */}
-                                <p className="text-[13px] md:text-sm text-muted font-light leading-relaxed max-w-sm">
-                                    {service.desc}
-                                </p>
+                                    {/* Description */}
+                                    <p className="text-[13px] md:text-sm text-muted font-light leading-relaxed max-w-sm">
+                                        {service.desc}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                     {/* Spacer inside left column so the flex row stays tall enough for SEO to reach vertical center before unpinning */}
                     <div className="h-[30vh]" />
                 </div>
@@ -207,7 +159,7 @@ const OurServices = () => {
                         ref={stickyContainerRef}
                         className="sticky top-[50vh] -translate-y-1/2 ml-12 xl:ml-20"
                     >
-                        {/* Large rounded beige container — smaller size */}
+                        {/* Large rounded container */}
                         <div
                             className="relative w-[90%] lg:w-[85%] xl:w-[400px] mx-auto aspect-[1.6/1] rounded-[20px] flex items-center justify-center"
                             style={{
@@ -216,64 +168,83 @@ const OurServices = () => {
                             }}
                         >
                             {/* Horizontal icon row */}
-                            <div className="flex items-end justify-center gap-2 lg:gap-4 w-full px-8 lg:px-10">
+                            <div className="flex items-end justify-center gap-3 lg:gap-5 w-full px-8 lg:px-10">
                                 {services.map((service, idx) => {
                                     const IconComponent = service.icon;
+                                    const isActive = idx === activeIndex;
+
                                     return (
-                                        <div
+                                        <motion.div
                                             key={idx}
-                                            ref={(el) => { iconRefs.current[idx] = el; }}
-                                            className="flex flex-col items-center will-change-transform"
-                                            style={{ transformOrigin: "center bottom" }}
+                                            className="flex flex-col items-center cursor-pointer"
+                                            onClick={() => {
+                                                textRefs.current[idx]?.scrollIntoView({ behavior: "smooth", block: "center" });
+                                            }}
+                                            animate={{
+                                                y: isActive ? -18 : 0,
+                                                scale: isActive ? 1.15 : 1,
+                                            }}
+                                            transition={{
+                                                type: "spring",
+                                                stiffness: 350,
+                                                damping: 22,
+                                                mass: 0.8,
+                                            }}
                                         >
-                                            {/* Icon tile — reduced size */}
-                                            <div
-                                                className="icon-bg relative rounded-xl w-9 h-9 lg:w-11 lg:h-11 flex items-center justify-center transition-none shrink-0"
-                                                style={{
-                                                    backgroundColor: idx === 0
-                                                        ? "#11250E"
-                                                        : "rgba(17, 37, 14, 0.06)",
+                                            {/* Icon tile */}
+                                            <motion.div
+                                                className="relative rounded-xl w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center shrink-0"
+                                                animate={{
+                                                    backgroundColor: isActive ? "#11250E" : "rgba(17, 37, 14, 0.06)",
+                                                    boxShadow: isActive ? "0 12px 20px -4px rgba(17, 37, 14, 0.25)" : "0 0 0 0 transparent",
                                                 }}
+                                                transition={{ duration: 0.3, ease: "easeOut" }}
                                             >
                                                 <IconComponent
-                                                    className="icon-svg w-4 h-4 lg:w-5 lg:h-5 transition-none shrink-0"
+                                                    className="w-4 h-4 lg:w-5 lg:h-5 shrink-0 transition-colors duration-300"
                                                     style={{
-                                                        color: idx === 0
-                                                            ? "#F8F3E6"
-                                                            : "rgba(17, 37, 14, 0.3)",
+                                                        color: isActive ? "#F8F3E6" : "rgba(17, 37, 14, 0.35)",
                                                     }}
                                                     strokeWidth={1.5}
                                                 />
-                                            </div>
+                                            </motion.div>
 
                                             {/* Drop shadow beneath icon */}
-                                            <div
-                                                className="icon-shadow mt-2 w-10 h-2 rounded-full"
+                                            <motion.div
+                                                className="mt-2 w-10 h-2 rounded-full pointer-events-none"
                                                 style={{
-                                                    background: "radial-gradient(ellipse at center, rgba(17,37,14,0.18) 0%, transparent 70%)",
-                                                    opacity: idx === 0 ? 1 : 0,
-                                                    transform: idx === 0 ? "scaleX(1)" : "scaleX(0.6)",
+                                                    background: "radial-gradient(ellipse at center, rgba(17,37,14,0.2) 0%, transparent 70%)",
                                                 }}
+                                                animate={{
+                                                    opacity: isActive ? 1 : 0,
+                                                    scaleX: isActive ? 1.1 : 0.4,
+                                                }}
+                                                transition={{ duration: 0.3, ease: "easeOut" }}
                                             />
-                                        </div>
+                                        </motion.div>
                                     );
                                 })}
                             </div>
                         </div>
 
-                        {/* Active service label under the container */}
-                        <div className="mt-6 text-center">
-                            <p
-                                className="text-xs font-mono text-accent tracking-[0.3em] uppercase transition-all duration-500"
-                                key={activeIndex}
-                            >
-                                {services[activeIndex].number} — {services[activeIndex].title}
-                            </p>
+                        {/* Active service label under the container with smooth cross-fade */}
+                        <div className="mt-6 text-center h-6 flex items-center justify-center">
+                            <AnimatePresence mode="wait">
+                                <motion.p
+                                    key={activeIndex}
+                                    initial={{ opacity: 0, y: 6 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -6 }}
+                                    transition={{ duration: 0.2, ease: "easeOut" }}
+                                    className="text-xs font-mono text-accent tracking-[0.3em] uppercase"
+                                >
+                                    {services[activeIndex].number} — {services[activeIndex].title}
+                                </motion.p>
+                            </AnimatePresence>
                         </div>
                     </div>
                 </div>
             </div>
-
 
         </section>
     );

@@ -25,9 +25,9 @@ const page = () => {
 
       <Manifesto />
       <BrandsWhoTrustUs />
-      <OurServices />
-
       <WhyInfotainmentWorks />
+
+      <OurServices />
       <ResultsSection />
 
       {/* Transition B — Contact card-lift (self-contained within Contact.tsx) */}
