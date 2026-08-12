@@ -5,6 +5,7 @@ import Script from "next/script";
 import "./globals.css";
 import LenisProvider from "./providers/LenisProvider";
 import CustomCursor from "@/components/CustomCursor";
+import TearTransitionProvider from "@/components/TearTransitionProvider";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -91,8 +92,10 @@ export default function RootLayout({
           `}
         </Script>
         <LenisProvider>
-          <CustomCursor />
-          {children}
+          <TearTransitionProvider>
+            <CustomCursor />
+            {children}
+          </TearTransitionProvider>
         </LenisProvider>
       </body>
     </html>

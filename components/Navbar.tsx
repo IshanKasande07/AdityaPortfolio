@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useReveal } from "./RevealLayout";
 import { useRouter, usePathname } from "next/navigation";
+import { useTearTransition } from "./TearTransitionProvider";
 
 import Image from "next/image";
 
@@ -12,6 +13,7 @@ const Navbar = () => {
   const { revealed } = useReveal();
   const router = useRouter();
   const pathname = usePathname();
+  const { navigateWithTear } = useTearTransition();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,7 +49,13 @@ const Navbar = () => {
       {/* Left: Logo */}
       <div className="flex justify-start pointer-events-auto">
         <button
-          onClick={() => router.push('/')}
+          onClick={() => {
+            if (pathname !== '/') {
+              navigateWithTear('/', { direction: 'bl-tr' });
+            } else {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          }}
           className="flex items-center"
         >
           <Image 
@@ -69,7 +77,9 @@ const Navbar = () => {
           <button 
             onClick={() => {
               if (pathname !== "/") {
-                router.push("/#work");
+                navigateWithTear('/', { direction: 'bl-tr' });
+                // After navigation, scroll to #work
+                setTimeout(() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' }), 600);
               } else {
                 document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })
               }
@@ -81,7 +91,16 @@ const Navbar = () => {
           <button 
             onClick={() => {
               if (pathname !== "/") {
-                router.push("/#impact");
+                navigateWithTear('/', { direction: 'bl-tr' });
+                // After navigation, scroll to #impact
+                setTimeout(() => {
+                  const el = document.getElementById('impact');
+                  if (el) {
+                    const sectionTop = el.offsetTop;
+                    const offset = el.offsetHeight * 0.04;
+                    window.scrollTo({ top: sectionTop + offset, behavior: 'smooth' });
+                  }
+                }, 600);
               } else {
                 const el = document.getElementById('impact');
                 if (el) {
@@ -96,13 +115,13 @@ const Navbar = () => {
             Services
           </button>
           <button 
-            onClick={() => router.push('/about')} 
+            onClick={() => navigateWithTear('/about')} 
             className={`text-sm font-medium transition-colors hover:text-accent`}
           >
             About
           </button>
           <button 
-            onClick={() => router.push('/contact')} 
+            onClick={() => navigateWithTear('/contact')} 
             className={`text-sm font-medium transition-colors hover:text-accent`}
           >
             Contact
@@ -204,10 +223,22 @@ const Navbar = () => {
                   onClick={() => {
                     setIsOpen(false);
                     if (item.path) {
-                      router.push(item.path);
+                      navigateWithTear(item.path);
                     } else if (item.target) {
                       if (pathname !== "/") {
-                        router.push(`/${item.target}`);
+                        navigateWithTear('/', { direction: 'bl-tr' });
+                        setTimeout(() => {
+                          if (item.target === "#impact") {
+                            const el = document.getElementById("impact");
+                            if (el) {
+                              const sectionTop = el.offsetTop;
+                              const offset = el.offsetHeight * 0.04;
+                              window.scrollTo({ top: sectionTop + offset, behavior: "smooth" });
+                            }
+                          } else {
+                            document.getElementById(item.target!.replace("#", ""))?.scrollIntoView({ behavior: "smooth" });
+                          }
+                        }, 600);
                       } else {
                         if (item.target === "#impact") {
                           const el = document.getElementById("impact");
@@ -235,7 +266,8 @@ const Navbar = () => {
                 onClick={() => {
                   setIsOpen(false);
                   if (pathname !== "/") {
-                    router.push("/#contact");
+                    navigateWithTear('/', { direction: 'bl-tr' });
+                    setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }), 600);
                   } else {
                     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                   }

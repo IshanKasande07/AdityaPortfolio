@@ -1,0 +1,78 @@
+/* ============================================================
+   Torn-Paper Diagonal Page Transition — CSS
+   ============================================================
+   Configurable via CSS custom properties:
+     --tear-duration:          3600ms
+     --tear-easing:            cubic-bezier(0.5, 0, 0.85, 0.25)
+     --tear-core-color:        #FFB100
+     --tear-grey-color:        var(--color-surface, #11250E)
+   ============================================================ */
+
+/* ── Suppress View Transitions default crossfade ───────────── */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none !important;
+  display: none !important;
+}
+
+/* ── Overlay container ─────────────────────────────────────── */
+.tear-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ── Oversized rotated shape containers ────────────────────── */
+.tear-shape {
+  position: absolute;
+  width: 300vmax;
+  height: 300vmax;
+  top: 50%;
+  left: 50%;
+  margin-top: -150vmax;
+  margin-left: -150vmax;
+  will-change: transform;
+  /* transform is set via inline style from React */
+  /* transition is added by .tear-animating */
+}
+
+/* Only animate when we're ready to sweep */
+.tear-overlay.tear-animating .tear-shape {
+  transition: transform
+    var(--tear-duration, 3600ms)
+    var(--tear-easing, cubic-bezier(0.5, 0, 0.85, 0.25));
+}
+
+/* ── Layer stack (top → bottom) ────────────────────────────── */
+
+/* 1. Leading edge — old page solid color, sweeps FIRST */
+.tear-outgoing {
+  background: var(--tear-outgoing-bg, #F8F3E6);
+  z-index: 4;
+}
+
+/* 2. Dark green zone — fills gap between leading & trailing edges */
+.tear-grey {
+  background: var(--tear-grey-color, #11250E);
+  z-index: 3;
+}
+
+/* 3. Core / amber strip — narrow gold border between grey and reveal */
+.tear-core {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--tear-core-color, #FFB100) 80%, #FFF4D6),
+    var(--tear-core-color, #FFB100),
+    color-mix(in srgb, var(--tear-core-color, #FFB100) 88%, #E08A00)
+  );
+  z-index: 2;
+}
+
+/* ── Reduced motion ────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .tear-overlay.tear-animating .tear-shape {
+    transition: none !important;
+  }
+}
