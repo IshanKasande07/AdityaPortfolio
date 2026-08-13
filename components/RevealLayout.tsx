@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, ReactNode, createContext, useContext, useMemo } from "react";
+import React, { useState, useEffect, useRef, ReactNode, createContext, useContext, useMemo } from "react";
+import "./css/reveal-layout.css";
 
 interface RevealContextType {
     revealed: boolean;
@@ -89,6 +90,7 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
     const { setRevealed, setEarlyReveal } = useReveal();
     const [paths, setPaths] = useState<{ start: string, end: string } | null>(null);
     const [isExpanded, setIsExpanded] = useState(false);
+    const animatedDivRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const isMobile = window.innerWidth < 768;
@@ -112,22 +114,79 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
             end: `inset(${BORDER_TOP_PX}px ${BORDER_PX}px ${BORDER_PX}px ${BORDER_PX}px round ${RADIUS})`
         });
 
-        // 2. The Decode Buffer
-        // Wait 400ms before changing the state. This gives Next.js the time to decode 
-        // the heavy background images in Hero2 WITHOUT dropping animation frames.
-        const startTimer = setTimeout(() => {
-            setIsExpanded(true);
-        }, 400);
+        let cancelled = false;
+        let rafId1: number;
+        let rafId2: number;
 
-        // 3. Mark as complete (400ms buffer + 1600ms CSS duration)
-        const completeTimer = setTimeout(() => {
+        // ── PHASE 1: Pre-decode critical hero images ──
+        // The #1 cause of variable choppiness: the browser decodes heavy WebP
+        // bitmaps on the main thread concurrently with the clip-path transition.
+        // By pre-decoding BEFORE the animation starts, we give the clip-path
+        // transition a clean main-thread runway.
+        const criticalSrcs = [
+            '/heroassets/Sky.webp',
+            '/heroassets/Bridge Behind.webp',
+            '/heroassets/Bridge.webp'
+        ];
+
+        const decodePromises = criticalSrcs.map(src => {
+            const img = new Image();
+            img.src = src;
+            return img.decode().catch(() => { /* ignore decode failures */ });
+        });
+
+        // Race: all decoded OR 600ms timeout (don't block forever on slow connections)
+        const timeoutFallback = new Promise(resolve => setTimeout(resolve, 600));
+
+        Promise.race([
+            Promise.all(decodePromises),
+            timeoutFallback
+        ]).then(() => {
+            if (cancelled) return;
+
+            // ── PHASE 2: Start the clip-path animation ──
+            // Double-rAF guarantees the browser has painted the start clip-path
+            // before we trigger the CSS transition.
+            rafId1 = requestAnimationFrame(() => {
+                if (cancelled) return;
+                rafId2 = requestAnimationFrame(() => {
+                    if (cancelled) return;
+                    setIsExpanded(true);
+                });
+            });
+        });
+
+        // ── PHASE 3: Completion — use transitionend with a fallback timeout ──
+        // transitionend is the most accurate signal that the animation finished.
+        // The fallback timeout catches edge cases where transitionend doesn't fire
+        // (animation interrupted, tab backgrounded, etc).
+        let completed = false;
+        const markComplete = () => {
+            if (completed) return;
+            completed = true;
             setRevealed(true);
             setEarlyReveal(true);
-        }, 2000);
+            // Free GPU memory now that the animation is done
+            if (animatedDivRef.current) {
+                animatedDivRef.current.style.willChange = "auto";
+            }
+        };
+
+        const el = animatedDivRef.current;
+        const onTransitionEnd = (e: TransitionEvent) => {
+            if (e.propertyName === "clip-path") markComplete();
+        };
+        el?.addEventListener("transitionend", onTransitionEnd);
+
+        // Fallback: 600ms decode + 32ms rAF + 1600ms transition + 300ms buffer
+        const fallbackTimer = setTimeout(markComplete, 2600);
 
         return () => {
-            clearTimeout(startTimer);
-            clearTimeout(completeTimer);
+            cancelled = true;
+            if (rafId1) cancelAnimationFrame(rafId1);
+            if (rafId2) cancelAnimationFrame(rafId2);
+            clearTimeout(fallbackTimer);
+            el?.removeEventListener("transitionend", onTransitionEnd);
         };
     }, [setRevealed, setEarlyReveal]);
 
@@ -143,27 +202,13 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
                 contain: "layout",
             }}
         >
-            <style>{`
-                @media (max-width: 768px) {
-                    .reveal-parent-container {
-                        background-color: #F8F3E6 !important;
-                        contain: none !important;
-                    }
-                    .reveal-animated-div {
-                        clip-path: none !important;
-                        transition: none !important;
-                        transform: none !important;
-                        will-change: auto !important;
-                    }
-                }
-            `}</style>
+            {/* Inline <style> removed — now in css/reveal-layout.css (parsed once, no mount-time recalc) */}
 
-            {/* OPTIMIZATION: Removed <motion.div> to strictly enforce CSS Engine transition */}
             <div
+                ref={animatedDivRef}
                 className="reveal-animated-div"
                 style={{
                     clipPath: isExpanded && paths ? paths.end : (paths ? paths.start : fallbackPath),
-                    // Only apply the CSS transition AFTER the start path is painted to the DOM
                     transition: paths ? "clip-path 1.6s cubic-bezier(0.65, 0, 0.35, 1)" : "none",
                     willChange: "clip-path",
                     transform: "translate3d(0, 0, 0)",
@@ -172,7 +217,7 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
                     position: "relative",
                     width: "100%",
                     zIndex: 50,
-                    contain: "paint layout",
+                    contain: "layout paint",
                 }}
             >
                 {children}

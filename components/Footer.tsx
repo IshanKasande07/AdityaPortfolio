@@ -6,209 +6,94 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "spring" as const,
-      stiffness: 70,
-      damping: 20
-    }
-  },
-};
-
 const Footer = () => {
-  const footerRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    const ctx = gsap.context(() => {
-      // Hardware accelerated parallax move - more aggressive
-      gsap.fromTo(
-        videoRef.current,
-        {
-          yPercent: -40,
-        },
-        {
-          yPercent: 40,
-          ease: "none",
-          scrollTrigger: {
-            trigger: footerRef.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        }
-      );
-    }, footerRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <footer
-      ref={footerRef}
-      className="relative w-full bg-background z-70 text-primary overflow-hidden isolate"
-      style={{ transform: "translateZ(0)" }}
-    >
-      {/* Top Border Shimmer */}
-      <motion.div
-        initial={{ x: "-100%" }}
-        whileInView={{ x: "100%" }}
-        viewport={{ once: true }}
-        transition={{ duration: 2.5, ease: "easeInOut" }}
-        className="absolute top-0 left-0 h-[1px] w-[200px] bg-gradient-to-r from-transparent via-accent to-transparent opacity-50 z-30"
-      />
-
-      {/* Massive Parallax Video Mask Section */}
-      <div className="relative w-full h-[60vh] md:h-[80vh] flex items-center justify-center overflow-hidden border-t border-primary/5 bg-background">
-
-        {/* 1. Underlying Parallax Video - Increased height and offset to support aggressive parallax */}
-        <div
-          ref={videoRef}
-          className="absolute top-[-40%] left-0 w-full h-[180%] z-0 will-change-transform"
-        >
-          <video
-            src="https://storage.googleapis.com/clova-assets/public/clova-website/clova2/5.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover opacity-90"
+    <footer className="relative w-full pt-4 md:pt-8 pb-0 bg-transparent text-[#2B1B15] overflow-hidden isolate px-4 md:px-8">
+      {/* Main Container - fits exactly in viewport */}
+      <div className="relative w-full rounded-t-[40px] md:rounded-t-[60px] bg-[#F8F3E6] overflow-hidden flex flex-col h-[calc(100vh-2rem)] md:h-[calc(100vh-3rem)]">
+        
+        {/* Background Image - covers entire container */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          {/* Gradient fade from cream at top */}
+          <div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-[#F8F3E6] via-[#F8F3E6] via-[10%] to-transparent z-20 h-[55%]" />
+          
+          {/* Light cream overlay across entire image for text readability */}
+          <div className="absolute inset-0 bg-[#F8F3E6]/55 z-10" />
+          
+          <Image 
+            src="/footer-bg.png" 
+            alt="Footer Background" 
+            fill 
+            className="object-cover object-center"
+            sizes="100vw"
           />
         </div>
 
-        {/* 2. Multiply Layer with Pure White Text & Black background */}
-        <div className="absolute inset-0 z-10 bg-black flex items-center justify-center mix-blend-multiply pointer-events-none">
-          <h2 className="text-primary font-display font-bold text-[15vw] leading-[0.85] tracking-tighter text-center uppercase whitespace-nowrap">
-            READY TO<br />
-            DOMINATE?
-          </h2>
-        </div>
-      </div>
+        {/* Content — uses justify-between to spread top content and bottom copyright */}
+        <div className="relative z-20 flex flex-col justify-between h-full px-6 md:px-12 pt-10 md:pt-14 pb-4">
+          
+          {/* Top: Logo + Heading + Links */}
+          <div>
+            {/* Logo + Heading */}
+            <div className="flex flex-col items-center text-center max-w-3xl mx-auto space-y-3">
+               <Image 
+                  src="/brandlogo/Monarch White.png" 
+                  alt="Monarch Logo" 
+                  width={90} 
+                  height={48} 
+                  className="object-contain h-10 md:h-12 w-auto invert opacity-80" 
+               />
+               <h2 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl leading-[1.15] tracking-tight text-[#2B1B15]">
+                  Ready to build<br/>absolute <span className="italic text-accent">authority?</span>
+               </h2>
+               <p className="text-sm md:text-base text-black max-w-lg mx-auto font-medium">
+                 Partner with us to create infotainment-led content that drives massive reach and converts attention into long-term growth.
+               </p>
+            </div>
 
-      {/* Bottom Section: Brand, Social Links, Copyright */}
-      <div className="relative z-20 w-full bg-background border-t border-primary/5 py-10 md:py-15">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          className="w-[80vw] mx-auto px-6"
-        >
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            {/* Brand */}
-            <motion.div
-              variants={itemVariants}
-              className="flex items-center"
-            >
-              <Image 
-                src="/brandlogo/Monarch White.png" 
-                alt="Monarch Media House" 
-                width={120} 
-                height={50} 
-                className="object-contain h-12 w-auto"
-              />
-            </motion.div>
-
-            {/* Social links */}
-            <motion.div variants={itemVariants} className="flex items-center gap-6">
-              {/* Instagram */}
-              <a
-                href="https://www.instagram.com/monarchmediahouse?igsh=OHdoOXZmMnB4cDQx"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-                className="text-muted hover:text-accent transition-colors"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="w-7 h-7"
-                >
-                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                </svg>
-              </a>
-
-              {/* LinkedIn */}
-              <a
-                href="https://www.linkedin.com/company/monarchmediahouse/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className="text-muted hover:text-accent transition-colors"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="w-7 h-7"
-                >
-                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                  <rect width="4" height="12" x="2" y="9" />
-                  <circle cx="4" cy="4" r="2" />
-                </svg>
-              </a>
-
-              {/* Email */}
-              <a
-                href="mailto:hello@monarchmedia.house"
-                aria-label="Email"
-                className="text-muted hover:text-accent transition-colors"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="w-7 h-7"
-                >
-                  <rect width="20" height="16" x="2" y="4" rx="2" />
-                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                </svg>
-              </a>
-            </motion.div>
-
-            {/* Copyright */}
-            <motion.div variants={itemVariants}>
-              <p className="text-[14px] md:text-[0.9vw] text-muted-foreground">
-                © 2026 Monarch Media House
-              </p>
-            </motion.div>
+            {/* Links Columns */}
+            <div className="w-full max-w-5xl mx-auto mt-8 md:mt-10">
+              <div className="flex flex-row flex-wrap justify-center gap-12 md:gap-32">
+                
+                {/* Navigation */}
+                <div className="flex flex-col items-center space-y-2 text-sm">
+                  <span className="text-xs font-semibold text-[#2B1B15]/50 mb-1">Navigation</span>
+                  <a href="/" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Home</a>
+                  <a href="/#work" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Work</a>
+                  <a href="/about" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">About Us</a>
+                  <a href="/contact" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Contact</a>
+                </div>
+                
+                {/* Connect */}
+                <div className="flex flex-col items-center space-y-2 text-sm">
+                  <span className="text-xs font-semibold text-[#2B1B15]/50 mb-1">Connect</span>
+                  <a href="https://www.instagram.com/monarchmediahouse?igsh=OHdoOXZmMnB4cDQx" target="_blank" rel="noopener noreferrer" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Instagram</a>
+                  <a href="https://www.linkedin.com/company/monarchmediahouse/" target="_blank" rel="noopener noreferrer" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">LinkedIn</a>
+                  <a href="mailto:hello@monarchmedia.house" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Email</a>
+                </div>
+                
+                {/* Legal */}
+                <div className="flex flex-col items-center space-y-2 text-sm">
+                  <span className="text-xs font-semibold text-[#2B1B15]/50 mb-1">Legal</span>
+                  <a href="#" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Privacy Policy</a>
+                  <a href="#" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Terms of Service</a>
+                </div>
+                
+              </div>
+            </div>
           </div>
-        </motion.div>
+
+          {/* Bottom: Copyright */}
+          <div className="w-full flex flex-col md:flex-row justify-between items-center text-xs text-white/70">
+            <span>© 2026 Monarch Media House. All rights reserved.</span>
+            <span className="mt-2 md:mt-0">Designed for Impact.</span>
+          </div>
+        </div>
+
       </div>
     </footer>
   );
 };
 
 export default Footer;
+

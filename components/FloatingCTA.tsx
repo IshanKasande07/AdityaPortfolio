@@ -10,12 +10,23 @@ import { useRef, useEffect, useState, useCallback } from "react";
 import gsap from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import ContactDrawer from "./ContactDrawer";
+import { useReveal } from "./RevealLayout";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(MotionPathPlugin);
 }
 
+// PERF: Gate component — don't mount the heavy FloatingCTAInner until after
+// the reveal animation finishes. During the reveal, scroll is locked and the
+// CTA is invisible (opacity=0 at scrollY < 300), so this has zero visual impact
+// while freeing the main thread for the clip-path animation.
 export default function FloatingCTA() {
+    const { revealed } = useReveal();
+    if (!revealed) return null;
+    return <FloatingCTAInner />;
+}
+
+function FloatingCTAInner() {
     const btnRef = useRef<HTMLButtonElement>(null);
     const labelRef = useRef<HTMLSpanElement>(null);
     const iconPillRef = useRef<HTMLSpanElement>(null);

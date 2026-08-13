@@ -50,11 +50,11 @@ const Navbar = () => {
           onClick={() => router.push('/')}
           className="flex items-center"
         >
-          <Image 
-            src="/brandlogo/Monarch White.png" 
-            alt="Monarch Media House" 
-            width={72} 
-            height={40} 
+          <Image
+            src="/brandlogo/Monarch White.png"
+            alt="Monarch Media House"
+            width={72}
+            height={40}
             className="object-contain h-10 w-auto invert"
             priority
           />
@@ -66,19 +66,19 @@ const Navbar = () => {
         <div
           className={`flex items-center gap-6 backdrop-blur-2xl rounded-full px-6 py-2 transition-all duration-300 bg-transparent border border-primary/20 shadow-[0_4px_24px_0_rgba(17,37,14,0.08)] text-primary`}
         >
-          <button 
+          <button
             onClick={() => {
               if (pathname !== "/") {
                 router.push("/#work");
               } else {
                 document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })
               }
-            }} 
+            }}
             className={`text-sm font-medium transition-colors hover:text-accent`}
           >
             Work
           </button>
-          <button 
+          <button
             onClick={() => {
               if (pathname !== "/") {
                 router.push("/#impact");
@@ -90,19 +90,19 @@ const Navbar = () => {
                   window.scrollTo({ top: sectionTop + offset, behavior: 'smooth' });
                 }
               }
-            }} 
+            }}
             className={`text-sm font-medium transition-colors hover:text-accent`}
           >
             Services
           </button>
-          <button 
-            onClick={() => router.push('/about')} 
+          <button
+            onClick={() => router.push('/about')}
             className={`text-sm font-medium transition-colors hover:text-accent`}
           >
             About
           </button>
-          <button 
-            onClick={() => router.push('/contact')} 
+          <button
+            onClick={() => router.push('/contact')}
             className={`text-sm font-medium transition-colors hover:text-accent`}
           >
             Contact
@@ -158,11 +158,11 @@ const Navbar = () => {
           >
             {/* Top row with Logo and Close button */}
             <div className="flex justify-between items-center w-full">
-              <Image 
-                src="/brandlogo/Monarch White.png" 
-                alt="Monarch Media House" 
-                width={72} 
-                height={40} 
+              <Image
+                src="/brandlogo/Monarch White.png"
+                alt="Monarch Media House"
+                width={72}
+                height={40}
                 className="object-contain h-10 w-auto"
               />
               <button

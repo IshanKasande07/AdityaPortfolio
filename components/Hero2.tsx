@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useSpring, useScroll, useTransform, useAnimation } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import { useReveal } from "./RevealLayout";
 
@@ -94,8 +94,14 @@ export default function Hero2() {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
-    const smoothMouseX = useSpring(mouseX, { stiffness: 50, damping: 20 });
-    const smoothMouseY = useSpring(mouseY, { stiffness: 50, damping: 20 });
+    // PERF: Use stiffness=1e-9 when parallax is locked so the spring solver
+    // effectively never ticks (no frame budget spent on idle springs).
+    const mouseSpringConfig = useMemo(() => ({
+        stiffness: parallaxUnlocked ? 50 : 1e-9,
+        damping: 20,
+    }), [parallaxUnlocked]);
+    const smoothMouseX = useSpring(mouseX, mouseSpringConfig);
+    const smoothMouseY = useSpring(mouseY, mouseSpringConfig);
 
     const skyMouseX = useTransform(smoothMouseX, [-1, 1], [15, -15]);
     const skyMouseY = useTransform(smoothMouseY, [-1, 1], [15, -15]);
@@ -129,8 +135,14 @@ export default function Hero2() {
 
     const buttonX = useMotionValue(0);
     const buttonY = useMotionValue(0);
-    const buttonSpringX = useSpring(buttonX, { stiffness: 150, damping: 15, mass: 0.1 });
-    const buttonSpringY = useSpring(buttonY, { stiffness: 150, damping: 15, mass: 0.1 });
+    // PERF: Same idle-spring trick for button hover effect
+    const buttonSpringConfig = useMemo(() => ({
+        stiffness: parallaxUnlocked ? 150 : 1e-9,
+        damping: 15,
+        mass: 0.1,
+    }), [parallaxUnlocked]);
+    const buttonSpringX = useSpring(buttonX, buttonSpringConfig);
+    const buttonSpringY = useSpring(buttonY, buttonSpringConfig);
 
     const handlePointerMove = (e: React.PointerEvent) => {
         if (isTouchDevice || !parallaxUnlocked) return;
@@ -193,7 +205,8 @@ export default function Hero2() {
                 }
             `}</style>
 
-            <div className="absolute inset-0 w-full h-full" style={{ transformStyle: "preserve-3d" }}>
+            {/* PERF: Removed preserve-3d — avoids forcing a 3D rendering context on the entire layer tree */}
+            <div className="absolute inset-0 w-full h-full" style={{ contain: "content" }}>
 
                 {/* ========== LAYER 0: Sky ========== */}
                 <motion.div
@@ -248,7 +261,7 @@ export default function Hero2() {
                         alt="Cloud Layer"
                         width={800}
                         height={400}
-                        priority
+                        loading="lazy"
                         className="object-contain object-bottom"
                         style={{ width: "clamp(140px, 30vw, 800px)", height: "auto", clipPath: "inset(15% 0 0 0)" }}
                         draggable={false}
@@ -358,8 +371,7 @@ export default function Hero2() {
                         style={{ transform: "translateZ(0)" }}
                     >
                         <div
-                            className="absolute inset-0"
-                            style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }}
+                            style={{ backgroundImage: 'url("data:image/svg+xml;utf8,%3Csvg viewBox=\\"0 0 200 200\\" xmlns=\\"http://www.w3.org/2000/svg\\"%3E%3Cfilter id=\\"noiseFilter\\"%3E%3CfeTurbulence type=\\"fractalNoise\\" baseFrequency=\\"0.65\\" numOctaves=\\"3\\" stitchTiles=\\"stitch\\"/%3E%3C/filter%3E%3Crect width=\\"100%25\\" height=\\"100%25\\" filter=\\"url(%23noiseFilter)\\"/%3E%3C/svg%3E")' }}
                         />
                     </motion.div>
                 )}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 
 const CustomCursor = () => {
     const cursorX = useMotionValue(-100);
@@ -9,9 +9,7 @@ const CustomCursor = () => {
     const [isHovering, setIsHovering] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
 
-    // Smooth spring follow
-    const x = useSpring(cursorX, { stiffness: 500, damping: 30, mass: 0.4 });
-    const y = useSpring(cursorY, { stiffness: 500, damping: 30, mass: 0.4 });
+
 
     const [isTouchDevice, setIsTouchDevice] = useState(false);
 
@@ -58,8 +56,8 @@ const CustomCursor = () => {
         <motion.div
             className="fixed top-0 left-0 pointer-events-none z-[99999] rounded-full hidden md:block"
             style={{
-                x,
-                y,
+                x: cursorX,
+                y: cursorY,
                 translateX: "-50%",
                 translateY: "-50%",
                 opacity: isVisible ? 1 : 0,

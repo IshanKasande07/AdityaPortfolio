@@ -3,7 +3,7 @@ import Hero2 from '@/components/Hero2'
 import Contact from '@/components/Contact'
 import WhyInfotainmentWorks from '@/components/WhyInfotainmentWorks'
 import ResultsSection from '@/components/ResultsSection'
-import Footer from '@/components/Footer'
+import Footer from '@/components/Footer' // trigger HMR
 import PhysicsThrow from '@/components/PhysicsThrow'
 import FloatingCTA from '@/components/FloatingCTA'
 import RevealLayout, { RevealProvider } from '@/components/RevealLayout'

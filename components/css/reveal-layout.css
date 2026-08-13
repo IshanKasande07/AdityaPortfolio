@@ -1,0 +1,14 @@
+/* RevealLayout static styles — parsed once at CSS load, not recalculated on mount */
+
+@media (max-width: 768px) {
+    .reveal-parent-container {
+        background-color: #F8F3E6 !important;
+        contain: none !important;
+    }
+    .reveal-animated-div {
+        clip-path: none !important;
+        transition: none !important;
+        transform: none !important;
+        will-change: auto !important;
+    }
+}
