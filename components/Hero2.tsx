@@ -4,6 +4,7 @@ import { motion, useMotionValue, useSpring, useScroll, useTransform, useAnimatio
 import { useRef, useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import { useReveal } from "./RevealLayout";
+import "./css/reveal-layout.css";
 
 const headingLines = [
     ["Why", "just", "create", "content", "?"],
@@ -167,43 +168,7 @@ export default function Hero2() {
             }}
             style={{ contain: "strict" }}
         >
-            <style>{`
-                @keyframes wordReveal {
-                    from { transform: translateY(120%); opacity: 0; }
-                    to   { transform: translateY(0%);   opacity: 1; }
-                }
-                @keyframes subtitleReveal {
-                    from { transform: translateY(15px); opacity: 0; }
-                    to   { transform: translateY(0px);  opacity: 1; }
-                }
-                .word-reveal {
-                    display: inline-block;
-                    opacity: 0;
-                    will-change: transform, opacity;
-                    animation: wordReveal 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-                    animation-play-state: paused;
-                }
-                .word-reveal.playing {
-                    animation-play-state: running;
-                }
-                .subtitle-reveal {
-                    opacity: 0;
-                    will-change: transform, opacity;
-                    animation: subtitleReveal 0.8s ease-out 0.6s forwards;
-                    animation-play-state: paused;
-                }
-                .subtitle-reveal.playing {
-                    animation-play-state: running;
-                }
-                .hero-sky-bg {
-                    background-image: url('/heroassets/Sky.webp');
-                }
-                @media (max-width: 768px) {
-                    .hero-sky-bg {
-                        background-image: url('/heroassets/vertical-hero.webp');
-                    }
-                }
-            `}</style>
+            {/* Inline <style> removed — now in css/reveal-layout.css (parsed once, no mount-time CSSOM recalc) */}
 
             {/* PERF: Removed preserve-3d — avoids forcing a 3D rendering context on the entire layer tree */}
             <div className="absolute inset-0 w-full h-full" style={{ contain: "content" }}>

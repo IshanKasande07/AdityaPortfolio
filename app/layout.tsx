@@ -5,6 +5,8 @@ import Script from "next/script";
 import "./globals.css";
 import LenisProvider from "./providers/LenisProvider";
 import CustomCursor from "@/components/CustomCursor";
+import { LoadingProvider } from "@/components/LoadingContext";
+import LoadingScreen from "@/components/LoadingScreen";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -51,6 +53,9 @@ const tiemposHeadline = localFont({
 export const metadata: Metadata = {
   title: "Monarch Media House",
   description: "Infotainment-led social content that builds authority, drives massive reach, and converts attention into long-term growth.",
+  icons: {
+    icon: '/favicon.ico',
+  }
 };
 
 export default function RootLayout({
@@ -90,11 +95,15 @@ export default function RootLayout({
             })(window, document, "clarity", "script", "vwhvs1dyvx");
           `}
         </Script>
-        <LenisProvider>
-          <CustomCursor />
-          {children}
-        </LenisProvider>
+        <LoadingProvider>
+          <LoadingScreen />
+          <LenisProvider>
+            <CustomCursor />
+            {children}
+          </LenisProvider>
+        </LoadingProvider>
       </body>
     </html>
   );
 }
+

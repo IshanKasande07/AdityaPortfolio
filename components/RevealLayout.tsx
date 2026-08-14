@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, ReactNode, createContext, useContext, useMemo } from "react";
 import "./css/reveal-layout.css";
+import { useLoading } from "./LoadingContext";
 
 interface RevealContextType {
     revealed: boolean;
@@ -88,6 +89,7 @@ export function RevealProvider({ children }: { children: ReactNode }) {
 
 export default function RevealLayout({ children }: RevealLayoutProps) {
     const { setRevealed, setEarlyReveal } = useReveal();
+    const { isLoading } = useLoading();
     const [paths, setPaths] = useState<{ start: string, end: string } | null>(null);
     const [isExpanded, setIsExpanded] = useState(false);
     const animatedDivRef = useRef<HTMLDivElement>(null);
@@ -100,7 +102,7 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
             return;
         }
 
-        // 1. Calculate exact mathematical pixels to prevent unit-mismatch snapping
+        // Calculate clip-path values once
         const w = window.innerWidth;
         const h = window.innerHeight;
         const pillW = 120;
@@ -113,53 +115,30 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
             start: `inset(${insetY}px ${insetX}px ${insetY}px ${insetX}px round 100px)`,
             end: `inset(${BORDER_TOP_PX}px ${BORDER_PX}px ${BORDER_PX}px ${BORDER_PX}px round ${RADIUS})`
         });
+    }, [setRevealed, setEarlyReveal]);
+
+    // ── Reveal animation — only starts when loading screen is done ──
+    // The LoadingScreen has already pre-decoded all hero images, so the
+    // clip-path transition gets a perfectly clean main-thread runway.
+    useEffect(() => {
+        const isMobile = window.innerWidth < 768;
+        if (isMobile || isLoading || !paths) return;
 
         let cancelled = false;
         let rafId1: number;
         let rafId2: number;
 
-        // ── PHASE 1: Pre-decode critical hero images ──
-        // The #1 cause of variable choppiness: the browser decodes heavy WebP
-        // bitmaps on the main thread concurrently with the clip-path transition.
-        // By pre-decoding BEFORE the animation starts, we give the clip-path
-        // transition a clean main-thread runway.
-        const criticalSrcs = [
-            '/heroassets/Sky.webp',
-            '/heroassets/Bridge Behind.webp',
-            '/heroassets/Bridge.webp'
-        ];
-
-        const decodePromises = criticalSrcs.map(src => {
-            const img = new Image();
-            img.src = src;
-            return img.decode().catch(() => { /* ignore decode failures */ });
-        });
-
-        // Race: all decoded OR 600ms timeout (don't block forever on slow connections)
-        const timeoutFallback = new Promise(resolve => setTimeout(resolve, 600));
-
-        Promise.race([
-            Promise.all(decodePromises),
-            timeoutFallback
-        ]).then(() => {
+        // Double-rAF guarantees the browser has painted the start clip-path
+        // before we trigger the CSS transition.
+        rafId1 = requestAnimationFrame(() => {
             if (cancelled) return;
-
-            // ── PHASE 2: Start the clip-path animation ──
-            // Double-rAF guarantees the browser has painted the start clip-path
-            // before we trigger the CSS transition.
-            rafId1 = requestAnimationFrame(() => {
+            rafId2 = requestAnimationFrame(() => {
                 if (cancelled) return;
-                rafId2 = requestAnimationFrame(() => {
-                    if (cancelled) return;
-                    setIsExpanded(true);
-                });
+                setIsExpanded(true);
             });
         });
 
-        // ── PHASE 3: Completion — use transitionend with a fallback timeout ──
-        // transitionend is the most accurate signal that the animation finished.
-        // The fallback timeout catches edge cases where transitionend doesn't fire
-        // (animation interrupted, tab backgrounded, etc).
+        // ── Completion — use transitionend with a fallback timeout ──
         let completed = false;
         const markComplete = () => {
             if (completed) return;
@@ -178,8 +157,8 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
         };
         el?.addEventListener("transitionend", onTransitionEnd);
 
-        // Fallback: 600ms decode + 32ms rAF + 1600ms transition + 300ms buffer
-        const fallbackTimer = setTimeout(markComplete, 2600);
+        // Fallback: 32ms rAF + 1600ms transition + 300ms buffer
+        const fallbackTimer = setTimeout(markComplete, 2000);
 
         return () => {
             cancelled = true;
@@ -188,7 +167,7 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
             clearTimeout(fallbackTimer);
             el?.removeEventListener("transitionend", onTransitionEnd);
         };
-    }, [setRevealed, setEarlyReveal]);
+    }, [isLoading, paths, setRevealed, setEarlyReveal]);
 
     // Fallback for the very first SSR frame before the JS math runs
     const fallbackPath = "inset(49.5% 45% 49.5% 45% round 100px)";
@@ -224,4 +203,4 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
             </div>
         </div>
     );
-}
+}

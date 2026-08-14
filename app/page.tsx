@@ -11,6 +11,7 @@ import Navbar from '@/components/Navbar'
 import BrandsWhoTrustUs from '@/components/BrandsWhoTrustUs'
 import OurServices from '@/components/OurServices'
 import Manifesto from '@/components/Manifesto'
+import DeferredSection from '@/components/DeferredSection'
 
 const page = () => {
   return (
@@ -23,19 +24,24 @@ const page = () => {
         <Hero2 />
       </RevealLayout>
 
-      <Manifesto />
-      <BrandsWhoTrustUs />
-      <WhyInfotainmentWorks />
+      {/* Below-fold sections are deferred until after the reveal animation
+          completes, preventing their GSAP/ScrollTrigger/ResizeObserver init
+          from competing with the hero animation for main-thread budget. */}
+      <DeferredSection>
+        <Manifesto />
+        <BrandsWhoTrustUs />
+        <WhyInfotainmentWorks />
 
-      <OurServices />
-      <ResultsSection />
+        <OurServices />
+        <ResultsSection />
 
-      {/* Transition B — Contact card-lift (self-contained within Contact.tsx) */}
-      <Contact />
+        {/* Transition B — Contact card-lift (self-contained within Contact.tsx) */}
+        <Contact />
 
-      {/* <PhysicsThrow /> */}
+        {/* <PhysicsThrow /> */}
 
-      <Footer />
+        <Footer />
+      </DeferredSection>
     </RevealProvider>
   )
 }

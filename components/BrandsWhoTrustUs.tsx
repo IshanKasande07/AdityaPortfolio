@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import FadeUp from "./css/FadeUp";
 
 const brandLogos = [
@@ -67,16 +67,20 @@ const BrandsWhoTrustUs = () => {
     const row2 = brandLogos.slice(11);
 
     const containerRef = useRef<HTMLDivElement>(null);
-    const [offset, setOffset] = useState(0);
+    const separatorRef = useRef<HTMLImageElement>(null);
 
     useEffect(() => {
+        // PERF: Write transform directly to the DOM element via ref,
+        // bypassing React's reconciliation entirely. The previous approach
+        // called setOffset() on every scroll frame, causing a full component
+        // re-render (~42 logo cards × every frame = massive overhead).
         const handleScroll = () => {
-            if (!containerRef.current) return;
+            if (!containerRef.current || !separatorRef.current) return;
             const rect = containerRef.current.getBoundingClientRect();
             const windowH = window.innerHeight;
             const progress = 1 - (rect.top + rect.height) / (windowH + rect.height);
             const parallaxAmount = (progress - 0.5) * -150;
-            setOffset(parallaxAmount);
+            separatorRef.current.style.transform = `translateY(${parallaxAmount}px) scaleY(0.8)`;
         };
 
         window.addEventListener("scroll", handleScroll, { passive: true });
@@ -201,6 +205,7 @@ const BrandsWhoTrustUs = () => {
                     style={{ width: "50%", bottom: "-230px" }}
                 >
                     <img
+                        ref={separatorRef}
                         src="/separator/forest right seperator.webp"
                         alt=""
                         aria-hidden="true"
@@ -208,7 +213,7 @@ const BrandsWhoTrustUs = () => {
                             width: "100%",
                             height: "auto",
                             display: "block",
-                            transform: `translateY(${offset}px) scaleY(0.8)`,
+                            transform: "translateY(0px) scaleY(0.8)",
                             transformOrigin: "bottom center",
                             willChange: "transform",
                         }}

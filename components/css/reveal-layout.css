@@ -12,3 +12,44 @@
         will-change: auto !important;
     }
 }
+
+/* ── Hero2 keyframes & classes ──────────────────────────────────────
+   Moved from Hero2's inline <style> tag to this external CSS file.
+   Inline <style> tags cause a CSSOM recalculation on every component
+   mount; external CSS is parsed once and cached by the browser. */
+
+@keyframes wordReveal {
+    from { transform: translateY(120%); opacity: 0; }
+    to   { transform: translateY(0%);   opacity: 1; }
+}
+@keyframes subtitleReveal {
+    from { transform: translateY(15px); opacity: 0; }
+    to   { transform: translateY(0px);  opacity: 1; }
+}
+.word-reveal {
+    display: inline-block;
+    opacity: 0;
+    will-change: transform, opacity;
+    animation: wordReveal 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-play-state: paused;
+}
+.word-reveal.playing {
+    animation-play-state: running;
+}
+.subtitle-reveal {
+    opacity: 0;
+    will-change: transform, opacity;
+    animation: subtitleReveal 0.8s ease-out 0.6s forwards;
+    animation-play-state: paused;
+}
+.subtitle-reveal.playing {
+    animation-play-state: running;
+}
+.hero-sky-bg {
+    background-image: url('/heroassets/Sky.webp');
+}
+@media (max-width: 768px) {
+    .hero-sky-bg {
+        background-image: url('/heroassets/vertical-hero.webp');
+    }
+}

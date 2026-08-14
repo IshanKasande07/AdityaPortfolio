@@ -15,25 +15,46 @@ export default function LenisProvider({ children }) {
     }
     gsap.registerPlugin(ScrollTrigger);
 
-    const lenis = new Lenis({
-      duration: 1.2,        // scroll smoothness
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      smoothTouch: false,
-    });
+    // PERF: Defer Lenis init until the page is fully loaded.
+    // During the reveal animation, scroll is locked (overflow: hidden),
+    // so Lenis running its RAF loop during that period is pure waste.
+    let lenis;
+    let rafCleanup;
 
-    lenis.on('scroll', ScrollTrigger.update);
+    const initLenis = () => {
+      lenis = new Lenis({
+        duration: 1.2,        // scroll smoothness
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        smoothTouch: false,
+      });
 
-    function update(time) {
-      lenis.raf(time * 1000);
+      lenis.on('scroll', ScrollTrigger.update);
+
+      function update(time) {
+        lenis.raf(time * 1000);
+      }
+
+      gsap.ticker.add(update);
+      gsap.ticker.lagSmoothing(0);
+
+      rafCleanup = () => {
+        lenis.destroy();
+        gsap.ticker.remove(update);
+      };
+    };
+
+    if (document.readyState === "complete") {
+      // Page already loaded (e.g. SPA navigation)
+      initLenis();
+    } else {
+      // Wait for page to fully load before starting the RAF loop
+      window.addEventListener("load", initLenis, { once: true });
     }
 
-    gsap.ticker.add(update);
-    gsap.ticker.lagSmoothing(0);
-
     return () => {
-      lenis.destroy();
-      gsap.ticker.remove(update);
+      window.removeEventListener("load", initLenis);
+      if (rafCleanup) rafCleanup();
     };
   }, []);
 
