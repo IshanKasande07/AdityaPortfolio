@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useReveal } from "./RevealLayout";
 import { useRouter, usePathname } from "next/navigation";
+import { useLoading } from "./LoadingContext";
 
 import Image from "next/image";
 
@@ -10,8 +11,20 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const { revealed } = useReveal();
+  const { startLoading } = useLoading();
   const router = useRouter();
   const pathname = usePathname();
+
+  const handleHomeNavigation = () => {
+    if (pathname !== "/") {
+      startLoading();
+      setTimeout(() => {
+        router.push("/");
+      }, 50);
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,7 +60,7 @@ const Navbar = () => {
       {/* Left: Logo */}
       <div className="flex justify-start pointer-events-auto">
         <button
-          onClick={() => router.push('/')}
+          onClick={handleHomeNavigation}
           className="flex items-center"
         >
           <Image
@@ -61,19 +74,11 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Center: Liquid Glass Pill-shaped Navbar (Perfectly Centered via Grid) */}
-      <div className="hidden md:flex justify-center pointer-events-auto">
-        <div
-          className={`flex items-center gap-6 backdrop-blur-2xl rounded-full px-6 py-2 transition-all duration-300 bg-transparent border border-primary/20 shadow-[0_4px_24px_0_rgba(17,37,14,0.08)] text-primary`}
-        >
+      {/* Center: Navigation Links */}
+      <div className="hidden md:flex justify-center pointer-events-auto gap-2">
+        <div className="flex items-center gap-6 backdrop-blur-2xl rounded-full px-6 py-2 transition-all duration-300 bg-transparent border border-primary/20 shadow-[0_4px_24px_0_rgba(17,37,14,0.08)] text-primary">
           <button
-            onClick={() => {
-              if (pathname !== "/") {
-                router.push("/#work");
-              } else {
-                document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })
-              }
-            }}
+            onClick={() => router.push('/work')}
             className={`text-sm font-medium transition-colors hover:text-accent`}
           >
             Work
@@ -108,6 +113,13 @@ const Navbar = () => {
             Contact
           </button>
         </div>
+        
+        <button
+          onClick={handleHomeNavigation}
+          className="flex items-center justify-center backdrop-blur-2xl rounded-full px-6 py-2 transition-all duration-300 bg-transparent border border-primary/20 shadow-[0_4px_24px_0_rgba(17,37,14,0.08)] text-primary text-sm font-medium hover:text-accent"
+        >
+          Home
+        </button>
       </div>
 
       {/* Right: Button */}
@@ -191,7 +203,8 @@ const Navbar = () => {
             {/* Vertical Menu Items */}
             <div className="flex flex-col gap-8 my-auto text-left">
               {[
-                { name: "Work", target: "#work" },
+                { name: "Home", path: "/" },
+                { name: "Work", path: "/work" },
                 { name: "Services", target: "#impact" },
                 { name: "About", path: "/about" },
                 { name: "Contact", path: "/contact" },
@@ -203,7 +216,9 @@ const Navbar = () => {
                   transition={{ delay: 0.1 + index * 0.05 }}
                   onClick={() => {
                     setIsOpen(false);
-                    if (item.path) {
+                    if (item.path === "/") {
+                      handleHomeNavigation();
+                    } else if (item.path) {
                       router.push(item.path);
                     } else if (item.target) {
                       if (pathname !== "/") {

@@ -11,6 +11,8 @@ interface LoadingContextType {
     setLoadingComplete: () => void;
     /** Called by LoadingScreen to update progress */
     setProgress: (p: number) => void;
+    /** Triggers the loading screen manually (e.g. for page transitions) */
+    startLoading: () => void;
 }
 
 const LoadingContext = createContext<LoadingContextType>({
@@ -18,6 +20,7 @@ const LoadingContext = createContext<LoadingContextType>({
     progress: 0,
     setLoadingComplete: () => {},
     setProgress: () => {},
+    startLoading: () => {},
 });
 
 export function useLoading() {
@@ -32,9 +35,14 @@ export function LoadingProvider({ children }: { children: ReactNode }) {
         setIsLoading(false);
     }, []);
 
+    const startLoading = useCallback(() => {
+        setIsLoading(true);
+        setProgress(0);
+    }, []);
+
     const value = useMemo(
-        () => ({ isLoading, progress, setLoadingComplete, setProgress }),
-        [isLoading, progress, setLoadingComplete]
+        () => ({ isLoading, progress, setLoadingComplete, setProgress, startLoading }),
+        [isLoading, progress, setLoadingComplete, startLoading]
     );
 
     return (

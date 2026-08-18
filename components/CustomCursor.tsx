@@ -63,10 +63,12 @@ const CustomCursor = () => {
                 opacity: isVisible ? 1 : 0,
                 width: isHovering ? 48 : 16,
                 height: isHovering ? 48 : 16,
-                backgroundColor: isHovering ? "rgba(137, 162, 54, 0.15)" : "#11250E",
-                border: isHovering ? "1px solid rgba(137, 162, 54, 0.6)" : "none",
+                // Using backdrop-filter to mathematically force the hue to green, while inverting the lightness of the background
+                backdropFilter: "invert(1) sepia(1) saturate(4) hue-rotate(70deg)",
+                WebkitBackdropFilter: "invert(1) sepia(1) saturate(4) hue-rotate(70deg)", // for Safari
+                border: "none",
                 transition:
-                    "width 0.4s cubic-bezier(0.16,1,0.3,1), height 0.4s cubic-bezier(0.16,1,0.3,1), background-color 0.3s ease, border 0.3s ease, opacity 0.25s ease",
+                    "width 0.4s cubic-bezier(0.16,1,0.3,1), height 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.25s ease",
             }}
         />
     );
