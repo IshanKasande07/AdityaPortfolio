@@ -52,7 +52,7 @@ const Footer = () => {
             </div>
 
             {/* Links Columns */}
-            <div className="w-full max-w-5xl mx-auto mt-8 md:mt-10">
+            <div className="w-full max-w-5xl mx-auto mt-20 md:mt-28 lg:mt-36">
               <div className="flex flex-row flex-wrap justify-center gap-12 md:gap-32">
                 
                 {/* Navigation */}

@@ -90,10 +90,11 @@ export function RevealProvider({ children }: { children: ReactNode }) {
 export default function RevealLayout({ children }: RevealLayoutProps) {
     const { setRevealed, setEarlyReveal } = useReveal();
     const { isLoading } = useLoading();
-    const [paths, setPaths] = useState<{ start: string, end: string } | null>(null);
+    const [paths, setPaths] = useState<{ start: string; end: string } | null>(null);
     const [isExpanded, setIsExpanded] = useState(false);
     const animatedDivRef = useRef<HTMLDivElement>(null);
 
+    // Compute clip-path values once on mount
     useEffect(() => {
         const isMobile = window.innerWidth < 768;
         if (isMobile) {
@@ -117,9 +118,7 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
         });
     }, [setRevealed, setEarlyReveal]);
 
-    // ── Reveal animation — only starts when loading screen is done ──
-    // The LoadingScreen has already pre-decoded all hero images, so the
-    // clip-path transition gets a perfectly clean main-thread runway.
+    // Reveal animation — only starts when loading screen is done
     useEffect(() => {
         const isMobile = window.innerWidth < 768;
         if (isMobile || isLoading || !paths) return;
@@ -138,17 +137,13 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
             });
         });
 
-        // ── Completion — use transitionend with a fallback timeout ──
+        // Completion — use transitionend with a fallback timeout
         let completed = false;
         const markComplete = () => {
             if (completed) return;
             completed = true;
             setRevealed(true);
             setEarlyReveal(true);
-            // Free GPU memory now that the animation is done
-            if (animatedDivRef.current) {
-                animatedDivRef.current.style.willChange = "auto";
-            }
         };
 
         const el = animatedDivRef.current;
@@ -181,8 +176,6 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
                 contain: "layout",
             }}
         >
-            {/* Inline <style> removed — now in css/reveal-layout.css (parsed once, no mount-time recalc) */}
-
             <div
                 ref={animatedDivRef}
                 className="reveal-animated-div"

@@ -185,6 +185,7 @@ export default function Hero2() {
                         z: 0.01,
                         scale: 1.05,
                         transformOrigin: "center",
+                        willChange: "transform",
                     }}
                 />
 
@@ -196,6 +197,7 @@ export default function Hero2() {
                         z: 0.01,
                         scale: 1.05,
                         transformOrigin: "center",
+                        willChange: "transform",
                     }}
                     className="absolute inset-0 z-[10] pointer-events-none hidden md:block"
                 >
@@ -218,6 +220,7 @@ export default function Hero2() {
                         z: 0.01,
                         scale: 1.05,
                         transformOrigin: "bottom center",
+                        willChange: "transform",
                     }}
                     className="absolute inset-x-0 bottom-0 z-[15] hidden md:flex justify-center pointer-events-none"
                 >
@@ -226,7 +229,7 @@ export default function Hero2() {
                         alt="Cloud Layer"
                         width={800}
                         height={400}
-                        loading="lazy"
+                        priority
                         className="object-contain object-bottom"
                         style={{ width: "clamp(140px, 30vw, 800px)", height: "auto", clipPath: "inset(15% 0 0 0)" }}
                         draggable={false}
@@ -243,6 +246,7 @@ export default function Hero2() {
                         transformOrigin: "bottom center",
                         height: "102%",
                         top: "2vh",
+                        willChange: "transform",
                     }}
                     className="absolute left-0 w-full z-[20] pointer-events-none hidden md:block"
                 >
@@ -265,6 +269,7 @@ export default function Hero2() {
                         z: 0.01,
                         scale: 1.15,
                         transformOrigin: "center",
+                        willChange: "transform",
                     }}
                     className="absolute inset-0 -bottom-32 z-[30] pointer-events-none hidden md:block"
                 >
@@ -288,6 +293,7 @@ export default function Hero2() {
                         z: 0.01,
                         scale: 1.2,
                         transformOrigin: "bottom left",
+                        willChange: "transform",
                     }}
                     className="absolute inset-0 -bottom-20 -left-20 z-[40] pointer-events-none hidden md:block"
                 >
@@ -311,6 +317,7 @@ export default function Hero2() {
                         z: 0.01,
                         scale: 1.2,
                         transformOrigin: "bottom right",
+                        willChange: "transform",
                     }}
                     className="absolute inset-0 -bottom-20 -right-20 z-[40] pointer-events-none hidden md:block"
                 >
@@ -333,7 +340,7 @@ export default function Hero2() {
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.6 }}
                         className="absolute inset-0 pointer-events-none z-[45] opacity-[0.05]"
-                        style={{ transform: "translateZ(0)" }}
+                        style={{ transform: "translateZ(0)", willChange: "transform" }}
                     >
                         <div
                             style={{ backgroundImage: 'url("data:image/svg+xml;utf8,%3Csvg viewBox=\\"0 0 200 200\\" xmlns=\\"http://www.w3.org/2000/svg\\"%3E%3Cfilter id=\\"noiseFilter\\"%3E%3CfeTurbulence type=\\"fractalNoise\\" baseFrequency=\\"0.65\\" numOctaves=\\"3\\" stitchTiles=\\"stitch\\"/%3E%3C/filter%3E%3Crect width=\\"100%25\\" height=\\"100%25\\" filter=\\"url(%23noiseFilter)\\"/%3E%3C/svg%3E")' }}
@@ -343,7 +350,7 @@ export default function Hero2() {
 
                 {/* ========== LAYER 5: Text Overlay + CTA ========== */}
                 <motion.div
-                    style={{ y: textY, opacity: textOpacity, scale: textScale, z: 0.01 }}
+                    style={{ y: textY, opacity: textOpacity, scale: textScale, z: 0.01, willChange: "transform, opacity" }}
                     className="absolute top-[6vh] md:top-[8vh] left-0 w-full flex flex-col items-center justify-center text-primary text-center z-[50] px-6 md:px-[5vw] pointer-events-none"
                 >
                     <motion.div
@@ -386,11 +393,10 @@ export default function Hero2() {
                     </motion.div>
                 </motion.div>
 
-                {/* ========== CTA BUTTON ========== */}
                 <motion.div
                     initial={{ opacity: 0, y: 20, scale: 0.95 }}
                     animate={contentControls}
-                    style={{ y: textY, opacity: textOpacity, z: 0.01 }}
+                    style={{ y: textY, opacity: textOpacity, z: 0.01, willChange: "transform, opacity" }}
                     className="absolute bottom-[6vh] md:bottom-[8vh] left-0 w-full flex flex-col items-center justify-center z-[100] pointer-events-auto"
                 >
                     <motion.button
