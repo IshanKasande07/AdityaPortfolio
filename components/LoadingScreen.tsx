@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useLoading } from "./LoadingContext";
+import { brandLogos } from "./BrandsWhoTrustUs";
 
 /**
  * All images that must be fully decoded (GPU-ready) before the reveal
@@ -23,6 +24,8 @@ const CRITICAL_IMAGES = [
     "/brandlogo/Monarch White.png",
     // Manifesto image (visible shortly after scrolling)
     "/assets/door1.jpg",
+    // Preload all brand logos so the carousel is ready when scrolled to
+    ...brandLogos.map(logo => logo.src)
 ];
 
 /** Minimum time the loading screen is visible (ms) — prevents flash */

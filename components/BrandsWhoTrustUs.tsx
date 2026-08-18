@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from "react";
 import FadeUp from "./css/FadeUp";
 
-const brandLogos = [
+export const brandLogos = [
     { src: "/logos/1.webp", scale: 1.5 },
     { src: "/logos/2.webp", scale: 1.5 },
     { src: "/logos/3.webp", scale: 1.5 },

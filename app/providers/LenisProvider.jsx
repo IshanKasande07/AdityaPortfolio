@@ -38,7 +38,14 @@ export default function LenisProvider({ children }) {
       gsap.ticker.add(update);
       gsap.ticker.lagSmoothing(0);
 
+      // Sync Lenis with GSAP ScrollTrigger updates (e.g. pin spacers changing document height)
+      const handleRefresh = () => {
+        lenis.resize();
+      };
+      ScrollTrigger.addEventListener("refresh", handleRefresh);
+
       rafCleanup = () => {
+        ScrollTrigger.removeEventListener("refresh", handleRefresh);
         lenis.destroy();
         gsap.ticker.remove(update);
       };
