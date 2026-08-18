@@ -61,11 +61,12 @@ const CustomCursor = () => {
                 translateX: "-50%",
                 translateY: "-50%",
                 opacity: isVisible ? 1 : 0,
-                width: isHovering ? 21 : 16,
-                height: isHovering ? 21 : 16,
-                backgroundColor: isHovering ? "#89A236" : "#11250E",
+                width: isHovering ? 48 : 16,
+                height: isHovering ? 48 : 16,
+                backgroundColor: isHovering ? "rgba(137, 162, 54, 0.15)" : "#11250E",
+                border: isHovering ? "1px solid rgba(137, 162, 54, 0.6)" : "none",
                 transition:
-                    "width 0.3s cubic-bezier(0.16,1,0.3,1), height 0.3s cubic-bezier(0.16,1,0.3,1), background-color 0.25s ease, opacity 0.25s ease",
+                    "width 0.4s cubic-bezier(0.16,1,0.3,1), height 0.4s cubic-bezier(0.16,1,0.3,1), background-color 0.3s ease, border 0.3s ease, opacity 0.25s ease",
             }}
         />
     );

@@ -176,6 +176,7 @@ const OurServices = () => {
                                     return (
                                         <motion.div
                                             key={idx}
+                                            data-cursor-hover
                                             className="flex flex-col items-center cursor-pointer"
                                             onClick={() => {
                                                 textRefs.current[idx]?.scrollIntoView({ behavior: "smooth", block: "center" });

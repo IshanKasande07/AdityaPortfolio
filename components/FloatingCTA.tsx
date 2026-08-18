@@ -51,7 +51,17 @@ function FloatingCTAInner() {
     // exactly when it reaches the middle of the screen.
     const [contactEl, setContactEl] = useState<HTMLElement | null>(null);
     useEffect(() => {
-        setContactEl(document.getElementById("contact-heading"));
+        // Since the Contact section is deferred, it won't exist in the DOM immediately.
+        // We poll for it until it appears.
+        const checkEl = () => {
+            const el = document.getElementById("contact-heading");
+            if (el) {
+                setContactEl(el);
+            } else {
+                setTimeout(checkEl, 200);
+            }
+        };
+        checkEl();
     }, []);
 
     const { scrollYProgress: contactProgress } = useScroll({
