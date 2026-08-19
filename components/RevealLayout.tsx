@@ -196,4 +196,4 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
             </div>
         </div>
     );
-}
+}

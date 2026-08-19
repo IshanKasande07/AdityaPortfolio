@@ -13,6 +13,71 @@ const headingLines = [
 
 const combineTransforms = ([s, m]: number[]) => s + m;
 
+/** Canvas helper: replicates CSS object-fit: cover for drawImage */
+function drawImageCover(
+    ctx: CanvasRenderingContext2D,
+    img: HTMLImageElement,
+    dx: number, dy: number, dw: number, dh: number,
+    alignY: 'top' | 'center' | 'bottom' = 'center'
+) {
+    const nw = img.naturalWidth;
+    const nh = img.naturalHeight;
+    if (!nw || !nh || !dw || !dh) return;
+
+    const srcRatio = nw / nh;
+    const dstRatio = dw / dh;
+
+    let sx: number, sy: number, sw: number, sh: number;
+
+    if (srcRatio > dstRatio) {
+        sh = nh;
+        sw = nh * dstRatio;
+        sx = (nw - sw) / 2;
+        sy = 0;
+    } else {
+        sw = nw;
+        sh = nw / dstRatio;
+        sx = 0;
+        if (alignY === 'bottom') sy = nh - sh;
+        else if (alignY === 'top') sy = 0;
+        else sy = (nh - sh) / 2;
+    }
+
+    ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
+}
+
+/** Canvas helper: replicates CSS object-fit: contain for drawImage */
+function drawImageContain(
+    ctx: CanvasRenderingContext2D,
+    img: HTMLImageElement,
+    dx: number, dy: number, dw: number, dh: number,
+    alignY: 'top' | 'center' | 'bottom' = 'center'
+) {
+    const nw = img.naturalWidth;
+    const nh = img.naturalHeight;
+    if (!nw || !nh || !dw || !dh) return;
+
+    const srcRatio = nw / nh;
+    const dstRatio = dw / dh;
+
+    let sw: number, sh: number;
+
+    if (srcRatio > dstRatio) {
+        sw = dw;
+        sh = dw / srcRatio;
+    } else {
+        sh = dh;
+        sw = dh * srcRatio;
+    }
+
+    let rx = dx + (dw - sw) / 2;
+    let ry = dy;
+    if (alignY === 'bottom') ry += (dh - sh);
+    else if (alignY === 'center') ry += (dh - sh) / 2;
+
+    ctx.drawImage(img, rx, ry, sw, sh);
+}
+
 export default function Hero2() {
     const { revealed, earlyReveal } = useReveal();
 
@@ -21,7 +86,10 @@ export default function Hero2() {
     const containerRef = useRef<HTMLDivElement>(null);
 
     const [parallaxUnlocked, setParallaxUnlocked] = useState(false);
+    const [bgSwapped, setBgSwapped] = useState(false);
     const [isTouchDevice, setIsTouchDevice] = useState(false);
+    const posterCanvasRef = useRef<HTMLCanvasElement>(null);
+    const [posterReady, setPosterReady] = useState(false);
 
     useEffect(() => {
         const mql = window.matchMedia("(pointer: coarse)");
@@ -50,6 +118,10 @@ export default function Hero2() {
                 transition: { duration: 0.8, ease: "easeOut" },
             });
 
+            const bgSwapTimer = setTimeout(() => {
+                setBgSwapped(true);
+            }, 1000); // exactly 1.0s mark
+
             const phaseTwo = setTimeout(() => {
                 headerControls.start({
                     y: 0,
@@ -76,7 +148,10 @@ export default function Hero2() {
                 }
             }, 1200);
 
-            return () => clearTimeout(phaseTwo);
+            return () => {
+                clearTimeout(bgSwapTimer);
+                clearTimeout(phaseTwo);
+            };
         }
     }, [earlyReveal, headerControls, contentControls]);
 
@@ -156,6 +231,123 @@ export default function Hero2() {
         mouseY.set(y);
     };
 
+    // ── Poster trick ─────────────────────────────────────────────
+    // Generate a flat canvas snapshot of the parallax layers so the
+    // clip-path reveal only clips ONE GPU texture → buttery smooth.
+    useEffect(() => {
+        const isMobile = window.innerWidth < 768;
+        if (isMobile) return;
+
+        const container = containerRef.current;
+        const canvas = posterCanvasRef.current;
+        if (!container || !canvas) return;
+
+        let cancelled = false;
+
+        const generate = async () => {
+            // Collect all <img> elements tagged as poster layers
+            const imgs = Array.from(
+                container.querySelectorAll<HTMLImageElement>('[data-poster-layer] img')
+            );
+            
+            // Wait for sky and other images to decode
+            const skyImg = new window.Image();
+            skyImg.src = '/heroassets/Sky.webp';
+            
+            await Promise.all([
+                skyImg.decode().catch(() => {}),
+                ...imgs.map(img => img.decode().catch(() => {}))
+            ]);
+            
+            if (cancelled) return;
+
+            const rect = container.getBoundingClientRect();
+            const w = rect.width;
+            const h = rect.height;
+
+            canvas.width = w;
+            canvas.height = h;
+
+            const ctx = canvas.getContext('2d', { alpha: false });
+            if (!ctx) return;
+
+            // Draw Sky matching its actual scaled bounding rect
+            const skyDiv = container.querySelector('.hero-sky-bg');
+            if (skyDiv && skyImg.naturalWidth) {
+                const skyRect = skyDiv.getBoundingClientRect();
+                drawImageCover(
+                    ctx, 
+                    skyImg, 
+                    skyRect.left - rect.left, 
+                    skyRect.top - rect.top, 
+                    skyRect.width, 
+                    skyRect.height, 
+                    'top'
+                );
+            }
+
+            // Draw layers 1-6
+            for (const img of imgs) {
+                if (!img.naturalWidth) continue;
+
+                // getBoundingClientRect captures all CSS scale() and transform origins perfectly
+                const imgRect = img.getBoundingClientRect();
+                const dx = imgRect.left - rect.left;
+                const dy = imgRect.top - rect.top;
+                const dw = imgRect.width;
+                const dh = imgRect.height;
+
+                // Check class names to perfectly mirror CSS object-fit rules
+                const isCover = img.classList.contains('object-cover');
+                const isContain = img.classList.contains('object-contain');
+                const alignY = img.classList.contains('object-bottom') ? 'bottom' :
+                               img.classList.contains('object-top') ? 'top' : 'center';
+
+                ctx.save();
+                
+                // Mirror the inline clip-path (specifically for Layer 1.5 cloud cutoff)
+                if (img.style.clipPath && img.style.clipPath.includes('inset')) {
+                    const match = img.style.clipPath.match(/inset\(([\d.]+)%/);
+                    if (match) {
+                        const topPct = parseFloat(match[1]) / 100;
+                        ctx.beginPath();
+                        ctx.rect(dx, dy + dh * topPct, dw, dh * (1 - topPct));
+                        ctx.clip();
+                    }
+                }
+
+                if (isCover) {
+                    drawImageCover(ctx, img, dx, dy, dw, dh, alignY);
+                } else if (isContain) {
+                    drawImageContain(ctx, img, dx, dy, dw, dh, alignY);
+                } else {
+                    ctx.drawImage(img, dx, dy, dw, dh);
+                }
+                
+                ctx.restore();
+            }
+
+            if (!cancelled) setPosterReady(true);
+        };
+
+        generate();
+        return () => { cancelled = true; };
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    // Free canvas memory once the real layers take over
+    useEffect(() => {
+        if (bgSwapped && posterCanvasRef.current) {
+            const c = posterCanvasRef.current;
+            c.width = 0;
+            c.height = 0;
+        }
+    }, [bgSwapped]);
+
+    // During reveal: show poster canvas, hide real parallax layers.
+    // After reveal: hide poster, show real layers.
+    const showPoster = posterReady && !bgSwapped;
+    const layerVisibility = (!posterReady || bgSwapped) ? 'visible' as const : 'hidden' as const;
+
     return (
         <div
             ref={containerRef}
@@ -173,6 +365,21 @@ export default function Hero2() {
             {/* PERF: Removed preserve-3d — avoids forcing a 3D rendering context on the entire layer tree */}
             <div className="absolute inset-0 w-full h-full" style={{ contain: "content" }}>
 
+                {/* Poster canvas — single flat texture for smooth clip-path reveal */}
+                <canvas
+                    ref={posterCanvasRef}
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        zIndex: 44,
+                        display: showPoster ? 'block' : 'none',
+                        pointerEvents: 'none' as const,
+                    }}
+                />
+
                 {/* ========== LAYER 0: Sky ========== */}
                 <motion.div
                     className="absolute inset-0 z-0 pointer-events-none hero-sky-bg"
@@ -186,11 +393,13 @@ export default function Hero2() {
                         scale: 1.05,
                         transformOrigin: "center",
                         willChange: "transform",
+                        visibility: layerVisibility,
                     }}
                 />
 
                 {/* ========== LAYER 1: Bridge Behind ========== */}
                 <motion.div
+                    data-poster-layer
                     style={{
                         x: isTouchDevice ? 0 : bridgeBehindMouseX,
                         y: isTouchDevice ? bridgeBehindY : combinedBridgeBehindY,
@@ -198,6 +407,7 @@ export default function Hero2() {
                         scale: 1.05,
                         transformOrigin: "center",
                         willChange: "transform",
+                        visibility: layerVisibility,
                     }}
                     className="absolute inset-0 z-[10] pointer-events-none hidden md:block"
                 >
@@ -214,6 +424,7 @@ export default function Hero2() {
 
                 {/* ========== LAYER 1.5: Bridge Bottom Cloud ========== */}
                 <motion.div
+                    data-poster-layer
                     style={{
                         x: isTouchDevice ? 0 : bridgeBottomCloudMouseX,
                         y: isTouchDevice ? bridgeBottomCloudY : combinedBridgeBottomCloudY,
@@ -221,6 +432,7 @@ export default function Hero2() {
                         scale: 1.05,
                         transformOrigin: "bottom center",
                         willChange: "transform",
+                        visibility: layerVisibility,
                     }}
                     className="absolute inset-x-0 bottom-0 z-[15] hidden md:flex justify-center pointer-events-none"
                 >
@@ -238,6 +450,7 @@ export default function Hero2() {
 
                 {/* ========== LAYER 2: Bridge ========== */}
                 <motion.div
+                    data-poster-layer
                     style={{
                         x: isTouchDevice ? 0 : bridgeMouseX,
                         y: isTouchDevice ? bridgeY : combinedBridgeY,
@@ -247,6 +460,7 @@ export default function Hero2() {
                         height: "102%",
                         top: "2vh",
                         willChange: "transform",
+                        visibility: layerVisibility,
                     }}
                     className="absolute left-0 w-full z-[20] pointer-events-none hidden md:block"
                 >
@@ -263,6 +477,7 @@ export default function Hero2() {
 
                 {/* ========== LAYER 3: Cloud ========== */}
                 <motion.div
+                    data-poster-layer
                     style={{
                         x: isTouchDevice ? 0 : cloudMouseX,
                         y: isTouchDevice ? cloudY : combinedCloudY,
@@ -270,6 +485,7 @@ export default function Hero2() {
                         scale: 1.15,
                         transformOrigin: "center",
                         willChange: "transform",
+                        visibility: layerVisibility,
                     }}
                     className="absolute inset-0 -bottom-32 z-[30] pointer-events-none hidden md:block"
                 >
@@ -287,6 +503,7 @@ export default function Hero2() {
 
                 {/* ========== LAYER 4: Left Mountain ========== */}
                 <motion.div
+                    data-poster-layer
                     style={{
                         x: isTouchDevice ? 0 : mountainsMouseX,
                         y: isTouchDevice ? mountainsY : combinedLeftMountainY,
@@ -294,6 +511,7 @@ export default function Hero2() {
                         scale: 1.2,
                         transformOrigin: "bottom left",
                         willChange: "transform",
+                        visibility: layerVisibility,
                     }}
                     className="absolute inset-0 -bottom-20 -left-20 z-[40] pointer-events-none hidden md:block"
                 >
@@ -311,6 +529,7 @@ export default function Hero2() {
 
                 {/* ========== LAYER 4: Right Mountain ========== */}
                 <motion.div
+                    data-poster-layer
                     style={{
                         x: isTouchDevice ? 0 : mountainsMouseX,
                         y: isTouchDevice ? mountainsY : combinedRightMountainY,
@@ -318,6 +537,7 @@ export default function Hero2() {
                         scale: 1.2,
                         transformOrigin: "bottom right",
                         willChange: "transform",
+                        visibility: layerVisibility,
                     }}
                     className="absolute inset-0 -bottom-20 -right-20 z-[40] pointer-events-none hidden md:block"
                 >
