@@ -120,7 +120,7 @@ export default function Hero2() {
 
             const bgSwapTimer = setTimeout(() => {
                 setBgSwapped(true);
-            }, 1000); // exactly 1.0s mark
+            }, 50); // almost instant
 
             const phaseTwo = setTimeout(() => {
                 headerControls.start({

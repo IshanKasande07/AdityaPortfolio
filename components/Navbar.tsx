@@ -19,7 +19,7 @@ const Navbar = () => {
     if (pathname !== "/") {
       startLoading();
       setTimeout(() => {
-        router.push("/");
+        window.location.href = "/";
       }, 50);
     } else {
       window.scrollTo({ top: 0, behavior: "smooth" });
