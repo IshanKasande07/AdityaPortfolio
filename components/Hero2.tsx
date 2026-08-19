@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useScroll, useTransform, useAnimation } from "framer-motion";
+import { motion, useMotionValue, useSpring, useScroll, useTransform, useAnimation, AnimatePresence } from "framer-motion";
 import { useRef, useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import { useReveal } from "./RevealLayout";
@@ -592,11 +592,11 @@ export default function Hero2() {
                                     {line.map((word, i) => (
                                         <div
                                             key={i}
-                                            className="overflow-hidden inline-flex relative py-1 px-1 -mx-1"
+                                            className="overflow-hidden inline-flex relative py-2 pl-1 pr-3 -mx-1"
                                             style={{ transform: "translateZ(0)" }}
                                         >
                                             <span
-                                                className={`word-reveal ${earlyReveal ? "playing" : ""} ${lineIdx === 1 ? "italic font-normal text-accent" : "text-primary"}`}
+                                                className={`word-reveal ${earlyReveal ? "playing" : ""} ${lineIdx === 1 ? "italic font-light text-accent" : "font-semibold text-[#1e3a18]"}`}
                                                 style={{ animationDelay: `${lineIdx * 0.1 + i * 0.04}s` }}
                                             >
                                                 {word}
@@ -635,7 +635,7 @@ export default function Hero2() {
                         className="group relative overflow-hidden rounded-full py-3 px-8 md:py-4 md:px-10"
                     >
                         <div className="absolute inset-0 bg-accent rounded-full -z-10" />
-                        <div className="absolute inset-0 bg-[#27701B] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full z-0" />
+                        <div className="absolute inset-0 bg-[#1e3a18] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full z-0" />
                         <div className="relative z-10 flex items-center justify-center text-sm md:text-[1.1vw] font-medium text-black group-hover:text-white transition-colors duration-300">
                             <span>Book a Call</span>
                             <span className="ml-3 relative flex items-center justify-center overflow-hidden w-5 h-5">
@@ -653,6 +653,37 @@ export default function Hero2() {
                         </div>
                     </motion.button>
                 </motion.div>
+
+                <AnimatePresence>
+                    {earlyReveal && !isTouchDevice && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeOut" } }}
+                            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+                            style={{ y: textY }}
+                            className="absolute bottom-[6vh] md:bottom-[8vh] right-[6vw] md:right-[4vw] z-[100] hidden md:flex items-center gap-4 pointer-events-none"
+                        >
+                            <span className="text-xs uppercase tracking-[0.25em] text-[#F8F3E6]/80 font-bold mt-[2px]" style={{ fontFamily: "var(--font-space-grotesk)" }}>
+                                Move cursor to explore
+                            </span>
+                            <div className="w-16 h-[2px] bg-[#F8F3E6]/20 relative overflow-hidden">
+                                <motion.div
+                                    className="absolute top-0 left-0 h-full w-6 bg-[#F8F3E6]/90"
+                                    animate={{
+                                        x: [0, 40, 0],
+                                    }}
+                                    transition={{
+                                        duration: 2.5,
+                                        repeat: Infinity,
+                                        ease: "easeInOut"
+                                    }}
+                                />
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
             </div>
         </div>
     );

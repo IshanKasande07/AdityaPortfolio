@@ -10,7 +10,9 @@ interface WorkItem {
     id: string;
     title: string;
     description?: string;
-    youtubeUrl: string;
+    youtubeUrl?: string;
+    instagramUrl?: string;
+    stats?: string;
     imageUrl?: string;
     featured?: boolean;
     category: "short-form" | "long-form" | "graphics";
@@ -35,91 +37,77 @@ const WORK_ITEMS: WorkItem[] = [
     // ── Short Form ──
     {
         id: "sf-1",
-        title: "Brand Launch Reel",
-        description:
-            "A punchy 30-second reel that drove 2M+ impressions in its first week.",
-        youtubeUrl: "https://www.youtube.com/watch?v=0gYMtpX8IPY",
+        title: "Pune Through My lens",
+        description: "Pune holds special place in our hearts, this is where we started and understood the craft. We absolutely love this city and had blast capturing it.",
+        instagramUrl: "https://www.instagram.com/reel/DbxiqP6BGyp/?hl=en",
+        stats: "Gained 800K + views in 2 days, generated qualified leads",
         featured: true,
         category: "short-form",
     },
     {
         id: "sf-2",
-        title: "Product Teaser",
-        description: "High energy product reveal that shattered previous conversion records.",
-        youtubeUrl: "https://www.youtube.com/watch?v=0gYMtpX8IPY",
+        title: "The Indian Garage Co.",
+        description: "Reworked a bit on their existing IP. Created better way of telling same story.",
+        instagramUrl: "https://www.instagram.com/reel/DcFkEDmz3eL/?hl=en",
+        stats: "40% hike in engagement and 75% reach to new audience.",
         featured: true,
         category: "short-form",
     },
     {
         id: "sf-3",
-        title: "Behind the Scenes",
-        youtubeUrl: "https://www.youtube.com/watch?v=0gYMtpX8IPY",
+        title: "Ishita X Uniqlo",
+        description: "We have been working with Ishita for almost a year. We consistency hit 8-9 million views a month with her content.",
+        instagramUrl: "https://www.instagram.com/reel/DbigPbzMiR1/?hl=en",
+        stats: "General branded reels get around less than 10% total views and engagement. We got 35%.",
+        featured: true,
         category: "short-form",
     },
-    {
-        id: "sf-4",
-        title: "Testimonial Cut",
-        youtubeUrl: "https://www.youtube.com/watch?v=0gYMtpX8IPY",
-        category: "short-form",
-    },
-    {
-        id: "sf-5",
-        title: "Event Highlight",
-        youtubeUrl: "https://www.youtube.com/watch?v=0gYMtpX8IPY",
-        category: "short-form",
-    },
-    {
-        id: "sf-6",
-        title: "Social Hook",
-        youtubeUrl: "https://www.youtube.com/watch?v=0gYMtpX8IPY",
-        category: "short-form",
-    },
+    { id: "grid-1", title: "Short 1", instagramUrl: "https://www.instagram.com/reel/DanJEo-sy1W/?hl=en", category: "short-form", featured: false },
+    { id: "grid-2", title: "Short 2", instagramUrl: "https://www.instagram.com/reel/Db3YFiIy2j-/?hl=en", category: "short-form", featured: false },
+    { id: "grid-3", title: "Short 3", instagramUrl: "https://www.instagram.com/reel/DZ6ys6EoVkr/?hl=en", category: "short-form", featured: false },
+    { id: "grid-4", title: "Short 4", instagramUrl: "https://www.instagram.com/reel/DXdc7iZCEi-/?hl=en", category: "short-form", featured: false },
+    { id: "grid-5", title: "Short 5", instagramUrl: "https://www.instagram.com/p/DZ6ym3yIjCD/?hl=en", category: "short-form", featured: false },
+    { id: "grid-6", title: "Short 6", instagramUrl: "https://www.instagram.com/reel/DSKUN80ASSD/?hl=en", category: "short-form", featured: false },
+    { id: "grid-7", title: "Short 7", instagramUrl: "https://www.instagram.com/reel/DR4kqVMgUnu/?hl=en", category: "short-form", featured: false },
+    { id: "grid-8", title: "Short 8", instagramUrl: "https://www.instagram.com/reel/DQ51VbQEQtD/?hl=en", category: "short-form", featured: false },
+    { id: "grid-9", title: "Short 9", instagramUrl: "https://www.instagram.com/reel/DaaSsWapKRJ/?hl=en", category: "short-form", featured: false },
+    { id: "grid-10", title: "Short 10", instagramUrl: "https://www.instagram.com/reel/DZ5Mu2Cye0c/", category: "short-form", featured: false },
+    { id: "grid-11", title: "Short 11", instagramUrl: "https://www.instagram.com/reel/DaS1SlJsM3Q/", category: "short-form", featured: false },
+    { id: "grid-12", title: "Short 12", instagramUrl: "https://www.instagram.com/reel/DaLFFUlTWQJ/", category: "short-form", featured: false },
+    { id: "grid-13", title: "Short 13", instagramUrl: "https://www.instagram.com/reel/DbWEQWBTOG_/", category: "short-form", featured: false },
     // ── Long Form ──
     {
         id: "lf-1",
-        title: "Documentary: The Rise of Infotainment",
-        description:
-            "A 12-minute deep dive into the content strategy behind India's fastest-growing D2C brands.",
-        youtubeUrl: "https://www.youtube.com/watch?v=0gYMtpX8IPY",
+        title: "The Art of Visual Storytelling",
+        description: "An emotional storytelling journey showcasing the impact of mid-day meals across India.",
+        youtubeUrl: "https://youtu.be/EbcoxLnaAIw",
         featured: true,
         category: "long-form",
     },
     {
         id: "lf-2",
-        title: "Brand Film: Akshay Patra",
-        description: "An emotional storytelling journey showcasing the impact of mid-day meals across India.",
-        youtubeUrl: "https://www.youtube.com/watch?v=0gYMtpX8IPY",
-        featured: true,
+        title: "Building the Narrative",
+        description: "A 12-minute deep dive into the content strategy behind India's fastest-growing D2C brands.",
+        youtubeUrl: "https://youtu.be/pWVEuaTApbo",
+        featured: false,
         category: "long-form",
     },
     {
         id: "lf-3",
-        title: "Case Study: 10M Views in 30 Days",
-        youtubeUrl: "https://www.youtube.com/watch?v=0gYMtpX8IPY",
+        title: "Creative Direction Masterclass",
+        youtubeUrl: "https://youtu.be/ckflEamFWG0",
         category: "long-form",
     },
     {
         id: "lf-4",
-        title: "Interview: Founder Series",
-        youtubeUrl: "https://www.youtube.com/watch?v=0gYMtpX8IPY",
+        title: "Behind the Scenes: Production",
+        instagramUrl: "https://www.instagram.com/reel/DcDEZnPzEzc/?hl=en",
         category: "long-form",
     },
     {
         id: "lf-5",
-        title: "Campaign: The Future of Remote",
-        youtubeUrl: "https://www.youtube.com/watch?v=0gYMtpX8IPY",
-        category: "long-form",
-    },
-    {
-        id: "lf-6",
-        title: "Mini-Doc: Silicon Valley to Bangalore",
-        youtubeUrl: "https://www.youtube.com/watch?v=0gYMtpX8IPY",
-        category: "long-form",
-    },
-    {
-        id: "lf-7",
-        title: "Product Launch: Vision 2025",
-        youtubeUrl: "https://www.youtube.com/watch?v=0gYMtpX8IPY",
+        title: "Directing the Vision",
+        instagramUrl: "https://www.instagram.com/reel/DbpZ8P0z-oN/?hl=en",
         category: "long-form",
     },
     // ── Graphics ──
@@ -282,27 +270,33 @@ function ShortFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: 
                     
                     {/* Left: Isolated Phone Mockup */}
                     <div className="w-full md:w-1/2 flex justify-center md:justify-end">
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={currentFeatured.id}
-                                initial={{ opacity: 0, x: -30 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: 30 }}
-                                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                                className="relative w-full max-w-[320px] aspect-[9/19] rounded-[40px] p-2 bg-[#11250E] shadow-[0_20px_60px_-15px_rgba(17,37,14,0.3)] cursor-pointer group"
-                                onClick={() => onPlay(currentFeatured.youtubeUrl)}
-                                data-cursor-hover
-                            >
-                                {/* Phone Inner */}
-                                <div className="relative w-full h-full rounded-[32px] overflow-hidden bg-black">
-                                    <img src={getThumbnail(currentFeatured.youtubeUrl)} alt={currentFeatured.title} className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out" />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-                                    <PlayButton delay={0.2} />
-                                </div>
-                                {/* Subtle glare */}
-                                <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-bl from-white/10 to-transparent rounded-r-[40px] pointer-events-none" />
-                            </motion.div>
-                        </AnimatePresence>
+                        <div className="relative w-full max-w-[320px] aspect-[9/19] rounded-[40px] p-2 bg-[#11250E] shadow-[0_20px_60px_-15px_rgba(17,37,14,0.3)]">
+                            {/* Phone Inner - Preloaded Stack */}
+                            <div className="relative w-full h-full rounded-[32px] overflow-hidden bg-black">
+                                {featuredItems.map((item, idx) => {
+                                    const isActive = idx === currentIndex;
+                                    return (
+                                        <div
+                                            key={item.id}
+                                            className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}
+                                            onClick={() => { if (!item.instagramUrl && item.youtubeUrl) onPlay(item.youtubeUrl); }}
+                                        >
+                                            {item.instagramUrl ? (
+                                                <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" allowtransparency="true" className="absolute top-0 left-0 w-full h-[calc(100%+60px)] pointer-events-auto"></iframe>
+                                            ) : (
+                                                <div className="relative w-full h-full cursor-pointer group" data-cursor-hover>
+                                                    <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out" />
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
+                                                    <PlayButton delay={0.2} />
+                                                </div>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                            {/* Subtle glare */}
+                            <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-bl from-white/10 to-transparent rounded-r-[40px] pointer-events-none z-20" />
+                        </div>
                     </div>
 
                     {/* Right: Editorial Writeup & Controls */}
@@ -327,7 +321,14 @@ function ShortFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: 
                             >
                                 <span className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-semibold uppercase tracking-widest w-fit mb-4">Viral Hit</span>
                                 <h4 className="text-2xl font-medium text-primary leading-tight mb-3" style={{ fontFamily: "var(--font-tiempos-headline), serif" }}>{currentFeatured.title}</h4>
-                                <p className="text-primary/70 font-light text-sm max-w-sm" style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}>{currentFeatured.description}</p>
+                                <p className="text-primary/70 font-light text-sm max-w-sm mb-4" style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}>{currentFeatured.description}</p>
+                                {currentFeatured.stats && (
+                                    <div className="p-4 rounded-xl border border-primary/10 bg-white/50 backdrop-blur-sm max-w-sm">
+                                        <p className="text-xs text-primary/80 font-medium" style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}>
+                                            <span className="text-accent font-bold">Impact: </span>{currentFeatured.stats}
+                                        </p>
+                                    </div>
+                                )}
                             </motion.div>
                         </AnimatePresence>
 
@@ -368,16 +369,22 @@ function ShortFormCard({ item, index, onPlay }: { item: WorkItem, index: number,
             initial={{ opacity: 0, scale: 0.95 }}
             animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="group relative w-full aspect-[9/16] rounded-3xl overflow-hidden cursor-pointer bg-black/5"
-            onClick={() => onPlay(item.youtubeUrl)}
-            data-cursor-hover
+            className={`group relative w-full aspect-[2/3] rounded-3xl overflow-hidden bg-black/5 ${item.instagramUrl ? '' : 'cursor-pointer'}`}
+            onClick={() => { if (!item.instagramUrl && item.youtubeUrl) onPlay(item.youtubeUrl); }}
+            data-cursor-hover={!item.instagramUrl}
         >
-            <img src={getThumbnail(item.youtubeUrl)} alt={item.title} className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
-            <PlayButton inView={inView} delay={0.3 + index * 0.1} />
-            <div className="absolute bottom-5 left-5 right-5 transform group-hover:-translate-y-2 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]">
-                <h4 className="text-white font-medium text-lg leading-tight" style={{ fontFamily: "var(--font-tiempos-headline), serif" }}>{item.title}</h4>
-            </div>
+            {item.instagramUrl ? (
+                <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" allowtransparency="true" className="absolute top-0 left-0 w-full h-[calc(100%+60px)] pointer-events-auto bg-[#11250E]"></iframe>
+            ) : (
+                <>
+                    <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                    <PlayButton inView={inView} delay={0.3 + index * 0.1} />
+                    <div className="absolute bottom-5 left-5 right-5 transform group-hover:-translate-y-2 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] pointer-events-none">
+                        <h4 className="text-white font-medium text-lg leading-tight" style={{ fontFamily: "var(--font-tiempos-headline), serif" }}>{item.title}</h4>
+                    </div>
+                </>
+            )}
         </motion.div>
     );
 }
@@ -502,9 +509,11 @@ function LongFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: s
                     <div className="border-b border-primary/20 pb-4 mb-12">
                         <h4 className="text-sm uppercase tracking-widest text-primary/60 font-semibold" style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}>From The Archives</h4>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-12">
+                    <div className="flex flex-col gap-16">
                         {gridItems.slice(2).map((item, idx) => (
-                            <LongFormGridCard key={item.id} item={item} index={idx + 2} onPlay={onPlay} />
+                            <div key={item.id} className="w-full">
+                                <LongFormGridCard item={item} index={idx + 2} onPlay={onPlay} />
+                            </div>
                         ))}
                     </div>
                 </div>
@@ -527,14 +536,20 @@ function LongFormListCard({ item, index, onPlay }: { item: WorkItem, index: numb
             className="flex flex-col gap-6 group"
         >
             <div 
-                className="w-full aspect-[16/9] rounded-[24px] overflow-hidden relative cursor-pointer shadow-xl shadow-primary/5"
-                onClick={() => onPlay(item.youtubeUrl)}
-                data-cursor-hover
+                className={`w-full aspect-[16/9] rounded-[24px] overflow-hidden relative shadow-xl shadow-primary/5 ${item.instagramUrl ? '' : 'cursor-pointer'}`}
+                onClick={() => { if (!item.instagramUrl && item.youtubeUrl) onPlay(item.youtubeUrl); }}
+                data-cursor-hover={!item.instagramUrl}
             >
-                <img src={getThumbnail(item.youtubeUrl)} alt={item.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.05]" />
-                <div className="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml;utf8,%3Csvg viewBox=\\"0 0 200 200\\" xmlns=\\"http://www.w3.org/2000/svg\\"%3E%3Cfilter id=\\"noiseFilter\\"%3E%3CfeTurbulence type=\\"fractalNoise\\" baseFrequency=\\"0.8\\" numOctaves=\\"3\\" stitchTiles=\\"stitch\\"/%3E%3C/filter%3E%3Crect width=\\"100%25\\" height=\\"100%25\\" filter=\\"url(%23noiseFilter)\\"/%3E%3C/svg%3E")' }} />
-                <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors duration-500" />
-                <PlayButton inView={inView} />
+                {item.instagramUrl ? (
+                    <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" allowtransparency="true" className="absolute top-0 left-0 w-full h-full pointer-events-auto bg-[#11250E]"></iframe>
+                ) : (
+                    <>
+                        <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.05]" />
+                        <div className="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml;utf8,%3Csvg viewBox=\\"0 0 200 200\\" xmlns=\\"http://www.w3.org/2000/svg\\"%3E%3Cfilter id=\\"noiseFilter\\"%3E%3CfeTurbulence type=\\"fractalNoise\\" baseFrequency=\\"0.8\\" numOctaves=\\"3\\" stitchTiles=\\"stitch\\"/%3E%3C/filter%3E%3Crect width=\\"100%25\\" height=\\"100%25\\" filter=\\"url(%23noiseFilter)\\"/%3E%3C/svg%3E")' }} />
+                        <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors duration-500 pointer-events-none" />
+                        <PlayButton inView={inView} />
+                    </>
+                )}
             </div>
 
             <div className="flex flex-col items-start">
@@ -567,13 +582,19 @@ function LongFormGridCard({ item, index, onPlay }: { item: WorkItem, index: numb
             className="flex flex-col gap-4 group"
         >
             <div 
-                className="w-full aspect-[16/9] rounded-2xl overflow-hidden relative cursor-pointer shadow-md shadow-primary/5"
-                onClick={() => onPlay(item.youtubeUrl)}
-                data-cursor-hover
+                className={`w-full aspect-[16/9] rounded-2xl overflow-hidden relative shadow-md shadow-primary/5 ${item.instagramUrl ? '' : 'cursor-pointer'}`}
+                onClick={() => { if (!item.instagramUrl && item.youtubeUrl) onPlay(item.youtubeUrl); }}
+                data-cursor-hover={!item.instagramUrl}
             >
-                <img src={getThumbnail(item.youtubeUrl)} alt={item.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
-                <div className="absolute inset-0 bg-primary/20 group-hover:bg-primary/0 transition-colors duration-500" />
-                <PlayButton inView={inView} delay={0.1} />
+                {item.instagramUrl ? (
+                    <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" allowtransparency="true" className="absolute top-0 left-0 w-full h-full pointer-events-auto bg-[#11250E]"></iframe>
+                ) : (
+                    <>
+                        <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
+                        <div className="absolute inset-0 bg-primary/20 group-hover:bg-primary/0 transition-colors duration-500 pointer-events-none" />
+                        <PlayButton inView={inView} delay={0.1} />
+                    </>
+                )}
             </div>
 
             <div className="flex flex-col items-start px-1">
@@ -741,8 +762,43 @@ export default function WorkShowcase() {
     const openModal = useCallback((url: string) => setModalVideo(url), []);
     const closeModal = useCallback(() => setModalVideo(null), []);
 
+    const handleTabClick = (key: TabKey) => {
+        setActiveTab(key);
+        if (tabWrapperRef.current) {
+            const computedTop = parseInt(window.getComputedStyle(tabWrapperRef.current).top) || 0;
+            const anchor = document.getElementById("tab-scroll-anchor");
+            if (anchor) {
+                const absoluteAnchorY = anchor.getBoundingClientRect().top + window.scrollY;
+                
+                // If tabs are vertical (stuck), scroll exactly to the sticky boundary.
+                // If tabs are horizontal (unpinned), scroll so they sit comfortably below the navbar, remaining horizontal.
+                const targetScrollY = isTabsStuck 
+                    ? absoluteAnchorY - computedTop + 5
+                    : absoluteAnchorY - computedTop - 100;
+                    
+                window.scrollTo({ top: targetScrollY, behavior: 'smooth' });
+            }
+        }
+    };
+
+    const [isTabsStuck, setIsTabsStuck] = useState(false);
+    const tabWrapperRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (tabWrapperRef.current) {
+                // Dynamically get the responsive CSS 'top' value (e.g. 80px or 120px)
+                const computedTop = parseInt(window.getComputedStyle(tabWrapperRef.current).top) || 0;
+                setIsTabsStuck(tabWrapperRef.current.getBoundingClientRect().top <= computedTop + 2);
+            }
+        };
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        handleScroll();
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
     return (
-        <section className="relative w-full min-h-screen bg-background overflow-hidden">
+        <section className="relative w-full min-h-screen bg-background overflow-clip">
             {/* Subtle grain overlay */}
             <div
                 className="absolute inset-0 pointer-events-none opacity-[0.03]"
@@ -764,12 +820,15 @@ export default function WorkShowcase() {
                         style={{ minHeight: "clamp(320px, 50vh, 520px)" }}
                     >
                         {/* Background image */}
-                        <img
+                        <motion.img
                             src="/assets/work-hero-bg.jpg"
                             alt=""
                             aria-hidden="true"
                             className="absolute inset-0 w-full h-full object-cover"
                             style={{ filter: "brightness(0.7) saturate(1.2)" }}
+                            initial={{ clipPath: "polygon(0% 0%, 0% 0%, 0% 0%)", WebkitClipPath: "polygon(0% 0%, 0% 0%, 0% 0%)", scale: 1.1 }}
+                            animate={{ clipPath: "polygon(0% 0%, 250% 0%, 0% 250%)", WebkitClipPath: "polygon(0% 0%, 250% 0%, 0% 250%)", scale: 1 }}
+                            transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
                         />
 
                         {/* Gradient overlays for depth */}
@@ -882,17 +941,30 @@ export default function WorkShowcase() {
                     </motion.div>
                 </div>
 
+                {/* ── Tab Bar Anchor ── */}
+                <div id="tab-scroll-anchor" className="h-0 w-full" />
                 {/* ── Tab Bar ── */}
-                <div className="flex items-center gap-1 md:gap-2 p-1.5 rounded-full bg-primary/[0.04] border border-primary/10 w-fit mx-auto mb-12 md:mb-16">
-                    {TABS.map((tab) => {
+                <div ref={tabWrapperRef} className="sticky top-[80px] md:top-[120px] z-50 flex justify-center w-full h-[50px] md:h-[60px] mb-12 md:mb-16 pointer-events-none">
+                    <motion.div 
+                        layout
+                        animate={{
+                            scale: isTabsStuck ? 0.8 : 1,
+                        }}
+                        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                        className={`pointer-events-auto backdrop-blur-2xl bg-transparent border border-primary/20 shadow-[0_4px_24px_0_rgba(17,37,14,0.08)] flex gap-1 md:gap-2 p-1.5 ${
+                            isTabsStuck ? "flex-col fixed left-4 md:left-8 xl:left-12 top-[35vh] rounded-[24px]" : "flex-row items-center relative rounded-full w-fit"
+                        }`}
+                    >
+                        {TABS.map((tab) => {
                         const Icon = tab.icon;
                         const isActive = activeTab === tab.key;
                         return (
-                            <button
+                            <motion.button
+                                layout
                                 key={tab.key}
-                                onClick={() => setActiveTab(tab.key)}
+                                onClick={() => handleTabClick(tab.key)}
                                 data-cursor-hover
-                                className={`relative flex items-center gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-medium transition-colors duration-300 ${
+                                className={`relative flex items-center justify-center gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-medium transition-colors duration-300 ${
                                     isActive
                                         ? "text-background"
                                         : "text-primary/60 hover:text-primary"
@@ -914,12 +986,15 @@ export default function WorkShowcase() {
                                     />
                                 )}
                                 <Icon className="relative z-10 w-4 h-4" />
-                                <span className="relative z-10 hidden sm:inline">
-                                    {tab.label}
-                                </span>
-                            </button>
+                                {(!isTabsStuck || true) && (
+                                    <span className="relative z-10 hidden sm:inline">
+                                        {tab.label}
+                                    </span>
+                                )}
+                            </motion.button>
                         );
                     })}
+                    </motion.div>
                 </div>
 
                 {/* ── Content ── */}
