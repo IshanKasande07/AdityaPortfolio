@@ -1,11 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const SiteFooter = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -18,51 +14,59 @@ const SiteFooter = () => {
     const content = contentRef.current;
     if (!section || !bg || !content) return;
 
-    let ctx: gsap.Context;
+    let frame: number | null = null;
+    let isNearViewport = false;
 
-    // Delay GSAP initialization slightly.
-    // On the home page, the Footer mounts immediately after RevealProvider 
-    // removes overflow: hidden from the body. Waiting ensures the browser has
-    // restored full document scrolling before GSAP calculates offsets.
-    const timer = setTimeout(() => {
-      ctx = gsap.context(() => {
-        // Background moves slower than scroll (parallax depth effect).
-        gsap.fromTo(
-          bg,
-          { yPercent: -15 },
-          {
-            yPercent: 10,
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: true,
-            },
-          }
-        );
+    const clamp = (value: number) => Math.min(1, Math.max(0, value));
 
-        // Content moves slightly faster than default for contrast
-        gsap.fromTo(
-          content,
-          { yPercent: 5 },
-          {
-            yPercent: -3,
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: true,
-            },
-          }
-        );
-      }, section);
-    }, 150);
+    const updateParallax = () => {
+      frame = null;
+      if (!isNearViewport) return;
+
+      const rect = section.getBoundingClientRect();
+      const travelDistance = window.innerHeight + rect.height;
+      const progress = clamp((window.innerHeight - rect.top) / travelDistance);
+
+      // Keep the two layers on distinct, deliberately restrained paths.
+      // Unlike ScrollTrigger, this reads the footer's live geometry, so it
+      // remains correct when the home page mounts deferred sections after the
+      // opening reveal or when those sections change the document height.
+      const backgroundY = -15 + progress * 25;
+      const contentY = 5 - progress * 8;
+
+      bg.style.transform = `translate3d(0, ${backgroundY}%, 0)`;
+      content.style.transform = `translate3d(0, ${contentY}%, 0)`;
+    };
+
+    const scheduleUpdate = () => {
+      if (frame === null) {
+        frame = requestAnimationFrame(updateParallax);
+      }
+    };
+
+    // Run only while the footer approaches the viewport. This works with the
+    // Lenis native-window scroll used by the site and avoids a permanent RAF
+    // loop for an off-screen footer.
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isNearViewport = entry.isIntersecting;
+        if (isNearViewport) scheduleUpdate();
+      },
+      { rootMargin: "100% 0px" }
+    );
+
+    observer.observe(section);
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+
+    // Covers direct navigation/reloads that land near the footer.
+    scheduleUpdate();
 
     return () => {
-      clearTimeout(timer);
-      if (ctx) ctx.revert();
+      observer.disconnect();
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      if (frame !== null) cancelAnimationFrame(frame);
     };
   }, []);
 
@@ -114,12 +118,12 @@ const SiteFooter = () => {
             </div>
 
             {/* Links Columns */}
-            <div className="w-full max-w-5xl mx-auto mt-20 md:mt-28 lg:mt-36">
-              <div className="flex flex-row flex-wrap justify-center gap-12 md:gap-32">
+            <div className="w-full max-w-5xl mx-auto mt-20 md:mt-24 lg:mt-28">
+              <div className="flex flex-row flex-wrap justify-center gap-6 md:gap-12">
                 
                 {/* Navigation */}
-                <div className="flex flex-col items-center space-y-2 text-sm">
-                  <span className="text-xs font-semibold text-[#2B1B15]/50 mb-1">Navigation</span>
+                <div className="flex min-w-[200px] flex-col items-center space-y-3 rounded-[32px] border border-[#11250E]/10 bg-white/[0.02] px-8 py-8 text-sm shadow-[0_8px_32px_rgba(17,37,14,0.03)] backdrop-blur-[2px]">
+                  <span className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#2B1B15]/50">Navigation</span>
                   <a href="/" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Home</a>
                   <a href="/#work" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Work</a>
                   <a href="/about" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">About Us</a>
@@ -127,16 +131,16 @@ const SiteFooter = () => {
                 </div>
                 
                 {/* Connect */}
-                <div className="flex flex-col items-center space-y-2 text-sm">
-                  <span className="text-xs font-semibold text-[#2B1B15]/50 mb-1">Connect</span>
+                <div className="flex min-w-[200px] flex-col items-center space-y-3 rounded-[32px] border border-[#11250E]/10 bg-white/[0.02] px-8 py-8 text-sm shadow-[0_8px_32px_rgba(17,37,14,0.03)] backdrop-blur-[2px]">
+                  <span className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#2B1B15]/50">Connect</span>
                   <a href="https://www.instagram.com/monarchmediahouse?igsh=OHdoOXZmMnB4cDQx" target="_blank" rel="noopener noreferrer" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Instagram</a>
                   <a href="https://www.linkedin.com/company/monarchmediahouse/" target="_blank" rel="noopener noreferrer" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">LinkedIn</a>
                   <a href="mailto:hello@monarchmedia.house" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Email</a>
                 </div>
                 
                 {/* Legal */}
-                <div className="flex flex-col items-center space-y-2 text-sm">
-                  <span className="text-xs font-semibold text-[#2B1B15]/50 mb-1">Legal</span>
+                <div className="flex min-w-[200px] flex-col items-center space-y-3 rounded-[32px] border border-[#11250E]/10 bg-white/[0.02] px-8 py-8 text-sm shadow-[0_8px_32px_rgba(17,37,14,0.03)] backdrop-blur-[2px]">
+                  <span className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#2B1B15]/50">Legal</span>
                   <a href="#" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Privacy Policy</a>
                   <a href="#" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Terms of Service</a>
                 </div>
