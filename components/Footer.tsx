@@ -1,19 +1,72 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const Footer = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const bg = bgRef.current;
+    const content = contentRef.current;
+    if (!section || !bg || !content) return;
+
+    const ctx = gsap.context(() => {
+      // Background moves slower than scroll (parallax depth effect).
+      // As the footer scrolls into view, the bg translates upward at
+      // a fraction of the scroll speed, creating the layered depth feel.
+      gsap.fromTo(
+        bg,
+        { yPercent: -15 },
+        {
+          yPercent: 10,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        }
+      );
+
+      // Content moves slightly faster than default for contrast
+      gsap.fromTo(
+        content,
+        { yPercent: 5 },
+        {
+          yPercent: -3,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        }
+      );
+    }, section);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <footer className="relative w-full pt-4 md:pt-8 pb-0 bg-transparent text-[#2B1B15] overflow-hidden isolate px-4 md:px-8">
+    <footer
+      ref={sectionRef}
+      className="relative w-full pt-4 md:pt-8 pb-0 bg-transparent text-[#2B1B15] overflow-hidden isolate px-4 md:px-8"
+    >
       {/* Main Container - fits exactly in viewport */}
       <div className="relative w-full rounded-t-[40px] md:rounded-t-[60px] bg-[#F8F3E6] overflow-hidden flex flex-col h-[calc(100vh-2rem)] md:h-[calc(100vh-3rem)]">
         
-        {/* Background Image - covers entire container */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
+        {/* Background Image — moves at a different speed for parallax depth */}
+        <div ref={bgRef} className="absolute inset-0 z-0 pointer-events-none" style={{ top: "-15%", bottom: "-15%", height: "130%" }}>
           {/* Gradient fade from cream at top */}
           <div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-[#F8F3E6] via-[#F8F3E6] via-[10%] to-transparent z-20 h-[55%]" />
           
@@ -29,8 +82,8 @@ const Footer = () => {
           />
         </div>
 
-        {/* Content — uses justify-between to spread top content and bottom copyright */}
-        <div className="relative z-20 flex flex-col justify-between h-full px-6 md:px-12 pt-10 md:pt-14 pb-4">
+        {/* Content — moves at scroll speed (faster than bg) for parallax contrast */}
+        <div ref={contentRef} className="relative z-20 flex flex-col justify-between h-full px-6 md:px-12 pt-10 md:pt-14 pb-4">
           
           {/* Top: Logo + Heading + Links */}
           <div>
@@ -96,4 +149,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
