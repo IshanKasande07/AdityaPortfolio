@@ -654,7 +654,7 @@ function GraphicsGallery({ items }: { items: WorkItem[] }) {
                                     animate={{ opacity: 1 }}
                                     exit={{ opacity: 0 }}
                                     transition={{ duration: 0.6 }}
-                                    src={getThumbnail(currentFeatured.youtubeUrl)} 
+                                    src={getThumbnail(currentFeatured.youtubeUrl ?? "")} 
                                     alt={currentFeatured.title} 
                                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
                                 />
@@ -728,7 +728,7 @@ function GraphicsCard({ item, index }: { item: WorkItem, index: number }) {
             data-cursor-hover
         >
             <div className={`relative overflow-hidden w-full h-full ${radius.replace('rounded', 'rounded')}`}>
-                <img src={getThumbnail(item.youtubeUrl)} alt={item.title} className="w-full h-auto object-cover transition-transform duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-110" />
+                <img src={getThumbnail(item.youtubeUrl ?? "")} alt={item.title} className="w-full h-auto object-cover transition-transform duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-110" />
                 
                 {/* Reveal overlay on hover */}
                 <div className="absolute inset-0 bg-primary/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-6 text-center">
@@ -875,8 +875,8 @@ export default function WorkShowcase() {
                             aria-hidden="true"
                             className="absolute inset-0 w-full h-full object-cover"
                             style={{ filter: "brightness(0.7) saturate(1.2)" }}
-                            initial={{ clipPath: "polygon(0% 0%, 0% 0%, 0% 0%)", WebkitClipPath: "polygon(0% 0%, 0% 0%, 0% 0%)", scale: 1.1 }}
-                            animate={{ clipPath: "polygon(0% 0%, 250% 0%, 0% 250%)", WebkitClipPath: "polygon(0% 0%, 250% 0%, 0% 250%)", scale: 1 }}
+                            initial={{ clipPath: "polygon(0% 0%, 0% 0%, 0% 0%)", scale: 1.1 }}
+                            animate={{ clipPath: "polygon(0% 0%, 250% 0%, 0% 250%)", scale: 1 }}
                             transition={{ duration: 1.4, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
                         />
 
