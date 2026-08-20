@@ -3,7 +3,7 @@
 import React, { useRef } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import SiteFooter from "@/components/SiteFooter";
 import FloatingCTA from "@/components/FloatingCTA";
 import ContactForm from "@/components/ContactForm";
 
@@ -262,7 +262,7 @@ export default function ContactPage() {
             {/* Smooth fade into footer — masks the harsh border */}
             <div className="relative">
                 <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-background to-transparent z-10 pointer-events-none" />
-                <Footer />
+                <SiteFooter />
             </div>
         </div>
     );

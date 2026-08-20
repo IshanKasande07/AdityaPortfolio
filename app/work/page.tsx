@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import SiteFooter from "@/components/SiteFooter";
 import FloatingCTA from "@/components/FloatingCTA";
 import WorkShowcase from "@/components/WorkShowcase";
 
@@ -14,7 +14,7 @@ export default function WorkPage() {
                 <WorkShowcase />
             </main>
 
-            <Footer />
+            <SiteFooter />
         </div>
     );
 }

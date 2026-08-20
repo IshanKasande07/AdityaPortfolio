@@ -3,7 +3,7 @@ import Hero2 from '@/components/Hero2'
 import Contact from '@/components/Contact'
 import WhyInfotainmentWorks from '@/components/WhyInfotainmentWorks'
 import ResultsSection from '@/components/ResultsSection'
-import Footer from '@/components/Footer' // trigger HMR
+import SiteFooter from '@/components/SiteFooter' // trigger HMR
 import PhysicsThrow from '@/components/PhysicsThrow'
 import FloatingCTA from '@/components/FloatingCTA'
 import RevealLayout, { RevealProvider } from '@/components/RevealLayout'
@@ -40,7 +40,7 @@ const page = () => {
 
         {/* <PhysicsThrow /> */}
 
-        <Footer />
+        <SiteFooter />
       </DeferredSection>
     </RevealProvider>
   )

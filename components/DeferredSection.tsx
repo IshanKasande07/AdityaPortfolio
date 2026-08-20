@@ -40,6 +40,26 @@ export default function DeferredSection({ children }: { children: ReactNode }) {
         }
     }, [revealed]);
 
+    useEffect(() => {
+        if (mounted) {
+            // A hardcoded 100ms timeout isn't enough for the home page because 
+            // heavy images (like Brands, Results) can take longer to load and expand the DOM.
+            // Using a ResizeObserver guarantees GSAP updates the footer's parallax 
+            // position exactly when the page height changes.
+            let ro: ResizeObserver;
+            import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
+                ro = new ResizeObserver(() => {
+                    ScrollTrigger.refresh();
+                });
+                ro.observe(document.body);
+            });
+
+            return () => {
+                if (ro) ro.disconnect();
+            };
+        }
+    }, [mounted]);
+
     if (!mounted) return null;
 
     return <>{children}</>;

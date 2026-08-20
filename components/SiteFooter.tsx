@@ -7,7 +7,7 @@ import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Footer = () => {
+const SiteFooter = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -18,43 +18,52 @@ const Footer = () => {
     const content = contentRef.current;
     if (!section || !bg || !content) return;
 
-    const ctx = gsap.context(() => {
-      // Background moves slower than scroll (parallax depth effect).
-      // As the footer scrolls into view, the bg translates upward at
-      // a fraction of the scroll speed, creating the layered depth feel.
-      gsap.fromTo(
-        bg,
-        { yPercent: -15 },
-        {
-          yPercent: 10,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        }
-      );
+    let ctx: gsap.Context;
 
-      // Content moves slightly faster than default for contrast
-      gsap.fromTo(
-        content,
-        { yPercent: 5 },
-        {
-          yPercent: -3,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        }
-      );
-    }, section);
+    // Delay GSAP initialization slightly.
+    // On the home page, the Footer mounts immediately after RevealProvider 
+    // removes overflow: hidden from the body. Waiting ensures the browser has
+    // restored full document scrolling before GSAP calculates offsets.
+    const timer = setTimeout(() => {
+      ctx = gsap.context(() => {
+        // Background moves slower than scroll (parallax depth effect).
+        gsap.fromTo(
+          bg,
+          { yPercent: -15 },
+          {
+            yPercent: 10,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          }
+        );
 
-    return () => ctx.revert();
+        // Content moves slightly faster than default for contrast
+        gsap.fromTo(
+          content,
+          { yPercent: 5 },
+          {
+            yPercent: -3,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          }
+        );
+      }, section);
+    }, 150);
+
+    return () => {
+      clearTimeout(timer);
+      if (ctx) ctx.revert();
+    };
   }, []);
 
   return (
@@ -148,4 +157,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default SiteFooter;

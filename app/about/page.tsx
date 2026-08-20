@@ -1,7 +1,7 @@
 import React from 'react';
 import AboutUs from '@/components/AboutUs';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import SiteFooter from '@/components/SiteFooter';
 import FloatingCTA from '@/components/FloatingCTA';
 
 export default function AboutPage() {
@@ -20,7 +20,7 @@ export default function AboutPage() {
         <AboutUs />
       </main>
 
-      <Footer />
+      <SiteFooter />
     </div>
   );
 }
