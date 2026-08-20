@@ -1,7 +1,11 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import FadeUp from "./css/FadeUp";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export const brandLogos = [
     { src: "/logos/1.webp", scale: 1.5 },
@@ -68,24 +72,47 @@ const BrandsWhoTrustUs = () => {
 
     const containerRef = useRef<HTMLDivElement>(null);
     const separatorRef = useRef<HTMLImageElement>(null);
+    const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
-        // PERF: Write transform directly to the DOM element via ref,
-        // bypassing React's reconciliation entirely. The previous approach
-        // called setOffset() on every scroll frame, causing a full component
-        // re-render (~42 logo cards × every frame = massive overhead).
-        const handleScroll = () => {
-            if (!containerRef.current || !separatorRef.current) return;
-            const rect = containerRef.current.getBoundingClientRect();
-            const windowH = window.innerHeight;
-            const progress = 1 - (rect.top + rect.height) / (windowH + rect.height);
-            const parallaxAmount = (progress - 0.5) * -150;
-            separatorRef.current.style.transform = `translateY(${parallaxAmount}px) scaleY(0.8)`;
-        };
+        if (!containerRef.current || !separatorRef.current) return;
+        
+        // Use GSAP ScrollTrigger for parallax instead of a manual scroll listener.
+        // Manual scroll listeners with getBoundingClientRect cause layout thrashing,
+        // especially when Lenis smooth scrolling is active.
+        const ctx = gsap.context(() => {
+            gsap.fromTo(separatorRef.current, 
+                { y: 75, scaleY: 0.8 }, 
+                { 
+                    y: -75, 
+                    scaleY: 0.8,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: containerRef.current,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: true,
+                    }
+                }
+            );
+        });
 
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        handleScroll();
-        return () => window.removeEventListener("scroll", handleScroll);
+        return () => ctx.revert();
+    }, []);
+
+    // PERF: Pause the infinite carousel CSS animations when the section
+    // is scrolled off-screen. Two continuously animating translateX tracks
+    // with ~42 logo images each waste GPU compositor budget when invisible.
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => setIsVisible(entry.isIntersecting),
+            { rootMargin: "100px" } // start slightly before entering viewport
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
     }, []);
 
     return (
@@ -102,7 +129,10 @@ const BrandsWhoTrustUs = () => {
                     display: flex;
                     width: max-content;
                     animation: scroll-left 35s linear infinite;
-                    will-change: transform;
+                }
+
+                .carousel-offscreen .carousel-track {
+                    animation-play-state: paused;
                 }
 
                 .carousel-track:hover {
@@ -185,7 +215,7 @@ const BrandsWhoTrustUs = () => {
                         </div>
                     </FadeUp>
 
-                    <div className="relative z-10 w-full max-w-[910px] mx-auto flex flex-col gap-2 mt-2 overflow-hidden">
+                    <div className={`relative z-10 w-full max-w-[910px] mx-auto flex flex-col gap-2 mt-2 overflow-hidden${!isVisible ? " carousel-offscreen" : ""}`}>
                         {/* Left fading mask */}
                         <div className="absolute left-0 top-0 bottom-0 w-20 md:w-[170px] bg-gradient-to-r from-background via-background/40 to-transparent z-20 pointer-events-none"></div>
                         {/* Right fading mask */}

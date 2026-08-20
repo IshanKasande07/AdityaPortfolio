@@ -392,7 +392,6 @@ export default function Hero2() {
                         z: 0.01,
                         scale: 1.05,
                         transformOrigin: "center",
-                        willChange: "transform",
                         visibility: layerVisibility,
                     }}
                 />
@@ -406,7 +405,6 @@ export default function Hero2() {
                         z: 0.01,
                         scale: 1.05,
                         transformOrigin: "center",
-                        willChange: "transform",
                         visibility: layerVisibility,
                     }}
                     className="absolute inset-0 z-[10] pointer-events-none hidden md:block"
@@ -431,7 +429,6 @@ export default function Hero2() {
                         z: 0.01,
                         scale: 1.05,
                         transformOrigin: "bottom center",
-                        willChange: "transform",
                         visibility: layerVisibility,
                     }}
                     className="absolute inset-x-0 bottom-0 z-[15] hidden md:flex justify-center pointer-events-none"
@@ -459,7 +456,6 @@ export default function Hero2() {
                         transformOrigin: "bottom center",
                         height: "102%",
                         top: "2vh",
-                        willChange: "transform",
                         visibility: layerVisibility,
                     }}
                     className="absolute left-0 w-full z-[20] pointer-events-none hidden md:block"
@@ -484,7 +480,6 @@ export default function Hero2() {
                         z: 0.01,
                         scale: 1.15,
                         transformOrigin: "center",
-                        willChange: "transform",
                         visibility: layerVisibility,
                     }}
                     className="absolute inset-0 -bottom-32 z-[30] pointer-events-none hidden md:block"
@@ -510,7 +505,6 @@ export default function Hero2() {
                         z: 0.01,
                         scale: 1.2,
                         transformOrigin: "bottom left",
-                        willChange: "transform",
                         visibility: layerVisibility,
                     }}
                     className="absolute inset-0 -bottom-20 -left-20 z-[40] pointer-events-none hidden md:block"
@@ -536,7 +530,6 @@ export default function Hero2() {
                         z: 0.01,
                         scale: 1.2,
                         transformOrigin: "bottom right",
-                        willChange: "transform",
                         visibility: layerVisibility,
                     }}
                     className="absolute inset-0 -bottom-20 -right-20 z-[40] pointer-events-none hidden md:block"

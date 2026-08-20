@@ -269,8 +269,8 @@ function ShortFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: 
                 <div className="flex flex-col md:flex-row items-center gap-12 md:gap-24">
                     
                     {/* Left: Isolated Phone Mockup */}
-                    <div className="w-full md:w-1/2 flex justify-center md:justify-end">
-                        <div className="relative w-full max-w-[320px] aspect-[9/19] rounded-[40px] p-2 bg-[#11250E] shadow-[0_20px_60px_-15px_rgba(17,37,14,0.3)]">
+                    <div className="w-full md:w-[45%] lg:w-[40%] flex justify-center md:justify-end">
+                        <div className="relative w-full max-w-[200px] md:max-w-[220px] xl:max-w-[240px] 2xl:max-w-[300px] aspect-[9/19] rounded-[40px] p-2 bg-[#11250E] shadow-[0_20px_60px_-15px_rgba(17,37,14,0.3)]">
                             {/* Phone Inner - Preloaded Stack */}
                             <div className="relative w-full h-full rounded-[32px] overflow-hidden bg-black">
                                 {featuredItems.map((item, idx) => {
@@ -282,7 +282,7 @@ function ShortFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: 
                                             onClick={() => { if (!item.instagramUrl && item.youtubeUrl) onPlay(item.youtubeUrl); }}
                                         >
                                             {item.instagramUrl ? (
-                                                <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" allowtransparency="true" className="absolute top-0 left-0 w-full h-[calc(100%+60px)] pointer-events-auto"></iframe>
+                                                <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" className="absolute top-0 left-0 w-full h-[calc(100%+60px)] pointer-events-auto"></iframe>
                                             ) : (
                                                 <div className="relative w-full h-full cursor-pointer group" data-cursor-hover>
                                                     <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out" />
@@ -300,12 +300,12 @@ function ShortFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: 
                     </div>
 
                     {/* Right: Editorial Writeup & Controls */}
-                    <div className="w-full md:w-1/2 flex flex-col items-start px-4 md:px-0">
-                        <div className="mb-8">
-                            <h3 className="text-4xl md:text-5xl font-medium text-primary tracking-tight mb-6" style={{ fontFamily: "var(--font-tiempos-headline), serif" }}>
+                    <div className="w-full md:w-[55%] lg:w-[60%] flex flex-col items-start px-4 md:px-0">
+                        <div className="mb-6 md:mb-8">
+                            <h3 className="text-3xl md:text-4xl 2xl:text-5xl font-medium text-primary tracking-tight mb-4 md:mb-6" style={{ fontFamily: "var(--font-tiempos-headline), serif" }}>
                                 The Scroll-Stoppers.
                             </h3>
-                            <p className="text-sm md:text-base text-primary/60 font-light leading-relaxed max-w-md" style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}>
+                            <p className="text-xs md:text-sm 2xl:text-base text-primary/60 font-light leading-relaxed max-w-md" style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}>
                                 We engineer retention. By combining rapid-fire editing with hook-driven storytelling, our short form content consistently shatters algorithmic ceilings across TikTok, Reels, and Shorts.
                             </p>
                         </div>
@@ -317,11 +317,11 @@ function ShortFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: 
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -10 }}
                                 transition={{ duration: 0.4 }}
-                                className="flex flex-col mb-12"
+                                className="flex flex-col mb-8 md:mb-12"
                             >
-                                <span className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-semibold uppercase tracking-widest w-fit mb-4">Viral Hit</span>
-                                <h4 className="text-2xl font-medium text-primary leading-tight mb-3" style={{ fontFamily: "var(--font-tiempos-headline), serif" }}>{currentFeatured.title}</h4>
-                                <p className="text-primary/70 font-light text-sm max-w-sm mb-4" style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}>{currentFeatured.description}</p>
+                                <span className="inline-block px-2 md:px-3 py-1 rounded-full bg-accent/10 text-accent text-[10px] md:text-xs font-semibold uppercase tracking-widest w-fit mb-3 md:mb-4">Viral Hit</span>
+                                <h4 className="text-xl md:text-2xl 2xl:text-3xl font-medium text-primary leading-tight mb-2 md:mb-3" style={{ fontFamily: "var(--font-tiempos-headline), serif" }}>{currentFeatured.title}</h4>
+                                <p className="text-primary/70 font-light text-xs md:text-sm max-w-sm mb-3 md:mb-4" style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}>{currentFeatured.description}</p>
                                 {currentFeatured.stats && (
                                     <div className="p-4 rounded-xl border border-primary/10 bg-white/50 backdrop-blur-sm max-w-sm">
                                         <p className="text-xs text-primary/80 font-medium" style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}>
@@ -374,7 +374,7 @@ function ShortFormCard({ item, index, onPlay }: { item: WorkItem, index: number,
             data-cursor-hover={!item.instagramUrl}
         >
             {item.instagramUrl ? (
-                <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" allowtransparency="true" className="absolute top-0 left-0 w-full h-[calc(100%+60px)] pointer-events-auto bg-[#11250E]"></iframe>
+                <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" className="absolute top-0 left-0 w-full h-[calc(100%+60px)] pointer-events-auto bg-[#11250E]"></iframe>
             ) : (
                 <>
                     <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]" />
@@ -429,7 +429,7 @@ function LongFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: s
             {currentFeatured && (
                 <div 
                     className="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-3xl md:rounded-[40px] overflow-hidden cursor-pointer group shadow-2xl"
-                    onClick={() => onPlay(currentFeatured.youtubeUrl)}
+                    onClick={() => onPlay(currentFeatured.youtubeUrl || "")}
                     data-cursor-hover
                 >
                     <AnimatePresence mode="wait">
@@ -439,7 +439,7 @@ function LongFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: s
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.8 }}
-                            src={getThumbnail(currentFeatured.youtubeUrl)} 
+                            src={getThumbnail(currentFeatured.youtubeUrl || "")} 
                             alt={currentFeatured.title} 
                             className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105" 
                         />
@@ -541,7 +541,7 @@ function LongFormListCard({ item, index, onPlay }: { item: WorkItem, index: numb
                 data-cursor-hover={!item.instagramUrl}
             >
                 {item.instagramUrl ? (
-                    <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" allowtransparency="true" className="absolute top-0 left-0 w-full h-full pointer-events-auto bg-[#11250E]"></iframe>
+                    <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" allowTransparency={true} className="absolute top-0 left-0 w-full h-full pointer-events-auto bg-[#11250E]"></iframe>
                 ) : (
                     <>
                         <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.05]" />
@@ -587,7 +587,7 @@ function LongFormGridCard({ item, index, onPlay }: { item: WorkItem, index: numb
                 data-cursor-hover={!item.instagramUrl}
             >
                 {item.instagramUrl ? (
-                    <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" allowtransparency="true" className="absolute top-0 left-0 w-full h-full pointer-events-auto bg-[#11250E]"></iframe>
+                    <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" className="absolute top-0 left-0 w-full h-full pointer-events-auto bg-[#11250E]"></iframe>
                 ) : (
                     <>
                         <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
@@ -751,6 +751,90 @@ function TabContent({ tabKey, onPlay }: { tabKey: TabKey, onPlay: (url: string) 
     return <GraphicsGallery items={items} />;
 }
 
+function TabBar({ activeTab, onTabChange }: { activeTab: TabKey, onTabChange: (key: TabKey) => void }) {
+    const [isTabsStuck, setIsTabsStuck] = useState(false);
+    const tabWrapperRef = useRef<HTMLDivElement>(null);
+    const tabAnchorRef = useRef<HTMLDivElement>(null);
+
+    const handleTabChange = useCallback((key: TabKey) => {
+        onTabChange(key);
+        if (isTabsStuck && tabAnchorRef.current) {
+            const y = tabAnchorRef.current.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({ top: y - 150, behavior: "smooth" });
+        }
+    }, [isTabsStuck, onTabChange]);
+
+    useEffect(() => {
+        let ticking = false;
+        const handleScroll = () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    if (tabWrapperRef.current) {
+                        setIsTabsStuck(tabWrapperRef.current.getBoundingClientRect().top <= 81);
+                    }
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        handleScroll();
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    return (
+        <>
+            <div ref={tabAnchorRef} className="w-full h-0" />
+            <div ref={tabWrapperRef} className="sticky top-[60px] md:top-[80px] z-50 flex justify-center w-full mb-12 md:mb-16 pointer-events-none">
+                <motion.div 
+                    animate={{
+                        scale: isTabsStuck ? 0.7 : 1,
+                        y: isTabsStuck ? -10 : 0
+                    }}
+                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    className="flex items-center gap-1 md:gap-2 p-1.5 rounded-full w-fit pointer-events-auto backdrop-blur-2xl bg-transparent border border-primary/20 shadow-[0_4px_24px_0_rgba(17,37,14,0.08)]"
+                >
+                    {TABS.map((tab) => {
+                        const Icon = tab.icon;
+                        const isActive = activeTab === tab.key;
+                        return (
+                            <button
+                                key={tab.key}
+                                onClick={() => handleTabChange(tab.key)}
+                                data-cursor-hover
+                                className={`relative flex items-center gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-medium transition-colors duration-300 ${
+                                    isActive
+                                        ? "text-background"
+                                        : "text-primary/60 hover:text-primary"
+                                }`}
+                                style={{
+                                    fontFamily: "var(--font-space-grotesk), sans-serif",
+                                }}
+                            >
+                                {isActive && (
+                                    <motion.div
+                                        layoutId="work-tab-indicator"
+                                        className="absolute inset-0 bg-primary rounded-full"
+                                        transition={{
+                                            type: "spring",
+                                            stiffness: 400,
+                                            damping: 30,
+                                        }}
+                                    />
+                                )}
+                                <Icon className="relative z-10 w-4 h-4" />
+                                <span className="relative z-10 hidden sm:inline">
+                                    {tab.label}
+                                </span>
+                            </button>
+                        );
+                    })}
+                </motion.div>
+            </div>
+        </>
+    );
+}
+
 // ─── Main Component ──────────────────────────────────────────────────────────
 
 export default function WorkShowcase() {
@@ -762,54 +846,19 @@ export default function WorkShowcase() {
     const openModal = useCallback((url: string) => setModalVideo(url), []);
     const closeModal = useCallback(() => setModalVideo(null), []);
 
-    const handleTabClick = (key: TabKey) => {
-        setActiveTab(key);
-        if (tabWrapperRef.current) {
-            const computedTop = parseInt(window.getComputedStyle(tabWrapperRef.current).top) || 0;
-            const anchor = document.getElementById("tab-scroll-anchor");
-            if (anchor) {
-                const absoluteAnchorY = anchor.getBoundingClientRect().top + window.scrollY;
-                
-                // If tabs are vertical (stuck), scroll exactly to the sticky boundary.
-                // If tabs are horizontal (unpinned), scroll so they sit comfortably below the navbar, remaining horizontal.
-                const targetScrollY = isTabsStuck 
-                    ? absoluteAnchorY - computedTop + 5
-                    : absoluteAnchorY - computedTop - 100;
-                    
-                window.scrollTo({ top: targetScrollY, behavior: 'smooth' });
-            }
-        }
-    };
-
-    const [isTabsStuck, setIsTabsStuck] = useState(false);
-    const tabWrapperRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            if (tabWrapperRef.current) {
-                // Dynamically get the responsive CSS 'top' value (e.g. 80px or 120px)
-                const computedTop = parseInt(window.getComputedStyle(tabWrapperRef.current).top) || 0;
-                setIsTabsStuck(tabWrapperRef.current.getBoundingClientRect().top <= computedTop + 2);
-            }
-        };
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        handleScroll();
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
-
     return (
         <section className="relative w-full min-h-screen bg-background overflow-clip">
             {/* Subtle grain overlay */}
             <div
-                className="absolute inset-0 pointer-events-none opacity-[0.03]"
+                className="fixed inset-0 pointer-events-none opacity-[0.03] z-0"
                 style={{
                     backgroundImage:
                         'url("data:image/svg+xml;utf8,%3Csvg viewBox=\\"0 0 200 200\\" xmlns=\\"http://www.w3.org/2000/svg\\"%3E%3Cfilter id=\\"noiseFilter\\"%3E%3CfeTurbulence type=\\"fractalNoise\\" baseFrequency=\\"0.65\\" numOctaves=\\"3\\" stitchTiles=\\"stitch\\"/%3E%3C/filter%3E%3Crect width=\\"100%25\\" height=\\"100%25\\" filter=\\"url(%23noiseFilter)\\"/%3E%3C/svg%3E")',
+                    backgroundRepeat: "repeat",
+                    backgroundSize: "256px 256px",
                 }}
             />
 
-            {/* Ambient glow */}
-            <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[60%] h-[40%] bg-accent/5 blur-[150px] rounded-full pointer-events-none" />
 
             <div className="relative z-10 w-full max-w-[1070px] mx-auto px-6 md:px-16 pt-10 md:pt-16 pb-24 md:pb-32">
             {/* ── Cinematic Hero Banner ── */}
@@ -941,61 +990,8 @@ export default function WorkShowcase() {
                     </motion.div>
                 </div>
 
-                {/* ── Tab Bar Anchor ── */}
-                <div id="tab-scroll-anchor" className="h-0 w-full" />
                 {/* ── Tab Bar ── */}
-                <div ref={tabWrapperRef} className="sticky top-[80px] md:top-[120px] z-50 flex justify-center w-full h-[50px] md:h-[60px] mb-12 md:mb-16 pointer-events-none">
-                    <motion.div 
-                        layout
-                        animate={{
-                            scale: isTabsStuck ? 0.8 : 1,
-                        }}
-                        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                        className={`pointer-events-auto backdrop-blur-2xl bg-transparent border border-primary/20 shadow-[0_4px_24px_0_rgba(17,37,14,0.08)] flex gap-1 md:gap-2 p-1.5 ${
-                            isTabsStuck ? "flex-col fixed left-4 md:left-8 xl:left-12 top-[35vh] rounded-[24px]" : "flex-row items-center relative rounded-full w-fit"
-                        }`}
-                    >
-                        {TABS.map((tab) => {
-                        const Icon = tab.icon;
-                        const isActive = activeTab === tab.key;
-                        return (
-                            <motion.button
-                                layout
-                                key={tab.key}
-                                onClick={() => handleTabClick(tab.key)}
-                                data-cursor-hover
-                                className={`relative flex items-center justify-center gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-medium transition-colors duration-300 ${
-                                    isActive
-                                        ? "text-background"
-                                        : "text-primary/60 hover:text-primary"
-                                }`}
-                                style={{
-                                    fontFamily:
-                                        "var(--font-space-grotesk), sans-serif",
-                                }}
-                            >
-                                {isActive && (
-                                    <motion.div
-                                        layoutId="work-tab-indicator"
-                                        className="absolute inset-0 bg-primary rounded-full"
-                                        transition={{
-                                            type: "spring",
-                                            stiffness: 400,
-                                            damping: 30,
-                                        }}
-                                    />
-                                )}
-                                <Icon className="relative z-10 w-4 h-4" />
-                                {(!isTabsStuck || true) && (
-                                    <span className="relative z-10 hidden sm:inline">
-                                        {tab.label}
-                                    </span>
-                                )}
-                            </motion.button>
-                        );
-                    })}
-                    </motion.div>
-                </div>
+                <TabBar activeTab={activeTab} onTabChange={setActiveTab} />
 
                 {/* ── Content ── */}
                 <AnimatePresence mode="wait">
