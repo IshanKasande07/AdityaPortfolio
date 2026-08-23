@@ -20,23 +20,28 @@ const page = () => {
       <Navbar />
 
       {/* Hero as one clipped card — cream border on all 4 sides */}
-      <RevealLayout>
-        <Hero2 />
-      </RevealLayout>
+      {/* 
+        CRITICAL PERFORMANCE HACK: 
+        We wrap Hero2 in a `sticky` container that stays in the viewport forever. 
+        Because it stays in the viewport, Chrome NEVER evicts the 7 heavy WebP compositor layers. 
+        Instead of scrolling out of view, the rest of the page (DeferredSection) just scrolls OVER it.
+        This completely eliminates the 150ms tile upload stutter.
+      */}
+      <div className="sticky top-0 w-full h-[100vh] z-0">
+        <RevealLayout>
+          <Hero2 />
+        </RevealLayout>
+      </div>
 
       {/* Below-fold sections are deferred until after the reveal animation
           completes, preventing their GSAP/ScrollTrigger/ResizeObserver init
           from competing with the hero animation for main-thread budget. */}
       <DeferredSection>
         <Manifesto />
-        <BrandsWhoTrustUs />
-        <WhyInfotainmentWorks />
-
+        {/* <BrandsWhoTrustUs /> */}
         <OurServices />
-        <ResultsSection />
-
-        {/* Transition B — Contact card-lift (self-contained within Contact.tsx) */}
-        <Contact />
+        {/* <ResultsSection />
+        <Contact /> */}
 
         {/* <PhysicsThrow /> */}
 

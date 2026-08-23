@@ -83,13 +83,8 @@ const OurServices = () => {
             setTimeout(updateActiveIndex, 500);
         }, sectionRef);
 
-        window.addEventListener("scroll", updateActiveIndex, { passive: true });
-        window.addEventListener("resize", updateActiveIndex, { passive: true });
-
         return () => {
             ctx.revert();
-            window.removeEventListener("scroll", updateActiveIndex);
-            window.removeEventListener("resize", updateActiveIndex);
         };
     }, []);
 

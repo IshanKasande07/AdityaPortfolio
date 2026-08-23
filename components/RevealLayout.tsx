@@ -88,7 +88,7 @@ export function RevealProvider({ children }: { children: ReactNode }) {
 }
 
 export default function RevealLayout({ children }: RevealLayoutProps) {
-    const { setRevealed, setEarlyReveal } = useReveal();
+    const { revealed, setRevealed, setEarlyReveal } = useReveal();
     const { isLoading } = useLoading();
     const [paths, setPaths] = useState<{ start: string; end: string } | null>(null);
     const [isExpanded, setIsExpanded] = useState(false);
@@ -173,23 +173,27 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
             style={{
                 backgroundColor: CREAM,
                 minHeight: "100vh",
-                contain: "layout",
             }}
         >
             <div
                 ref={animatedDivRef}
                 className="reveal-animated-div"
                 style={{
-                    clipPath: isExpanded && paths ? paths.end : (paths ? paths.start : fallbackPath),
-                    transition: paths ? "clip-path 1.6s cubic-bezier(0.65, 0, 0.35, 1)" : "none",
-                    willChange: "clip-path",
-                    transform: "translate3d(0, 0, 0)",
+                    clipPath: revealed ? "none" : (isExpanded && paths ? paths.end : (paths ? paths.start : fallbackPath)),
+                    transition: (paths && !revealed) ? "clip-path 1.6s cubic-bezier(0.65, 0, 0.35, 1)" : "none",
+                    willChange: revealed ? "auto" : "clip-path",
+                    // During the clip-path reveal: force a compositor layer so the
+                    // transition is GPU-accelerated. After reveal: strip all forced
+                    // promotion so Hero2's parallax layers don't get double-composited
+                    // through a redundant wrapper layer (this was causing distance-
+                    // dependent scroll lag as Chrome deprioritised nested tiles).
+                    contain: "layout paint",
+                    transform: "translateZ(0)",
                     backfaceVisibility: "hidden",
                     WebkitBackfaceVisibility: "hidden",
                     position: "relative",
                     width: "100%",
                     zIndex: 50,
-                    contain: "layout paint",
                 }}
             >
                 {children}

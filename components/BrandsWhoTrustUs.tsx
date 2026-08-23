@@ -72,7 +72,7 @@ const BrandsWhoTrustUs = () => {
 
     const containerRef = useRef<HTMLDivElement>(null);
     const separatorRef = useRef<HTMLImageElement>(null);
-    const [isVisible, setIsVisible] = useState(false);
+    const carouselContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (!containerRef.current || !separatorRef.current) return;
@@ -105,10 +105,17 @@ const BrandsWhoTrustUs = () => {
     // with ~42 logo images each waste GPU compositor budget when invisible.
     useEffect(() => {
         const el = containerRef.current;
-        if (!el) return;
+        const carousel = carouselContainerRef.current;
+        if (!el || !carousel) return;
 
         const observer = new IntersectionObserver(
-            ([entry]) => setIsVisible(entry.isIntersecting),
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    carousel.classList.remove("carousel-offscreen");
+                } else {
+                    carousel.classList.add("carousel-offscreen");
+                }
+            },
             { rootMargin: "100px" } // start slightly before entering viewport
         );
         observer.observe(el);
@@ -215,7 +222,7 @@ const BrandsWhoTrustUs = () => {
                         </div>
                     </FadeUp>
 
-                    <div className={`relative z-10 w-full max-w-[910px] mx-auto flex flex-col gap-2 mt-2 overflow-hidden${!isVisible ? " carousel-offscreen" : ""}`}>
+                    <div ref={carouselContainerRef} className={`relative z-10 w-full max-w-[910px] mx-auto flex flex-col gap-2 mt-2 overflow-hidden carousel-offscreen`}>
                         {/* Left fading mask */}
                         <div className="absolute left-0 top-0 bottom-0 w-20 md:w-[170px] bg-gradient-to-r from-background via-background/40 to-transparent z-20 pointer-events-none"></div>
                         {/* Right fading mask */}

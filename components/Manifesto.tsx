@@ -81,8 +81,7 @@ export default function Manifesto() {
                 scrollTrigger: {
                     trigger: wordsContainer,
                     start: "top 85%", 
-                    end: "bottom 50%", 
-                    scrub: true,
+                    toggleActions: "play none none none",
                 }
             });
         }, section);

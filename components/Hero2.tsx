@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useScroll, useTransform, useAnimation, AnimatePresence } from "framer-motion";
+import { motion, useMotionValue, useSpring, useScroll, useTransform, useAnimation, AnimatePresence, useMotionValueEvent } from "framer-motion";
 import { useRef, useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import { useReveal } from "./RevealLayout";
@@ -155,10 +155,20 @@ export default function Hero2() {
         }
     }, [earlyReveal, headerControls, contentControls]);
 
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ["start start", "end start"],
-    });
+    // Use global scrollY instead of target-based useScroll. 
+    // Framer Motion uses IntersectionObserver to pause target-based useScroll when offscreen. 
+    // Waking up 7 heavy parallax layers exactly when they enter the viewport causes massive stutter.
+    const { scrollY } = useScroll();
+    const [vh, setVh] = useState(1000);
+    useEffect(() => {
+        setVh(window.innerHeight);
+        const handleResize = () => setVh(window.innerHeight);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+    const scrollYProgress = useTransform(scrollY, [0, vh], [0, 1], { clamp: true });
+
+    // No visibility or willChange toggling, keep textures permanently in VRAM
 
     const skyScrollY = useTransform(scrollYProgress, [0, 1], [0, 450]);
     const bridgeBehindY = useTransform(scrollYProgress, [0, 1], [0, 370]);
@@ -334,14 +344,7 @@ export default function Hero2() {
         return () => { cancelled = true; };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    // Free canvas memory once the real layers take over
-    useEffect(() => {
-        if (bgSwapped && posterCanvasRef.current) {
-            const c = posterCanvasRef.current;
-            c.width = 0;
-            c.height = 0;
-        }
-    }, [bgSwapped]);
+    // We keep the canvas memory alive so we can swap back to it when scrolled out
 
     // During reveal: show poster canvas, hide real parallax layers.
     // After reveal: hide poster, show real layers.
@@ -363,7 +366,7 @@ export default function Hero2() {
             {/* Inline <style> removed — now in css/reveal-layout.css (parsed once, no mount-time CSSOM recalc) */}
 
             {/* PERF: Removed preserve-3d — avoids forcing a 3D rendering context on the entire layer tree */}
-            <div className="absolute inset-0 w-full h-full" style={{ contain: "content" }}>
+            <div className="absolute inset-0 w-full h-full">
 
                 {/* Poster canvas — single flat texture for smooth clip-path reveal */}
                 <canvas
@@ -389,10 +392,10 @@ export default function Hero2() {
                         backgroundRepeat: "no-repeat",
                         x: isTouchDevice ? 0 : skyMouseX,
                         y: isTouchDevice ? skyScrollY : combinedSkyY,
-                        z: 0.01,
                         scale: 1.05,
                         transformOrigin: "center",
                         visibility: layerVisibility,
+                        willChange: "transform",
                     }}
                 />
 
@@ -402,10 +405,10 @@ export default function Hero2() {
                     style={{
                         x: isTouchDevice ? 0 : bridgeBehindMouseX,
                         y: isTouchDevice ? bridgeBehindY : combinedBridgeBehindY,
-                        z: 0.01,
                         scale: 1.05,
                         transformOrigin: "center",
                         visibility: layerVisibility,
+                        willChange: "transform",
                     }}
                     className="absolute inset-0 z-[10] pointer-events-none hidden md:block"
                 >
@@ -426,10 +429,10 @@ export default function Hero2() {
                     style={{
                         x: isTouchDevice ? 0 : bridgeBottomCloudMouseX,
                         y: isTouchDevice ? bridgeBottomCloudY : combinedBridgeBottomCloudY,
-                        z: 0.01,
                         scale: 1.05,
                         transformOrigin: "bottom center",
                         visibility: layerVisibility,
+                        willChange: "transform",
                     }}
                     className="absolute inset-x-0 bottom-0 z-[15] hidden md:flex justify-center pointer-events-none"
                 >
@@ -451,12 +454,12 @@ export default function Hero2() {
                     style={{
                         x: isTouchDevice ? 0 : bridgeMouseX,
                         y: isTouchDevice ? bridgeY : combinedBridgeY,
-                        z: 0.01,
                         scale: 1.05,
                         transformOrigin: "bottom center",
                         height: "102%",
                         top: "2vh",
                         visibility: layerVisibility,
+                        willChange: "transform",
                     }}
                     className="absolute left-0 w-full z-[20] pointer-events-none hidden md:block"
                 >
@@ -477,10 +480,10 @@ export default function Hero2() {
                     style={{
                         x: isTouchDevice ? 0 : cloudMouseX,
                         y: isTouchDevice ? cloudY : combinedCloudY,
-                        z: 0.01,
                         scale: 1.15,
                         transformOrigin: "center",
                         visibility: layerVisibility,
+                        willChange: "transform",
                     }}
                     className="absolute inset-0 -bottom-32 z-[30] pointer-events-none hidden md:block"
                 >
@@ -502,10 +505,10 @@ export default function Hero2() {
                     style={{
                         x: isTouchDevice ? 0 : mountainsMouseX,
                         y: isTouchDevice ? mountainsY : combinedLeftMountainY,
-                        z: 0.01,
                         scale: 1.2,
                         transformOrigin: "bottom left",
                         visibility: layerVisibility,
+                        willChange: "transform",
                     }}
                     className="absolute inset-0 -bottom-20 -left-20 z-[40] pointer-events-none hidden md:block"
                 >
@@ -527,10 +530,10 @@ export default function Hero2() {
                     style={{
                         x: isTouchDevice ? 0 : mountainsMouseX,
                         y: isTouchDevice ? mountainsY : combinedRightMountainY,
-                        z: 0.01,
                         scale: 1.2,
                         transformOrigin: "bottom right",
                         visibility: layerVisibility,
+                        willChange: "transform",
                     }}
                     className="absolute inset-0 -bottom-20 -right-20 z-[40] pointer-events-none hidden md:block"
                 >
@@ -563,7 +566,7 @@ export default function Hero2() {
 
                 {/* ========== LAYER 5: Text Overlay + CTA ========== */}
                 <motion.div
-                    style={{ y: textY, opacity: textOpacity, scale: textScale, z: 0.01, willChange: "transform, opacity" }}
+                    style={{ y: textY, opacity: textOpacity, scale: textScale, willChange: "transform, opacity" }}
                     className="absolute top-[6vh] md:top-[8vh] left-0 w-full flex flex-col items-center justify-center text-primary text-center z-[50] px-6 md:px-[5vw] pointer-events-none"
                 >
                     <motion.div
@@ -609,7 +612,7 @@ export default function Hero2() {
                 <motion.div
                     initial={{ opacity: 0, y: 20, scale: 0.95 }}
                     animate={contentControls}
-                    style={{ y: textY, opacity: textOpacity, z: 0.01, willChange: "transform, opacity" }}
+                    style={{ y: textY, opacity: textOpacity, willChange: "transform, opacity" }}
                     className="absolute bottom-[6vh] md:bottom-[8vh] left-0 w-full flex flex-col items-center justify-center z-[100] pointer-events-auto"
                 >
                     <motion.button

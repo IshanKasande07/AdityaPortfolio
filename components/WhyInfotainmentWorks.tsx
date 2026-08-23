@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { Sparkles, Brain, Heart, Zap } from "lucide-react";
 
 const WhyInfotainmentWorks = () => {
@@ -25,7 +25,11 @@ const WhyInfotainmentWorks = () => {
           width: card?.offsetWidth || 150,
           height: card?.offsetHeight || 110
         }));
-        setCardDimensions(dims);
+        setCardDimensions(prev => {
+          if (prev.length !== dims.length) return dims;
+          const isChanged = dims.some((dim, i) => dim.width !== prev[i].width || dim.height !== prev[i].height);
+          return isChanged ? dims : prev;
+        });
       }
     };
     
@@ -58,7 +62,7 @@ const WhyInfotainmentWorks = () => {
     if (!container) return;
 
     let ctx = gsap.context(() => {
-      // GSAP now owns the pinning — no more CSS sticky desync.
+      // GSAP now owns the pinning â€” no more CSS sticky desync.
       // The animation is inextricably linked to the pin lifecycle.
       const masterTl = gsap.timeline({
         scrollTrigger: {
@@ -66,8 +70,11 @@ const WhyInfotainmentWorks = () => {
           pin: true, // Let GSAP handle the sticky behavior
           start: "top top",
           end: "+=2000", // Scroll distance in px (adjust to change scroll speed)
-          scrub: 1,
+          scrub: 1, // Smooth scroll-linked animation
+          anticipatePin: 1, // Pre-calculate pin position 1s early to prevent jank at pin boundary
+          fastScrollEnd: true, // Snap to end/start immediately on fast scroll
           invalidateOnRefresh: true, // Recalculates start/end if elements above change height
+          // Removed aggressive onToggle refresh hack that caused massive scroll jitter
         }
       });
 
@@ -98,7 +105,6 @@ const WhyInfotainmentWorks = () => {
         if (card) {
           masterTl.to(card, {
             opacity: 1,
-            filter: "blur(0px)",
             scale: 1,
             duration: 0.5,
             ease: "power2.out"
@@ -133,12 +139,6 @@ const WhyInfotainmentWorks = () => {
     };
   }, [cardDimensions]);
 
-  // Parallax setup for the subtle vertical sway
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
   const steps = [
     { label: "Attention", icon: <Zap className="w-5 h-5 text-current" />, actionWord: null },
     { label: "Authority", icon: <Brain className="w-5 h-5 text-current" />, actionWord: "Builds" },
@@ -157,11 +157,11 @@ const WhyInfotainmentWorks = () => {
         <div className="w-full h-[70vh] max-h-[550px] max-w-[1070px] rounded-[32px] overflow-hidden isolate flex flex-col justify-center relative bg-[#4C3BBE]"
              style={{ border: "1px solid rgba(17, 37, 14, 0.15)" }}>
 
-        {/* Card Row — moved up slightly to make room for heading below */}
+        {/* Card Row â€” moved up slightly to make room for heading below */}
         <div className="absolute top-[20%] md:top-[25%] left-0 right-0 -translate-y-1/2 flex items-center justify-center">
           <div className="flex flex-nowrap items-center">
 
-            {/* Lead-in line — same width as connectors */}
+            {/* Lead-in line â€” same width as connectors */}
             <div className="shrink-0 w-[32px] md:w-[48px] flex items-center justify-center">
               <svg width="100%" height="100%" viewBox="0 0 48 4" preserveAspectRatio="none" style={{ overflow: 'visible' }}>
                 <line
@@ -186,7 +186,7 @@ const WhyInfotainmentWorks = () => {
 
                   {/* Card wrapper with border-tracing SVG */}
                   <div className="relative shrink-0">
-                    {/* SVG overlay for the card border trace — uses viewBox matching card size, overflow visible for glow */}
+                    {/* SVG overlay for the card border trace â€” uses viewBox matching card size, overflow visible for glow */}
                     <svg
                       className="absolute inset-0 pointer-events-none"
                       width={w} height={h}
@@ -210,7 +210,7 @@ const WhyInfotainmentWorks = () => {
                     {/* The actual card */}
                     <div
                       ref={(el) => addToRefs(el, cardRefs, index)}
-                      className="w-[130px] md:w-[150px] p-3 md:p-4 rounded-[14px] bg-[#F8F3E6] border border-black/5 shadow-xl text-center flex flex-col items-center group relative z-10 opacity-0 scale-95 blur-[10px] transform-gpu"
+                      className="w-[130px] md:w-[150px] p-3 md:p-4 rounded-[14px] bg-[#F8F3E6] border border-black/5 shadow-xl text-center flex flex-col items-center group relative z-10 opacity-0 scale-95 transform-gpu"
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[14px]"></div>
                       <div className="w-8 h-8 rounded-full bg-[#89A236]/10 border border-[#89A236]/20 flex items-center justify-center mb-3 shadow-inner z-10 transition-transform duration-500 group-hover:scale-110 text-[#89A236]">
@@ -249,7 +249,7 @@ const WhyInfotainmentWorks = () => {
           </div>
         </div>
 
-        {/* Header — Masking reveal (stationary) */}
+        {/* Header â€” Masking reveal (stationary) */}
         <motion.div 
             initial="hidden"
             whileInView="visible"
@@ -296,7 +296,7 @@ const WhyInfotainmentWorks = () => {
                         }}
                         className="text-sm md:text-base text-white/80 font-medium leading-relaxed"
                     >
-                      Anyone can entertain. Anyone can educate. Very few can do both — <span className="text-[#A4C639] font-medium">consistently</span>.
+                      Anyone can entertain. Anyone can educate. Very few can do both â€” <span className="text-[#A4C639] font-medium">consistently</span>.
                     </motion.p>
                 </div>
             </div>
