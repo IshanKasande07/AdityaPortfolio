@@ -41,6 +41,29 @@ The root cause is a fundamental hardware-acceleration behavior in Google Chrome 
   - Instead of scrolling away naturally, the rest of the page (`DeferredSection`, starting with `Manifesto`) simply scrolls *over* `Hero2` like a beautiful "stacked card" effect.
 - **The Result**: 100% hardware-accelerated, buttery smooth scrolling. Because the textures are permanently preserved in VRAM, both the ambient scroll through `Manifesto` and the entry back into `Hero2` have absolutely zero stutter. The parallax within `Hero2` still operates perfectly while it is visible.
 
-## Current Status & Next Steps
-- The scroll lag is **fully solved** using the Sticky Stacked Card design pattern.
-- **Future directions**: If a natural scroll-away effect (instead of the stacked card effect) is strictly required in the future, the only stutter-free way to achieve it is to rewrite the `Hero2` parallax entirely in **WebGL** (Three.js/PixiJS). WebGL bypasses the DOM tile eviction system entirely and manages its own VRAM textures.
+## Final Resolution: Solving the VRAM Traffic Jam Once and For All
+
+To resolve this massive VRAM traffic jam without abandoning the parallax effect, we fundamentally changed how the browser handles the pixels in memory. The problem is now **fixed once and for all** through a combination of structural code changes and strict asset optimization.
+
+Here is what we ultimately did to achieve buttery-smooth 60fps scrolling:
+
+### 1. The Sticky Stacked Card (Preventing GPU Eviction)
+Since Chromium deletes GPU tiles the second they scroll out of the viewport, our structural bypass was to **never let them scroll out of the viewport**. 
+- We wrapped `Hero2` in a `position: sticky; height: 100vh; top: 0` container.
+- When scrolling down, `Hero2` pins itself to the top of the screen. Its DOM layers never leave the viewport, so Chrome **never evicts the GPU tiles**.
+- The rest of the page simply scrolls *over* `Hero2` like a "stacked card" effect, keeping the VRAM textures permanently preserved.
+
+### 2. Downscaling Non-Focal Layers (The VRAM Diet)
+Since VRAM usage scales purely with physical pixel dimensions (not disk size), shrinking the actual width and height of the images drastically cut memory usage.
+- We reduced the dimensions of the massive Hero background WebP layers using [Squoosh](https://squoosh.app/editor).
+- **The Process**: For each of the seven layers, we enabled the "Resize" setting in the right-side edit menu. We set the "Preset" scale down to **50%, 33%, or 25%** depending on the layer's visual importance. We toggled "Lossless" on or off per layer to find the perfect balance between visual quality and file size.
+- **The Math**: Cutting dimensions in half reduces total pixels by 75%. An 8.3 MB layer instantly drops to roughly 2 MB in VRAM. The soft background layers naturally hid this downscaling, massively reducing the total VRAM footprint from ~58MB to a fraction of that size.
+
+### 3. Managing Off-Screen GPU Load (Logo Optimization)
+Further down the page, massive uncompressed PNG brand logos were eagerly loading and taking up GPU budget.
+- We converted all brand logos to highly compressed `.webp` formats.
+- We enforced `loading="lazy"` on the animated logo carousel.
+- This ensured that the browser's compositor wasn't fighting to allocate memory for off-screen logos while simultaneously trying to manage the Hero's parallax layers.
+
+### Conclusion
+By keeping the DOM stack sticky (preventing tile eviction) and severely cutting the physical pixel dimensions of the assets (The VRAM diet), we stabilized the GPU memory lifecycle. If a natural scroll-away effect is ever strictly required in the future, the only stutter-free way to achieve it would be rendering the 7 layers to a WebGL `<canvas>` to bypass the DOM entirely. For now, the Framer Motion DOM approach is highly optimized and perfectly smooth.
