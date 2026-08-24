@@ -9,13 +9,34 @@ interface RevealContextType {
     earlyReveal: boolean;
     setRevealed: (v: boolean) => void;
     setEarlyReveal: (v: boolean) => void;
+    /** Computed clip-path string (shared by RevealLayout and Hero2Background) */
+    clipPath: string;
+    /** Computed clip-path transition string */
+    clipTransition: string;
+    /** Whether the reveal expansion has been triggered */
+    isExpanded: boolean;
+    /** Trigger the expansion */
+    setIsExpanded: (v: boolean) => void;
+    /** Raw start/end path pair (null until computed) */
+    paths: { start: string; end: string } | null;
 }
+
+const BORDER_TOP_PX = 66;
+const BORDER_PX = 18;
+const RADIUS = "20px";
+const CREAM = "#F8F3E6";
+const FALLBACK_PATH = "inset(49.5% 45% 49.5% 45% round 100px)";
 
 const RevealContext = createContext<RevealContextType>({
     revealed: false,
     earlyReveal: false,
     setRevealed: () => { },
     setEarlyReveal: () => { },
+    clipPath: FALLBACK_PATH,
+    clipTransition: "none",
+    isExpanded: false,
+    setIsExpanded: () => { },
+    paths: null,
 });
 
 export function useReveal() {
@@ -26,15 +47,13 @@ interface RevealLayoutProps {
     children: ReactNode;
 }
 
-const BORDER_TOP_PX = 66;
-const BORDER_PX = 18;
-const RADIUS = "20px";
-const CREAM = "#F8F3E6";
-
 export function RevealProvider({ children }: { children: ReactNode }) {
     const [revealed, setRevealed] = useState(false);
     const [earlyReveal, setEarlyReveal] = useState(false);
+    const [paths, setPaths] = useState<{ start: string; end: string } | null>(null);
+    const [isExpanded, setIsExpanded] = useState(false);
 
+    // ── Mobile fast-path ─────────────────────────────────────────
     useEffect(() => {
         const isMobile = window.innerWidth < 768;
         if (isMobile) {
@@ -55,6 +74,26 @@ export function RevealProvider({ children }: { children: ReactNode }) {
         document.body.style.pointerEvents = "none";
     }, []);
 
+    // ── Compute clip-path values once on mount ───────────────────
+    useEffect(() => {
+        const isMobile = window.innerWidth < 768;
+        if (isMobile) return;
+
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        const pillW = 120;
+        const pillH = 12;
+
+        const insetX = (w - pillW) / 2;
+        const insetY = (h - pillH) / 2;
+
+        setPaths({
+            start: `inset(${insetY}px ${insetX}px ${insetY}px ${insetX}px round 100px)`,
+            end: `inset(${BORDER_TOP_PX}px ${BORDER_PX}px ${BORDER_PX}px ${BORDER_PX}px round ${RADIUS})`
+        });
+    }, []);
+
+    // ── Restore scroll once revealed ─────────────────────────────
     useEffect(() => {
         const isMobile = window.innerWidth < 768;
         if (isMobile) return;
@@ -76,9 +115,14 @@ export function RevealProvider({ children }: { children: ReactNode }) {
         }
     }, [revealed]);
 
+    // ── Derived clip-path values ─────────────────────────────────
+    const clipPath = isExpanded && paths ? paths.end : (paths ? paths.start : FALLBACK_PATH);
+    const clipTransition = paths ? "clip-path 1.6s cubic-bezier(0.65, 0, 0.35, 1)" : "none";
+
     const contextValue = useMemo(() => ({
-        revealed, earlyReveal, setRevealed, setEarlyReveal
-    }), [revealed, earlyReveal]);
+        revealed, earlyReveal, setRevealed, setEarlyReveal,
+        clipPath, clipTransition, isExpanded, setIsExpanded, paths,
+    }), [revealed, earlyReveal, clipPath, clipTransition, isExpanded, paths]);
 
     return (
         <RevealContext.Provider value={contextValue}>
@@ -88,13 +132,11 @@ export function RevealProvider({ children }: { children: ReactNode }) {
 }
 
 export default function RevealLayout({ children }: RevealLayoutProps) {
-    const { setRevealed, setEarlyReveal } = useReveal();
+    const { setRevealed, setEarlyReveal, clipPath, clipTransition, paths, setIsExpanded } = useReveal();
     const { isLoading } = useLoading();
-    const [paths, setPaths] = useState<{ start: string; end: string } | null>(null);
-    const [isExpanded, setIsExpanded] = useState(false);
     const animatedDivRef = useRef<HTMLDivElement>(null);
 
-    // Compute clip-path values once on mount
+    // ── Reveal animation — starts when loading screen is done ────
     useEffect(() => {
         const isMobile = window.innerWidth < 768;
         if (isMobile) {
@@ -102,26 +144,7 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
             setEarlyReveal(true);
             return;
         }
-
-        // Calculate clip-path values once
-        const w = window.innerWidth;
-        const h = window.innerHeight;
-        const pillW = 120;
-        const pillH = 12;
-
-        const insetX = (w - pillW) / 2;
-        const insetY = (h - pillH) / 2;
-
-        setPaths({
-            start: `inset(${insetY}px ${insetX}px ${insetY}px ${insetX}px round 100px)`,
-            end: `inset(${BORDER_TOP_PX}px ${BORDER_PX}px ${BORDER_PX}px ${BORDER_PX}px round ${RADIUS})`
-        });
-    }, [setRevealed, setEarlyReveal]);
-
-    // Reveal animation — only starts when loading screen is done
-    useEffect(() => {
-        const isMobile = window.innerWidth < 768;
-        if (isMobile || isLoading || !paths) return;
+        if (isLoading || !paths) return;
 
         let cancelled = false;
         let rafId1: number;
@@ -162,16 +185,13 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
             clearTimeout(fallbackTimer);
             el?.removeEventListener("transitionend", onTransitionEnd);
         };
-    }, [isLoading, paths, setRevealed, setEarlyReveal]);
-
-    // Fallback for the very first SSR frame before the JS math runs
-    const fallbackPath = "inset(49.5% 45% 49.5% 45% round 100px)";
+    }, [isLoading, paths, setRevealed, setEarlyReveal, setIsExpanded]);
 
     return (
         <div
             className="reveal-parent-container relative w-full overflow-hidden"
             style={{
-                backgroundColor: CREAM,
+                backgroundColor: "transparent",
                 minHeight: "100vh",
                 contain: "layout",
             }}
@@ -180,8 +200,8 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
                 ref={animatedDivRef}
                 className="reveal-animated-div"
                 style={{
-                    clipPath: isExpanded && paths ? paths.end : (paths ? paths.start : fallbackPath),
-                    transition: paths ? "clip-path 1.6s cubic-bezier(0.65, 0, 0.35, 1)" : "none",
+                    clipPath,
+                    transition: clipTransition,
                     willChange: "clip-path",
                     transform: "translate3d(0, 0, 0)",
                     backfaceVisibility: "hidden",

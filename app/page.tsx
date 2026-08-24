@@ -1,17 +1,17 @@
 import React from 'react'
-import Hero2 from '@/components/Hero2'
 import Contact from '@/components/Contact'
 import WhyInfotainmentWorks from '@/components/WhyInfotainmentWorks'
 import ResultsSection from '@/components/ResultsSection'
 import SiteFooter from '@/components/SiteFooter' // trigger HMR
 import PhysicsThrow from '@/components/PhysicsThrow'
 import FloatingCTA from '@/components/FloatingCTA'
-import RevealLayout, { RevealProvider } from '@/components/RevealLayout'
+import { RevealProvider } from '@/components/RevealLayout'
 import Navbar from '@/components/Navbar'
 import BrandsWhoTrustUs from '@/components/BrandsWhoTrustUs'
 import OurServices from '@/components/OurServices'
 import Manifesto from '@/components/Manifesto'
 import DeferredSection from '@/components/DeferredSection'
+import HeroSection from '@/components/HeroSection'
 
 const page = () => {
   return (
@@ -19,10 +19,10 @@ const page = () => {
       <FloatingCTA />
       <Navbar />
 
-      {/* Hero as one clipped card — cream border on all 4 sides */}
-      <RevealLayout>
-        <Hero2 />
-      </RevealLayout>
+      {/* HeroSection renders:
+          1. Hero2Background (position: fixed, OUTSIDE RevealLayout — prevents VRAM eviction)
+          2. RevealLayout > Hero2 (foreground text/CTA, INSIDE RevealLayout — clip-path reveal) */}
+      <HeroSection />
 
       {/* Below-fold sections are deferred until after the reveal animation
           completes, preventing their GSAP/ScrollTrigger/ResizeObserver init
@@ -47,4 +47,5 @@ const page = () => {
 }
 
 export default page
+
 
