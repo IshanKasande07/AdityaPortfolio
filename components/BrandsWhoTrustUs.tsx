@@ -21,14 +21,14 @@ export const brandLogos = [
     { src: "/logos/11.webp" },
     { src: "/logos/12.webp", scale: 3.0 },
     { src: "/logos/Akshay PAtra Black.webp" },
-    { src: "/logos/Biosun white .png" },
-    { src: "/logos/Debridge - White.png" },
-    { src: "/logos/Ishita Sakuja White .png", scale: 2.0 },
+    { src: "/logos/Biosun white.webp" },
+    { src: "/logos/Debridge - White.webp" },
+    { src: "/logos/Ishita Sakuja White.webp", scale: 2.0 },
     { src: "/logos/SSB White.webp" },
     { src: "/logos/Waddle White.webp" },
     { src: "/logos/decstudio.webp" },
     { src: "/logos/nugget by zomato.webp" },
-    { src: "/logos/vandan white .png", scale: 2.0 }
+    { src: "/logos/vandan white.webp", scale: 2.0 }
 ];
 
 const LogoCard = ({ src, isLarge, manualScale = 1 }: { src: string; isLarge: boolean; manualScale?: number }) => {
@@ -40,7 +40,7 @@ const LogoCard = ({ src, isLarge, manualScale = 1 }: { src: string; isLarge: boo
                 alt="Trusted Brand"
                 className="logo-img"
                 style={{ transform: `scale(${s})` }}
-                loading="eager"
+                loading="lazy"
                 decoding="async"
             />
         </div>
