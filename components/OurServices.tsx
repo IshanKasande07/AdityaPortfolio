@@ -96,6 +96,7 @@ const OurServices = () => {
     return (
         <section
             ref={sectionRef}
+            id="services"
             className="relative bg-background w-full"
         >
             {/* Section Header */}

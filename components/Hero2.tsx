@@ -155,17 +155,14 @@ export default function Hero2() {
         }
     }, [earlyReveal, headerControls, contentControls]);
 
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ["start start", "end start"],
-    });
+    const { scrollY } = useScroll();
 
-    const skyScrollY = useTransform(scrollYProgress, [0, 1], [0, 450]);
-    const bridgeBehindY = useTransform(scrollYProgress, [0, 1], [0, 370]);
-    const bridgeBottomCloudY = useTransform(scrollYProgress, [0, 1], [0, 330]);
-    const bridgeY = useTransform(scrollYProgress, [0, 1], [0, 250]);
-    const cloudY = useTransform(scrollYProgress, [0, 1], [0, 130]);
-    const mountainsY = useTransform(scrollYProgress, [0, 1], [0, 0]);
+    const skyScrollY = useTransform(scrollY, [0, 600], [0, 450]);
+    const bridgeBehindY = useTransform(scrollY, [0, 600], [0, 370]);
+    const bridgeBottomCloudY = useTransform(scrollY, [0, 600], [0, 330]);
+    const bridgeY = useTransform(scrollY, [0, 600], [0, 250]);
+    const cloudY = useTransform(scrollY, [0, 600], [0, 130]);
+    const mountainsY = useTransform(scrollY, [0, 600], [0, 0]);
 
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
@@ -205,9 +202,10 @@ export default function Hero2() {
     const combinedLeftMountainY = useTransform([mountainsY, mountainsMouseY], combineTransforms);
     const combinedRightMountainY = useTransform([mountainsY, mountainsMouseY], combineTransforms);
 
-    const textY = useTransform(scrollYProgress, [0, 0.5], [0, -200]);
-    const textOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0]);
-    const textScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.85]);
+    // Text & CTA uplift starts immediately from 0px and progresses smoothly over a longer scroll distance
+    const textY = useTransform(scrollY, [0, 260], [0, -200]);
+    const textOpacity = useTransform(scrollY, [0, 200], [1, 0]);
+    const textScale = useTransform(scrollY, [0, 260], [1, 0.88]);
 
     const buttonX = useMotionValue(0);
     const buttonY = useMotionValue(0);
@@ -654,7 +652,7 @@ export default function Hero2() {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeOut" } }}
                             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-                            style={{ y: textY }}
+                            style={{ y: textY, opacity: textOpacity, willChange: "transform, opacity" }}
                             className="absolute bottom-[6vh] md:bottom-[8vh] right-[6vw] md:right-[4vw] z-[100] hidden md:flex items-center gap-4 pointer-events-none"
                         >
                             <span className="text-xs uppercase tracking-[0.25em] text-[#F8F3E6]/80 font-bold mt-[2px]" style={{ fontFamily: "var(--font-space-grotesk)" }}>

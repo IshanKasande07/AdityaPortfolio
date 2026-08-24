@@ -86,13 +86,11 @@ const Navbar = () => {
           <button
             onClick={() => {
               if (pathname !== "/") {
-                router.push("/#impact");
+                router.push("/#services");
               } else {
-                const el = document.getElementById('impact');
+                const el = document.getElementById('services');
                 if (el) {
-                  const sectionTop = el.offsetTop;
-                  const offset = el.offsetHeight * 0.04;
-                  window.scrollTo({ top: sectionTop + offset, behavior: 'smooth' });
+                  el.scrollIntoView({ behavior: 'smooth' });
                 }
               }
             }}
@@ -205,7 +203,7 @@ const Navbar = () => {
               {[
                 { name: "Home", path: "/" },
                 { name: "Work", path: "/work" },
-                { name: "Services", target: "#impact" },
+                { name: "Services", target: "#services" },
                 { name: "About", path: "/about" },
                 { name: "Contact", path: "/contact" },
               ].map((item, index) => (
@@ -224,16 +222,7 @@ const Navbar = () => {
                       if (pathname !== "/") {
                         router.push(`/${item.target}`);
                       } else {
-                        if (item.target === "#impact") {
-                          const el = document.getElementById("impact");
-                          if (el) {
-                            const sectionTop = el.offsetTop;
-                            const offset = el.offsetHeight * 0.04;
-                            window.scrollTo({ top: sectionTop + offset, behavior: "smooth" });
-                          }
-                        } else {
-                          document.getElementById(item.target.replace("#", ""))?.scrollIntoView({ behavior: "smooth" });
-                        }
+                        document.getElementById(item.target.replace("#", ""))?.scrollIntoView({ behavior: "smooth" });
                       }
                     }
                   }}

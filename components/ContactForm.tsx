@@ -3,6 +3,53 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 
+interface BrutalistInputProps {
+    label: string;
+    type?: string;
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    placeholder: string;
+    isTextArea?: boolean;
+}
+
+const BrutalistInput = ({ label, type = "text", value, onChange, placeholder, isTextArea = false }: BrutalistInputProps) => {
+    const [isFocused, setIsFocused] = useState(false);
+
+    return (
+        <div className='flex flex-col gap-2 w-full group'>
+            <p className='text-xs font-mono uppercase tracking-widest text-muted group-hover:text-primary transition-colors'>{label}</p>
+            <div className="relative w-full">
+                {isTextArea ? (
+                    <textarea
+                        value={value}
+                        onChange={onChange}
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={() => setIsFocused(false)}
+                        placeholder={placeholder}
+                        className='w-full bg-transparent text-primary text-sm px-0 py-2 border-b border-primary/20 focus:outline-none min-h-[10vh] resize-none placeholder-primary/30 transition-colors'
+                    />
+                ) : (
+                    <input
+                        type={type}
+                        value={value}
+                        onChange={onChange}
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={() => setIsFocused(false)}
+                        placeholder={placeholder}
+                        className='w-full bg-transparent text-primary text-sm px-0 py-2 border-b border-primary/20 focus:outline-none placeholder-primary/30 transition-colors'
+                    />
+                )}
+                <motion.div
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: isFocused ? 1 : 0 }}
+                    transition={{ duration: 0.3, ease: "circOut" }}
+                    className="absolute bottom-0 left-0 w-full h-[2px] bg-accent origin-center"
+                />
+            </div>
+        </div>
+    );
+};
+
 const ContactForm = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -17,7 +64,7 @@ const ContactForm = () => {
         if (!isSubmitting) {
             if (!name || !email || !company || !number || !message) {
                 alert("Please fill all the data.");
-                return
+                return;
             }
 
             setIsSubmitting(true);
@@ -48,45 +95,7 @@ const ContactForm = () => {
 
             setIsSubmitting(false);
         }
-    }
-
-    const BrutalistInput = ({ label, type = "text", value, onChange, placeholder, isTextArea = false }: any) => {
-        const [isFocused, setIsFocused] = useState(false);
-
-        return (
-            <div className='flex flex-col gap-2 w-full group'>
-                <p className='text-xs font-mono uppercase tracking-widest text-muted group-hover:text-primary transition-colors'>{label}</p>
-                <div className="relative w-full">
-                    {isTextArea ? (
-                        <textarea
-                            value={value}
-                            onChange={onChange}
-                            onFocus={() => setIsFocused(true)}
-                            onBlur={() => setIsFocused(false)}
-                            placeholder={placeholder}
-                            className='w-full bg-transparent text-primary text-sm px-0 py-2 border-b border-primary/20 focus:outline-none min-h-[10vh] resize-none placeholder-primary/30 transition-colors'
-                        />
-                    ) : (
-                        <input
-                            type={type}
-                            value={value}
-                            onChange={onChange}
-                            onFocus={() => setIsFocused(true)}
-                            onBlur={() => setIsFocused(false)}
-                            placeholder={placeholder}
-                            className='w-full bg-transparent text-primary text-sm px-0 py-2 border-b border-primary/20 focus:outline-none placeholder-primary/30 transition-colors'
-                        />
-                    )}
-                    <motion.div
-                        initial={{ scaleX: 0 }}
-                        animate={{ scaleX: isFocused ? 1 : 0 }}
-                        transition={{ duration: 0.3, ease: "circOut" }}
-                        className="absolute bottom-0 left-0 w-full h-[2px] bg-accent origin-center"
-                    />
-                </div>
-            </div>
-        );
-    }
+    };
 
     return (
         <motion.form
@@ -97,28 +106,31 @@ const ContactForm = () => {
             className='w-full flex flex-col items-center justify-center gap-6 md:gap-8 relative z-10'
         >
             <div className='flex flex-col md:flex-row gap-6 md:gap-8 items-center justify-between w-full'>
-                <BrutalistInput label="Name" value={name} onChange={(e: any) => setName(e.target.value)} placeholder="John Doe" />
-                <BrutalistInput label="Email" type="email" value={email} onChange={(e: any) => setEmail(e.target.value)} placeholder="john@company.com" />
+                <BrutalistInput label="Name" value={name} onChange={(e) => setName(e.target.value)} placeholder="John Doe" />
+                <BrutalistInput label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="john@company.com" />
             </div>
             <div className='flex flex-col md:flex-row gap-6 md:gap-8 items-center justify-between w-full'>
-                <BrutalistInput label="Company" value={company} onChange={(e: any) => setCompany(e.target.value)} placeholder="Acme Corp" />
-                <BrutalistInput label="Phone Number" type="tel" value={number} onChange={(e: any) => setNumber(e.target.value)} placeholder="+1 (555) 000-0000" />
+                <BrutalistInput label="Company" value={company} onChange={(e) => setCompany(e.target.value)} placeholder="Acme Corp" />
+                <BrutalistInput label="Phone Number" type="tel" value={number} onChange={(e) => setNumber(e.target.value)} placeholder="+1 (555) 000-0000" />
             </div>
 
-            <BrutalistInput label="Project Brief" value={message} onChange={(e: any) => setMessage(e.target.value)} placeholder="Tell us about your brand, audience and content goals..." isTextArea={true} />
+            <BrutalistInput label="Project Brief" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Tell us about your brand, audience and content goals..." isTextArea={true} />
 
             <button
                 type='submit'
                 disabled={isSubmitting}
-                className='group relative w-full overflow-hidden rounded-full py-4 md:py-5 px-8 border border-primary/20 mt-2 disabled:opacity-50 disabled:cursor-not-allowed'
+                className='group relative w-full overflow-hidden rounded-full py-4 md:py-5 px-8 mt-2 disabled:opacity-50 disabled:cursor-not-allowed'
             >
-                {/* Hover Expanding Background */}
-                <div className="absolute inset-0 bg-accent translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full"></div>
+                {/* Base color: Accent (Foliage Green) */}
+                <div className="absolute inset-0 bg-accent rounded-full -z-10" />
 
-                <div className="relative z-10 flex items-center justify-center text-base md:text-[1vw] font-medium text-primary group-hover:text-background transition-colors duration-300">
+                {/* Hover Expanding Background: Deep Forest Green */}
+                <div className="absolute inset-0 bg-[#1e3a18] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full z-0" />
+
+                <div className="relative z-10 flex items-center justify-center text-base md:text-[1vw] font-medium text-[#11250E] group-hover:text-[#F8F3E6] transition-colors duration-300">
                     {isSubmitting ? "Submitting..." : "Let's Talk"}
                     <span className='ml-3 flex items-center justify-center transition-transform duration-500 group-hover:translate-x-3'>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="stroke-current border-current" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="stroke-current" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
@@ -127,7 +139,7 @@ const ContactForm = () => {
             </button>
             <p className='text-xs md:text-[0.85vw] text-muted font-mono tracking-wide'>We reply to all applications within 48 hours.</p>
         </motion.form>
-    )
-}
+    );
+};
 
-export default ContactForm
+export default ContactForm;

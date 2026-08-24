@@ -22,9 +22,19 @@ const tiemposHeadline = localFont({
       style: "normal",
     },
     {
+      path: "../font/TiemposHeadline-LightItalic.otf",
+      weight: "300",
+      style: "italic",
+    },
+    {
       path: "../font/TiemposHeadline-Regular.otf",
       weight: "400",
       style: "normal",
+    },
+    {
+      path: "../font/TiemposHeadline-RegularItalic.otf",
+      weight: "400",
+      style: "italic",
     },
     {
       path: "../font/TiemposHeadline-Medium.otf",
@@ -32,9 +42,19 @@ const tiemposHeadline = localFont({
       style: "normal",
     },
     {
+      path: "../font/TiemposHeadline-MediumItalic.otf",
+      weight: "500",
+      style: "italic",
+    },
+    {
       path: "../font/TiemposHeadline-Semibold.otf",
       weight: "600",
       style: "normal",
+    },
+    {
+      path: "../font/TiemposHeadline-SemiboldItalic.otf",
+      weight: "600",
+      style: "italic",
     },
     {
       path: "../font/TiemposHeadline-Bold.otf",
@@ -42,9 +62,19 @@ const tiemposHeadline = localFont({
       style: "normal",
     },
     {
+      path: "../font/TiemposHeadline-BoldItalic.otf",
+      weight: "700",
+      style: "italic",
+    },
+    {
       path: "../font/TiemposHeadline-Black.otf",
       weight: "900",
       style: "normal",
+    },
+    {
+      path: "../font/TiemposHeadline-BlackItalic.otf",
+      weight: "900",
+      style: "italic",
     },
   ],
   variable: "--font-tiempos-headline",
