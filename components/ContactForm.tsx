@@ -119,7 +119,7 @@ const ContactForm = () => {
             <button
                 type='submit'
                 disabled={isSubmitting}
-                className='group relative w-full overflow-hidden rounded-full py-4 md:py-5 px-8 mt-2 disabled:opacity-50 disabled:cursor-not-allowed'
+                className='group relative w-full overflow-hidden rounded-full py-4 md:py-5 px-8 mt-2 disabled:opacity-50 disabled:cursor-not-allowed active:scale-90 active:duration-75 transition-transform duration-100'
             >
                 {/* Base color: Accent (Foliage Green) */}
                 <div className="absolute inset-0 bg-accent rounded-full -z-10" />

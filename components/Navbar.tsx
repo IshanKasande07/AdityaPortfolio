@@ -79,7 +79,7 @@ const Navbar = () => {
         <div className="flex items-center gap-6 backdrop-blur-2xl rounded-full px-6 py-2 transition-all duration-300 bg-transparent border border-primary/20 shadow-[0_4px_24px_0_rgba(17,37,14,0.08)] text-primary">
           <button
             onClick={() => router.push('/work')}
-            className={`text-sm font-medium transition-colors hover:text-accent`}
+            className={`text-sm font-medium transition-all duration-300 active:scale-90 active:duration-75 hover:text-accent`}
           >
             Work
           </button>
@@ -94,19 +94,19 @@ const Navbar = () => {
                 }
               }
             }}
-            className={`text-sm font-medium transition-colors hover:text-accent`}
+            className={`text-sm font-medium transition-all duration-300 active:scale-90 active:duration-75 hover:text-accent`}
           >
             Services
           </button>
           <button
             onClick={() => router.push('/about')}
-            className={`text-sm font-medium transition-colors hover:text-accent`}
+            className={`text-sm font-medium transition-all duration-300 active:scale-90 active:duration-75 hover:text-accent`}
           >
             About
           </button>
           <button
             onClick={() => router.push('/contact')}
-            className={`text-sm font-medium transition-colors hover:text-accent`}
+            className={`text-sm font-medium transition-all duration-300 active:scale-90 active:duration-75 hover:text-accent`}
           >
             Contact
           </button>
@@ -114,7 +114,7 @@ const Navbar = () => {
         
         <button
           onClick={handleHomeNavigation}
-          className="flex items-center justify-center backdrop-blur-2xl rounded-full px-6 py-2 transition-all duration-300 bg-transparent border border-primary/20 shadow-[0_4px_24px_0_rgba(17,37,14,0.08)] text-primary text-sm font-medium hover:text-accent"
+          className="flex items-center justify-center backdrop-blur-2xl rounded-full px-6 py-2 transition-all duration-300 bg-transparent border border-primary/20 shadow-[0_4px_24px_0_rgba(17,37,14,0.08)] text-primary text-sm font-medium hover:text-accent active:scale-90 active:duration-75"
         >
           Home
         </button>
@@ -124,7 +124,7 @@ const Navbar = () => {
       <div className="hidden md:flex justify-end pointer-events-auto">
         <button
           onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'instant' })}
-          className={`px-5 py-2.5 rounded-full border text-sm font-medium transition-all flex items-center gap-2 backdrop-blur-sm border-primary/30 hover:bg-primary hover:text-background bg-transparent text-primary`}
+          className={`px-5 py-2.5 rounded-full border text-sm font-medium transition-all duration-300 active:scale-90 active:duration-75 flex items-center gap-2 backdrop-blur-sm border-primary/30 hover:bg-primary hover:text-background bg-transparent text-primary`}
         >
           Book a Call <span className="text-xs">↗</span>
         </button>
@@ -134,7 +134,7 @@ const Navbar = () => {
       <div className="flex justify-end md:hidden pointer-events-auto text-primary">
         <button
           onClick={() => setIsOpen(true)}
-          className="p-2 transition-colors duration-300"
+          className="p-2 transition-all duration-300 active:scale-90 active:duration-75"
           aria-label="Toggle menu"
         >
           <svg
@@ -177,7 +177,7 @@ const Navbar = () => {
               />
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-2 text-[#F8F3E6]/70 hover:text-[#F8F3E6]"
+                className="p-2 text-[#F8F3E6]/70 hover:text-[#F8F3E6] transition-transform duration-100 active:scale-90 active:duration-75"
                 aria-label="Close menu"
               >
                 <svg
@@ -226,7 +226,7 @@ const Navbar = () => {
                       }
                     }
                   }}
-                  className="text-4xl font-semibold text-[#F8F3E6]/80 hover:text-[#F8F3E6] hover:translate-x-2 transition-all duration-300"
+                  className="text-4xl font-semibold text-[#F8F3E6]/80 hover:text-[#F8F3E6] hover:translate-x-2 transition-all duration-300 active:scale-90 active:duration-75"
                 >
                   {item.name}
                 </motion.button>
@@ -244,7 +244,7 @@ const Navbar = () => {
                     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                   }
                 }}
-                className="w-full py-4 rounded-full border border-[#F8F3E6]/20 bg-[#F8F3E6] text-[#11250E] font-semibold text-center hover:bg-transparent hover:text-[#F8F3E6] transition-all duration-300"
+                className="w-full py-4 rounded-full border border-[#F8F3E6]/20 bg-[#F8F3E6] text-[#11250E] font-semibold text-center hover:bg-transparent hover:text-[#F8F3E6] transition-all duration-300 active:scale-90 active:duration-75"
               >
                 Book a Call ↗
               </button>

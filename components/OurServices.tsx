@@ -126,14 +126,24 @@ const OurServices = () => {
                     {services.map((service, idx) => {
                         const isActive = idx === activeIndex;
                         return (
-                            <div
+                            <button
+                                type="button"
                                 key={idx}
+                                data-cursor-hover
+                                onClick={() => {
+                                    textRefs.current[idx]?.scrollIntoView({ behavior: "smooth", block: "center" });
+                                }}
                                 ref={(el) => { textRefs.current[idx] = el; }}
-                                className="py-6 md:py-8 border-t border-primary/10 first:border-t-0"
+                                className="w-full text-left py-6 md:py-8 border-t border-primary/10 first:border-t-0 group relative block"
                             >
-                                <div className={`transition-all duration-300 ${isActive ? "opacity-100 translate-x-1" : "opacity-50"}`}>
+                                {/* Active border animation */}
+                                <div 
+                                    className={`absolute top-[-1px] left-0 w-full h-[1px] bg-accent transition-transform duration-500 ease-out origin-left ${isActive ? "scale-x-100" : "scale-x-0"}`}
+                                />
+
+                                <div className={`transition-all duration-300 group-hover:translate-x-2 ${isActive ? "opacity-100 translate-x-1" : "opacity-50 group-hover:opacity-80"}`}>
                                     {/* Number */}
-                                    <span className={`text-xs md:text-sm font-mono tracking-[0.3em] uppercase mb-2 block transition-colors duration-300 ${isActive ? "text-accent font-semibold" : "text-accent/60"}`}>
+                                    <span className={`text-xs md:text-sm font-mono tracking-[0.3em] uppercase mb-2 block transition-colors duration-300 group-hover:text-accent ${isActive ? "text-accent font-semibold" : "text-accent/60"}`}>
                                         {service.number}
                                     </span>
 
@@ -147,7 +157,7 @@ const OurServices = () => {
                                         {service.desc}
                                     </p>
                                 </div>
-                            </div>
+                            </button>
                         );
                     })}
                     {/* Spacer inside left column so the flex row stays tall enough for SEO to reach vertical center before unpinning */}

@@ -91,6 +91,34 @@ export default function Hero2() {
     const posterCanvasRef = useRef<HTMLCanvasElement>(null);
     const [posterReady, setPosterReady] = useState(false);
 
+    const [hasInteracted, setHasInteracted] = useState(false);
+    const nudgeControls = useAnimation();
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 10) {
+                setHasInteracted(true);
+                window.removeEventListener("scroll", handleScroll);
+            }
+        };
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        window.addEventListener("pointerdown", () => setHasInteracted(true), { once: true });
+
+        const timer = setTimeout(() => {
+            if (!hasInteracted) {
+                nudgeControls.start({
+                    scale: [1, 1.2, 1],
+                    transition: { duration: 0.9, ease: "easeInOut" }
+                });
+            }
+        }, 8000);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            clearTimeout(timer);
+        };
+    }, [hasInteracted, nudgeControls]);
+
     useEffect(() => {
         const mql = window.matchMedia("(pointer: coarse)");
         if (mql.matches) setIsTouchDevice(true);
@@ -612,6 +640,7 @@ export default function Hero2() {
                 >
                     <motion.button
                         onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "instant" })}
+                        onPointerEnter={() => setHasInteracted(true)}
                         onPointerMove={(e) => {
                             if (isTouchDevice || !parallaxUnlocked) return;
                             const rect = e.currentTarget.getBoundingClientRect();
@@ -623,7 +652,9 @@ export default function Hero2() {
                             buttonY.set(0);
                         }}
                         style={{ x: buttonSpringX, y: buttonSpringY }}
-                        className="group relative overflow-hidden rounded-full py-3 px-8 md:py-4 md:px-10"
+                        animate={nudgeControls}
+                        whileTap={{ scale: 0.9 }}
+                        className="group relative overflow-hidden rounded-full py-3 px-8 md:py-4 md:px-10 will-change-transform"
                     >
                         <div className="absolute inset-0 bg-accent rounded-full -z-10" />
                         <div className="absolute inset-0 bg-[#1e3a18] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full z-0" />

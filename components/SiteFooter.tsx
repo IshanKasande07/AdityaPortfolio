@@ -124,25 +124,25 @@ const SiteFooter = () => {
                 {/* Navigation */}
                 <div className="flex min-w-[200px] flex-col items-center space-y-3 rounded-[32px] border border-[#11250E]/10 bg-white/[0.02] px-8 py-8 text-sm shadow-[0_8px_32px_rgba(17,37,14,0.03)] backdrop-blur-[2px]">
                   <span className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#2B1B15]/50">Navigation</span>
-                  <a href="/" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Home</a>
-                  <a href="/#work" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Work</a>
-                  <a href="/about" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">About Us</a>
-                  <a href="/contact" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Contact</a>
+                  <a href="/" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-all duration-300 active:scale-90 active:duration-75 font-medium text-center">Home</a>
+                  <a href="/#work" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-all duration-300 active:scale-90 active:duration-75 font-medium text-center">Work</a>
+                  <a href="/about" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-all duration-300 active:scale-90 active:duration-75 font-medium text-center">About Us</a>
+                  <a href="/contact" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-all duration-300 active:scale-90 active:duration-75 font-medium text-center">Contact</a>
                 </div>
                 
                 {/* Connect */}
                 <div className="flex min-w-[200px] flex-col items-center space-y-3 rounded-[32px] border border-[#11250E]/10 bg-white/[0.02] px-8 py-8 text-sm shadow-[0_8px_32px_rgba(17,37,14,0.03)] backdrop-blur-[2px]">
                   <span className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#2B1B15]/50">Connect</span>
-                  <a href="https://www.instagram.com/monarchmediahouse?igsh=OHdoOXZmMnB4cDQx" target="_blank" rel="noopener noreferrer" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Instagram</a>
-                  <a href="https://www.linkedin.com/company/monarchmediahouse/" target="_blank" rel="noopener noreferrer" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">LinkedIn</a>
-                  <a href="mailto:hello@monarchmedia.house" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Email</a>
+                  <a href="https://www.instagram.com/monarchmediahouse?igsh=OHdoOXZmMnB4cDQx" target="_blank" rel="noopener noreferrer" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-all duration-300 active:scale-90 active:duration-75 font-medium text-center">Instagram</a>
+                  <a href="https://www.linkedin.com/company/monarchmediahouse/" target="_blank" rel="noopener noreferrer" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-all duration-300 active:scale-90 active:duration-75 font-medium text-center">LinkedIn</a>
+                  <a href="mailto:hello@monarchmedia.house" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-all duration-300 active:scale-90 active:duration-75 font-medium text-center">Email</a>
                 </div>
                 
                 {/* Legal */}
                 <div className="flex min-w-[200px] flex-col items-center space-y-3 rounded-[32px] border border-[#11250E]/10 bg-white/[0.02] px-8 py-8 text-sm shadow-[0_8px_32px_rgba(17,37,14,0.03)] backdrop-blur-[2px]">
                   <span className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#2B1B15]/50">Legal</span>
-                  <a href="#" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Privacy Policy</a>
-                  <a href="#" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors font-medium text-center">Terms of Service</a>
+                  <a href="#" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-all duration-300 active:scale-90 active:duration-75 font-medium text-center">Privacy Policy</a>
+                  <a href="#" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-all duration-300 active:scale-90 active:duration-75 font-medium text-center">Terms of Service</a>
                 </div>
                 
               </div>
