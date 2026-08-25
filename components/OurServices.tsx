@@ -44,7 +44,7 @@ const services = [
 const OurServices = () => {
     const sectionRef = useRef<HTMLElement>(null);
     const stickyContainerRef = useRef<HTMLDivElement>(null);
-    const textRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const textRefs = useRef<(HTMLButtonElement | null)[]>([]);
     const [activeIndex, setActiveIndex] = useState(0);
 
     useEffect(() => {
