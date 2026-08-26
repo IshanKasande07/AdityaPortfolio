@@ -150,7 +150,7 @@ const SiteFooter = () => {
           </div>
 
           {/* Bottom: Copyright */}
-          <div className="w-full flex flex-col md:flex-row justify-between items-center text-xs text-white/70">
+          <div className="w-full flex flex-col md:flex-row justify-between items-center text-xs text-[#2B1B15]/50">
             <span>© 2026 Monarch Media House. All rights reserved.</span>
             <span className="mt-2 md:mt-0">Designed for Impact.</span>
           </div>

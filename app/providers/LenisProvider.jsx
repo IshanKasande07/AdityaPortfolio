@@ -29,6 +29,10 @@ export default function LenisProvider({ children }) {
         smoothTouch: false,
       });
 
+      if (typeof window !== "undefined") {
+        window.lenis = lenis;
+      }
+
       lenis.on('scroll', ScrollTrigger.update);
 
       function update(time) {
@@ -46,6 +50,9 @@ export default function LenisProvider({ children }) {
 
       rafCleanup = () => {
         ScrollTrigger.removeEventListener("refresh", handleRefresh);
+        if (typeof window !== "undefined" && window.lenis === lenis) {
+          window.lenis = undefined;
+        }
         lenis.destroy();
         gsap.ticker.remove(update);
       };

@@ -3,6 +3,7 @@
 import { motion, useMotionValue, useSpring, useScroll, useTransform, useAnimation } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { useReveal } from "./RevealLayout";
+import { scrollToTarget } from "@/lib/scroll";
 
 const videos = [
     "https://6w6pzjonpzupwyh4.public.blob.vercel-storage.com/01_Origins%20x%20Nandini%20%28%20Final%20%29%20%20copy%20%281%29.mp4",
@@ -338,9 +339,7 @@ export default function Hero() {
                 className="absolute left-0 w-full flex flex-col items-center justify-center z-[100] pointer-events-auto will-change-transform"
             >
                 <motion.button
-                    onClick={() =>
-                        document.getElementById("contact")?.scrollIntoView({ behavior: "instant" })
-                    }
+                    onClick={() => scrollToTarget("contact")}
                     onPointerMove={(e) => {
                         const rect = e.currentTarget.getBoundingClientRect();
                         buttonX.set((e.clientX - (rect.left + rect.width / 2)) * 0.15);

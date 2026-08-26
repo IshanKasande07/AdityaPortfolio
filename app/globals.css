@@ -31,6 +31,10 @@
     color: var(--color-primary);
     font-family: var(--font-sans);
   }
+
+  [id] {
+    scroll-margin-top: 96px;
+  }
 }
 
 

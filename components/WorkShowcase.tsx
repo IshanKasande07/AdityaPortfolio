@@ -231,15 +231,27 @@ function VideoModal({
 
 const PlayButton = ({ delay = 0, inView = true }: { delay?: number, inView?: boolean }) => (
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-        <motion.div
-            className="w-16 h-16 rounded-full bg-white/10 border-2 border-white/20 flex items-center justify-center backdrop-blur-md group-hover:bg-accent/40 group-hover:border-accent/80 transition-all duration-500"
-            whileHover={{ scale: 1.1 }}
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={inView ? { scale: 1, opacity: 1 } : {}}
-            transition={{ type: "spring", stiffness: 300, damping: 20, delay }}
-        >
-            <Play className="w-6 h-6 text-white fill-white ml-1" />
-        </motion.div>
+        <div className="scale-90 group-hover:scale-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto">
+            <motion.button
+                className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-md transition-colors duration-500 hover:bg-white/20 relative"
+                whileHover={{ scale: 1.1 }}
+                initial={{ opacity: 0 }}
+                animate={inView ? { opacity: 1 } : {}}
+                transition={{ duration: 0.5, delay }}
+            >
+                <svg className="absolute inset-0 w-full h-full pointer-events-none -rotate-90" viewBox="0 0 100 100">
+                    <circle 
+                        cx="50" cy="50" r="48" 
+                        fill="none" 
+                        stroke="rgba(255,255,255,0.6)" 
+                        strokeWidth="2" 
+                        strokeDasharray="302" 
+                        className="[stroke-dashoffset:302] group-hover:[stroke-dashoffset:0] transition-all duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)]" 
+                    />
+                </svg>
+                <Play className="w-6 h-6 text-white fill-white ml-1 relative z-10" />
+            </motion.button>
+        </div>
     </div>
 );
 
@@ -377,10 +389,10 @@ function ShortFormCard({ item, index, onPlay }: { item: WorkItem, index: number,
                 <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" className="absolute top-0 left-0 w-full h-[calc(100%+60px)] pointer-events-auto bg-[#11250E]"></iframe>
             ) : (
                 <>
-                    <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                    <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 scale-100 group-hover:scale-[1.04] transition-all duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-45 transition-opacity duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none z-0" />
                     <PlayButton inView={inView} delay={0.3 + index * 0.1} />
-                    <div className="absolute bottom-5 left-5 right-5 transform group-hover:-translate-y-2 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] pointer-events-none">
+                    <div className="absolute bottom-5 left-5 right-5 transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none z-20">
                         <h4 className="text-white font-medium text-lg leading-tight" style={{ fontFamily: "var(--font-tiempos-headline), serif" }}>{item.title}</h4>
                     </div>
                 </>
@@ -544,9 +556,9 @@ function LongFormListCard({ item, index, onPlay }: { item: WorkItem, index: numb
                     <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" allowTransparency={true} className="absolute top-0 left-0 w-full h-full pointer-events-auto bg-[#11250E]"></iframe>
                 ) : (
                     <>
-                        <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.05]" />
+                        <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover scale-100 group-hover:scale-[1.04] transition-all duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)]" />
                         <div className="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml;utf8,%3Csvg viewBox=\\"0 0 200 200\\" xmlns=\\"http://www.w3.org/2000/svg\\"%3E%3Cfilter id=\\"noiseFilter\\"%3E%3CfeTurbulence type=\\"fractalNoise\\" baseFrequency=\\"0.8\\" numOctaves=\\"3\\" stitchTiles=\\"stitch\\"/%3E%3C/filter%3E%3Crect width=\\"100%25\\" height=\\"100%25\\" filter=\\"url(%23noiseFilter)\\"/%3E%3C/svg%3E")' }} />
-                        <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors duration-500 pointer-events-none" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-45 transition-opacity duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none z-0" />
                         <PlayButton inView={inView} />
                     </>
                 )}
@@ -590,8 +602,8 @@ function LongFormGridCard({ item, index, onPlay }: { item: WorkItem, index: numb
                     <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" className="absolute top-0 left-0 w-full h-full pointer-events-auto bg-[#11250E]"></iframe>
                 ) : (
                     <>
-                        <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
-                        <div className="absolute inset-0 bg-primary/20 group-hover:bg-primary/0 transition-colors duration-500 pointer-events-none" />
+                        <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover scale-100 group-hover:scale-[1.04] transition-all duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-45 transition-opacity duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none z-0" />
                         <PlayButton inView={inView} delay={0.1} />
                     </>
                 )}
@@ -728,13 +740,11 @@ function GraphicsCard({ item, index }: { item: WorkItem, index: number }) {
             data-cursor-hover
         >
             <div className={`relative overflow-hidden w-full h-full ${radius.replace('rounded', 'rounded')}`}>
-                <img src={getThumbnail(item.youtubeUrl ?? "")} alt={item.title} className="w-full h-auto object-cover transition-transform duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-110" />
+                <img src={getThumbnail(item.youtubeUrl ?? "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover scale-100 group-hover:scale-[1.04] transition-all duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)]" />
                 
-                {/* Reveal overlay on hover */}
-                <div className="absolute inset-0 bg-primary/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-6 text-center">
-                    <ImageIcon className="w-8 h-8 text-accent mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500" />
-                    <h4 className="text-white font-medium text-lg md:text-xl leading-tight transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75" style={{ fontFamily: "var(--font-tiempos-headline), serif" }}>{item.title}</h4>
-                    {item.description && <p className="text-white/60 text-xs mt-3 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">{item.description}</p>}
+                <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-45 transition-opacity duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none z-0" />
+                <div className="absolute bottom-5 left-5 right-5 transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none z-20">
+                    <h4 className="text-white font-medium text-lg leading-tight" style={{ fontFamily: "var(--font-tiempos-headline), serif" }}>{item.title}</h4>
                 </div>
             </div>
         </motion.div>

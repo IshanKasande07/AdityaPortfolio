@@ -4,6 +4,7 @@ import { motion, useMotionValue, useSpring, useScroll, useTransform, useAnimatio
 import { useRef, useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import { useReveal } from "./RevealLayout";
+import { scrollToTarget } from "@/lib/scroll";
 import "./css/reveal-layout.css";
 
 const headingLines = [
@@ -639,7 +640,7 @@ export default function Hero2() {
                     className="absolute bottom-[6vh] md:bottom-[8vh] left-0 w-full flex flex-col items-center justify-center z-[100] pointer-events-auto"
                 >
                     <motion.button
-                        onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "instant" })}
+                        onClick={() => scrollToTarget("contact")}
                         onPointerEnter={() => setHasInteracted(true)}
                         onPointerMove={(e) => {
                             if (isTouchDevice || !parallaxUnlocked) return;

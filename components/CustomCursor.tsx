@@ -8,8 +8,7 @@ const CustomCursor = () => {
     const cursorY = useMotionValue(-100);
     const [isHovering, setIsHovering] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
-
-
+    const [isPressed, setIsPressed] = useState(false);
 
     const [isTouchDevice, setIsTouchDevice] = useState(false);
 
@@ -35,16 +34,26 @@ const CustomCursor = () => {
             setIsHovering(!!isInteractive);
         };
 
-        const leave = () => setIsVisible(false);
+        const down = () => setIsPressed(true);
+        const up = () => setIsPressed(false);
+
+        const leave = () => {
+            setIsVisible(false);
+            setIsPressed(false);
+        };
         const enter = () => setIsVisible(true);
 
         document.addEventListener("mousemove", move);
         document.addEventListener("mouseover", over);
+        document.addEventListener("mousedown", down);
+        window.addEventListener("mouseup", up);
         document.addEventListener("mouseleave", leave);
         document.addEventListener("mouseenter", enter);
         return () => {
             document.removeEventListener("mousemove", move);
             document.removeEventListener("mouseover", over);
+            document.removeEventListener("mousedown", down);
+            window.removeEventListener("mouseup", up);
             document.removeEventListener("mouseleave", leave);
             document.removeEventListener("mouseenter", enter);
         };
@@ -55,6 +64,17 @@ const CustomCursor = () => {
     return (
         <motion.div
             className="fixed top-0 left-0 pointer-events-none z-[99999] rounded-full hidden md:block"
+            animate={{
+                scale: isPressed ? 0.85 : 1,
+            }}
+            transition={{
+                scale: {
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 25,
+                    mass: 0.5,
+                },
+            }}
             style={{
                 x: cursorX,
                 y: cursorY,

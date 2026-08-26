@@ -6,6 +6,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useLoading } from "./LoadingContext";
 
 import Image from "next/image";
+import { scrollToTarget } from "@/lib/scroll";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -22,7 +23,7 @@ const Navbar = () => {
         window.location.href = "/";
       }, 50);
     } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      scrollToTarget(0);
     }
   };
 
@@ -88,10 +89,7 @@ const Navbar = () => {
               if (pathname !== "/") {
                 router.push("/#services");
               } else {
-                const el = document.getElementById('services');
-                if (el) {
-                  el.scrollIntoView({ behavior: 'smooth' });
-                }
+                scrollToTarget("services");
               }
             }}
             className={`text-sm font-medium transition-all duration-300 active:scale-90 active:duration-75 hover:text-accent`}
@@ -123,7 +121,7 @@ const Navbar = () => {
       {/* Right: Button */}
       <div className="hidden md:flex justify-end pointer-events-auto">
         <button
-          onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'instant' })}
+          onClick={() => scrollToTarget("contact")}
           className={`px-5 py-2.5 rounded-full border text-sm font-medium transition-all duration-300 active:scale-90 active:duration-75 flex items-center gap-2 backdrop-blur-sm border-primary/30 hover:bg-primary hover:text-background bg-transparent text-primary`}
         >
           Book a Call <span className="text-xs">↗</span>
@@ -222,7 +220,7 @@ const Navbar = () => {
                       if (pathname !== "/") {
                         router.push(`/${item.target}`);
                       } else {
-                        document.getElementById(item.target.replace("#", ""))?.scrollIntoView({ behavior: "smooth" });
+                        scrollToTarget(item.target);
                       }
                     }
                   }}
@@ -241,7 +239,7 @@ const Navbar = () => {
                   if (pathname !== "/") {
                     router.push("/#contact");
                   } else {
-                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                    scrollToTarget("contact");
                   }
                 }}
                 className="w-full py-4 rounded-full border border-[#F8F3E6]/20 bg-[#F8F3E6] text-[#11250E] font-semibold text-center hover:bg-transparent hover:text-[#F8F3E6] transition-all duration-300 active:scale-90 active:duration-75"

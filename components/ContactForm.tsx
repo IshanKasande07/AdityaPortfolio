@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
+import { Check } from 'lucide-react'
 
 interface BrutalistInputProps {
     label: string;
@@ -14,6 +15,26 @@ interface BrutalistInputProps {
 
 const BrutalistInput = ({ label, type = "text", value, onChange, placeholder, isTextArea = false }: BrutalistInputProps) => {
     const [isFocused, setIsFocused] = useState(false);
+    const [isValidated, setIsValidated] = useState(false);
+
+    const isValid = (() => {
+        const val = value || "";
+        if (!val.trim()) return false;
+        if (type === "email") return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+        if (type === "tel") return val.replace(/\D/g, '').length >= 5;
+        return true;
+    })();
+
+    const handleBlur = () => {
+        setIsFocused(false);
+        setIsValidated(true);
+    };
+
+    const handleFocus = () => {
+        setIsFocused(true);
+    };
+
+    const showCheck = isValidated && isValid;
 
     return (
         <div className='flex flex-col gap-2 w-full group'>
@@ -23,20 +44,20 @@ const BrutalistInput = ({ label, type = "text", value, onChange, placeholder, is
                     <textarea
                         value={value}
                         onChange={onChange}
-                        onFocus={() => setIsFocused(true)}
-                        onBlur={() => setIsFocused(false)}
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
                         placeholder={placeholder}
-                        className='w-full bg-transparent text-primary text-sm px-0 py-2 border-b border-primary/20 focus:outline-none min-h-[10vh] resize-none placeholder-primary/30 transition-colors'
+                        className='w-full bg-transparent text-primary text-sm pl-0 pr-8 py-2 border-b border-primary/20 focus:outline-none min-h-[10vh] resize-none placeholder-primary/30 transition-colors'
                     />
                 ) : (
                     <input
                         type={type}
                         value={value}
                         onChange={onChange}
-                        onFocus={() => setIsFocused(true)}
-                        onBlur={() => setIsFocused(false)}
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
                         placeholder={placeholder}
-                        className='w-full bg-transparent text-primary text-sm px-0 py-2 border-b border-primary/20 focus:outline-none placeholder-primary/30 transition-colors'
+                        className='w-full bg-transparent text-primary text-sm pl-0 pr-8 py-2 border-b border-primary/20 focus:outline-none placeholder-primary/30 transition-colors'
                     />
                 )}
                 <motion.div
@@ -45,6 +66,14 @@ const BrutalistInput = ({ label, type = "text", value, onChange, placeholder, is
                     transition={{ duration: 0.3, ease: "circOut" }}
                     className="absolute bottom-0 left-0 w-full h-[2px] bg-accent origin-center"
                 />
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: showCheck ? 1 : 0, scale: showCheck ? 1 : 0.5 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    className="absolute right-0 bottom-2 text-accent pointer-events-none"
+                >
+                    <Check className="w-5 h-5 stroke-[2.5]" />
+                </motion.div>
             </div>
         </div>
     );
