@@ -40,14 +40,25 @@ const ItalicHoverWord = ({ text, onHover }: { text: string; onHover: (el: HTMLEl
             onMouseEnter={() => onHover(ref.current)}
             onMouseMove={() => onHover(ref.current)}
             onMouseLeave={() => onHover(null)}
-            whileHover={{ color: "#997300", scale: 1.03 }}
+            /* The hover colour stays a literal hex, same exception as
+               OurServices: Framer Motion tweens `color` numerically and cannot
+               parse `var(...)`, so a custom property here would kill the
+               transition. #8F3A1C = --color-clay-deep, 6.8:1 on the cream
+               ground. It was #997300, a mustard gold that appeared on this one
+               page and nowhere else on the site. */
+            whileHover={{ color: "#8F3A1C", scale: 1.03 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
             style={{
-                fontFamily: "'Georgia', 'Times New Roman', serif",
+                /* Tiempos Headline, not Georgia. Tiempos is already loaded in
+                   layout.tsx and already used by the Manifesto, so this page
+                   was quietly introducing a fourth typeface for one word. */
+                fontFamily: "var(--font-tiempos-headline), serif",
                 fontStyle: "italic",
                 display: "inline-block",
                 position: "relative",
-                borderBottom: "1px solid rgba(153,115,0,0.3)",
+                /* rgba(143,58,28,0.3) = --color-clay-deep at 30%, matching the
+                   hover colour above instead of the old gold. */
+                borderBottom: "1px solid rgba(143,58,28,0.3)",
                 paddingBottom: "1px",
                 transition: "border-color 0.3s ease",
                 zIndex: 1,
@@ -109,16 +120,20 @@ export default function ContactPage() {
                         <div className="absolute inset-0 opacity-[0.25] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml;utf8,%3Csvg viewBox=\\"0 0 200 200\\" xmlns=\\"http://www.w3.org/2000/svg\\"%3E%3Cfilter id=\\"noiseFilter\\"%3E%3CfeTurbulence type=\\"fractalNoise\\" baseFrequency=\\"0.8\\" numOctaves=\\"3\\" stitchTiles=\\"stitch\\"/%3E%3C/filter%3E%3Crect width=\\"100%25\\" height=\\"100%25\\" filter=\\"url(%23noiseFilter)\\"/%3E%3C/svg%3E")' }} />
                     </div>
 
-                    {/* Ambient glow */}
-                    <div className="absolute bottom-0 left-0 w-[50vw] h-[50vw] max-w-[400px] max-h-[400px] bg-accent/5 rounded-full blur-[80px] pointer-events-none -translate-x-1/3 translate-y-1/3" />
+                    {/* Ambient glow. Was accent green on a cream ground, the
+                        same green-on-light case the rest of the site just lost.
+                        Clay keeps the warm single light source. */}
+                    <div className="absolute bottom-0 left-0 w-[50vw] h-[50vw] max-w-[400px] max-h-[400px] bg-clay/5 rounded-full blur-[80px] pointer-events-none -translate-x-1/3 translate-y-1/3" />
 
                     <div className="relative z-10 w-full max-w-[500px] mx-auto px-8 md:px-12 py-12 lg:py-24">
-                        {/* Eyebrow */}
+                        {/* Eyebrow. 11-12px text, so it needs the strongest
+                            accent available on cream: clay-deep at 6.8:1.
+                            accent green was 2.6:1 and failed AA outright. */}
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.9 }}
-                            className="text-xs font-mono uppercase tracking-[0.25em] text-accent mb-4"
+                            className="text-xs font-mono uppercase tracking-[0.25em] text-clay-deep mb-4"
                         >
                             Let's Build Together
                         </motion.p>
@@ -131,7 +146,7 @@ export default function ContactPage() {
                             className="text-3xl md:text-4xl font-display font-semibold leading-[1.1] tracking-tight text-primary mb-3"
                         >
                             Turn Your Expertise<br />
-                            <span className="text-accent">Into Influence.</span>
+                            <span className="text-clay-deep">Into Influence.</span>
                         </motion.h1>
 
                         <motion.p
@@ -239,12 +254,13 @@ export default function ContactPage() {
                             })}
                         </motion.div>
 
-                        {/* Accent bar — centred */}
+                        {/* Accent bar — centred. 2px rule on a light ground, so
+                            it follows the same clay-deep rule as the eyebrow. */}
                         <motion.div
                             initial={{ scaleX: 0 }}
                             animate={{ scaleX: 1 }}
                             transition={{ duration: 1.8, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                            className="mt-10 h-[2px] w-20 bg-accent origin-center mx-auto"
+                            className="mt-10 h-[2px] w-20 bg-clay-deep origin-center mx-auto"
                         />
 
                         <motion.p

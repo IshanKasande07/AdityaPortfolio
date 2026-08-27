@@ -111,7 +111,7 @@ const OurServices = () => {
                         </h2>
                     </div>
                     <div className="md:max-w-md lg:max-w-lg md:pb-1">
-                        <p className="text-base md:text-lg text-gray-600 font-light leading-relaxed">
+                        <p className="text-base md:text-lg text-muted font-light leading-relaxed">
                             A full-stack creative arsenal built to transform your brand presence into <span className="text-primary font-medium">market authority</span>.
                         </p>
                     </div>
@@ -138,12 +138,16 @@ const OurServices = () => {
                             >
                                 {/* Active border animation */}
                                 <div 
-                                    className={`absolute top-[-1px] left-0 w-full h-[1px] bg-accent transition-transform duration-500 ease-out origin-left ${isActive ? "scale-x-100" : "scale-x-0"}`}
+                                    className={`absolute top-[-1px] left-0 w-full h-[1px] bg-clay transition-transform duration-500 ease-out origin-left ${isActive ? "scale-x-100" : "scale-x-0"}`}
                                 />
 
                                 <div className={`transition-all duration-300 group-hover:translate-x-2 ${isActive ? "opacity-100 translate-x-1" : "opacity-50 group-hover:opacity-80"}`}>
                                     {/* Number */}
-                                    <span className={`text-xs md:text-sm font-mono tracking-[0.3em] uppercase mb-2 block transition-colors duration-300 group-hover:text-accent ${isActive ? "text-accent font-semibold" : "text-accent/60"}`}>
+                                    {/* clay-deep, not accent. These are 12–14px mono
+                                        numbers; accent green on cream is 2.6:1 and
+                                        failed AA. clay-deep is 6.8:1 active, ~3.6:1
+                                        at 70% for the deliberately dim inactive rows. */}
+                                    <span className={`text-xs md:text-sm font-mono tracking-[0.3em] uppercase mb-2 block transition-colors duration-300 group-hover:text-clay-deep ${isActive ? "text-clay-deep font-semibold" : "text-clay-deep/70"}`}>
                                         {service.number}
                                     </span>
 
@@ -203,12 +207,24 @@ const OurServices = () => {
                                                 mass: 0.8,
                                             }}
                                         >
-                                            {/* Icon tile */}
+                                            {/* Icon tile.
+                                                The four colours below stay as literal hex on purpose,
+                                                and this is the only place on the site where that is
+                                                allowed. Framer Motion tweens `backgroundColor` and
+                                                `color` numerically, so it cannot parse `var(...)` or
+                                                `color-mix(...)` — feeding it a custom property kills
+                                                the transition. For the record:
+                                                  #C25A34             = --color-clay
+                                                  #F8F3E6             = --color-background
+                                                  rgba(17,37,14,...)  = --color-primary, low alpha
+                                                  rgba(143,58,28,0.3) = --color-clay-deep, shadow tint
+                                                The shadow is already tinted to the ground's warm hue
+                                                rather than pure black, so it needs no change. */}
                                             <motion.div
                                                 className="relative rounded-xl w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center shrink-0"
                                                 animate={{
-                                                    backgroundColor: isActive ? "#11250E" : "rgba(17, 37, 14, 0.06)",
-                                                    boxShadow: isActive ? "0 12px 20px -4px rgba(17, 37, 14, 0.25)" : "0 0 0 0 transparent",
+                                                    backgroundColor: isActive ? "#C25A34" : "rgba(17, 37, 14, 0.06)",
+                                                    boxShadow: isActive ? "0 12px 20px -4px rgba(143, 58, 28, 0.3)" : "0 0 0 0 transparent",
                                                 }}
                                                 transition={{ duration: 0.3, ease: "easeOut" }}
                                             >
@@ -221,11 +237,13 @@ const OurServices = () => {
                                                 />
                                             </motion.div>
 
-                                            {/* Drop shadow beneath icon */}
+                                            {/* Drop shadow beneath icon. This one is a static style,
+                                                not a tween, so it can use the token. */}
                                             <motion.div
                                                 className="mt-2 w-10 h-2 rounded-full pointer-events-none"
                                                 style={{
-                                                    background: "radial-gradient(ellipse at center, rgba(17,37,14,0.2) 0%, transparent 70%)",
+                                                    background:
+                                                        "radial-gradient(ellipse at center, color-mix(in srgb, var(--color-primary) 20%, transparent) 0%, transparent 70%)",
                                                 }}
                                                 animate={{
                                                     opacity: isActive ? 1 : 0,
@@ -248,7 +266,7 @@ const OurServices = () => {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -6 }}
                                     transition={{ duration: 0.2, ease: "easeOut" }}
-                                    className="text-xs font-mono text-accent tracking-[0.3em] uppercase"
+                                    className="text-xs font-mono text-clay-deep tracking-[0.3em] uppercase"
                                 >
                                     {services[activeIndex].number} — {services[activeIndex].title}
                                 </motion.p>

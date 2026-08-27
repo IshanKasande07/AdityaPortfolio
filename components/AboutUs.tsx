@@ -61,9 +61,12 @@ export default function AboutUs() {
 
   return (
     <section id="about" className="relative w-full pt-6 pb-24 mb-12 bg-background text-primary select-none overflow-hidden" ref={containerRef}>
-      {/* Decorative Background Elements */}
-      <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-accent/5 blur-[120px] rounded-full pointer-events-none -translate-y-1/2 translate-x-1/3" />
-      <div className="absolute bottom-1/4 left-0 w-[40vw] h-[40vh] bg-[#5D3FD3]/5 blur-[120px] rounded-full pointer-events-none translate-y-1/2 -translate-x-1/3" />
+      {/* Decorative Background Elements.
+          Both washes used to fight each other: a green one and a purple
+          #5D3FD3 one, on a cream ground. They are now saffron and clay, so the
+          page reads as one warm light source instead of two unrelated tints. */}
+      <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-saffron/5 blur-[120px] rounded-full pointer-events-none -translate-y-1/2 translate-x-1/3" />
+      <div className="absolute bottom-1/4 left-0 w-[40vw] h-[40vh] bg-clay/5 blur-[120px] rounded-full pointer-events-none translate-y-1/2 -translate-x-1/3" />
 
       <div className="w-full px-8 md:px-[8vw] lg:px-[12vw] mx-auto flex flex-col gap-6 md:gap-8 relative z-10 max-w-[1400px]">
 
@@ -75,7 +78,7 @@ export default function AboutUs() {
             animate={isInView ? "visible" : "hidden"}
             className="text-4xl md:text-5xl lg:text-6xl font-display font-semibold tracking-tight"
           >
-            Behind the <span className="text-accent italic pr-2">Monarch</span>
+            Behind the <span className="text-clay-deep italic pr-2">Monarch</span>
           </motion.h2>
         </div>
 
@@ -91,11 +94,11 @@ export default function AboutUs() {
             variants={itemVariants}
             className="bento-hero flex flex-col justify-center px-10 py-8 md:px-16 md:py-12 rounded-[2rem] bg-gradient-to-br from-primary/[0.08] to-transparent border border-primary/10 backdrop-blur-lg relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500 shadow-xl"
           >
-            <div className="absolute inset-0 bg-gradient-to-tr from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-            <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-accent/20 blur-[80px] rounded-full group-hover:bg-accent/30 transition-colors duration-700 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-clay/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-clay/20 blur-[80px] rounded-full group-hover:bg-clay/30 transition-colors duration-700 pointer-events-none" />
             <h3 className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold mb-4 flex flex-col gap-1 tracking-tight relative z-10">
               <span>Infotainment</span>
-              <span className="text-accent italic">Driven!</span>
+              <span className="text-clay-deep italic">Driven!</span>
             </h3>
             <p className="text-base md:text-lg text-primary/70 leading-relaxed max-w-xl mt-2 font-medium relative z-10">
               We take brands from ground zero to building their brand pillars, strategy and optimise for longevity. Our aim is to build a narrative around your 5 year goal!
@@ -123,7 +126,7 @@ export default function AboutUs() {
           {/* Card 3: Projects — dark green */}
           <motion.div
             variants={itemVariants}
-            className="bento-projects flex flex-col p-6 md:p-7 rounded-[2rem] bg-[#11250E] border border-white/5 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:border-white/20 hover:shadow-[0_8px_32px_rgba(17,37,14,0.15)] justify-between"
+            className="bento-projects flex flex-col p-6 md:p-7 rounded-[2rem] bg-surface border border-white/5 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:border-white/20 hover:shadow-[0_8px_32px_rgba(17,37,14,0.15)] justify-between"
           >
             <div>
               <h4 className="text-4xl lg:text-5xl font-display font-semibold mb-1 text-white">
@@ -136,10 +139,12 @@ export default function AboutUs() {
             </p>
           </motion.div>
 
-          {/* Card 4: Team — purple */}
+          {/* Card 4: Team — the rust tile. Was #5330D0, a purple that belonged
+              to nothing else on the site. This is the /about page's one loud
+              tile, the same role the Contact band plays on the home page. */}
           <motion.div
             variants={itemVariants}
-            className="bento-team flex flex-col p-6 md:p-7 rounded-[2rem] bg-[#5330D0] border border-[#5330D0]/50 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:shadow-[0_12px_40px_rgba(83,48,208,0.4)] justify-between"
+            className="bento-team flex flex-col p-6 md:p-7 rounded-[2rem] bg-clay-deep border border-clay-deep/50 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:shadow-[0_12px_40px_rgba(143,58,28,0.3)] justify-between"
           >
             <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-50" />
             <div className="relative z-10">
@@ -151,10 +156,11 @@ export default function AboutUs() {
             </p>
           </motion.div>
 
-          {/* Card 5: Clients — dark */}
+          {/* Card 5: Clients — forest. Was #111 to #1c1c1c, a neutral grey
+              that read as "generic dark card" rather than as this site's dark. */}
           <motion.div
             variants={itemVariants}
-            className="bento-clients flex flex-col p-6 md:p-7 rounded-[2rem] bg-gradient-to-tr from-[#111] to-[#1c1c1c] border border-white/5 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:border-accent/40 justify-between"
+            className="bento-clients flex flex-col p-6 md:p-7 rounded-[2rem] bg-gradient-to-tr from-surface to-surface-light border border-white/5 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:border-accent/40 justify-between"
           >
             <div>
               <h4 className="text-4xl lg:text-5xl font-display font-semibold mb-1 text-white">
@@ -167,10 +173,13 @@ export default function AboutUs() {
             </p>
           </motion.div>
 
-          {/* Card 6: Impressions — accent glow */}
+          {/* Card 6: Impressions — forest with the accent glow. This tile and
+              the one above it are the only two places on /about where the green
+              is allowed, because they are the only dark grounds here.
+              accent on forest is 5.6:1. */}
           <motion.div
             variants={itemVariants}
-            className="bento-impress flex flex-col p-6 md:p-7 rounded-[2rem] bg-[#0A0A0A] border border-white/10 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:border-accent justify-between shadow-lg"
+            className="bento-impress flex flex-col p-6 md:p-7 rounded-[2rem] bg-surface border border-white/10 relative overflow-hidden group hover:-translate-y-1 transition-all duration-500 hover:border-accent justify-between shadow-lg"
           >
             <div className="absolute -top-12 -right-12 p-8 opacity-20 blur-2xl rounded-full bg-accent w-40 h-40 group-hover:opacity-40 transition-opacity duration-700" />
             <div className="relative z-10">
@@ -245,9 +254,9 @@ export default function AboutUs() {
             className="will-change-transform"
           >
             <h3 className="text-xl md:text-3xl font-display font-medium leading-relaxed text-primary/90">
-              Monarch Media House is an <span className="text-accent italic">Infotainment First</span> Creative agency helping brands create their distribution through organic, paid & collaborative content.
+              Monarch Media House is an <span className="text-clay-deep italic">Infotainment First</span> Creative agency helping brands create their distribution through organic, paid & collaborative content.
             </h3>
-            <div className="h-[1px] w-16 bg-gradient-to-r from-transparent via-white/20 to-transparent mx-auto my-8" />
+            <div className="h-[1px] w-16 bg-gradient-to-r from-transparent via-primary/20 to-transparent mx-auto my-8" />
             <p className="text-primary/60 text-base md:text-xl leading-relaxed max-w-3xl mx-auto font-light">
               Our aim is to help brands adapt with the new ways of building{" "}
               <span className="text-primary font-medium">content systems and funnels</span>{" "}
@@ -255,7 +264,7 @@ export default function AboutUs() {
               <span className="text-primary font-medium">B2B businesses, AI startups, Architects and creators</span>{" "}
               building brands.
             </p>
-            <div className="h-[1px] w-16 bg-gradient-to-r from-transparent via-white/20 to-transparent mx-auto my-8" />
+            <div className="h-[1px] w-16 bg-gradient-to-r from-transparent via-primary/20 to-transparent mx-auto my-8" />
             <p className="text-primary/60 text-base md:text-xl leading-relaxed max-w-3xl mx-auto font-light">
               At Monarch, we don't believe in posting for the sake of posting. We focus on{" "}
               <span className="text-primary font-medium">content that educates, sparks conversation, and builds real brand presence.</span>
@@ -304,16 +313,16 @@ function FounderCard({ name, title, img1, img2 }: { name: string, title: string,
           />
 
           {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/80 via-transparent to-transparent opacity-50 group-hover:opacity-60 transition-opacity duration-500 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-surface/80 via-transparent to-transparent opacity-50 group-hover:opacity-60 transition-opacity duration-500 pointer-events-none" />
           <div className="absolute inset-0 rounded-[2.5rem] border border-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
         </div>
 
         <div className="text-center transform transition-all duration-500 group-hover:-translate-y-3">
           <h4 className="text-3xl md:text-4xl font-display font-semibold mb-3 tracking-tight text-primary/90 group-hover:text-primary transition-colors">{name}</h4>
           <div className="flex items-center justify-center gap-4">
-            <span className="w-10 h-[1px] bg-accent/40 group-hover:bg-accent/80 transition-colors duration-500" />
-            <p className="text-accent uppercase tracking-[0.2em] text-sm font-medium">{title}</p>
-            <span className="w-10 h-[1px] bg-accent/40 group-hover:bg-accent/80 transition-colors duration-500" />
+            <span className="w-10 h-[1px] bg-clay-deep/40 group-hover:bg-clay-deep/80 transition-colors duration-500" />
+            <p className="text-clay-deep uppercase tracking-[0.2em] text-sm font-medium">{title}</p>
+            <span className="w-10 h-[1px] bg-clay-deep/40 group-hover:bg-clay-deep/80 transition-colors duration-500" />
           </div>
         </div>
       </motion.div>

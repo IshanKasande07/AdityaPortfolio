@@ -282,7 +282,7 @@ function ShortFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: 
                     
                     {/* Left: Isolated Phone Mockup */}
                     <div className="w-full md:w-[45%] lg:w-[40%] flex justify-center md:justify-end">
-                        <div className="relative w-full max-w-[200px] md:max-w-[220px] xl:max-w-[240px] 2xl:max-w-[300px] aspect-[9/19] rounded-[40px] p-2 bg-[#11250E] shadow-[0_20px_60px_-15px_rgba(17,37,14,0.3)]">
+                        <div className="relative w-full max-w-[200px] md:max-w-[220px] xl:max-w-[240px] 2xl:max-w-[300px] aspect-[9/19] rounded-[40px] p-2 bg-surface shadow-[0_20px_60px_-15px_rgba(17,37,14,0.3)]">
                             {/* Phone Inner - Preloaded Stack */}
                             <div className="relative w-full h-full rounded-[32px] overflow-hidden bg-black">
                                 {featuredItems.map((item, idx) => {
@@ -386,7 +386,7 @@ function ShortFormCard({ item, index, onPlay }: { item: WorkItem, index: number,
             data-cursor-hover={!item.instagramUrl}
         >
             {item.instagramUrl ? (
-                <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" className="absolute top-0 left-0 w-full h-[calc(100%+60px)] pointer-events-auto bg-[#11250E]"></iframe>
+                <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" className="absolute top-0 left-0 w-full h-[calc(100%+60px)] pointer-events-auto bg-surface"></iframe>
             ) : (
                 <>
                     <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 scale-100 group-hover:scale-[1.04] transition-all duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)]" />
@@ -458,7 +458,7 @@ function LongFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: s
                     </AnimatePresence>
                     
                     {/* Cinematic gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#11250E]/90 via-[#11250E]/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-surface/90 via-surface/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
                     <div className="absolute inset-0 opacity-[0.2] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml;utf8,%3Csvg viewBox=\\"0 0 200 200\\" xmlns=\\"http://www.w3.org/2000/svg\\"%3E%3Cfilter id=\\"noiseFilter\\"%3E%3CfeTurbulence type=\\"fractalNoise\\" baseFrequency=\\"0.8\\" numOctaves=\\"3\\" stitchTiles=\\"stitch\\"/%3E%3C/filter%3E%3Crect width=\\"100%25\\" height=\\"100%25\\" filter=\\"url(%23noiseFilter)\\"/%3E%3C/svg%3E")' }} />
                     
                     <PlayButton delay={0.2} />
@@ -553,7 +553,7 @@ function LongFormListCard({ item, index, onPlay }: { item: WorkItem, index: numb
                 data-cursor-hover={!item.instagramUrl}
             >
                 {item.instagramUrl ? (
-                    <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" allowTransparency={true} className="absolute top-0 left-0 w-full h-full pointer-events-auto bg-[#11250E]"></iframe>
+                    <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" allowTransparency={true} className="absolute top-0 left-0 w-full h-full pointer-events-auto bg-surface"></iframe>
                 ) : (
                     <>
                         <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover scale-100 group-hover:scale-[1.04] transition-all duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)]" />
@@ -599,7 +599,7 @@ function LongFormGridCard({ item, index, onPlay }: { item: WorkItem, index: numb
                 data-cursor-hover={!item.instagramUrl}
             >
                 {item.instagramUrl ? (
-                    <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" className="absolute top-0 left-0 w-full h-full pointer-events-auto bg-[#11250E]"></iframe>
+                    <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" className="absolute top-0 left-0 w-full h-full pointer-events-auto bg-surface"></iframe>
                 ) : (
                     <>
                         <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover scale-100 group-hover:scale-[1.04] transition-all duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)]" />
@@ -891,8 +891,8 @@ export default function WorkShowcase() {
                         />
 
                         {/* Gradient overlays for depth */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#11250E]/90 via-[#11250E]/60 to-transparent" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#11250E]/80 via-transparent to-[#11250E]/30" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-surface/90 via-surface/60 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-surface/80 via-transparent to-surface/30" />
 
                         {/* Content */}
                         <div className="relative z-10 flex flex-col justify-end h-full px-8 md:px-14 py-10 md:py-14" style={{ minHeight: "clamp(320px, 50vh, 520px)" }}>
@@ -906,7 +906,7 @@ export default function WorkShowcase() {
                             >
                                 <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
                                 <span
-                                    className="text-[10px] md:text-xs text-[#F8F3E6]/50 uppercase tracking-[0.25em] font-medium"
+                                    className="text-[10px] md:text-xs text-background/50 uppercase tracking-[0.25em] font-medium"
                                     style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}
                                 >
                                     Portfolio &mdash; 2024
@@ -921,7 +921,7 @@ export default function WorkShowcase() {
                                 className="absolute top-8 md:top-10 right-8 md:right-14"
                             >
                                 <span
-                                    className="text-[10px] md:text-xs text-[#F8F3E6]/40 uppercase tracking-[0.15em] font-medium"
+                                    className="text-[10px] md:text-xs text-background/40 uppercase tracking-[0.15em] font-medium"
                                     style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}
                                 >
                                     {WORK_ITEMS.length} Projects
@@ -946,7 +946,7 @@ export default function WorkShowcase() {
                                         initial={{ y: "110%" }}
                                         animate={isHeaderInView ? { y: 0 } : { y: "110%" }}
                                         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
-                                        className="text-4xl md:text-6xl lg:text-7xl font-medium text-[#F8F3E6] leading-[1] tracking-tight"
+                                        className="text-4xl md:text-6xl lg:text-7xl font-medium text-background leading-[1] tracking-tight"
                                         style={{ fontFamily: "var(--font-tiempos-headline), serif" }}
                                     >
                                         Stories that
@@ -967,7 +967,7 @@ export default function WorkShowcase() {
                                     initial={{ opacity: 0, y: 15 }}
                                     animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
                                     transition={{ duration: 0.7, delay: 0.6 }}
-                                    className="text-sm md:text-base text-[#F8F3E6]/50 max-w-md leading-relaxed"
+                                    className="text-sm md:text-base text-background/50 max-w-md leading-relaxed"
                                     style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}
                                 >
                                     From 30-second hooks to full-length brand films — every frame is engineered to stop the scroll, spark emotion, and drive measurable impact.
@@ -982,7 +982,7 @@ export default function WorkShowcase() {
                                 className="absolute bottom-8 md:bottom-10 right-8 md:right-14 flex flex-col items-center gap-2"
                             >
                                 <span
-                                    className="text-[9px] text-[#F8F3E6]/30 uppercase tracking-[0.2em] font-medium"
+                                    className="text-[9px] text-background/30 uppercase tracking-[0.2em] font-medium"
                                     style={{ fontFamily: "var(--font-space-grotesk), sans-serif", writingMode: "vertical-rl" }}
                                 >
                                     Explore

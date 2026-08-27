@@ -29,6 +29,23 @@ const page = () => {
           from competing with the hero animation for main-thread budget. */}
       <DeferredSection>
         <Manifesto />
+        
+        {/* Mountain divider with gradient blending for seamless transition between cream and dark green sections */}
+        <div className="relative w-full">
+          {/* Top blend: cream to transparent */}
+          <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-background to-transparent pointer-events-none" />
+          
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img 
+            src="/separator/mountain_divider.png" 
+            alt="Section Divider" 
+            style={{ width: '100vw', display: 'block' }} 
+          />
+
+          {/* Bottom blend: dark green to transparent */}
+          <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-surface to-transparent pointer-events-none" />
+        </div>
+
         <BrandsWhoTrustUs />
         <WhyInfotainmentWorks />
 

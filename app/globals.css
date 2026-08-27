@@ -1,16 +1,92 @@
 @import "tailwindcss";
 
+/* =====================================================================
+   THE COLOUR SYSTEM. Read this before touching any colour anywhere.
+
+   The rule the whole site follows:
+        LOCK THE ACCENTS. MOVE THE GROUND.
+
+   Every ratio below is hand-computed WCAG relative luminance. They are
+   measured, not estimated. Do not guess a new pairing; compute it or use
+   one from the tables.
+
+   ---------------------------------------------------------------------
+   1. THE GROUND LADDER (four grounds, all warm)
+   ---------------------------------------------------------------------
+     L1  cream    #F8F3E6   --color-background   default page ground
+     L2  sand     #E1D8C4   --color-sand         second light ground
+     L3  forest   #11250E   --color-surface      the dark
+     L4  rust     #8F3A1C   --color-clay-deep    the single loud band
+
+   cream vs sand as surfaces = 1.28:1. A gentle warm-on-warm value step,
+   like paper against kraft. Deliberately NOT a cool colour: a mist-blue
+   second ground was tried and rejected, it breaks the warm register.
+
+   ---------------------------------------------------------------------
+   2. THE PAGE ARC (app/page.tsx order)
+   ---------------------------------------------------------------------
+     Hero2                 art (warm sky)
+     Manifesto             cream
+     BrandsWhoTrustUs      forest
+     WhyInfotainmentWorks  sand
+     OurServices           cream
+     ResultsSection        forest
+     Contact               rust      <- appears exactly once on the site
+     SiteFooter            cream
+
+   One rule: no two touching sections share a ground, the darks land on
+   Brands and Results, rust is the single climax. If you add a section,
+   pick a ground that differs from both of its neighbours.
+
+   ---------------------------------------------------------------------
+   3. THE ACCENT TABLE (locked, whole site)
+   ---------------------------------------------------------------------
+   ground  | body text            | small accent text | fills / large / icons
+   --------|----------------------|-------------------|----------------------
+   cream   | primary 14.7         | clay-deep 6.8     | clay 4.0
+           | muted   7.6          |                   |
+   sand    | primary 11.4         | clay-deep 5.3     | clay 3.1
+           | muted   5.9          |                   |
+   forest  | background 14.7      | saffron 7.5       | saffron, accent 5.6
+           | mist       7.6       |                   |
+   rust    | background 6.8       | background        | saffron 3.5 (large only)
+           | mist       5.9       |                   |
+
+   ---------------------------------------------------------------------
+   4. HARD BANS (these fail WCAG AA, they are not style opinions)
+   ---------------------------------------------------------------------
+     accent  #89A236 on ANY light ground   2.6:1 cream / 2.0:1 sand
+             -> accent is a DARK-GROUND-ONLY colour. Forest only.
+     saffron #E8A33D on ANY light ground   1.9:1 on cream
+             -> dark grounds only.
+     clay    #C25A34 for anything under 18px anywhere.
+             -> use clay-deep for small text, clay for fills and icons.
+     Raw hex in components. Use the tokens. 28 hardcoded hexes is what
+     made the site read as "not generalized" in the first place.
+   ===================================================================== */
+
 @theme {
-  /* ── Nature-Inspired Palette ─────────────────────────── */
-  --color-background: #F8F3E6;       /* Bright Sky & Sunlight       */
-  --color-background-alt: #E1D8C4;   /* Darker Cream for Alt Sections */
-  --color-mist: #DDE6EA;             /* Mist & Clouds               */
-  --color-mountain: #9CB6C4;         /* Distant Hazy Mountains      */
-  --color-surface: #11250E;          /* Deep Forest & Valley Shadows */
-  --color-surface-light: #435D20;    /* Mid-tone Forest Greens       */
-  --color-primary: #11250E;          /* Deep Forest (body text)      */
-  --color-muted: #524E38;            /* Rocky Cliff Faces            */
-  --color-accent: #89A236;           /* Sunlit Foliage (Yellow-Green)*/
+  /* ── Grounds and text ────────────────────────────────── */
+  --color-background: #F8F3E6;       /* L1 cream. Bright Sky & Sunlight   */
+  --color-sand: #E1D8C4;             /* L2 sand. Second light ground      */
+  --color-surface: #11250E;          /* L3 forest. Valley Shadows         */
+  --color-surface-light: #435D20;    /* Mid-tone Forest Greens            */
+  --color-primary: #11250E;          /* Body text on light grounds        */
+  --color-muted: #524E38;            /* Secondary text, light grounds     */
+  --color-mist: #DDE6EA;             /* Body text on DARK grounds only.
+                                        Never a background: reads cool
+                                        and breaks the warm register.     */
+  --color-accent: #89A236;           /* Sunlit Foliage. FOREST ONLY.      */
+
+  /* ── Sunset Register ─────────────────────────────────────
+     Both pulled from the hero art: the sky in Sky.webp is a warm
+     peach-apricot, and the foliage in the mountain layers carries a
+     golden rim light. Bringing them into the UI so the page below the
+     hero is made of the same colours as the hero itself.                 */
+  --color-clay: #C25A34;             /* Fills, icons, 18px+ only          */
+  --color-clay-deep: #8F3A1C;        /* Small accent text, and L4 rust    */
+  --color-saffron: #E8A33D;          /* Golden Rim Light. Dark only.      */
+
   /* ── Typography ──────────────────────────────────────── */
   --font-sans: var(--font-space-grotesk), sans-serif;
   --font-serif: var(--font-space-grotesk), sans-serif;
@@ -34,6 +110,22 @@
 
   [id] {
     scroll-margin-top: 96px;
+  }
+
+  /* Text selection in brand clay instead of the browser's default blue —
+     the one uncontrolled colour left on the page. */
+  ::selection {
+    background-color: var(--color-clay);
+    color: var(--color-background);
+  }
+
+  /* A visible focus ring, in clay. :focus-visible (not :focus) means mouse
+     users never see it, so it costs nothing visually. Several components
+     use focus:outline-none with no replacement, which leaves keyboard
+     users with no indication of position at all. */
+  :focus-visible {
+    outline: 2px solid var(--color-clay);
+    outline-offset: 3px;
   }
 }
 

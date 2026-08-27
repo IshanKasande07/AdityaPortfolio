@@ -162,7 +162,7 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed inset-0 z-[250] bg-[#11250E]/95 backdrop-blur-3xl flex flex-col justify-between p-8 md:hidden pointer-events-auto"
+            className="fixed inset-0 z-[250] bg-surface/95 backdrop-blur-3xl flex flex-col justify-between p-8 md:hidden pointer-events-auto"
           >
             {/* Top row with Logo and Close button */}
             <div className="flex justify-between items-center w-full">
@@ -175,7 +175,7 @@ const Navbar = () => {
               />
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-2 text-[#F8F3E6]/70 hover:text-[#F8F3E6] transition-transform duration-100 active:scale-90 active:duration-75"
+                className="p-2 text-background/70 hover:text-background transition-transform duration-100 active:scale-90 active:duration-75"
                 aria-label="Close menu"
               >
                 <svg
@@ -224,7 +224,7 @@ const Navbar = () => {
                       }
                     }
                   }}
-                  className="text-4xl font-semibold text-[#F8F3E6]/80 hover:text-[#F8F3E6] hover:translate-x-2 transition-all duration-300 active:scale-90 active:duration-75"
+                  className="text-4xl font-semibold text-background/80 hover:text-background hover:translate-x-2 transition-all duration-300 active:scale-90 active:duration-75"
                 >
                   {item.name}
                 </motion.button>
@@ -242,7 +242,7 @@ const Navbar = () => {
                     scrollToTarget("contact");
                   }
                 }}
-                className="w-full py-4 rounded-full border border-[#F8F3E6]/20 bg-[#F8F3E6] text-[#11250E] font-semibold text-center hover:bg-transparent hover:text-[#F8F3E6] transition-all duration-300 active:scale-90 active:duration-75"
+                className="w-full py-4 rounded-full border border-background/20 bg-background text-surface font-semibold text-center hover:bg-transparent hover:text-background transition-all duration-300 active:scale-90 active:duration-75"
               >
                 Book a Call ↗
               </button>

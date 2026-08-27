@@ -126,7 +126,7 @@ export default function LoadingScreen() {
                     initial={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     className="fixed inset-0 z-[99999] flex flex-col items-center justify-center"
-                    style={{ backgroundColor: "#F8F3E6" }}
+                    style={{ backgroundColor: "var(--color-background)" }}
                 >
                     {/* Logo */}
                     <motion.div
@@ -188,7 +188,7 @@ function ProgressBar() {
         <motion.div
             className="h-full rounded-full"
             style={{
-                backgroundColor: "#11250E",
+                backgroundColor: "var(--color-primary)",
                 width: `${Math.min(progress * 100, 100)}%`,
                 transition: "width 0.3s ease-out",
             }}
