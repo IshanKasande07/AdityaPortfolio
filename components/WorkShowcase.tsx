@@ -159,7 +159,7 @@ const WORK_ITEMS: WorkItem[] = [
 
 type TabKey = "short-form" | "long-form" | "graphics";
 
-const TABS: { key: TabKey; label: string; icon: React.ElementType }[] = [
+const TABS: { key: TabKey; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
     { key: "short-form", label: "Short Form", icon: Smartphone },
     { key: "long-form", label: "Long Form", icon: Film },
     { key: "graphics", label: "Thumbnails & Graphics", icon: ImageIcon },

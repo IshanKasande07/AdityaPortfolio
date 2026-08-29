@@ -33,11 +33,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  output: "export",
   // Bypass the TS check that is freezing your Vercel build
   typescript: {
     ignoreBuildErrors: true,
-  },
+  }
 };
 
 export default nextConfig;
