@@ -94,10 +94,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${tiemposHeadline.variable}`} style={{ backgroundColor: "#F0EDE8" }}>
+    <html lang="en" className={`${spaceGrotesk.variable} ${tiemposHeadline.variable} bg-[#F0EDE8]`} suppressHydrationWarning>
       <body
-        className="antialiased overflow-x-hidden"
-        style={{ backgroundColor: "#F0EDE8" }}
+        className="antialiased overflow-x-hidden bg-[#F0EDE8]"
       >
         {/* Google tag (gtag.js) */}
         <Script
