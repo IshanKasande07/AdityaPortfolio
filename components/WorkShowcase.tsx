@@ -12,6 +12,8 @@ interface WorkItem {
     description?: string;
     youtubeUrl?: string;
     instagramUrl?: string;
+    videoUrl?: string;
+    posterUrl?: string;
     stats?: string;
     imageUrl?: string;
     featured?: boolean;
@@ -258,8 +260,14 @@ const PlayButton = ({ delay = 0, inView = true }: { delay?: number, inView?: boo
 // ─── Tab 1: Short Form (The Scroll-Stoppers) ───────────────────────────────────
 
 function ShortFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: string) => void }) {
-    const featuredItems = items.filter(i => i.featured);
-    const gridItems = items.filter(i => !i.featured);
+    let featuredItems = items.filter(i => i.featured);
+    let gridItems = items.filter(i => !i.featured);
+
+    if (featuredItems.length === 0 && items.length > 0) {
+        featuredItems = items.slice(0, 3);
+        gridItems = items.slice(3);
+    }
+
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % featuredItems.length);
@@ -291,9 +299,18 @@ function ShortFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: 
                                         <div
                                             key={item.id}
                                             className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}
-                                            onClick={() => { if (!item.instagramUrl && item.youtubeUrl) onPlay(item.youtubeUrl); }}
+                                            onClick={() => { if (!item.instagramUrl && !item.videoUrl && item.youtubeUrl) onPlay(item.youtubeUrl); }}
                                         >
-                                            {item.instagramUrl ? (
+                                            {item.videoUrl ? (
+                                                <video 
+                                                    src={item.videoUrl} 
+                                                    poster={item.posterUrl || getThumbnail(item.youtubeUrl || "")} 
+                                                    preload="none" 
+                                                    controls
+                                                    playsInline
+                                                    className="absolute inset-0 w-full h-full object-cover pointer-events-auto bg-[#11250E]" 
+                                                />
+                                            ) : item.instagramUrl ? (
                                                 <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" className="absolute top-0 left-0 w-full h-[calc(100%+60px)] pointer-events-auto"></iframe>
                                             ) : (
                                                 <div className="relative w-full h-full cursor-pointer group" data-cursor-hover>
@@ -381,11 +398,20 @@ function ShortFormCard({ item, index, onPlay }: { item: WorkItem, index: number,
             initial={{ opacity: 0, scale: 0.95 }}
             animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className={`group relative w-full aspect-[2/3] rounded-3xl overflow-hidden bg-black/5 ${item.instagramUrl ? '' : 'cursor-pointer'}`}
-            onClick={() => { if (!item.instagramUrl && item.youtubeUrl) onPlay(item.youtubeUrl); }}
-            data-cursor-hover={!item.instagramUrl}
+            className={`group relative w-full aspect-[2/3] rounded-3xl overflow-hidden bg-black/5 ${item.instagramUrl || item.videoUrl ? '' : 'cursor-pointer'}`}
+            onClick={() => { if (!item.instagramUrl && !item.videoUrl && item.youtubeUrl) onPlay(item.youtubeUrl); }}
+            data-cursor-hover={!item.instagramUrl && !item.videoUrl}
         >
-            {item.instagramUrl ? (
+            {item.videoUrl ? (
+                <video 
+                    src={item.videoUrl} 
+                    poster={item.posterUrl || getThumbnail(item.youtubeUrl || "")} 
+                    preload="none" 
+                    controls
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover pointer-events-auto bg-[#11250E]" 
+                />
+            ) : item.instagramUrl ? (
                 <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" className="absolute top-0 left-0 w-full h-[calc(100%+60px)] pointer-events-auto bg-[#11250E]"></iframe>
             ) : (
                 <>
@@ -753,10 +779,25 @@ function GraphicsCard({ item, index }: { item: WorkItem, index: number }) {
 
 // ─── Tab Content Wrapper ───────────────────────────────────────────────────────
 
-function TabContent({ tabKey, onPlay }: { tabKey: TabKey, onPlay: (url: string) => void }) {
-    const items = WORK_ITEMS.filter((i) => i.category === tabKey);
+function TabContent({ tabKey, onPlay, sanityShortFormItems = [] }: { tabKey: TabKey, onPlay: (url: string) => void, sanityShortFormItems?: any[] }) {
+    let items = WORK_ITEMS.filter((i) => i.category === tabKey);
     
-    if (tabKey === "short-form") return <ShortFormGallery items={items} onPlay={onPlay} />;
+    if (tabKey === "short-form") {
+        if (sanityShortFormItems && sanityShortFormItems.length > 0) {
+            items = sanityShortFormItems.map(item => ({
+                id: item._id,
+                title: item.title,
+                description: item.description,
+                youtubeUrl: item.youtubeUrl,
+                videoUrl: item.videoUrl,
+                posterUrl: item.posterUrl,
+                stats: item.stats,
+                featured: item.featured,
+                category: "short-form" as const,
+            }));
+        }
+        return <ShortFormGallery items={items} onPlay={onPlay} />;
+    }
     if (tabKey === "long-form") return <LongFormGallery items={items} onPlay={onPlay} />;
     return <GraphicsGallery items={items} />;
 }
@@ -847,7 +888,7 @@ function TabBar({ activeTab, onTabChange }: { activeTab: TabKey, onTabChange: (k
 
 // ─── Main Component ──────────────────────────────────────────────────────────
 
-export default function WorkShowcase() {
+export default function WorkShowcase({ sanityShortFormItems = [] }: { sanityShortFormItems?: any[] }) {
     const [activeTab, setActiveTab] = useState<TabKey>("short-form");
     const [modalVideo, setModalVideo] = useState<string | null>(null);
     const headerRef = useRef<HTMLDivElement>(null);
@@ -1009,6 +1050,7 @@ export default function WorkShowcase() {
                         key={activeTab}
                         tabKey={activeTab}
                         onPlay={openModal}
+                        sanityShortFormItems={sanityShortFormItems}
                     />
                 </AnimatePresence>
             </div>
