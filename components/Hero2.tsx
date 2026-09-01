@@ -1155,7 +1155,7 @@ export default function Hero2() {
                     {
                         opacity: 0,
                         ease: "power2.inOut",
-                        duration: 0.125, // Fades out extremely quickly (first 12.5% of the scroll)
+                        duration: 0.54, // Fades out over 54% of the scroll (1.5× of previous)
                     },
                     0.05
                 );
@@ -1272,7 +1272,7 @@ export default function Hero2() {
             const st = ScrollTrigger.create({
                 trigger: container,
                 start: `top-=${mt} top`,
-                end: `+=${window.innerHeight * 2.5}`,
+                end: `+=${window.innerHeight * 3.75}`, // 1.5x of previous 2.5 (takes 1.5x more scrolling to complete)
                 pin: true,
                 pinType: "transform",
                 pinSpacing: true,
