@@ -714,7 +714,7 @@
 
 "use client";
 
-import { motion, useMotionValue, useSpring, useScroll, useTransform, useAnimation, AnimatePresence } from "framer-motion";
+import { motion, useMotionValue, useSpring, useScroll, useTransform, useAnimation, AnimatePresence, useMotionValueEvent } from "framer-motion";
 import { useRef, useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import gsap from "gsap";
@@ -978,6 +978,24 @@ export default function Hero2() {
     const buttonSpringX = useSpring(buttonX, buttonSpringConfig);
     const buttonSpringY = useSpring(buttonY, buttonSpringConfig);
 
+    const rawMouseX = useMotionValue(0);
+    const rawMouseY = useMotionValue(0);
+    const smoothRawMouseX = useSpring(rawMouseX, { stiffness: 70, damping: 20, mass: 0.5 });
+    const smoothRawMouseY = useSpring(rawMouseY, { stiffness: 70, damping: 20, mass: 0.5 });
+    const [showScrollHint, setShowScrollHint] = useState(false);
+
+    const animationProgress = useMotionValue(0);
+    const scrollBarHeight = useTransform(animationProgress, [0, 1], ["0%", "100%"]);
+    const scrollBarTrackColor = useTransform(animationProgress, [0, 0.3, 0.5, 1], ["rgba(248,243,230,0.1)", "rgba(248,243,230,0.1)", "rgba(17,37,14,0.2)", "rgba(17,37,14,0.2)"]);
+    const scrollBarFillColor = useTransform(animationProgress, [0, 0.3, 0.5, 1], ["#89A236", "#89A236", "#11250E", "#11250E"]);
+
+    // Hide tooltip immediately when scrolled
+    useMotionValueEvent(scrollY, "change", (latest) => {
+        if (latest > 10 && showScrollHint) {
+            setShowScrollHint(false);
+        }
+    });
+
     const handlePointerMove = (e: React.PointerEvent) => {
         if (isTouchDevice || !parallaxUnlocked) return;
 
@@ -987,6 +1005,18 @@ export default function Hero2() {
         const y = (clientY / innerHeight - 0.5) * 2;
         mouseX.set(x);
         mouseY.set(y);
+
+        rawMouseX.set(clientX);
+        rawMouseY.set(clientY);
+
+        // Show scroll hint if mouse is in bottom 35%, haven't scrolled yet, and intro is done
+        const p = progressRef.current || 0;
+        const inBottom = clientY > innerHeight * 0.65;
+        if (inBottom && window.scrollY < 10 && p < 0.01 && revealed) {
+            if (!showScrollHint) setShowScrollHint(true);
+        } else {
+            if (showScrollHint) setShowScrollHint(false);
+        }
     };
 
     // ── Poster trick ─────────────────────────────────────────────
@@ -1281,6 +1311,7 @@ export default function Hero2() {
                 onUpdate: (self) => {
                     const p = self.progress;
                     progressRef.current = p;
+                    animationProgress.set(p);
 
                     // Update parallax scales safely via CSS variables or ref
                     if (posterReady && !bgSwapped && p > 0.05) {
@@ -1465,7 +1496,7 @@ export default function Hero2() {
                             width={1200}
                             height={400}
                             priority
-                            className="absolute bottom-[18vh] left-1/2 -translate-x-1/2"
+                            className="absolute bottom-[13vh] left-1/2 -translate-x-1/2"
                             style={{ width: "130%", height: "auto" }}
                             draggable={false}
                         />
@@ -1649,24 +1680,82 @@ export default function Hero2() {
                             exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeOut" } }}
                             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
                             style={{ y: textY, opacity: textOpacity, willChange: "transform, opacity" }}
-                            className="absolute bottom-[6vh] md:bottom-[8vh] right-[6vw] md:right-[4vw] z-[100] hidden md:flex items-center gap-4 pointer-events-none"
+                            className="absolute bottom-[6vh] md:bottom-[8vh] right-[6vw] md:right-[4vw] z-[100] hidden md:flex flex-col items-center gap-3 pointer-events-none"
                         >
-                            <span className="text-xs uppercase tracking-[0.25em] text-[#F8F3E6]/80 font-bold mt-[2px]" style={{ fontFamily: "var(--font-space-grotesk)" }}>
-                                Move cursor to explore
-                            </span>
-                            <div className="w-16 h-[2px] bg-[#F8F3E6]/20 relative overflow-hidden">
-                                <motion.div
-                                    className="absolute top-0 left-0 h-full w-6 bg-[#F8F3E6]/90"
-                                    animate={{
-                                        x: [0, 40, 0],
-                                    }}
+                            <svg className="w-[80px] h-[30px] pointer-events-none" preserveAspectRatio="none" viewBox="4 8 16 8" fill="none" strokeWidth="0.3" strokeLinecap="round" strokeLinejoin="round">
+                                <path 
+                                    d="M 12 12 C 15 8, 20 8, 20 12 C 20 16, 15 16, 12 12 C 9 8, 4 8, 4 12 C 4 16, 9 16, 12 12 Z" 
+                                    stroke="rgba(248, 243, 230, 0.15)"
+                                />
+                                <motion.path 
+                                    d="M 12 12 C 15 8, 20 8, 20 12 C 20 16, 15 16, 12 12 C 9 8, 4 8, 4 12 C 4 16, 9 16, 12 12 C 15 8, 20 8, 20 12 C 20 16, 15 16, 12 12 C 9 8, 4 8, 4 12 C 4 16, 9 16, 12 12 Z" 
+                                    stroke="rgba(248, 243, 230, 0.9)"
+                                    initial={{ pathLength: 0.1, pathOffset: 0 }}
+                                    animate={{ pathOffset: 0.5 }}
                                     transition={{
-                                        duration: 2.5,
+                                        duration: 3.5,
+                                        ease: "linear",
                                         repeat: Infinity,
-                                        ease: "easeInOut"
                                     }}
                                 />
+                            </svg>
+                            <span className="text-[10px] md:text-xs uppercase tracking-[0.25em] text-[#F8F3E6] font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] whitespace-nowrap" style={{ fontFamily: "var(--font-space-grotesk)" }}>
+                                Move cursor to discover
+                            </span>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                <AnimatePresence>
+                    {showScrollHint && !isTouchDevice && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.4, ease: "easeOut" } }}
+                            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                            style={{ 
+                                x: smoothRawMouseX, 
+                                y: smoothRawMouseY, 
+                                willChange: "transform, opacity" 
+                            }}
+                            className="fixed top-0 left-0 z-[200] pointer-events-none"
+                        >
+                            {/* Offset tooltip slightly closer to the cursor center */}
+                            <div className="absolute top-3 left-4 flex items-center gap-3 min-w-max">
+                                <div className="h-5 w-[2px] bg-[#F8F3E6]/20 relative overflow-hidden">
+                                    <motion.div
+                                        className="absolute top-0 left-0 w-full h-2 bg-[#F8F3E6]/90"
+                                        animate={{ y: [-8, 20] }}
+                                        transition={{
+                                            duration: 1.5,
+                                            repeat: Infinity,
+                                            ease: "linear"
+                                        }}
+                                    />
+                                </div>
+                                <span className="text-xs uppercase tracking-[0.25em] text-[#F8F3E6]/90 font-bold leading-none drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]" style={{ fontFamily: "var(--font-space-grotesk)" }}>
+                                    Scroll to enter
+                                </span>
                             </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                {/* Vertical scroll progress bar */}
+                <AnimatePresence>
+                    {revealed && !isTouchDevice && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 1.2, delay: 0.5 }}
+                            className="absolute right-6 md:right-10 top-1/2 -translate-y-1/2 w-[2px] h-[25vh] rounded-full z-[100] overflow-hidden hidden md:block"
+                            style={{ backgroundColor: scrollBarTrackColor }}
+                        >
+                            <motion.div 
+                                className="w-full rounded-full origin-top"
+                                style={{ height: scrollBarHeight, backgroundColor: scrollBarFillColor }}
+                            />
                         </motion.div>
                     )}
                 </AnimatePresence>
