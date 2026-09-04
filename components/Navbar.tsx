@@ -55,7 +55,7 @@ const Navbar = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: shouldBeVisible ? 1 : 0 }}
-      transition={{ duration: 0.8, ease: "easeInOut" }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       className={`${shouldBeVisible ? 'fixed' : 'absolute'} top-0 left-0 w-full z-[200] grid grid-cols-2 md:grid-cols-3 items-center px-6 md:px-12 py-2.5 md:py-3.5 mt-0 pointer-events-none transition-colors duration-300 text-primary`}
     >
       {/* Left: Logo */}
@@ -80,7 +80,7 @@ const Navbar = () => {
         <div className="flex items-center gap-6 backdrop-blur-2xl rounded-full px-6 py-2 transition-all duration-300 bg-transparent border border-primary/20 shadow-[0_4px_24px_0_rgba(17,37,14,0.08)] text-primary">
           <button
             onClick={() => router.push('/work')}
-            className={`text-sm font-medium transition-all duration-300 active:scale-90 active:duration-75 hover:text-accent`}
+            className={`text-sm font-medium transition-colors duration-300 hover:text-accent btn-press`}
           >
             Work
           </button>
@@ -89,22 +89,22 @@ const Navbar = () => {
               if (pathname !== "/") {
                 router.push("/#services");
               } else {
-                scrollToTarget("services");
+                scrollToTarget("services", { immediate: true });
               }
             }}
-            className={`text-sm font-medium transition-all duration-300 active:scale-90 active:duration-75 hover:text-accent`}
+            className={`text-sm font-medium transition-colors duration-300 hover:text-accent btn-press`}
           >
             Services
           </button>
           <button
             onClick={() => router.push('/about')}
-            className={`text-sm font-medium transition-all duration-300 active:scale-90 active:duration-75 hover:text-accent`}
+            className={`text-sm font-medium transition-colors duration-300 hover:text-accent btn-press`}
           >
             About
           </button>
           <button
             onClick={() => router.push('/contact')}
-            className={`text-sm font-medium transition-all duration-300 active:scale-90 active:duration-75 hover:text-accent`}
+            className={`text-sm font-medium transition-colors duration-300 hover:text-accent btn-press`}
           >
             Contact
           </button>
@@ -112,7 +112,7 @@ const Navbar = () => {
         
         <button
           onClick={handleHomeNavigation}
-          className="flex items-center justify-center backdrop-blur-2xl rounded-full px-6 py-2 transition-all duration-300 bg-transparent border border-primary/20 shadow-[0_4px_24px_0_rgba(17,37,14,0.08)] text-primary text-sm font-medium hover:text-accent active:scale-90 active:duration-75"
+          className="flex items-center justify-center backdrop-blur-2xl rounded-full px-6 py-2 transition-colors duration-300 bg-transparent border border-primary/20 shadow-[0_4px_24px_0_rgba(17,37,14,0.08)] text-primary text-sm font-medium hover:text-accent btn-press"
         >
           Home
         </button>
@@ -122,7 +122,7 @@ const Navbar = () => {
       <div className="hidden md:flex justify-end pointer-events-auto">
         <button
           onClick={() => scrollToTarget("contact")}
-          className={`px-5 py-2.5 rounded-full border text-sm font-medium transition-all duration-300 active:scale-90 active:duration-75 flex items-center gap-2 backdrop-blur-sm border-primary/30 hover:bg-primary hover:text-background bg-transparent text-primary`}
+          className={`px-5 py-2.5 rounded-full border text-sm font-medium transition-colors duration-300 flex items-center gap-2 backdrop-blur-sm border-primary/30 hover:bg-primary hover:text-background bg-transparent text-primary btn-press`}
         >
           Book a Call <span className="text-xs">↗</span>
         </button>
@@ -132,7 +132,7 @@ const Navbar = () => {
       <div className="flex justify-end md:hidden pointer-events-auto text-primary">
         <button
           onClick={() => setIsOpen(true)}
-          className="p-2 transition-all duration-300 active:scale-90 active:duration-75"
+          className="p-2 transition-colors duration-300 btn-press"
           aria-label="Toggle menu"
         >
           <svg
@@ -159,9 +159,8 @@ const Navbar = () => {
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
+            animate={{ opacity: 1, y: 0, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
+            exit={{ opacity: 0, y: -20, transition: { duration: 0.2, ease: "easeIn" } }}
             className="fixed inset-0 z-[250] bg-[#11250E]/95 backdrop-blur-3xl flex flex-col justify-between p-8 md:hidden pointer-events-auto"
           >
             {/* Top row with Logo and Close button */}
@@ -175,7 +174,7 @@ const Navbar = () => {
               />
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-2 text-[#F8F3E6]/70 hover:text-[#F8F3E6] transition-transform duration-100 active:scale-90 active:duration-75"
+                className="p-2 text-[#F8F3E6]/70 hover:text-[#F8F3E6] transition-colors duration-100 btn-press"
                 aria-label="Close menu"
               >
                 <svg
@@ -220,11 +219,11 @@ const Navbar = () => {
                       if (pathname !== "/") {
                         router.push(`/${item.target}`);
                       } else {
-                        scrollToTarget(item.target);
+                        scrollToTarget(item.target, { immediate: item.target === "#services" });
                       }
                     }
                   }}
-                  className="text-4xl font-semibold text-[#F8F3E6]/80 hover:text-[#F8F3E6] hover:translate-x-2 transition-all duration-300 active:scale-90 active:duration-75"
+                  className="text-4xl font-semibold text-[#F8F3E6]/80 hover:text-[#F8F3E6] hover:translate-x-2 transition-all duration-300 btn-press"
                 >
                   {item.name}
                 </motion.button>
@@ -242,7 +241,7 @@ const Navbar = () => {
                     scrollToTarget("contact");
                   }
                 }}
-                className="w-full py-4 rounded-full border border-[#F8F3E6]/20 bg-[#F8F3E6] text-[#11250E] font-semibold text-center hover:bg-transparent hover:text-[#F8F3E6] transition-all duration-300 active:scale-90 active:duration-75"
+                className="w-full py-4 rounded-full border border-[#F8F3E6]/20 bg-[#F8F3E6] text-[#11250E] font-semibold text-center hover:bg-transparent hover:text-[#F8F3E6] transition-colors duration-300 btn-press"
               >
                 Book a Call ↗
               </button>

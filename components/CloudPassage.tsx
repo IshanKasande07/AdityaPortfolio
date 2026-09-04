@@ -43,13 +43,22 @@ function CloudScene({ progressRef }: { progressRef: React.MutableRefObject<numbe
     useFrame(({ camera }) => {
         const progress = progressRef.current;
 
-        // Push camera forward: z goes from 5 → -15 over progress 0→1
-        // Increased travel distance (20 units) to account for stretching the gap between clouds 1 and 2
-        const targetZ = 5 - progress * 20;
+        // Push camera forward: stop at Z=-10 so we don't pass the final clouds
+        const targetZ = 5 - progress * 15;
         camera.position.z = THREE.MathUtils.lerp(camera.position.z, targetZ, 0.1);
 
         // Slight upward drift as we fly through
         camera.position.y = THREE.MathUtils.lerp(camera.position.y, progress * 2, 0.05);
+
+        // Camera tilt down sequence: from progress 0.65 to 1.0
+        const tiltProgress = Math.max(0, Math.min(1, (progress - 0.65) / 0.35));
+        
+        // Smooth easing for the tilt
+        const easeTilt = tiltProgress * tiltProgress * (3 - 2 * tiltProgress);
+        
+        // Tilt downwards past 90 degrees (up to ~150 degrees) for a dramatic over-the-top rotation
+        const targetRotationX = -easeTilt * (Math.PI * 0.85);
+        camera.rotation.x = THREE.MathUtils.lerp(camera.rotation.x, targetRotationX, 0.1);
     });
 
     // Dynamic speed: starts at 0.05, ramps up to 0.4

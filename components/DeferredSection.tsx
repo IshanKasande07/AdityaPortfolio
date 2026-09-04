@@ -54,6 +54,15 @@ export default function DeferredSection({ children }: { children: ReactNode }) {
                 ro.observe(document.body);
             });
 
+            // If navigating from another page with a hash, scroll to it now that the section is mounted
+            if (window.location.hash) {
+                setTimeout(() => {
+                    import("@/lib/scroll").then(({ scrollToTarget }) => {
+                        scrollToTarget(window.location.hash, { immediate: true });
+                    });
+                }, 100);
+            }
+
             return () => {
                 if (ro) ro.disconnect();
             };

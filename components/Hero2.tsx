@@ -732,6 +732,18 @@ const headingLines = [
     ["-", "Build", "Narratives"],
 ];
 
+const statementWords = [
+    { text: "Open", accent: false },
+    { text: "the", accent: false },
+    { text: "door", accent: true },
+    { text: "to", accent: false },
+    { text: "marketing", accent: false },
+    { text: "the", accent: false },
+    { text: "internet", accent: false },
+    { text: "can't", accent: true },
+    { text: "ignore.", accent: true },
+];
+
 const combineTransforms = ([s, m]: number[]) => s + m;
 
 /** Canvas helper: replicates CSS object-fit: cover for drawImage */
@@ -828,6 +840,10 @@ export default function Hero2() {
     const skyZoomRef = useRef<HTMLDivElement>(null); // New ref for fading the sky
     const cloudPassageContainerRef = useRef<HTMLDivElement>(null);
     const cloudTextRef = useRef<HTMLDivElement>(null);
+    const manifestoContainerRef = useRef<HTMLDivElement>(null);
+    const manifestoBadgeRef = useRef<HTMLDivElement>(null);
+    const manifestoWordsRef = useRef<HTMLDivElement>(null);
+    const manifestoFooterRef = useRef<HTMLDivElement>(null);
     const progressRef = useRef(0);
     const [isDesktop, setIsDesktop] = useState(false);       // gate for Three.js
 
@@ -1170,8 +1186,25 @@ export default function Hero2() {
 
         // Wait a frame for layout to settle after reveal
         const rafId = requestAnimationFrame(() => {
+            // Set initial clip path on container so it holds the frame when pinned
+            gsap.set(container, { clipPath: "inset(66px 18px 18px 18px round 20px)" });
+
             // ── Build the scrubbed timeline ─────────────────────────
             const tl = gsap.timeline({ paused: true });
+
+            // Phase 0: Expand the frame
+            const revealDiv = document.querySelector('.reveal-animated-div') as HTMLElement;
+            if (revealDiv) {
+                revealDiv.style.transition = 'none'; // remove CSS transition so GSAP can control it
+            }
+            tl.fromTo([revealDiv, container], 
+                { clipPath: "inset(66px 18px 18px 18px round 20px)" },
+                {
+                    clipPath: "inset(0px 0px 0px 0px round 0px)",
+                    ease: "power2.inOut",
+                    duration: 0.1,
+                }, 
+            0);
 
             // Phase 1 (0%–20%): Text fades out via Framer Motion (scrollY 0–150)
             // GSAP does nothing here — the text transforms handle it.
@@ -1226,15 +1259,15 @@ export default function Hero2() {
                 0.05
             );
 
-            // Fade out the bottom cloud 1.5x faster than it scales
+            // Fade out the bottom cloud starting earlier and finishing earlier, but still slowly
             tl.fromTo(bottomCloudEl,
                 { opacity: 1 },
                 {
                     opacity: 0,
-                    ease: "power2.inOut",
-                    duration: 0.33,
+                    ease: "power1.inOut",
+                    duration: 0.20, // Reduced to finish even earlier
                 },
-                0.05
+                0.00 // Starts immediately, before the zoom fully kicks in
             );
 
             // Parallax zoom for Layer 3 (Foreground Cloud)
@@ -1288,21 +1321,62 @@ export default function Hero2() {
             // Fade in the cloud test text right after the zoom completes
             const cloudTextEl = cloudTextRef.current;
             if (cloudTextEl) {
-                tl.fromTo(cloudTextEl,
-                    { opacity: 0, scale: 0.9, y: 20 },
-                    { opacity: 1, scale: 1, y: 0, duration: 0.1, ease: "power2.out" },
-                    0.55
-                );
+                const ascendChars = cloudTextEl.querySelectorAll(".ascend-char");
+                gsap.set(ascendChars, { opacity: 0, filter: "blur(12px)", y: 20 });
+                
+                tl.to(ascendChars, {
+                    opacity: 1,
+                    filter: "blur(0px)",
+                    y: 0,
+                    stagger: 0.012, // Much slower stagger
+                    ease: "power2.out",
+                    duration: 0.10 // Slower fade in per character
+                }, 0.48) // Starts earlier so it has room to breathe
+                .to(cloudTextEl, { opacity: 0, duration: 0.05, ease: "power2.in" }, 0.65);
             }
 
-            // Phase 4 (95%–100%): Cream flash removed to allow seamless transition to next section
+            // Phase 4: Manifesto Reveal Sequence inside the 3D space
+            const manifestoContainer = manifestoContainerRef.current;
+            const manifestoBadge = manifestoBadgeRef.current;
+            const manifestoWords = manifestoWordsRef.current;
+            const manifestoFooter = manifestoFooterRef.current;
+
+            if (manifestoContainer && manifestoBadge && manifestoWords && manifestoFooter) {
+                const charEls = manifestoWords.querySelectorAll(".manifesto-char");
+                
+                // Show container and animate in badge and footer (starts at 0.78, camera tilt is nearing end)
+                tl.fromTo(manifestoContainer, { opacity: 0 }, { opacity: 1, duration: 0.01 }, 0.78)
+                  .fromTo(manifestoBadge, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.05, ease: "power3.out" }, 0.78)
+                  .fromTo(manifestoFooter, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.05, ease: "power3.out" }, 0.78);
+                
+                // Set initial state for all characters with a mist-like blur
+                gsap.set(charEls, { opacity: 0, filter: "blur(10px)", y: 15 });
+
+                // Reveal characters one by one mapped to scroll
+                // Slower stagger: 0.0035 * ~45 chars = ~0.157. Duration 0.05. Ends around 0.99.
+                tl.to(charEls, {
+                    opacity: 1,
+                    filter: "blur(0px)",
+                    y: 0,
+                    stagger: 0.0035, // Slower letter-by-letter cascade
+                    ease: "power2.out",
+                    duration: 0.05 // Slower resolution from blur per character
+                }, 0.80);
+            }
+
+            // Force the entire timeline to end exactly at 1.0. 
+            // This guarantees GSAP timeline seconds perfectly equal the ScrollTrigger progress (0 to 1) 
+            // used by the 3D camera in CloudPassage!
+            tl.to({}, { duration: 0.01 }, 1.0);
+
+            // Phase 5 (95%–100%): Cream flash removed to allow seamless transition to next section
 
             // ── Create the ScrollTrigger ────────────────────────────
             const mt = parseFloat(window.getComputedStyle(container).marginTop) || 0;
             const st = ScrollTrigger.create({
                 trigger: container,
                 start: `top-=${mt} top`,
-                end: `+=${window.innerHeight * 3.75}`, // 1.5x of previous 2.5 (takes 1.5x more scrolling to complete)
+                end: `+=${window.innerHeight * 5.5}`, // Extended to 5.5x for full manifesto read
                 pin: true,
                 pinType: "transform",
                 pinSpacing: true,
@@ -1340,7 +1414,7 @@ export default function Hero2() {
         <div
             ref={containerRef}
             id="work"
-            className="relative overflow-hidden bg-background z-20 w-full h-[calc(100vh-72px)] mt-[60px] mb-[12px] rounded-[16px] md:w-[calc(100%-36px)] md:h-[calc(100vh-84px)] md:mt-[66px] md:mb-[18px] md:mx-[18px] md:rounded-[20px]"
+            className="relative overflow-hidden bg-background z-20 w-full h-[calc(100vh-72px)] mt-[60px] mb-[12px] rounded-[16px] md:!w-full md:!h-[100vh] md:!m-0 md:!rounded-none"
             onPointerMove={handlePointerMove}
             onPointerLeave={() => {
                 mouseX.set(0);
@@ -1377,11 +1451,11 @@ export default function Hero2() {
                         style={{
                             backgroundSize: "cover",
                             backgroundPosition: "top center",
-                            backgroundRepeat: "no-repeat",
                             x: isTouchDevice ? 0 : skyMouseX,
                             y: isTouchDevice ? skyScrollY : combinedSkyY,
                             z: 0.01,
-                            scale: 1.05,
+                            scale: 1.15,
+                            top: "6vh",
                             transformOrigin: "center",
                             visibility: layerVisibility,
                         }}
@@ -1396,10 +1470,75 @@ export default function Hero2() {
                 >
                     <CloudPassage progressRef={progressRef} />
                     <div ref={cloudTextRef} className="absolute inset-0 flex items-center justify-center pointer-events-none z-50">
-                        <h1 className="text-white text-6xl font-bold drop-shadow-md mix-blend-difference text-center">
-                            3D Cloud Passage Test<br />
-                            <span className="text-2xl mt-4 block">Scroll down to fly through</span>
+                        <h1 
+                            className="text-[#F8F3E6] text-[15vw] sm:text-[12vw] md:text-[9vw] font-medium leading-[1.1] tracking-tight text-center italic drop-shadow-2xl"
+                            style={{ fontFamily: "var(--font-tiempos-headline), serif" }}
+                        >
+                            {"Ascend.".split("").map((char, i) => (
+                                <span key={i} className="ascend-char inline-block opacity-0">
+                                    {char}
+                                </span>
+                            ))}
                         </h1>
+                    </div>
+
+                    {/* ========== LAYER 0.75: Manifesto Overlay ========== */}
+                    <div 
+                        ref={manifestoContainerRef} 
+                        className="absolute inset-0 flex flex-col items-center justify-center text-center z-60 pointer-events-none px-6 md:px-16"
+                        style={{ opacity: 0 }}
+                    >
+                        {/* ── Minimalist Badge ─── */}
+                        <div ref={manifestoBadgeRef} className="flex items-center gap-3 mb-8 md:mb-12 text-accent">
+                            <span className="text-lg leading-none mt-[-2px]">✦</span>
+                            <div className="w-8 h-[1px] bg-accent/40" />
+                            <span
+                                className="text-xs md:text-sm tracking-[0.2em] uppercase font-medium text-[#11250E]/70"
+                                style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}
+                            >
+                                Who we are
+                            </span>
+                        </div>
+
+                        {/* ── The statement ──── */}
+                        <div
+                            ref={manifestoWordsRef}
+                            className="mb-12 md:mb-16 max-w-[800px]"
+                            style={{ fontFamily: "var(--font-tiempos-headline), serif" }}
+                        >
+                            {statementWords.map((word, i) => (
+                                <span key={i} className="inline-block">
+                                    {word.text.split("").map((char, j) => (
+                                        <span
+                                            key={j}
+                                            className={`manifesto-char inline text-[10vw] sm:text-[8vw] lg:text-[4.5vw] xl:text-[4vw] leading-[1.1] tracking-tight ${
+                                                word.accent
+                                                    ? "text-accent italic font-normal"
+                                                    : "text-[#11250E] font-medium"
+                                            }`}
+                                        >
+                                            {char}
+                                        </span>
+                                    ))}
+                                    {i < statementWords.length - 1 && (
+                                        <span className="text-[10vw] sm:text-[8vw] lg:text-[4.5vw] xl:text-[4vw]">
+                                            {"\u00A0"}
+                                        </span>
+                                    )}
+                                </span>
+                            ))}
+                        </div>
+
+                        {/* ── Footer row ─── */}
+                        <div ref={manifestoFooterRef} className="flex flex-wrap items-center justify-center gap-3 text-xs tracking-[0.15em] uppercase font-medium text-[#11250E]/40" style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}>
+                            <span>Strategy</span>
+                            <div className="w-4 h-[1px] bg-[#11250E]/20" />
+                            <span>Content</span>
+                            <div className="w-4 h-[1px] bg-[#11250E]/20" />
+                            <span>Social</span>
+                            <div className="w-4 h-[1px] bg-[#11250E]/20" />
+                            <span>Growth</span>
+                        </div>
                     </div>
                 </div>
 
@@ -1410,11 +1549,12 @@ export default function Hero2() {
                         x: isTouchDevice ? 0 : bridgeBehindMouseX,
                         y: isTouchDevice ? bridgeBehindY : combinedBridgeBehindY,
                         z: 0.01,
+                        top: "6vh",
                         visibility: layerVisibility,
                     }}
                     className="absolute inset-0 z-[10] pointer-events-none hidden md:block"
                 >
-                    <div ref={bridgeBehindZoomRef} className="absolute inset-0" style={{ transformOrigin: "50% 65%", transform: "scale(1.05)" }}>
+                    <div ref={bridgeBehindZoomRef} className="absolute inset-0" style={{ transformOrigin: "50% 72%", transform: "scale(1.15)" }}>
                         <Image
                             src="/heroassets/Bridge Behind.webp"
                             alt="Bridge Background"
@@ -1438,7 +1578,7 @@ export default function Hero2() {
                     }}
                     className="absolute inset-x-0 bottom-0 z-[15] hidden md:flex justify-center pointer-events-none"
                 >
-                    <div ref={bottomCloudZoomRef} className="w-full h-full flex justify-center" style={{ transformOrigin: "50% 65%", transform: "scale(1.05)" }}>
+                    <div ref={bottomCloudZoomRef} className="w-full h-full flex justify-center" style={{ transformOrigin: "50% 72%", transform: "scale(1.05)" }}>
                         <Image
                             src="/heroassets/Bridge Bottom Cloud_.webp"
                             alt="Cloud Layer"
@@ -1459,13 +1599,13 @@ export default function Hero2() {
                         x: isTouchDevice ? 0 : bridgeMouseX,
                         y: isTouchDevice ? bridgeY : combinedBridgeY,
                         z: 0.01,
-                        height: "102%",
-                        top: "2vh",
+                        height: "105%",
+                        top: "-2vh",
                         visibility: layerVisibility,
                     }}
                     className="absolute left-0 w-full z-[20] pointer-events-none hidden md:block"
                 >
-                    <div ref={bridgeZoomRef} className="absolute inset-0" style={{ transformOrigin: "50% 65%", transform: "scale(1.05)" }}>
+                    <div ref={bridgeZoomRef} className="absolute inset-0" style={{ transformOrigin: "50% 72%", transform: "scale(1.05)" }}>
                         <Image
                             src="/heroassets/Bridge.webp"
                             alt="Bridge Overlay"
@@ -1489,7 +1629,7 @@ export default function Hero2() {
                     }}
                     className="absolute inset-0 -bottom-32 z-[30] pointer-events-none hidden md:block"
                 >
-                    <div ref={foregroundCloudZoomRef} className="absolute inset-0" style={{ transformOrigin: "50% 65%", transform: "scale(1.15)" }}>
+                    <div ref={foregroundCloudZoomRef} className="absolute inset-0" style={{ transformOrigin: "50% 72%", transform: "scale(1.15)" }}>
                         <Image
                             src="/heroassets/CLoud.webp"
                             alt="Cloud Overlay"
@@ -1586,7 +1726,7 @@ export default function Hero2() {
                 {/* ========== LAYER 5: Text Overlay + CTA ========== */}
                 <motion.div
                     style={{ y: textY, opacity: textOpacity, scale: textScale, z: 0.01, willChange: "transform, opacity" }}
-                    className="absolute top-[6vh] md:top-[8vh] left-0 w-full flex flex-col items-center justify-center text-primary text-center z-[50] px-6 md:px-[5vw] pointer-events-none"
+                    className="absolute top-[6vh] md:top-[calc(8vh+66px)] left-0 w-full flex flex-col items-center justify-center text-primary text-center z-[50] px-6 md:px-[5vw] pointer-events-none"
                 >
                     <motion.div
                         initial={{ opacity: 1, y: "25vh", scale: 1.5 }}
@@ -1632,7 +1772,7 @@ export default function Hero2() {
                     initial={{ opacity: 0, y: 20, scale: 0.95 }}
                     animate={contentControls}
                     style={{ y: textY, opacity: textOpacity, z: 0.01, willChange: "transform, opacity" }}
-                    className="absolute bottom-[6vh] md:bottom-[8vh] left-0 w-full flex flex-col items-center justify-center z-[100] pointer-events-auto"
+                    className="absolute bottom-[6vh] md:bottom-[calc(8vh+18px)] left-0 w-full flex flex-col items-center justify-center z-[100] pointer-events-auto"
                 >
                     <motion.button
                         onClick={() => scrollToTarget("contact")}
@@ -1680,7 +1820,7 @@ export default function Hero2() {
                             exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeOut" } }}
                             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
                             style={{ y: textY, opacity: textOpacity, willChange: "transform, opacity" }}
-                            className="absolute bottom-[6vh] md:bottom-[8vh] right-[6vw] md:right-[4vw] z-[100] hidden md:flex flex-col items-center gap-3 pointer-events-none"
+                            className="absolute bottom-[6vh] md:bottom-[calc(8vh+18px)] right-[6vw] md:right-[4vw] z-[100] hidden md:flex flex-col items-center gap-3 pointer-events-none"
                         >
                             <svg className="w-[80px] h-[30px] pointer-events-none" preserveAspectRatio="none" viewBox="4 8 16 8" fill="none" strokeWidth="0.3" strokeLinecap="round" strokeLinejoin="round">
                                 <path 
@@ -1766,3 +1906,4 @@ export default function Hero2() {
 }
 
 // trigger deploy
+

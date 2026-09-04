@@ -37,7 +37,8 @@ export function RevealProvider({ children }: { children: ReactNode }) {
 
     useEffect(() => {
         const isMobile = window.innerWidth < 768;
-        if (isMobile) {
+        const hasHash = window.location.hash;
+        if (isMobile || hasHash) {
             setRevealed(true);
             setEarlyReveal(true);
             document.body.style.backgroundColor = CREAM;
@@ -91,7 +92,13 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
     const { setRevealed, setEarlyReveal } = useReveal();
     const { isLoading } = useLoading();
     const [paths, setPaths] = useState<{ start: string; end: string } | null>(null);
-    const [isExpanded, setIsExpanded] = useState(false);
+    const [skipAnimation] = useState(() => {
+        if (typeof window !== "undefined") {
+            return !!window.location.hash;
+        }
+        return false;
+    });
+    const [isExpanded, setIsExpanded] = useState(skipAnimation);
     const animatedDivRef = useRef<HTMLDivElement>(null);
 
     // Compute clip-path values once on mount
@@ -121,7 +128,13 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
     // Reveal animation — only starts when loading screen is done
     useEffect(() => {
         const isMobile = window.innerWidth < 768;
-        if (isMobile || isLoading || !paths) return;
+        if (isMobile || skipAnimation || isLoading || !paths) {
+            if (skipAnimation && paths) {
+                setRevealed(true);
+                setEarlyReveal(true);
+            }
+            return;
+        }
 
         let cancelled = false;
         let rafId1: number;
@@ -181,7 +194,7 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
                 className="reveal-animated-div"
                 style={{
                     clipPath: isExpanded && paths ? paths.end : (paths ? paths.start : fallbackPath),
-                    transition: paths ? "clip-path 1.6s cubic-bezier(0.65, 0, 0.35, 1)" : "none",
+                    transition: (paths && !skipAnimation) ? "clip-path 1.6s cubic-bezier(0.65, 0, 0.35, 1)" : "none",
                     willChange: "clip-path",
                     transform: "translate3d(0, 0, 0)",
                     backfaceVisibility: "hidden",

@@ -1,6 +1,6 @@
 export const scrollToTarget = (
   target: string | HTMLElement | number | null | undefined,
-  options?: { offset?: number; duration?: number }
+  options?: { offset?: number; duration?: number; immediate?: boolean }
 ) => {
   if (typeof window === "undefined" || target === null || target === undefined) return;
 
@@ -11,9 +11,10 @@ export const scrollToTarget = (
       lenis.scrollTo(0, {
         duration: options?.duration ?? 1.4,
         easing: (t: number) => 1 - Math.pow(1 - t, 3),
+        immediate: options?.immediate,
       });
     } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0, behavior: options?.immediate ? "auto" : "smooth" });
     }
     return;
   }
@@ -32,8 +33,9 @@ export const scrollToTarget = (
       offset: options?.offset ?? -96,
       duration: options?.duration ?? 1.4,
       easing: (t: number) => 1 - Math.pow(1 - t, 3),
+      immediate: options?.immediate,
     });
   } else {
-    el.scrollIntoView({ behavior: "smooth" });
+    el.scrollIntoView({ behavior: options?.immediate ? "auto" : "smooth" });
   }
 };

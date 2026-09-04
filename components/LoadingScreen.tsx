@@ -57,8 +57,8 @@ export default function LoadingScreen() {
     }, [setLoadingComplete, setProgress]);
 
     useEffect(() => {
-        // Skip on mobile — reveal is instant, no loading screen needed
-        if (typeof window !== "undefined" && window.innerWidth < 768) {
+        // Skip on mobile or if there's a hash — reveal is instant, no loading screen needed
+        if (typeof window !== "undefined" && (window.innerWidth < 768 || window.location.hash)) {
             setIsVisible(false);
             setLoadingComplete();
             return;

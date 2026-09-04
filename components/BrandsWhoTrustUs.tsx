@@ -192,9 +192,8 @@ const BrandsWhoTrustUs = () => {
 
             <section
                 ref={containerRef}
-                className="w-full relative pt-10 md:pt-12 pb-16 md:pb-20 bg-background z-20"
+                className="w-full relative pt-12 md:pt-20 pb-16 md:pb-20 bg-background z-30"
             >
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/5 to-transparent pointer-events-none opacity-20"></div>
 
                 <div className="w-full relative">
                     <FadeUp>

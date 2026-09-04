@@ -46,6 +46,13 @@
       cursor: none !important;
     }
   }
+
+  .btn-press {
+    transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-press:active {
+    transform: scale(0.97);
+  }
 }
 
 .playfair-display-font {
