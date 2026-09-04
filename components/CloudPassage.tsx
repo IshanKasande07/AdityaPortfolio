@@ -315,9 +315,9 @@ export default function CloudPassage({ progressRef }: CloudPassageProps) {
         >
             <Canvas
                 camera={{ position: [0, 0, 5], fov: 75, near: 0.01 }} // Prevent hard clipping right at the camera lens
-                style={{ background: "#87CEEB" }} // DEBUG: sky blue to identify when clouds are visible
+                style={{ background: "#70B2D4" }} // Sky blue — canvas background showing through cloud gaps
                 gl={{
-                    antialias: false,
+                    antialias: true,
                     alpha: true,
                     powerPreference: "high-performance",
                 }}
