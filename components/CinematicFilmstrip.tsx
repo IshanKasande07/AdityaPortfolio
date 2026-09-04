@@ -66,7 +66,7 @@ export default function CinematicFilmstrip() {
         scrollTrigger: {
           trigger: pinWrapper,
           start: "top top",
-          end: () => `+=${rail.scrollWidth}`, // dynamically based on rail width
+          end: () => `+=${rail.scrollWidth * 0.7}`, // 0.7× = slightly faster pan
           pin: true,
           scrub: 1,
           invalidateOnRefresh: true,
