@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { Play, X, Film, Smartphone, Image as ImageIcon, ChevronLeft, ChevronRight } from "lucide-react";
+import AnimatedSVGText from "./AnimatedSVGText";
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -982,27 +983,24 @@ export default function WorkShowcase({ sanityShortFormItems = [] }: { sanityShor
                                         The work speaks for itself.
                                     </motion.p>
                                 </div>
-                                <div className="overflow-hidden mb-2">
-                                    <motion.h1
-                                        initial={{ y: "110%" }}
-                                        animate={isHeaderInView ? { y: 0 } : { y: "110%" }}
-                                        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
-                                        className="text-4xl md:text-6xl lg:text-7xl font-medium text-[#F8F3E6] leading-[1] tracking-tight"
-                                        style={{ fontFamily: "var(--font-tiempos-headline), serif" }}
-                                    >
-                                        Stories that
-                                    </motion.h1>
+                                <div className="overflow-hidden mb-2 h-16 md:h-24 lg:h-28">
+                                    <AnimatedSVGText 
+                                        text="Stories that" 
+                                        delay={0.25} 
+                                        inView={isHeaderInView}
+                                        className="w-[280px] md:w-[400px] lg:w-[450px]"
+                                    />
                                 </div>
-                                <div className="overflow-hidden mb-6">
-                                    <motion.h1
-                                        initial={{ y: "110%" }}
-                                        animate={isHeaderInView ? { y: 0 } : { y: "110%" }}
-                                        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.35 }}
-                                        className="text-4xl md:text-6xl lg:text-7xl font-medium text-accent italic leading-[1] tracking-tight"
-                                        style={{ fontFamily: "var(--font-tiempos-headline), serif" }}
-                                    >
-                                        move people.
-                                    </motion.h1>
+                                <div className="overflow-hidden mb-6 h-16 md:h-24 lg:h-28 -mt-2 md:-mt-4">
+                                    <AnimatedSVGText 
+                                        text="move people." 
+                                        delay={0.65} 
+                                        inView={isHeaderInView}
+                                        italic={true} 
+                                        fillColor="#89A236" 
+                                        strokeColor="#89A236"
+                                        className="w-[300px] md:w-[420px] lg:w-[480px]"
+                                    />
                                 </div>
                                 <motion.p
                                     initial={{ opacity: 0, y: 15 }}
