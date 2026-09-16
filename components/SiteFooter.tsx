@@ -9,6 +9,57 @@ const SiteFooter = () => {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const content = contentRef.current;
+    if (!content) return;
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const animations = new Map<Element, Animation>();
+    const visible = new Set<Element>();
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        const target = entry.target as HTMLElement;
+        if (!entry.isIntersecting) {
+          visible.delete(target);
+          animations.get(target)?.cancel();
+          animations.delete(target);
+          continue;
+        }
+        if (visible.has(target)) continue;
+        visible.add(target);
+        if (preference.matches || target.contains(document.activeElement)) continue;
+          const isLine = target.hasAttribute("data-footer-line");
+          const animation = target.animate([
+            { opacity: 0, clipPath: "inset(0 0 100% 0)" },
+            { opacity: 1, clipPath: "inset(0 0 0% 0)" },
+          ], {
+            duration: isLine ? 1500 : 1100,
+            easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+            fill: "backwards",
+          });
+          animations.set(target, animation);
+          animation.onfinish = () => animations.delete(target);
+      }
+    }, { threshold: 0 });
+
+    // Observe the text itself, never its enclosing headline or link grid.
+    content.querySelectorAll(
+      "[data-footer-line], p[data-footer-reveal], [data-footer-reveal] a, [data-footer-reveal] > span, [data-footer-reveal] > div > span"
+    ).forEach((target) => observer.observe(target));
+    const finishReveals = () => {
+      animations.forEach((animation) => animation.cancel());
+      animations.clear();
+    };
+    const onPreferenceChange = () => { if (preference.matches) finishReveals(); };
+    content.addEventListener("focusin", finishReveals);
+    preference.addEventListener("change", onPreferenceChange);
+    return () => {
+      observer.disconnect();
+      finishReveals();
+      content.removeEventListener("focusin", finishReveals);
+      preference.removeEventListener("change", onPreferenceChange);
+    };
+  }, []);
+
+  useEffect(() => {
     const section = sectionRef.current;
     const bg = bgRef.current;
     const content = contentRef.current;
@@ -21,6 +72,11 @@ const SiteFooter = () => {
 
     const updateParallax = () => {
       frame = null;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        bg.style.transform = "none";
+        content.style.transform = "none";
+        return;
+      }
       if (!isNearViewport) return;
 
       const rect = section.getBoundingClientRect();
@@ -110,16 +166,17 @@ const SiteFooter = () => {
                   className="object-contain h-10 md:h-12 w-auto invert opacity-80" 
                />
                <h2 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl leading-[1.15] tracking-tight text-[#2B1B15]">
-                  Ready to build<br/>absolute <span className="italic text-accent">authority?</span>
+                  <span className="block overflow-hidden pb-1"><span data-footer-line className="block">Ready to build</span></span>
+                  <span className="block overflow-hidden pb-1"><span data-footer-line className="block">absolute <span className="italic text-accent">authority?</span></span></span>
                </h2>
-               <p className="text-sm md:text-base text-black max-w-lg mx-auto font-medium">
+               <p data-footer-reveal className="text-sm md:text-base text-black max-w-lg mx-auto font-medium">
                  Partner with us to create infotainment-led content that drives massive reach and converts attention into long-term growth.
                </p>
             </div>
 
             {/* Links Columns */}
             <div className="w-full max-w-5xl mx-auto mt-20 md:mt-24 lg:mt-28">
-              <div className="flex flex-row flex-wrap justify-center gap-6 md:gap-12">
+              <div className="flex flex-row flex-wrap justify-center gap-6 md:gap-12" data-footer-reveal>
                 
                 {/* Navigation */}
                 <div className="flex min-w-[200px] flex-col items-center space-y-3 rounded-[32px] border border-[#11250E]/10 bg-white/[0.02] px-8 py-8 text-sm shadow-[0_8px_32px_rgba(17,37,14,0.03)] backdrop-blur-[2px]">
@@ -150,7 +207,7 @@ const SiteFooter = () => {
           </div>
 
           {/* Bottom: Copyright */}
-          <div className="w-full flex flex-col md:flex-row justify-between items-center text-xs text-[#2B1B15]/50">
+          <div data-footer-reveal className="w-full flex flex-col md:flex-row justify-between items-center text-xs text-[#2B1B15]/50">
             <span>© 2026 Monarch Media House. All rights reserved.</span>
             <span className="mt-2 md:mt-0">Designed for Impact.</span>
           </div>

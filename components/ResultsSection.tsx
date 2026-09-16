@@ -59,7 +59,7 @@ export default function ResultsSection() {
         <section 
             id="results" 
             ref={containerRef}
-            className="w-full pt-8 pb-8 md:pt-10 md:pb-10 bg-background-alt relative z-20"
+            className="w-full py-12 md:py-16 bg-background-alt relative z-20"
         >
             {/* Torn Paper Edge Separator */}
             <div className="absolute top-0 left-0 w-full overflow-hidden leading-none z-20 transform -translate-y-[99%]">
@@ -91,14 +91,10 @@ export default function ResultsSection() {
                     transition={{ duration: 0.8, ease: "easeOut" }}
                     className="w-full md:w-[40%] flex flex-col items-center md:items-start text-center md:text-left"
                 >
-                    <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-primary/5 border border-primary/10 text-accent text-[8px] md:text-[9px] font-mono uppercase tracking-widest mb-3">
-                        <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                        Impact & Scale
-                    </div>
-                    <h2 className="text-xl md:text-2xl lg:text-3xl font-display font-semibold text-primary tracking-tight leading-tight">
+                    <h2 className="text-3xl lg:text-4xl font-display font-medium text-primary tracking-tight leading-tight">
                         Results That <span className="text-accent italic">Speak.</span>
                     </h2>
-                    <p className="text-[10px] md:text-xs text-primary/70 mt-2 md:mt-3 max-w-sm leading-relaxed">
+                    <p className="text-base text-muted mt-4 max-w-sm leading-relaxed">
                         We don't just talk about growth. We engineer it. Here's a snapshot of the tangible value we've delivered.
                     </p>
                 </motion.div>
@@ -114,13 +110,13 @@ export default function ResultsSection() {
                         <motion.div 
                             key={index}
                             variants={itemVariants}
-                            className="flex flex-col items-center md:items-start justify-center p-3 md:p-4 bg-primary/5 rounded-xl border border-primary/5 hover:bg-primary/10 hover:border-accent/30 transition-all duration-300 group"
+                            className="flex flex-col items-center md:items-start justify-center p-5 md:p-6 bg-background/40 rounded-xl border border-primary/10 hover:bg-background/70 hover:border-accent/30 transition-colors duration-300 group"
                         >
-                            <h3 className="text-2xl md:text-3xl lg:text-4xl font-display font-semibold text-primary group-hover:text-accent transition-colors duration-300 mb-1 tracking-tighter shrink-0 flex items-end">
+                            <h3 className="text-3xl lg:text-4xl font-display font-medium tabular-nums text-primary transition-colors duration-300 mb-3 tracking-tight shrink-0 flex items-baseline">
                                 <Counter value={stat.value} />
                                 <span className="ml-[2px] text-lg md:text-xl lg:text-2xl">{stat.suffix}</span>
                             </h3>
-                            <p className="text-[8px] md:text-[9px] text-primary/60 group-hover:text-primary/90 transition-colors uppercase tracking-[0.2em] font-medium">
+                            <p className="text-xs text-muted transition-colors uppercase tracking-[0.15em] font-medium">
                                 {stat.label}
                             </p>
                         </motion.div>
