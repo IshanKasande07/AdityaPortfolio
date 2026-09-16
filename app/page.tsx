@@ -10,7 +10,7 @@ import RevealLayout, { RevealProvider } from '@/components/RevealLayout'
 import Navbar from '@/components/Navbar'
 import BrandsWhoTrustUs from '@/components/BrandsWhoTrustUs'
 import OurServices from '@/components/OurServices'
-import CinematicFilmstrip from '@/components/CinematicFilmstrip'
+import NarrativeProofRail from '@/components/NarrativeProofRail'
 import DeferredSection from '@/components/DeferredSection'
 
 const page = () => {
@@ -28,7 +28,7 @@ const page = () => {
           completes, preventing their GSAP/ScrollTrigger/ResizeObserver init
           from competing with the hero animation for main-thread budget. */}
       <DeferredSection>
-        <CinematicFilmstrip />
+        <NarrativeProofRail />
         <BrandsWhoTrustUs />
         <WhyInfotainmentWorks />
 
@@ -47,4 +47,3 @@ const page = () => {
 }
 
 export default page
-

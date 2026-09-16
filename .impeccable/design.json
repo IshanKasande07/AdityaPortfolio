@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-13T12:39:17.0598846+05:30",
+  "title": "Design System: Monarch Media House",
+  "extensions": {
+    "colorMeta": {
+      "warm-daylight": {
+        "role": "neutral",
+        "displayName": "Warm Daylight",
+        "canonical": "#F8F3E6",
+        "tonalRamp": ["#2B281F", "#4B4638", "#6F6854", "#948C72", "#BBB39A", "#DED7C1", "#F1EBD9", "#F8F3E6"]
+      },
+      "quiet-parchment": {
+        "role": "neutral",
+        "displayName": "Quiet Parchment",
+        "canonical": "#E1D8C4",
+        "tonalRamp": ["#29251E", "#4A4438", "#6B6453", "#8E856F", "#B3A992", "#D0C6B0", "#E1D8C4", "#F5F0E6"]
+      },
+      "highland-mist": {
+        "role": "tertiary",
+        "displayName": "Highland Mist",
+        "canonical": "#DDE6EA",
+        "tonalRamp": ["#1F292E", "#35464E", "#4E6570", "#6E8691", "#93A8B1", "#B8CAD1", "#DDE6EA", "#F2F7F9"]
+      },
+      "distant-mountain": {
+        "role": "tertiary",
+        "displayName": "Distant Mountain",
+        "canonical": "#9CB6C4",
+        "tonalRamp": ["#192A33", "#294652", "#3C6371", "#568190", "#77A0AE", "#9CB6C4", "#C9D9E0", "#EDF4F7"]
+      },
+      "deep-forest": {
+        "role": "primary",
+        "displayName": "Deep Forest",
+        "canonical": "#11250E",
+        "tonalRamp": ["#071006", "#11250E", "#203C1A", "#35552B", "#537348", "#78936D", "#A8BCA0", "#EAF0E7"]
+      },
+      "mid-forest": {
+        "role": "secondary",
+        "displayName": "Mid Forest",
+        "canonical": "#435D20",
+        "tonalRamp": ["#142006", "#293B10", "#435D20", "#617D36", "#839E55", "#A8BE7B", "#CDDDB0", "#F0F6E2"]
+      },
+      "rocky-muted": {
+        "role": "neutral",
+        "displayName": "Rocky Muted",
+        "canonical": "#524E38",
+        "tonalRamp": ["#191811", "#302E21", "#524E38", "#726D52", "#948E70", "#B7B199", "#DAD5C3", "#F3F0E7"]
+      },
+      "sunlit-foliage": {
+        "role": "primary",
+        "displayName": "Sunlit Foliage",
+        "canonical": "#89A236",
+        "tonalRamp": ["#202907", "#3A4A0D", "#566A18", "#718A27", "#89A236", "#A9BE61", "#CDD99A", "#F1F5DD"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Cinematic Display",
+        "purpose": "Hero propositions and high-emotion editorial statements."
+      },
+      "headline": {
+        "displayName": "Editorial Headline",
+        "purpose": "Section openings, portfolio narratives, and conversion statements."
+      },
+      "title": {
+        "displayName": "Technical Title",
+        "purpose": "Card titles, service names, and evidence-led subheads."
+      },
+      "body": {
+        "displayName": "Calm Body",
+        "purpose": "Readable explanations and supporting narrative."
+      },
+      "label": {
+        "displayName": "Evidence Label",
+        "purpose": "Eyebrows, counters, metadata, tabs, and proof markers."
+      }
+    },
+    "shadows": [
+      {
+        "name": "navigation-haze",
+        "value": "0 4px 24px rgba(17, 37, 14, 0.08)",
+        "purpose": "Soft lift beneath glass-like navigation pills."
+      },
+      {
+        "name": "editorial-lift",
+        "value": "0 8px 32px rgba(17, 37, 14, 0.08)",
+        "purpose": "Quiet separation for restrained cards and badges."
+      },
+      {
+        "name": "media-float",
+        "value": "0 20px 50px rgba(17, 37, 14, 0.10)",
+        "purpose": "Framed featured work and presentation surfaces."
+      },
+      {
+        "name": "deep-feature",
+        "value": "0 20px 60px -15px rgba(17, 37, 14, 0.30)",
+        "purpose": "Isolated, high-focus media objects only."
+      }
+    ],
+    "motion": [
+      {
+        "name": "press-spring",
+        "value": "160ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Controlled 0.97-scale press feedback on compact controls."
+      },
+      {
+        "name": "state-shift",
+        "value": "300ms ease",
+        "purpose": "Local color, opacity, and compact state transitions."
+      },
+      {
+        "name": "cinematic-reveal",
+        "value": "600ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Entrances and local compositional reveals."
+      },
+      {
+        "name": "fill-rise",
+        "value": "500ms cubic-bezier(0.19, 1, 0.22, 1)",
+        "purpose": "Vertical color fill and arrow transitions on conversion controls."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Conversion Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The foliage-green primary action with a forest fill-rise and directional arrow.",
+      "html": "<button class=\"ds-btn-primary\"><span>BOOK A CALL</span><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12h14M12 5l7 7-7 7\"/></svg></button>",
+      "css": ".ds-btn-primary { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 12px; overflow: hidden; border: 0; border-radius: 9999px; padding: 16px 32px; background: var(--color-accent, #89A236); color: var(--color-primary, #11250E); font: 500 14px/1 var(--font-space-grotesk, Arial, sans-serif); transition: color 300ms ease, transform 160ms cubic-bezier(0.16,1,0.3,1), background 500ms cubic-bezier(0.19,1,0.22,1); } .ds-btn-primary svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 500ms cubic-bezier(0.19,1,0.22,1); } .ds-btn-primary:hover { background: var(--color-primary, #11250E); color: var(--color-background, #F8F3E6); } .ds-btn-primary:hover svg { transform: translateX(4px); } .ds-btn-primary:active { transform: scale(.97); } .ds-btn-primary:focus-visible { outline: 2px solid var(--color-primary, #11250E); outline-offset: 4px; }"
+    },
+    {
+      "name": "Quiet Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "A glass-like secondary action for navigation and lower-priority choices.",
+      "html": "<button class=\"ds-btn-outline\">VIEW WORK <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M7 17 17 7M7 7h10v10\"/></svg></button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(17,37,14,.30); border-radius: 9999px; padding: 10px 20px; background: rgba(248,243,230,.16); color: var(--color-primary, #11250E); backdrop-filter: blur(12px); font: 500 14px/1.2 var(--font-space-grotesk, Arial, sans-serif); transition: background 300ms ease, color 300ms ease, border-color 300ms ease, transform 160ms cubic-bezier(0.16,1,0.3,1); } .ds-btn-outline svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; } .ds-btn-outline:hover { background: var(--color-primary, #11250E); color: var(--color-background, #F8F3E6); border-color: var(--color-primary, #11250E); } .ds-btn-outline:active { transform: scale(.97); } .ds-btn-outline:focus-visible { outline: 2px solid var(--color-accent, #89A236); outline-offset: 3px; }"
+    },
+    {
+      "name": "Floating Navigation Pill",
+      "kind": "nav",
+      "refersTo": "nav-pill",
+      "description": "The compact desktop navigation shell with restrained transparency and ambient lift.",
+      "html": "<nav class=\"ds-nav-pill\" aria-label=\"Primary\"><a href=\"#work\">Work</a><a href=\"#services\">Services</a><a href=\"#about\">About</a><a href=\"#contact\">Contact</a></nav>",
+      "css": ".ds-nav-pill { display: inline-flex; align-items: center; gap: 24px; border: 1px solid rgba(17,37,14,.20); border-radius: 9999px; padding: 8px 24px; background: rgba(248,243,230,.20); box-shadow: 0 4px 24px rgba(17,37,14,.08); backdrop-filter: blur(24px); } .ds-nav-pill a { color: var(--color-primary, #11250E); font: 500 14px/1.2 var(--font-space-grotesk, Arial, sans-serif); text-decoration: none; transition: color 300ms ease; } .ds-nav-pill a:hover { color: var(--color-accent, #89A236); } .ds-nav-pill a:focus-visible { outline: 2px solid var(--color-accent, #89A236); outline-offset: 4px; border-radius: 4px; }"
+    },
+    {
+      "name": "Editorial Text Field",
+      "kind": "input",
+      "refersTo": "input-editorial",
+      "description": "A transparent baseline field with a compact evidence label and expanding foliage focus line.",
+      "html": "<label class=\"ds-field\"><span>EMAIL</span><input type=\"email\" placeholder=\"you@company.com\" /></label>",
+      "css": ".ds-field { display: grid; gap: 8px; width: 320px; color: var(--color-primary, #11250E); font-family: var(--font-space-grotesk, Arial, sans-serif); } .ds-field span { color: var(--color-muted, #524E38); font-size: 12px; font-weight: 600; letter-spacing: .2em; } .ds-field input { width: 100%; border: 0; border-bottom: 1px solid rgba(17,37,14,.20); border-radius: 0; padding: 10px 0; background: transparent; color: var(--color-primary, #11250E); font: 400 14px/1.5 var(--font-space-grotesk, Arial, sans-serif); transition: border-color 300ms ease, box-shadow 300ms ease; } .ds-field input::placeholder { color: rgba(17,37,14,.30); } .ds-field input:focus { outline: 0; border-color: var(--color-accent, #89A236); box-shadow: 0 1px 0 var(--color-accent, #89A236); } .ds-field:focus-within span { color: var(--color-primary, #11250E); }"
+    },
+    {
+      "name": "Work Category Selector",
+      "kind": "chip",
+      "description": "A pill-group selector whose active state moves as a single forest capsule.",
+      "html": "<div class=\"ds-tabs\" role=\"tablist\"><button class=\"ds-tab is-active\" role=\"tab\" aria-selected=\"true\">SHORT FORM</button><button class=\"ds-tab\" role=\"tab\">LONG FORM</button><button class=\"ds-tab\" role=\"tab\">GRAPHICS</button></div>",
+      "css": ".ds-tabs { display: inline-flex; align-items: center; gap: 4px; border: 1px solid rgba(17,37,14,.20); border-radius: 9999px; padding: 6px; background: rgba(248,243,230,.18); box-shadow: 0 4px 24px rgba(17,37,14,.08); backdrop-filter: blur(24px); } .ds-tab { border: 0; border-radius: 9999px; padding: 11px 20px; background: transparent; color: rgba(17,37,14,.60); font: 500 12px/1.2 var(--font-space-grotesk, Arial, sans-serif); letter-spacing: .03em; transition: color 300ms ease, background 300ms ease; } .ds-tab:hover { color: var(--color-primary, #11250E); } .ds-tab.is-active { background: var(--color-primary, #11250E); color: var(--color-background, #F8F3E6); } .ds-tab:focus-visible { outline: 2px solid var(--color-accent, #89A236); outline-offset: 2px; }"
+    },
+    {
+      "name": "Forest Proof Card",
+      "kind": "card",
+      "refersTo": "card-editorial",
+      "description": "A dark evidence surface that pairs a restrained metric with short supporting context.",
+      "html": "<article class=\"ds-proof-card\"><span>MEASURABLE IMPACT</span><strong>27</strong><p>projects shaped into narratives that hold attention and build authority.</p></article>",
+      "css": ".ds-proof-card { width: 280px; border: 1px solid rgba(248,243,230,.08); border-radius: 32px; padding: 28px; background: var(--color-primary, #11250E); color: var(--color-background, #F8F3E6); box-shadow: 0 8px 32px rgba(17,37,14,.15); font-family: var(--font-space-grotesk, Arial, sans-serif); transition: transform 500ms cubic-bezier(0.16,1,0.3,1), box-shadow 500ms ease; } .ds-proof-card span { color: var(--color-accent, #89A236); font-size: 11px; font-weight: 600; letter-spacing: .2em; } .ds-proof-card strong { display: block; margin: 18px 0 8px; font: 500 56px/.95 var(--font-tiempos-headline, Georgia, serif); } .ds-proof-card p { margin: 0; max-width: 26ch; color: rgba(248,243,230,.68); font-size: 14px; line-height: 1.55; } .ds-proof-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(17,37,14,.22); } .ds-proof-card:focus-within { outline: 2px solid var(--color-accent, #89A236); outline-offset: 4px; }"
+    },
+    {
+      "name": "Editorial Landscape Frame",
+      "kind": "custom",
+      "description": "The soft architectural mask used to turn landscape imagery into a narrative surface.",
+      "html": "<figure class=\"ds-landscape\"><div class=\"ds-landscape-sky\"></div><figcaption><span>THE EDITORIAL WILDERNESS</span><strong>Stories that<br/><em>move people.</em></strong></figcaption></figure>",
+      "css": ".ds-landscape { position: relative; width: 560px; height: 310px; overflow: hidden; margin: 0; border: 1px solid rgba(17,37,14,.10); border-radius: 32px; background: var(--color-primary, #11250E); box-shadow: 0 20px 50px rgba(17,37,14,.10); color: var(--color-background, #F8F3E6); } .ds-landscape-sky { position: absolute; inset: 0; background: radial-gradient(circle at 70% 20%, rgba(221,230,234,.24), transparent 34%), linear-gradient(145deg, #435D20 0%, #11250E 64%); } .ds-landscape-sky::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(17,37,14,.30), transparent 65%); } .ds-landscape figcaption { position: absolute; inset: auto 36px 34px; z-index: 1; } .ds-landscape span { display: block; margin-bottom: 14px; color: var(--color-accent, #89A236); font: 600 10px/1.2 var(--font-space-grotesk, Arial, sans-serif); letter-spacing: .2em; } .ds-landscape strong { font: 500 42px/1.02 var(--font-tiempos-headline, Georgia, serif); letter-spacing: -.025em; } .ds-landscape em { color: var(--color-accent, #89A236); font-weight: 400; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Editorial Wilderness",
+    "overview": "Monarch lives in an editorial wilderness: a cultivated natural world of mountains, forest, mist, bridges, sunlight, and open horizons. The atmosphere is cinematic and quietly ambitious, but never untamed. Generous cream space and precise typographic framing give every image, statement, and interaction the feeling of a considered ascent.\n\nThe system pairs literary emotion with technical control. Tiempos Headline carries the high-emotion moments, while Space Grotesk makes navigation, evidence, forms, and supporting copy feel contemporary and exact. Components are refined and restrained: soft silhouettes, hairline structure, ambient depth, and motion that reveals sequence or physical response without becoming playful.",
+    "keyCharacteristics": [
+      "Warm, daylight-led canvases anchored by deep forest contrast.",
+      "Cinematic landscape imagery composed as narrative infrastructure, not stock decoration.",
+      "Editorial serif focal phrases inside an otherwise precise sans-serif system.",
+      "Generous pacing, asymmetric storytelling, and calm transitions between dense moments.",
+      "Tactile pills and framed surfaces with restrained blur, grain, and ambient depth."
+    ],
+    "rules": [
+      { "name": "The Canopy Rule", "body": "Deep Forest and Warm Daylight establish the world; Sunlit Foliage is a controlled break in the canopy, not a fill color for every surface.", "section": "colors" },
+      { "name": "The Atmospheric Distance Rule", "body": "Mist and mountain tones create depth or separation only. They do not compete with the primary forest-and-cream hierarchy.", "section": "colors" },
+      { "name": "The One Poetic Voice Rule", "body": "Give one word or phrase the emotional spotlight through Tiempos italic and Sunlit Foliage; the surrounding sentence stays composed.", "section": "typography" },
+      { "name": "The Quiet Evidence Rule", "body": "Labels and metrics are small, widely tracked, and exact. They frame proof without shouting over the story.", "section": "typography" },
+      { "name": "The Clearing Rule", "body": "Every immersive or information-dense scene needs a quiet visual clearing before or after it.", "section": "layout" },
+      { "name": "The Ascent Rule", "body": "Page rhythm should feel like progressive elevation: proposition, belief, proof, method, capability, results, conversion, and a final return to landscape.", "section": "layout" },
+      { "name": "The Ambient-First Rule", "body": "At rest, depth should feel like atmosphere around an object, never a hard drop shadow pasted beneath it.", "section": "elevation" },
+      { "name": "The Two-Depth Rule", "body": "Keep no more than two visually active depth systems in one viewport so motion and layering continue to support reading.", "section": "elevation" },
+      { "name": "The Soft Structure Rule", "body": "Radius softens substantial editorial surfaces; it does not excuse nesting rounded cards inside rounded cards.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do preserve the Warm Daylight, Deep Forest, and Sunlit Foliage hierarchy across every route.",
+      "Do pair an emotional promise with a concrete mechanism, metric, or piece of evidence.",
+      "Do use Tiempos italic for one emotional focal phrase while Space Grotesk carries navigation and explanation.",
+      "Do let important sections arrive with generous space and give dense moments a quiet transition.",
+      "Do animate transforms, opacity, masks, line drawing, and layered depth with smooth, damped timing.",
+      "Do retain native cursor behavior on touch and coarse-pointer devices and visible focus treatment for keyboard users."
+    ],
+    "donts": [
+      "Don't revive the historical dark theme or turn Deep Forest into the default page canvas.",
+      "Don't introduce unrelated saturated colors; limited warm endpoints may appear only inside an established decorative gradient.",
+      "Don't use loud trend-chasing agency tropes, empty virality claims, or decorative motion without narrative purpose.",
+      "Don't stack multiple competing parallax, pinning, and hover systems in the same viewport.",
+      "Don't compress the site into a dense marketing sheet or place uncomposed stock imagery beside copy.",
+      "Don't apply elastic bounce, rapid looping attention grabs, heavy boxed inputs, or generic card grids."
+    ]
+  }
+}

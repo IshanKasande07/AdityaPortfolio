@@ -1,0 +1,328 @@
+Created At: 2026-09-15T17:30:42+05:30
+Completed At: 2026-09-15T17:30:42+05:30
+File Path: `file:///c:/Users/Ishan/Desktop/monarch%20Media%20House/AdityaPortfolioFrontend/components/OurServices.tsx`
+Total Lines: 320
+Total Bytes: 16676
+Showing lines 1 to 320
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: "use client";
+2: 
+3: import React, { useRef, useEffect, useState } from "react";
+4: import gsap from "gsap";
+5: import { ScrollTrigger } from "gsap/ScrollTrigger";
+6: import { motion, AnimatePresence } from "framer-motion";
+7: import { Share2, Film, Lightbulb, BarChart3, Search } from "lucide-react";
+8: import Image from "next/image";
+9: import atmosphere from "./ServicesAtmosphere.module.css";
+10: 
+11: gsap.registerPlugin(ScrollTrigger);
+12: 
+13: const services = [
+14:     {
+15:         icon: Share2,
+16:         title: "Social Media Marketing",
+17:         desc: "Dominate the feed with content that stops the scroll and builds real, lasting engagement across every platform.",
+18:         number: "01",
+19:     },
+20:     {
+21:         icon: Film,
+22:         title: "Post Production",
+23:         desc: "High-end visual storytelling that turns raw footage into cinematic brand experiences your audience won't forget.",
+24:         number: "02",
+25:     },
+26:     {
+27:         icon: Lightbulb,
+28:         title: "Creative Strategy",
+29:         desc: "Data-driven creative directions designed to align your brand perfectly with your market and audience.",
+30:         number: "03",
+31:     },
+32:     {
+33:         icon: BarChart3,
+34:         title: "Performance Marketing",
+35:         desc: "Aggressive, ROI-focused campaigns designed to scale your revenue and outperform competition at every level.",
+36:         number: "04",
+37:     },
+38:     {
+39:         icon: Search,
+40:         title: "SEO",
+41:         desc: "Master the search engine landscape and secure long-term organic growth that compounds over time.",
+42:         number: "05",
+43:     },
+44: ];
+45: 
+46: const OurServices = () => {
+47:     const sectionRef = useRef<HTMLElement>(null);
+48:     const stickyContainerRef = useRef<HTMLDivElement>(null);
+49:     const passageRef = useRef<HTMLDivElement>(null);
+50:     const textRefs = useRef<(HTMLButtonElement | null)[]>([]);
+51:     const [activeIndex, setActiveIndex] = useState(0);
+52: 
+53:     useEffect(() => {
+54:         const media = gsap.matchMedia();
+55:         media.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
+56:             const tl = gsap.timeline({
+57:                 scrollTrigger: {
+58:                     trigger: sectionRef.current,
+59:                     start: "top bottom+=360",
+60:                     end: "top top-=500",
+61:                     scrub: 1.2,
+62:                 },
+63:             });
+64:             
+65:             tl.fromTo(passageRef.current, { y: 80 }, { y: -80, ease: "none" }, 0);
+66:             
+67:             if (passageRef.current) {
+68:                 const layers = passageRef.current.querySelectorAll(`.${atmosphere.parallaxLayer}`);
+69:                 if (layers.length >= 3) {
+70:                     tl.fromTo(layers[0], { y: 30 }, { y: -30, ease: "none" }, 0);
+71:                     tl.fromTo(layers[1], { y: 55 }, { y: -55, ease: "none" }, 0);
+72:                     tl.fromTo(layers[2], { y: 80 }, { y: -80, ease: "none" }, 0);
+73:                 }
+74:             }
+75:         });
+76:         return () => media.revert();
+77:     }, []);
+78: 
+79:     useEffect(() => {
+80:         if (!sectionRef.current) return;
+81: 
+82:         const updateActiveIndex = () => {
+83:             const targetY = window.innerHeight * 0.5;
+84:             let closestIdx = 0;
+85:             let minDistance = Infinity;
+86: 
+87:             textRefs.current.forEach((el, idx) => {
+88:                 if (!el) return;
+89:                 const rect = el.getBoundingClientRect();
+90:                 const elCenter = rect.top + rect.height / 2;
+91:                 const distance = Math.abs(elCenter - targetY);
+92:                 if (distance < minDistance) {
+93:                     minDistance = distance;
+94:                     closestIdx = idx;
+95:                 }
+96:             });
+97: 
+98:             setActiveIndex((prev) => (prev !== closestIdx ? closestIdx : prev));
+99:         };
+100: 
+101:         const ctx = gsap.context(() => {
+102:             ScrollTrigger.create({
+103:                 trigger: sectionRef.current,
+104:                 start: "top bottom",
+105:                 end: "bottom top",
+106:                 onUpdate: updateActiveIndex,
+107:                 onRefresh: updateActiveIndex,
+108:             });
+109: 
+110:             updateActiveIndex();
+111:             setTimeout(updateActiveIndex, 100);
+112:             setTimeout(updateActiveIndex, 500);
+113:         }, sectionRef);
+114: 
+115:         window.addEventListener("scroll", updateActiveIndex, { passive: true });
+116:         window.addEventListener("resize", updateActiveIndex, { passive: true });
+117: 
+118:         return () => {
+119:             ctx.revert();
+120:             window.removeEventListener("scroll", updateActiveIndex);
+121:             window.removeEventListener("resize", updateActiveIndex);
+122:         };
+123:     }, []);
+124: 
+125:     return (
+126:         <section
+127:             ref={sectionRef}
+128:             id="services"
+129:             className="relative w-full"
+130:             style={{ backgroundColor: "#70B2D4" }}
+131:         >
+132:             <div className={atmosphere.passage} aria-hidden="true">
+133:                 <div className={atmosphere.light} />
+134:                 <div ref={passageRef} className={atmosphere.drift}>
+135:                     <div className={atmosphere.parallaxLayer}>
+136:                         <div className={`${atmosphere.cloudTrack} ${atmosphere.track1}`}>
+137:                             <Image src="/clouds/clouds1.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+138:                             <Image src="/clouds/clouds1.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+139:                         </div>
+140:                     </div>
+141:                     <div className={atmosphere.parallaxLayer}>
+142:                         <div className={`${atmosphere.cloudTrack} ${atmosphere.track2}`}>
+143:                             <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+144:                             <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+145:                         </div>
+146:                     </div>
+147:                     <div className={atmosphere.parallaxLayer}>
+148:                         <div className={`${atmosphere.cloudTrack} ${atmosphere.track3}`}>
+149:                             <Image src="/clouds/clouds3.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+150:                             <Image src="/clouds/clouds3.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+151:                         </div>
+152:                     </div>
+153:                 </div>
+154:             </div>
+155:             {/* Section Header */}
+156:             <div className="relative z-[1] w-full max-w-[1070px] mx-auto px-6 md:px-16 pt-12 md:pt-16 pb-10">
+157:                         <div className="inline-block bg-primary text-background px-3 py-1.5 rounded-lg text-sm font-medium mb-4 shadow-sm border border-primary/10">
+158:                             Our Expertise
+159:                         </div>
+160:                         <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium text-primary tracking-tight leading-tight">
+161:                             Our Services.
+162:                         </h2>
+163:                     </div>
+164:                     <div className="md:max-w-md lg:max-w-lg md:pb-1">
+165:                         <p className="text-base md:text-lg text-gray-600 font-light leading-relaxed">
+166:                             A full-stack creative arsenal built to transform your brand presence into <span className="text-primary font-medium">market authority</span>.
+167:                         </p>
+168:                     </div>
+169:                 </div>
+170:             </div>
+171: 
+172:             {/* Two Column Layout */}
+173:             <div className="relative z-[1] w-full max-w-[1070px] mx-auto px-6 md:px-16 flex flex-col lg:flex-row gap-12 lg:gap-0">
+174: 
+175:                 {/* Left Column — Scrolling Text Items */}
+176:                 <div className="lg:w-[50%] relative pl-6 md:pl-6">
+177:                     {services.map((service, idx) => {
+178:                         const isActive = idx === activeIndex;
+179:                         return (
+180:                             <button
+181:                                 type="button"
+182:                                 key={idx}
+183:                                 data-cursor-hover
+184:                                 onClick={() => {
+185:                                     textRefs.current[idx]?.scrollIntoView({ behavior: "smooth", block: "center" });
+186:                                 }}
+187:                                 ref={(el) => { textRefs.current[idx] = el; }}
+188:                                 className="w-full text-left py-6 md:py-8 border-t border-primary/10 first:border-t-0 group relative block"
+189:                             >
+190:                                 {/* Active border animation */}
+191:                                 <div 
+192:                                     className={`absolute top-[-1px] left-0 w-full h-[1px] bg-accent transition-transform duration-500 ease-out origin-left ${isActive ? "scale-x-100" : "scale-x-0"}`}
+193:                                 />
+194: 
+195:                                 <div className={`transition-all duration-300 group-hover:translate-x-2 ${isActive ? "opacity-100 translate-x-1" : "opacity-50 group-hover:opacity-80"}`}>
+196:                                     {/* Number */}
+197:                                     <span className={`text-xs md:text-sm font-mono tracking-[0.3em] uppercase mb-2 block transition-colors duration-300 group-hover:text-accent ${isActive ? "text-accent font-semibold" : "text-accent/60"}`}>
+198:                                         {service.number}
+199:                                     </span>
+200: 
+201:                                     {/* Title */}
+202:                                     <h3
+203:                                         className={`text-3xl lg:text-4xl font-normal tracking-[-0.025em] leading-[1.12] mb-3 transition-colors duration-300 ${isActive ? "text-primary" : "text-primary/70"}`}
+204:                                         style={{ fontFamily: "var(--font-tiempos-headline), Georgia, serif" }}
+205:                                     >
+206:                                         {service.title}
+207:                                     </h3>
+208: 
+209:                                     {/* Description */}
+210:                                     <p className="text-[13px] md:text-sm text-muted font-light leading-relaxed max-w-sm">
+211:                                         {service.desc}
+212:                                     </p>
+213:                                 </div>
+214:                             </button>
+215:                         );
+216:                     })}
+217:                     {/* Spacer inside left column so the flex row stays tall enough for SEO to reach vertical center before unpinning */}
+218:                     <div className="h-[30vh]" />
+219:                 </div>
+220: 
+221:                 {/* Right Column — Sticky Icon Container */}
+222:                 <div className="hidden lg:block lg:w-[50%] pt-32">
+223:                     <div
+224:                         ref={stickyContainerRef}
+225:                         className="sticky top-[50vh] -translate-y-1/2 ml-12 xl:ml-20"
+226:                     >
+227:                         {/* Large rounded container */}
+228:                         <div
+229:                             className="relative w-[90%] lg:w-[85%] xl:w-[400px] mx-auto aspect-[1.6/1] rounded-[20px] flex items-center justify-center"
+230:                             style={{
+231:                                 backgroundColor: "rgba(17, 37, 14, 0.04)",
+232:                                 border: "1px solid rgba(17, 37, 14, 0.08)",
+233:                             }}
+234:                         >
+235:                             {/* Horizontal icon row */}
+236:                             <div className="flex items-end justify-center gap-3 lg:gap-5 w-full px-8 lg:px-10">
+237:                                 {services.map((service, idx) => {
+238:                                     const IconComponent = service.icon;
+239:                                     const isActive = idx === activeIndex;
+240: 
+241:                                     return (
+242:                                         <motion.div
+243:                                             key={idx}
+244:                                             data-cursor-hover
+245:                                             className="flex flex-col items-center cursor-pointer"
+246:                                             onClick={() => {
+247:                                                 textRefs.current[idx]?.scrollIntoView({ behavior: "smooth", block: "center" });
+248:                                             }}
+249:                                             animate={{
+250:                                                 y: isActive ? -18 : 0,
+251:                                                 scale: isActive ? 1.15 : 1,
+252:                                             }}
+253:                                             transition={{
+254:                                                 type: "spring",
+255:                                                 stiffness: 350,
+256:                                                 damping: 22,
+257:                                                 mass: 0.8,
+258:                                             }}
+259:                                         >
+260:                                             {/* Icon tile */}
+261:                                             <motion.div
+262:                                                 className="relative rounded-xl w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center shrink-0"
+263:                                                 animate={{
+264:                                                     backgroundColor: isActive ? "#11250E" : "rgba(17, 37, 14, 0.06)",
+265:                                                     boxShadow: isActive ? "0 12px 20px -4px rgba(17, 37, 14, 0.25)" : "0 0 0 0 transparent",
+266:                                                 }}
+267:                                                 transition={{ duration: 0.3, ease: "easeOut" }}
+268:                                             >
+269:                                                 <IconComponent
+270:                                                     className="w-4 h-4 lg:w-5 lg:h-5 shrink-0 transition-colors duration-300"
+271:                                                     style={{
+272:                                                         color: isActive ? "#F8F3E6" : "rgba(17, 37, 14, 0.35)",
+273:                                                     }}
+274:                                                     strokeWidth={1.5}
+275:                                                 />
+276:                                             </motion.div>
+277: 
+278:                                             {/* Drop shadow beneath icon */}
+279:                                             <motion.div
+280:                                                 className="mt-2 w-10 h-2 rounded-full pointer-events-none"
+281:                                                 style={{
+282:                                                     background: "radial-gradient(ellipse at center, rgba(17,37,14,0.2) 0%, transparent 70%)",
+283:                                                 }}
+284:                                                 animate={{
+285:                                                     opacity: isActive ? 1 : 0,
+286:                                                     scaleX: isActive ? 1.1 : 0.4,
+287:                                                 }}
+288:                                                 transition={{ duration: 0.3, ease: "easeOut" }}
+289:                                             />
+290:                                         </motion.div>
+291:                                     );
+292:                                 })}
+293:                             </div>
+294:                         </div>
+295: 
+296:                         {/* Active service label under the container with smooth cross-fade */}
+297:                         <div className="mt-6 text-center h-6 flex items-center justify-center">
+298:                             <AnimatePresence mode="wait">
+299:                                 <motion.p
+300:                                     key={activeIndex}
+301:                                     initial={{ opacity: 0, y: 6 }}
+302:                                     animate={{ opacity: 1, y: 0 }}
+303:                                     exit={{ opacity: 0, y: -6 }}
+304:                                     transition={{ duration: 0.2, ease: "easeOut" }}
+305:                                     className="text-xs font-mono text-accent tracking-[0.3em] uppercase"
+306:                                 >
+307:                                     {services[activeIndex].number} — {services[activeIndex].title}
+308:                                 </motion.p>
+309:                             </AnimatePresence>
+310:                         </div>
+311:                     </div>
+312:                 </div>
+313:             </div>
+314: 
+315:         </section>
+316:     );
+317: };
+318: 
+319: export default OurServices;
+320: 
+The above content shows the entire, complete file contents of the requested file.

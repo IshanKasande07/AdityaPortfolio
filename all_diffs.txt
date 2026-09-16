@@ -1,0 +1,2051 @@
+Created At: 2026-09-15T14:38:09+05:30
+Completed At: 2026-09-15T14:38:11+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -17,17 +17,35 @@
+ }
+ .cloud {
+   position: absolute;
+-  width: 140%;
+   max-width: none;
+   height: auto;
+-  left: -20%;
+-  top: 20%;
+-  opacity: .3;
+   filter: saturate(.4);
+   mask-image: linear-gradient(to bottom, #000 40%, transparent 98%);
+ }
++.cloud1 {
++  width: 140%;
++  left: -20%;
++  top: 10%;
++  opacity: .25;
++}
++.cloud2 {
++  width: 150%;
++  left: -10%;
++  top: 30%;
++  opacity: .3;
++}
++.cloud3 {
++  width: 130%;
++  left: -30%;
++  top: 50%;
++  opacity: .35;
++}
+ @media (max-width: 767px) {
+   .passage { top: -180px; height: 600px; }
+-  .cloud { width: 210%; left: -55%; opacity: .2; }
+-}
++  .cloud { opacity: .2; }
++  .cloud1 { width: 210%; left: -55%; top: 5%; }
++  .cloud2 { width: 220%; left: -45%; top: 20%; }
++  .cloud3 { width: 200%; left: -65%; top: 40%; }
++}
++
+ 
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T14:38:29+05:30
+Completed At: 2026-09-15T14:38:31+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\OurServices.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -122,7 +122,9 @@
+             <div className={atmosphere.passage} aria-hidden="true">
+                 <div className={atmosphere.light} />
+                 <div ref={passageRef} className={atmosphere.drift}>
+-                    <Image src="/heroassets/CLoud.webp" alt="" width={2730} height={871} sizes="100vw" className={atmosphere.cloud} />
++                    <Image src="/clouds/clouds1.avif" alt="" width={2730} height={871} sizes="100vw" className={`${atmosphere.cloud} ${atmosphere.cloud1}`} />
++                    <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} sizes="100vw" className={`${atmosphere.cloud} ${atmosphere.cloud2}`} />
++                    <Image src="/clouds/clouds3.avif" alt="" width={2730} height={871} sizes="100vw" className={`${atmosphere.cloud} ${atmosphere.cloud3}`} />
+                 </div>
+             </div>
+             {/* Section Header */}
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T16:52:38+05:30
+Completed At: 2026-09-15T16:52:41+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -19,7 +19,8 @@
+   position: absolute;
+   max-width: none;
+   height: auto;
+-  filter: saturate(.4);
++  mix-blend-mode: multiply;
++  filter: saturate(.4) brightness(.8) contrast(1.1);
+   mask-image: linear-gradient(to bottom, #000 40%, transparent 98%);
+ }
+ .cloud1 {
+@@ -26,6 +26,6 @@
+   left: -20%;
+   top: 10%;
+-  opacity: .25;
++  opacity: .5;
+ }
+ .cloud2 {
+   width: 150%;
+@@ -32,5 +32,5 @@
+   top: 30%;
+-  opacity: .3;
++  opacity: .6;
+ }
+ .cloud3 {
+   width: 130%;
+@@ -37,9 +37,9 @@
+   top: 50%;
+-  opacity: .35;
++  opacity: .7;
+ }
+ @media (max-width: 767px) {
+   .passage { top: -180px; height: 600px; }
+-  .cloud { opacity: .2; }
++  .cloud { opacity: .4; }
+   .cloud1 { width: 210%; left: -55%; top: 5%; }
+   .cloud2 { width: 220%; left: -45%; top: 20%; }
+   .cloud3 { width: 200%; left: -65%; top: 40%; }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T16:55:11+05:30
+Completed At: 2026-09-15T16:55:13+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -1,13 +1,13 @@
+ .passage {
+   position: absolute;
+   z-index: 0;
+-  top: -360px;
++  top: -400px;
+   left: 0;
+   width: 100%;
+-  height: 940px;
++  height: 1100px;
+   overflow: clip;
+   pointer-events: none;
+-  mask-image: linear-gradient(transparent, #000 22%, #000 64%, transparent);
++  mask-image: linear-gradient(transparent, #000 15%, #000 75%, transparent);
+ }
+ .drift { position: absolute; inset: 0; }
+ .light {
+@@ -14,5 +14,7 @@
+   inset: 0;
+-  background: radial-gradient(ellipse at 100% 45%, rgba(142, 172, 172, .28), transparent 65%), radial-gradient(ellipse at 0% 65%, rgba(137, 162, 54, .12), transparent 60%);
++  background: radial-gradient(ellipse at 80% 30%, rgba(156, 182, 196, .35), transparent 70%), 
++              radial-gradient(ellipse at 20% 70%, rgba(137, 162, 54, .18), transparent 60%),
++              radial-gradient(ellipse at 50% 50%, rgba(225, 216, 196, .5), transparent 80%);
+ }
+ .cloud {
+   position: absolute;
+@@ -19,32 +19,31 @@
+   height: auto;
+-  mix-blend-mode: multiply;
+-  filter: saturate(.4) brightness(.8) contrast(1.1);
+-  mask-image: linear-gradient(to bottom, #000 40%, transparent 98%);
++  filter: saturate(.1) sepia(.1) brightness(.92);
++  mix-blend-mode: normal;
+ }
+ .cloud1 {
+-  width: 140%;
+-  left: -20%;
+-  top: 10%;
++  width: 150%;
++  left: -25%;
++  top: 5%;
+   opacity: .5;
+ }
+ .cloud2 {
+-  width: 150%;
+-  left: -10%;
+-  top: 30%;
++  width: 160%;
++  left: -15%;
++  top: 25%;
+   opacity: .6;
+ }
+ .cloud3 {
+-  width: 130%;
+-  left: -30%;
++  width: 140%;
++  left: -35%;
+   top: 50%;
+-  opacity: .7;
++  opacity: .55;
+ }
+ @media (max-width: 767px) {
+-  .passage { top: -180px; height: 600px; }
++  .passage { top: -200px; height: 700px; }
+   .cloud { opacity: .4; }
+-  .cloud1 { width: 210%; left: -55%; top: 5%; }
+-  .cloud2 { width: 220%; left: -45%; top: 20%; }
+-  .cloud3 { width: 200%; left: -65%; top: 40%; }
++  .cloud1 { width: 220%; left: -60%; top: 5%; }
++  .cloud2 { width: 240%; left: -50%; top: 25%; }
++  .cloud3 { width: 210%; left: -70%; top: 45%; }
+ }
+ 
+ 
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T16:55:25+05:30
+Completed At: 2026-09-15T16:55:27+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\OurServices.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -53,9 +53,7 @@
+     useEffect(() => {
+         const media = gsap.matchMedia();
+         media.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
+-            gsap.fromTo(passageRef.current, { y: 70 }, {
+-                y: -70,
+-                ease: "none",
++            const tl = gsap.timeline({
+                 scrollTrigger: {
+                     trigger: sectionRef.current,
+                     start: "top bottom+=360",
+@@ -62,6 +62,17 @@
+                     scrub: 1.2,
+                 },
+             });
++            
++            tl.fromTo(passageRef.current, { y: 80 }, { y: -80, ease: "none" }, 0);
++            
++            if (passageRef.current) {
++                const clouds = passageRef.current.querySelectorAll("img");
++                if (clouds.length >= 3) {
++                    tl.fromTo(clouds[0], { y: 40 }, { y: -40, ease: "none" }, 0);
++                    tl.fromTo(clouds[1], { y: 70 }, { y: -70, ease: "none" }, 0);
++                    tl.fromTo(clouds[2], { y: 110 }, { y: -110, ease: "none" }, 0);
++                }
++            }
+         });
+         return () => media.revert();
+     }, []);
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T16:58:04+05:30
+Completed At: 2026-09-15T16:58:06+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -13,7 +13,8 @@
+ .light {
+   position: absolute;
+   inset: 0;
+-  background: radial-gradient(ellipse at 80% 30%, rgba(156, 182, 196, .35), transparent 70%), 
++  background: linear-gradient(to bottom, #c6d4db 10%, transparent 60%),
++              radial-gradient(ellipse at 80% 30%, rgba(156, 182, 196, .45), transparent 70%), 
+               radial-gradient(ellipse at 20% 70%, rgba(137, 162, 54, .18), transparent 60%),
+               radial-gradient(ellipse at 50% 50%, rgba(225, 216, 196, .5), transparent 80%);
+ }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T16:58:16+05:30
+Completed At: 2026-09-15T16:58:18+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -22,7 +22,7 @@
+   position: absolute;
+   max-width: none;
+   height: auto;
+-  filter: saturate(.1) sepia(.1) brightness(.92);
++  filter: saturate(.2) brightness(1.1);
+   mix-blend-mode: normal;
+ }
+ .cloud1 {
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:05:25+05:30
+Completed At: 2026-09-15T17:05:28+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -13,9 +13,9 @@
+ .light {
+   position: absolute;
+   inset: 0;
+-  background: linear-gradient(to bottom, #c6d4db 10%, transparent 60%),
+-              radial-gradient(ellipse at 80% 30%, rgba(156, 182, 196, .45), transparent 70%), 
+-              radial-gradient(ellipse at 20% 70%, rgba(137, 162, 54, .18), transparent 60%),
++  background: linear-gradient(to bottom, #E1D8C4 5%, transparent 65%),
++              radial-gradient(ellipse at 80% 30%, rgba(156, 182, 196, .25), transparent 70%), 
++              radial-gradient(ellipse at 20% 70%, rgba(137, 162, 54, .12), transparent 60%),
+               radial-gradient(ellipse at 50% 50%, rgba(225, 216, 196, .5), transparent 80%);
+ }
+ .cloud {
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:06:36+05:30
+Completed At: 2026-09-15T17:06:39+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -13,7 +13,7 @@
+ .light {
+   position: absolute;
+   inset: 0;
+-  background: linear-gradient(to bottom, #E1D8C4 5%, transparent 65%),
++  background: linear-gradient(to bottom, #C7BCA3 5%, transparent 65%),
+               radial-gradient(ellipse at 80% 30%, rgba(156, 182, 196, .25), transparent 70%), 
+               radial-gradient(ellipse at 20% 70%, rgba(137, 162, 54, .12), transparent 60%),
+               radial-gradient(ellipse at 50% 50%, rgba(225, 216, 196, .5), transparent 80%);
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:15:30+05:30
+Completed At: 2026-09-15T17:15:32+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -13,10 +13,7 @@
+ .light {
+   position: absolute;
+   inset: 0;
+-  background: linear-gradient(to bottom, #C7BCA3 5%, transparent 65%),
+-              radial-gradient(ellipse at 80% 30%, rgba(156, 182, 196, .25), transparent 70%), 
+-              radial-gradient(ellipse at 20% 70%, rgba(137, 162, 54, .12), transparent 60%),
+-              radial-gradient(ellipse at 50% 50%, rgba(225, 216, 196, .5), transparent 80%);
++  background: linear-gradient(to bottom, transparent 25%, #70B2D4 45%, #70B2D4 100%);
+ }
+ .cloud {
+   position: absolute;
+@@ -23,5 +23,5 @@
+   height: auto;
+-  filter: saturate(.2) brightness(1.1);
++  filter: saturate(0) brightness(1.4);
+   mix-blend-mode: normal;
+ }
+ .cloud1 {
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:15:39+05:30
+Completed At: 2026-09-15T17:15:41+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -26,7 +26,7 @@
+   width: 150%;
+   left: -25%;
+   top: 5%;
+-  opacity: .5;
++  opacity: 1;
+ }
+ .cloud2 {
+   width: 160%;
+@@ -33,5 +33,5 @@
+   top: 25%;
+-  opacity: .6;
++  opacity: 1;
+ }
+ .cloud3 {
+   width: 140%;
+@@ -38,5 +38,5 @@
+   top: 50%;
+-  opacity: .55;
++  opacity: 1;
+ }
+ @media (max-width: 767px) {
+   .passage { top: -200px; height: 700px; }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:15:48+05:30
+Completed At: 2026-09-15T17:15:59+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\OurServices.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -117,16 +117,59 @@
+ 
+         return () => {
+             ctx.revert();
+-            window.removeEventListener("scroll", updateActiveIndex);
+-            window.removeEventListener("resize", updateActiveIndex);
+-        };
+-    }, []);
+-
+-    return (
+-        <section
+-            ref={sectionRef}
+-            id="services"
++
++    useEffect(() => {
++        if (!sectionRef.current) return;
++
++        const updateActiveIndex = () => {
++            const targetY = window.innerHeight * 0.5;
++            let closestIdx = 0;
++            let minDistance = Infinity;
++
++            textRefs.current.forEach((el, idx) => {
++                if (!el) return;
++                const rect = el.getBoundingClientRect();
++                const elCenter = rect.top + rect.height / 2;
++                const distance = Math.abs(elCenter - targetY);
++                if (distance < minDistance) {
++                    minDistance = distance;
++                    closestIdx = idx;
++                }
++            });
++
++            setActiveIndex((prev) => (prev !== closestIdx ? closestIdx : prev));
++        };
++
++        const ctx = gsap.context(() => {
++            ScrollTrigger.create({
++                trigger: sectionRef.current,
++                start: "top bottom",
++                end: "bottom top",
++                onUpdate: updateActiveIndex,
++                onRefresh: updateActiveIndex,
++            });
++
++            updateActiveIndex();
++            setTimeout(updateActiveIndex, 100);
++            setTimeout(updateActiveIndex, 500);
++        }, sectionRef);
++
++        window.addEventListener("scroll", updateActiveIndex, { passive: true });
++        window.addEventListener("resize", updateActiveIndex, { passive: true });
++
++        return () => {
++            ctx.revert();
++            window.removeEventListener("scroll", updateActiveIndex);
++            window.removeEventListener("resize", updateActiveIndex);
++        };
++    }, []);
++
++    return (
++        <section
++            ref={sectionRef}
++            id="services"
+             className="relative w-full"
++            style={{ backgroundColor: "#70B2D4" }}
+         >
+             <div className={atmosphere.passage} aria-hidden="true">
+                 <div className={atmosphere.light} />
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+
+We did our best to apply changes despite some inaccuracies. Double check if the edit applied is what you intended.
+===DIFF===
+Created At: 2026-09-15T17:16:12+05:30
+Completed At: 2026-09-15T17:16:13+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\OurServices.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -117,48 +117,6 @@
+ 
+         return () => {
+             ctx.revert();
+-
+-    useEffect(() => {
+-        if (!sectionRef.current) return;
+-
+-        const updateActiveIndex = () => {
+-            const targetY = window.innerHeight * 0.5;
+-            let closestIdx = 0;
+-            let minDistance = Infinity;
+-
+-            textRefs.current.forEach((el, idx) => {
+-                if (!el) return;
+-                const rect = el.getBoundingClientRect();
+-                const elCenter = rect.top + rect.height / 2;
+-                const distance = Math.abs(elCenter - targetY);
+-                if (distance < minDistance) {
+-                    minDistance = distance;
+-                    closestIdx = idx;
+-                }
+-            });
+-
+-            setActiveIndex((prev) => (prev !== closestIdx ? closestIdx : prev));
+-        };
+-
+-        const ctx = gsap.context(() => {
+-            ScrollTrigger.create({
+-                trigger: sectionRef.current,
+-                start: "top bottom",
+-                end: "bottom top",
+-                onUpdate: updateActiveIndex,
+-                onRefresh: updateActiveIndex,
+-            });
+-
+-            updateActiveIndex();
+-            setTimeout(updateActiveIndex, 100);
+-            setTimeout(updateActiveIndex, 500);
+-        }, sectionRef);
+-
+-        window.addEventListener("scroll", updateActiveIndex, { passive: true });
+-        window.addEventListener("resize", updateActiveIndex, { passive: true });
+-
+-        return () => {
+-            ctx.revert();
+             window.removeEventListener("scroll", updateActiveIndex);
+             window.removeEventListener("resize", updateActiveIndex);
+         };
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:24:54+05:30
+Completed At: 2026-09-15T17:24:59+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -13,7 +13,7 @@
+ .light {
+   position: absolute;
+   inset: 0;
+-  background: linear-gradient(to bottom, transparent 25%, #70B2D4 45%, #70B2D4 100%);
++  background: linear-gradient(to bottom, #F8F3E6 25%, #70B2D4 60%);
+ }
+ .cloud {
+   position: absolute;
+@@ -20,5 +20,5 @@
+   height: auto;
+-  filter: saturate(0) brightness(1.4);
++  filter: sepia(.3) saturate(.8) brightness(.98);
+   mix-blend-mode: normal;
+ }
+ .cloud1 {
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:30:02+05:30
+Completed At: 2026-09-15T17:30:05+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -15,29 +15,46 @@
+   inset: 0;
+   background: linear-gradient(to bottom, #F8F3E6 25%, #70B2D4 60%);
+ }
+-.cloud {
+-  position: absolute;
+-  max-width: none;
++@keyframes driftLeft {
++  0% { transform: translateX(0); }
++  100% { transform: translateX(-50%); }
++}
++.parallaxLayer {
++  position: absolute;
++  top: 0;
++  left: 0;
++  width: 100%;
++  height: 100%;
++}
++.cloudTrack {
++  position: absolute;
++  left: 0;
++  display: flex;
++  will-change: transform;
++}
++.cloudImage {
++  width: 50%;
+   height: auto;
+   filter: sepia(.3) saturate(.8) brightness(.98);
+   mix-blend-mode: normal;
+-}
+-.cloud1 {
+-  width: 150%;
+-  left: -25%;
+-  top: 5%;
+-  opacity: 1;
+-}
+-.cloud2 {
+-  width: 160%;
+-  left: -15%;
+-  top: 25%;
+-  opacity: 1;
+-}
+-.cloud3 {
+-  width: 140%;
+-  left: -35%;
+-  top: 50%;
++  object-fit: cover;
++}
++.track1 {
++  width: 300%;
++  top: 20%;
++  animation: driftLeft 100s linear infinite;
++  opacity: 1;
++}
++.track2 {
++  width: 320%;
++  top: 28%;
++  animation: driftLeft 140s linear infinite;
++  opacity: 1;
++}
++.track3 {
++  width: 280%;
++  top: 36%;
++  animation: driftLeft 80s linear infinite;
+   opacity: 1;
+ }
+ @media (max-width: 767px) {
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:30:21+05:30
+Completed At: 2026-09-15T17:30:36+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\OurServices.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -65,11 +65,11 @@
+             tl.fromTo(passageRef.current, { y: 80 }, { y: -80, ease: "none" }, 0);
+             
+             if (passageRef.current) {
+-                const clouds = passageRef.current.querySelectorAll("img");
+-                if (clouds.length >= 3) {
+-                    tl.fromTo(clouds[0], { y: 40 }, { y: -40, ease: "none" }, 0);
+-                    tl.fromTo(clouds[1], { y: 70 }, { y: -70, ease: "none" }, 0);
+-                    tl.fromTo(clouds[2], { y: 110 }, { y: -110, ease: "none" }, 0);
++                const layers = passageRef.current.querySelectorAll(`.${atmosphere.parallaxLayer}`);
++                if (layers.length >= 3) {
++                    tl.fromTo(layers[0], { y: 30 }, { y: -30, ease: "none" }, 0);
++                    tl.fromTo(layers[1], { y: 55 }, { y: -55, ease: "none" }, 0);
++                    tl.fromTo(layers[2], { y: 80 }, { y: -80, ease: "none" }, 0);
+                 }
+             }
+         });
+@@ -76,46 +76,46 @@
+     }, []);
+-
+-    useEffect(() => {
+-        if (!sectionRef.current) return;
+-
+-        const updateActiveIndex = () => {
+-            const targetY = window.innerHeight * 0.5;
+-            let closestIdx = 0;
+-            let minDistance = Infinity;
+-
+-            textRefs.current.forEach((el, idx) => {
+-                if (!el) return;
+-                const rect = el.getBoundingClientRect();
+-                const elCenter = rect.top + rect.height / 2;
+-                const distance = Math.abs(elCenter - targetY);
+-                if (distance < minDistance) {
+-                    minDistance = distance;
+-                    closestIdx = idx;
+-                }
+-            });
+-
+-            setActiveIndex((prev) => (prev !== closestIdx ? closestIdx : prev));
+-        };
+-
+-        const ctx = gsap.context(() => {
+-            ScrollTrigger.create({
+-                trigger: sectionRef.current,
+-                start: "top bottom",
+-                end: "bottom top",
+-                onUpdate: updateActiveIndex,
+-                onRefresh: updateActiveIndex,
+-            });
+-
+-            updateActiveIndex();
+-            setTimeout(updateActiveIndex, 100);
+-            setTimeout(updateActiveIndex, 500);
+-        }, sectionRef);
+-
+-        window.addEventListener("scroll", updateActiveIndex, { passive: true });
+-        window.addEventListener("resize", updateActiveIndex, { passive: true });
+-
+-        return () => {
+-            ctx.revert();
++
++    useEffect(() => {
++        if (!sectionRef.current) return;
++
++        const updateActiveIndex = () => {
++            const targetY = window.innerHeight * 0.5;
++            let closestIdx = 0;
++            let minDistance = Infinity;
++
++            textRefs.current.forEach((el, idx) => {
++                if (!el) return;
++                const rect = el.getBoundingClientRect();
++                const elCenter = rect.top + rect.height / 2;
++                const distance = Math.abs(elCenter - targetY);
++                if (distance < minDistance) {
++                    minDistance = distance;
++                    closestIdx = idx;
++                }
++            });
++
++            setActiveIndex((prev) => (prev !== closestIdx ? closestIdx : prev));
++        };
++
++        const ctx = gsap.context(() => {
++            ScrollTrigger.create({
++                trigger: sectionRef.current,
++                start: "top bottom",
++                end: "bottom top",
++                onUpdate: updateActiveIndex,
++                onRefresh: updateActiveIndex,
++            });
++
++            updateActiveIndex();
++            setTimeout(updateActiveIndex, 100);
++            setTimeout(updateActiveIndex, 500);
++        }, sectionRef);
++
++        window.addEventListener("scroll", updateActiveIndex, { passive: true });
++        window.addEventListener("resize", updateActiveIndex, { passive: true });
++
++        return () => {
++            ctx.revert();
+             window.removeEventListener("scroll", updateActiveIndex);
+             window.removeEventListener("resize", updateActiveIndex);
+         };
+@@ -130,15 +130,28 @@
+             <div className={atmosphere.passage} aria-hidden="true">
+                 <div className={atmosphere.light} />
+                 <div ref={passageRef} className={atmosphere.drift}>
+-                    <Image src="/clouds/clouds1.avif" alt="" width={2730} height={871} sizes="100vw" className={`${atmosphere.cloud} ${atmosphere.cloud1}`} />
+-                    <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} sizes="100vw" className={`${atmosphere.cloud} ${atmosphere.cloud2}`} />
+-                    <Image src="/clouds/clouds3.avif" alt="" width={2730} height={871} sizes="100vw" className={`${atmosphere.cloud} ${atmosphere.cloud3}`} />
++                    <div className={atmosphere.parallaxLayer}>
++                        <div className={`${atmosphere.cloudTrack} ${atmosphere.track1}`}>
++                            <Image src="/clouds/clouds1.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
++                            <Image src="/clouds/clouds1.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
++                        </div>
++                    </div>
++                    <div className={atmosphere.parallaxLayer}>
++                        <div className={`${atmosphere.cloudTrack} ${atmosphere.track2}`}>
++                            <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
++                            <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
++                        </div>
++                    </div>
++                    <div className={atmosphere.parallaxLayer}>
++                        <div className={`${atmosphere.cloudTrack} ${atmosphere.track3}`}>
++                            <Image src="/clouds/clouds3.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
++                            <Image src="/clouds/clouds3.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
++                        </div>
++                    </div>
+                 </div>
+             </div>
+-            {/* Section Header */}
++            {/* Section Header */}
+             <div className="relative z-[1] w-full max-w-[1070px] mx-auto px-6 md:px-16 pt-12 md:pt-16 pb-10">
+-                <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-12 relative z-10 w-full">
+-                    <div className="flex flex-col items-start">
+                         <div className="inline-block bg-primary text-background px-3 py-1.5 rounded-lg text-sm font-medium mb-4 shadow-sm border border-primary/10">
+                             Our Expertise
+                         </div>
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+
+We did our best to apply changes despite some inaccuracies. Double check if the edit applied is what you intended.
+===DIFF===
+Created At: 2026-09-15T17:30:56+05:30
+Completed At: 2026-09-15T17:31:09+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\OurServices.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -154,25 +154,25 @@
+             </div>
+             {/* Section Header */}
+             <div className="relative z-[1] w-full max-w-[1070px] mx-auto px-6 md:px-16 pt-12 md:pt-16 pb-10">
+-                        <div className="inline-block bg-primary text-background px-3 py-1.5 rounded-lg text-sm font-medium mb-4 shadow-sm border border-primary/10">
+-                            Our Expertise
+-                        </div>
+-                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium text-primary tracking-tight leading-tight">
+-                            Our Services.
+-                        </h2>
+-                    </div>
+-                    <div className="md:max-w-md lg:max-w-lg md:pb-1">
+-                        <p className="text-base md:text-lg text-gray-600 font-light leading-relaxed">
+-                            A full-stack creative arsenal built to transform your brand presence into <span className="text-primary font-medium">market authority</span>.
+-                        </p>
+-                    </div>
+-                </div>
+-            </div>
+-
+-            {/* Two Column Layout */}
++                <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-12 relative z-10 w-full">
++                    <div className="flex flex-col items-start">
++                        <div className="inline-block bg-primary text-background px-3 py-1.5 rounded-lg text-sm font-medium mb-4 shadow-sm border border-primary/10">
++                            Our Expertise
++                        </div>
++                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium text-primary tracking-tight leading-tight">
++                            Our Services.
++                        </h2>
++                    </div>
++                    <div className="md:max-w-md lg:max-w-lg md:pb-1">
++                        <p className="text-base md:text-lg text-gray-600 font-light leading-relaxed">
++                            A full-stack creative arsenal built to transform your brand presence into <span className="text-primary font-medium">market authority</span>.
++                        </p>
++                    </div>
++                </div>
++            </div>
++
++            {/* Two Column Layout */}
+             <div className="relative z-[1] w-full max-w-[1070px] mx-auto px-6 md:px-16 flex flex-col lg:flex-row gap-12 lg:gap-0">
+-
+-                {/* Left Column — Scrolling Text Items */}
+                 <div className="lg:w-[50%] relative pl-6 md:pl-6">
+                     {services.map((service, idx) => {
+                         const isActive = idx === activeIndex;
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+
+We did our best to apply changes despite some inaccuracies. Double check if the edit applied is what you intended.
+===DIFF===
+Created At: 2026-09-15T17:33:03+05:30
+Completed At: 2026-09-15T17:33:05+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -13,7 +13,7 @@
+ .light {
+   position: absolute;
+   inset: 0;
+-  background: linear-gradient(to bottom, #F8F3E6 25%, #70B2D4 60%);
++  background: linear-gradient(to bottom, #F8F3E6 15%, #70B2D4 40%);
+ }
+ @keyframes driftLeft {
+   0% { transform: translateX(0); }
+@@ -40,7 +40,7 @@
+ }
+ .track1 {
+   width: 300%;
+-  top: 20%;
++  top: 8%;
+   animation: driftLeft 100s linear infinite;
+   opacity: 1;
+ }
+@@ -47,5 +47,5 @@
+   width: 320%;
+-  top: 28%;
++  top: 16%;
+   animation: driftLeft 140s linear infinite;
+   opacity: 1;
+ }
+@@ -52,5 +52,5 @@
+   width: 280%;
+-  top: 36%;
++  top: 24%;
+   animation: driftLeft 80s linear infinite;
+   opacity: 1;
+ }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:34:18+05:30
+Completed At: 2026-09-15T17:34:27+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -1,13 +1,12 @@
+ .passage {
+   position: absolute;
++  top: -700px;
++  left: 0;
++  width: 100%;
++  height: 1400px;
+   z-index: 0;
+-  top: -400px;
+-  left: 0;
+-  width: 100%;
+-  height: 1100px;
+-  overflow: clip;
+   pointer-events: none;
+-  mask-image: linear-gradient(transparent, #000 15%, #000 75%, transparent);
++  mask-image: linear-gradient(#000, #000 75%, transparent);
+ }
+ .drift { position: absolute; inset: 0; }
+ .light {
+@@ -14,5 +14,5 @@
+   inset: 0;
+-  background: linear-gradient(to bottom, #F8F3E6 15%, #70B2D4 40%);
++  background: linear-gradient(to bottom, #F8F3E6 5%, #70B2D4 25%);
+ }
+ @keyframes driftLeft {
+   0% { transform: translateX(0); }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+
+We did our best to apply changes despite some inaccuracies. Double check if the edit applied is what you intended.
+===DIFF===
+Created At: 2026-09-15T17:35:52+05:30
+Completed At: 2026-09-15T17:35:55+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -1,6 +1,6 @@
+ .passage {
+   position: absolute;
+-  top: -700px;
++  top: -600px;
+   left: 0;
+   width: 100%;
+   height: 1400px;
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:38:02+05:30
+Completed At: 2026-09-15T17:38:05+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\OurServices.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -136,6 +136,7 @@
+                         <div className={`${atmosphere.cloudTrack} ${atmosphere.track1}`}>
+                             <Image src="/clouds/clouds1.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                             <Image src="/clouds/clouds1.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
++                            <Image src="/clouds/clouds1.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                         </div>
+                     </div>
+                     <div className={atmosphere.parallaxLayer}>
+@@ -142,5 +142,6 @@
+                             <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                             <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
++                            <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                         </div>
+                     </div>
+                     <div className={atmosphere.parallaxLayer}>
+@@ -147,5 +147,6 @@
+                             <Image src="/clouds/clouds3.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                             <Image src="/clouds/clouds3.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
++                            <Image src="/clouds/clouds3.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                         </div>
+                     </div>
+                 </div>
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:38:15+05:30
+Completed At: 2026-09-15T17:38:18+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -16,7 +16,7 @@
+ }
+ @keyframes driftLeft {
+   0% { transform: translateX(0); }
+-  100% { transform: translateX(-50%); }
++  100% { transform: translateX(-33.333333%); }
+ }
+ .parallaxLayer {
+   position: absolute;
+@@ -31,7 +31,7 @@
+   will-change: transform;
+ }
+ .cloudImage {
+-  width: 50%;
++  width: 33.333333%;
+   height: auto;
+   filter: sepia(.3) saturate(.8) brightness(.98);
+   mix-blend-mode: normal;
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:41:40+05:30
+Completed At: 2026-09-15T17:41:42+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\OurServices.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -65,6 +65,11 @@
+             tl.fromTo(passageRef.current, { y: 80 }, { y: -80, ease: "none" }, 0);
+             
+             if (passageRef.current) {
++                const light = passageRef.current.querySelector(`.${atmosphere.light}`);
++                if (light) {
++                    tl.fromTo(light, { y: 300 }, { y: -300, ease: "none" }, 0);
++                }
++
+                 const layers = passageRef.current.querySelectorAll(`.${atmosphere.parallaxLayer}`);
+                 if (layers.length >= 3) {
+                     tl.fromTo(layers[0], { y: 30 }, { y: -30, ease: "none" }, 0);
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:41:54+05:30
+Completed At: 2026-09-15T17:41:56+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -11,8 +11,12 @@
+ .drift { position: absolute; inset: 0; }
+ .light {
+   position: absolute;
+-  inset: 0;
+-  background: linear-gradient(to bottom, #F8F3E6 5%, #70B2D4 25%);
++  top: -500px;
++  left: 0;
++  width: 100%;
++  height: 2500px;
++  background: linear-gradient(to bottom, #F8F3E6 24%, #70B2D4 40%, #70B2D4 100%);
++  will-change: transform;
+ }
+ @keyframes driftLeft {
+   0% { transform: translateX(0); }
+@@ -33,7 +33,7 @@
+ .cloudImage {
+   width: 33.333333%;
+   height: auto;
+-  filter: sepia(.3) saturate(.8) brightness(.98);
++  filter: sepia(.15) saturate(.5) brightness(1.05);
+   mix-blend-mode: normal;
+   object-fit: cover;
+ }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:43:29+05:30
+Completed At: 2026-09-15T17:43:31+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\OurServices.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -65,11 +65,6 @@
+             tl.fromTo(passageRef.current, { y: 80 }, { y: -80, ease: "none" }, 0);
+             
+             if (passageRef.current) {
+-                const light = passageRef.current.querySelector(`.${atmosphere.light}`);
+-                if (light) {
+-                    tl.fromTo(light, { y: 300 }, { y: -300, ease: "none" }, 0);
+-                }
+-
+                 const layers = passageRef.current.querySelectorAll(`.${atmosphere.parallaxLayer}`);
+                 if (layers.length >= 3) {
+                     tl.fromTo(layers[0], { y: 30 }, { y: -30, ease: "none" }, 0);
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:43:38+05:30
+Completed At: 2026-09-15T17:43:40+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -11,12 +11,8 @@
+ .drift { position: absolute; inset: 0; }
+ .light {
+   position: absolute;
+-  top: -500px;
+-  left: 0;
+-  width: 100%;
+-  height: 2500px;
+-  background: linear-gradient(to bottom, #F8F3E6 24%, #70B2D4 40%, #70B2D4 100%);
+-  will-change: transform;
++  inset: 0;
++  background: linear-gradient(to bottom, #F8F3E6 20%, #70B2D4 35%, #70B2D4 100%);
+ }
+ @keyframes driftLeft {
+   0% { transform: translateX(0); }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:44:36+05:30
+Completed At: 2026-09-15T17:44:38+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -1,6 +1,6 @@
+ .passage {
+   position: absolute;
+-  top: -600px;
++  top: -450px;
+   left: 0;
+   width: 100%;
+   height: 1400px;
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:46:53+05:30
+Completed At: 2026-09-15T17:46:55+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -12,7 +12,7 @@
+ .light {
+   position: absolute;
+   inset: 0;
+-  background: linear-gradient(to bottom, #F8F3E6 20%, #70B2D4 35%, #70B2D4 100%);
++  background: linear-gradient(to bottom, #F8F3E6 15%, #70B2D4 45%, #70B2D4 100%);
+ }
+ @keyframes driftLeft {
+   0% { transform: translateX(0); }
+@@ -39,7 +39,7 @@
+ }
+ .track1 {
+   width: 300%;
+-  top: 8%;
++  top: 5%;
+   animation: driftLeft 100s linear infinite;
+   opacity: 1;
+ }
+@@ -46,5 +46,5 @@
+   width: 320%;
+-  top: 16%;
++  top: 22%;
+   animation: driftLeft 140s linear infinite;
+   opacity: 1;
+ }
+@@ -51,5 +51,5 @@
+   width: 280%;
+-  top: 24%;
++  top: 39%;
+   animation: driftLeft 80s linear infinite;
+   opacity: 1;
+ }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:48:50+05:30
+Completed At: 2026-09-15T17:48:53+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -39,9 +39,8 @@
+   object-fit: cover;
+ }
+ .track1 {
+-  width: 300%;
+-  top: 5%;
+-  animation: driftLeft 100s linear infinite;
++  width: 450%;
++  top: 2%;
+   opacity: 1;
+ }
+ .track2 {
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:49:46+05:30
+Completed At: 2026-09-15T17:49:48+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -41,6 +41,7 @@
+ .track1 {
+   width: 450%;
+   top: 2%;
++  left: -30%;
+   opacity: 1;
+ }
+ .track2 {
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:51:56+05:30
+Completed At: 2026-09-15T17:51:58+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\OurServices.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -69,7 +69,7 @@
+                 if (layers.length >= 3) {
+                     tl.fromTo(layers[0], { y: 30 }, { y: -30, ease: "none" }, 0);
+                     tl.fromTo(layers[1], { y: 55 }, { y: -55, ease: "none" }, 0);
+-                    tl.fromTo(layers[2], { y: 80 }, { y: -80, ease: "none" }, 0);
++                    tl.fromTo(layers[2], { y: 160 }, { y: -160, ease: "none" }, 0);
+                 }
+             }
+         });
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:52:04+05:30
+Completed At: 2026-09-15T17:52:06+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -51,7 +51,7 @@
+   opacity: 1;
+ }
+ .track3 {
+-  width: 280%;
++  width: 200%;
+   top: 39%;
+   animation: driftLeft 80s linear infinite;
+   opacity: 1;
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:54:58+05:30
+Completed At: 2026-09-15T17:55:01+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -47,7 +47,7 @@
+ .track2 {
+   width: 320%;
+   top: 22%;
+-  animation: driftLeft 140s linear infinite;
++  animation: driftLeft 60s linear infinite;
+   opacity: 1;
+ }
+ .track3 {
+@@ -54,5 +54,5 @@
+   top: 39%;
+-  animation: driftLeft 80s linear infinite;
++  animation: driftLeft 30s linear infinite;
+   opacity: 1;
+ }
+ @media (max-width: 767px) {
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T17:56:17+05:30
+Completed At: 2026-09-15T17:56:19+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -1,4 +1,4 @@
+-.section { position:relative; z-index:10; overflow:clip; padding:128px 24px 48px; background:linear-gradient(to top, transparent, var(--color-background) 480px); }
++.section { position:relative; z-index:10; overflow:clip; padding:128px 24px 160px; background:linear-gradient(to top, transparent, var(--color-background) 480px); }
+ .intro,.outro { width:min(1070px,100%); margin-inline:auto; }
+ .intro { display:flex; align-items:flex-end; justify-content:space-between; gap:56px; margin-bottom:72px; }
+ .heading { max-width:760px; font:400 clamp(48px,6vw,82px)/1.02 var(--font-tiempos-headline),Georgia,serif; letter-spacing:-.035em; }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T18:01:17+05:30
+Completed At: 2026-09-15T18:01:20+05:30
+The following changes were made by the multi_replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -41,7 +41,8 @@
+           },
+         });
+         gsap.from(editor, { clipPath: "inset(12% 8% 12% 8% round 32px)", scale: 0.96, ease: "power3.out", scrollTrigger: { trigger: trackRef.current, start: "top 88%", end: "top 20%", scrub: 0.8 } });
+-        gsap.from("[data-edit-heading] > span", { yPercent: 105, stagger: 0.12, duration: 1.1, ease: "power3.out", scrollTrigger: { trigger: rootRef.current, start: "top 82%", once: true } });
++        gsap.from("[data-edit-heading] > span", { y: 40, opacity: 0, stagger: 0.15, duration: 1.2, ease: "power3.out", scrollTrigger: { trigger: rootRef.current, start: "top 75%", once: true } });
++        gsap.from("[data-intro-copy] > *", { y: 20, opacity: 0, stagger: 0.1, duration: 1, ease: "power3.out", delay: 0.2, scrollTrigger: { trigger: rootRef.current, start: "top 75%", once: true } });
+       });
+       media.add("(max-width: 767px) and (prefers-reduced-motion: no-preference)", () => {
+         gsap.utils.toArray<HTMLElement>("[data-mobile-cut]").forEach((cut) => {
+@@ -58,7 +58,7 @@
+     <section ref={rootRef} id="infotainment" aria-labelledby="infotainment-heading" className={styles.section}>
+       <header className={styles.intro}>
+         <h2 id="infotainment-heading" data-edit-heading className={styles.heading}><span>Great content doesn’t hold attention</span><span>by <em>accident.</em></span></h2>
+-        <div className={styles.introCopy}><p>Step inside the edit and see how entertainment becomes education—and how both become demand.</p><span><ArrowDown size={15} aria-hidden="true" /> Scroll to move the playhead</span></div>
++        <div data-intro-copy className={styles.introCopy}><p>Step inside the edit and see how entertainment becomes education—and how both become demand.</p><span><ArrowDown size={15} aria-hidden="true" /> Scroll to move the playhead</span></div>
+       </header>
+ 
+       <div ref={trackRef} className={styles.track}>
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T18:09:20+05:30
+Completed At: 2026-09-15T18:09:22+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -52,7 +52,7 @@
+ }
+ .track3 {
+   width: 200%;
+-  top: 39%;
++  top: 30%;
+   animation: driftLeft 30s linear infinite;
+   opacity: 1;
+ }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T18:10:28+05:30
+Completed At: 2026-09-15T18:10:30+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -1,4 +1,4 @@
+-.section { position:relative; z-index:10; overflow:clip; padding:128px 24px 160px; background:linear-gradient(to top, transparent, var(--color-background) 480px); }
++.section { position:relative; z-index:10; overflow:clip; padding:128px 24px 320px; background:linear-gradient(to top, transparent, var(--color-background) 200px); }
+ .intro,.outro { width:min(1070px,100%); margin-inline:auto; }
+ .intro { display:flex; align-items:flex-end; justify-content:space-between; gap:56px; margin-bottom:72px; }
+ .heading { max-width:760px; font:400 clamp(48px,6vw,82px)/1.02 var(--font-tiempos-headline),Georgia,serif; letter-spacing:-.035em; }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T18:11:07+05:30
+Completed At: 2026-09-15T18:11:09+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -1,4 +1,4 @@
+-.section { position:relative; z-index:10; overflow:clip; padding:128px 24px 320px; background:linear-gradient(to top, transparent, var(--color-background) 200px); }
++.section { position:relative; z-index:10; overflow:clip; padding:128px 24px 220px; background:linear-gradient(to top, transparent, var(--color-background) 320px); }
+ .intro,.outro { width:min(1070px,100%); margin-inline:auto; }
+ .intro { display:flex; align-items:flex-end; justify-content:space-between; gap:56px; margin-bottom:72px; }
+ .heading { max-width:760px; font:400 clamp(48px,6vw,82px)/1.02 var(--font-tiempos-headline),Georgia,serif; letter-spacing:-.035em; }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T18:12:04+05:30
+Completed At: 2026-09-15T18:12:06+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -52,7 +52,7 @@
+ }
+ .track3 {
+   width: 200%;
+-  top: 30%;
++  top: 26%;
+   animation: driftLeft 30s linear infinite;
+   opacity: 1;
+ }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T18:14:06+05:30
+Completed At: 2026-09-15T18:14:08+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -52,7 +52,7 @@
+ }
+ .track3 {
+   width: 200%;
+-  top: 26%;
++  top: 10%;
+   animation: driftLeft 30s linear infinite;
+   opacity: 1;
+ }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T18:15:52+05:30
+Completed At: 2026-09-15T18:15:54+05:30
+The following changes were made by the multi_replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\OurServices.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -66,10 +66,9 @@
+             
+             if (passageRef.current) {
+                 const layers = passageRef.current.querySelectorAll(`.${atmosphere.parallaxLayer}`);
+-                if (layers.length >= 3) {
++                if (layers.length >= 2) {
+                     tl.fromTo(layers[0], { y: 30 }, { y: -30, ease: "none" }, 0);
+-                    tl.fromTo(layers[1], { y: 55 }, { y: -55, ease: "none" }, 0);
+-                    tl.fromTo(layers[2], { y: 160 }, { y: -160, ease: "none" }, 0);
++                    tl.fromTo(layers[1], { y: 160 }, { y: -160, ease: "none" }, 0);
+                 }
+             }
+         });
+@@ -138,13 +138,7 @@
+                             <Image src="/clouds/clouds1.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                         </div>
+                     </div>
+-                    <div className={atmosphere.parallaxLayer}>
+-                        <div className={`${atmosphere.cloudTrack} ${atmosphere.track2}`}>
+-                            <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+-                            <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+-                            <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+-                        </div>
+-                    </div>
++
+                     <div className={atmosphere.parallaxLayer}>
+                         <div className={`${atmosphere.cloudTrack} ${atmosphere.track3}`}>
+                             <Image src="/clouds/clouds3.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T18:16:00+05:30
+Completed At: 2026-09-15T18:16:02+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -43,12 +43,7 @@
+   top: 2%;
+   left: -30%;
+   opacity: 1;
+-}
+-.track2 {
+-  width: 320%;
+-  top: 22%;
+-  animation: driftLeft 60s linear infinite;
+-  opacity: 1;
++
+ }
+ .track3 {
+   width: 200%;
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T18:16:57+05:30
+Completed At: 2026-09-15T18:17:06+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\ServicesAtmosphere.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -39,7 +39,7 @@
+   object-fit: cover;
+ }
+ .track1 {
+-  width: 450%;
++  width: 270%;
+   top: 2%;
+   left: -30%;
+   opacity: 1;
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+
+We did our best to apply changes despite some inaccuracies. Double check if the edit applied is what you intended.
+===DIFF===
+Created At: 2026-09-15T18:29:56+05:30
+Completed At: 2026-09-15T18:30:21+05:30
+The following changes were made by the multi_replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -41,8 +41,6 @@
+           },
+         });
+         gsap.from(editor, { clipPath: "inset(12% 8% 12% 8% round 32px)", scale: 0.96, ease: "power3.out", scrollTrigger: { trigger: trackRef.current, start: "top 88%", end: "top 20%", scrub: 0.8 } });
+-        gsap.from("[data-edit-heading] > span", { y: 40, opacity: 0, stagger: 0.15, duration: 1.2, ease: "power3.out", scrollTrigger: { trigger: rootRef.current, start: "top 75%", once: true } });
+-        gsap.from("[data-intro-copy] > *", { y: 20, opacity: 0, stagger: 0.1, duration: 1, ease: "power3.out", delay: 0.2, scrollTrigger: { trigger: rootRef.current, start: "top 75%", once: true } });
+       });
+       media.add("(max-width: 767px) and (prefers-reduced-motion: no-preference)", () => {
+         gsap.utils.toArray<HTMLElement>("[data-mobile-cut]").forEach((cut) => {
+@@ -49,5 +49,9 @@
+         });
+       });
++      
++      // Global animations (run on all screen sizes)
++      gsap.from("[data-edit-heading] > span > span", { yPercent: 110, stagger: 0.12, duration: 1.1, ease: "power3.out", scrollTrigger: { trigger: rootRef.current, start: "top 80%", once: true } });
++      gsap.from("[data-intro-copy] > * > span", { yPercent: 110, stagger: 0.1, duration: 1, ease: "power3.out", delay: 0.2, scrollTrigger: { trigger: rootRef.current, start: "top 80%", once: true } });
+     }, rootRef);
+     const frame = requestAnimationFrame(() => ScrollTrigger.refresh());
+     return () => { cancelAnimationFrame(frame); media.revert(); context.revert(); };
+@@ -57,8 +57,8 @@
+   return (
+     <section ref={rootRef} id="infotainment" aria-labelledby="infotainment-heading" className={styles.section}>
+       <header className={styles.intro}>
+-        <h2 id="infotainment-heading" data-edit-heading className={styles.heading}><span>Great content doesn’t hold attention</span><span>by <em>accident.</em></span></h2>
+-        <div data-intro-copy className={styles.introCopy}><p>Step inside the edit and see how entertainment becomes education—and how both become demand.</p><span><ArrowDown size={15} aria-hidden="true" /> Scroll to move the playhead</span></div>
++        <h2 id="infotainment-heading" data-edit-heading className={styles.heading}><span><span>Great content doesn’t hold attention</span></span><span><span>by <em>accident.</em></span></span></h2>
++        <div data-intro-copy className={styles.introCopy}><p><span>Step inside the edit and see how entertainment becomes education—and how both become demand.</span></p><span className={styles.scrollHint}><span><ArrowDown size={15} aria-hidden="true" /> Scroll to move the playhead</span></span></div>
+       </header>
+ 
+       <div ref={trackRef} className={styles.track}>
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+
+We did our best to apply changes despite some inaccuracies. Double check if the edit applied is what you intended.
+===DIFF===
+Created At: 2026-09-15T18:30:29+05:30
+Completed At: 2026-09-15T18:31:03+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -2,11 +2,14 @@
+ .intro,.outro { width:min(1070px,100%); margin-inline:auto; }
+ .intro { display:flex; align-items:flex-end; justify-content:space-between; gap:56px; margin-bottom:72px; }
+ .heading { max-width:760px; font:400 clamp(48px,6vw,82px)/1.02 var(--font-tiempos-headline),Georgia,serif; letter-spacing:-.035em; }
+-.heading>span { display:block; overflow:hidden; padding-bottom:.08em; }
+-.heading em,.outro em { color:var(--color-surface-light); font-weight:400; }
+-.introCopy { width:260px; padding-bottom:12px; flex:0 0 auto; }
+-.introCopy p { color:var(--color-muted); font-size:14px; line-height:1.65; }
+-.introCopy span { display:flex; align-items:center; gap:10px; margin-top:24px; color:var(--color-surface-light); font-size:12px; }
++.heading > span { display:block; overflow:hidden; padding-bottom:.08em; }
++.heading > span > span { display:block; will-change:transform; }
++.heading em { font-style:italic; color:var(--color-accent); }
++.introCopy { flex:0 0 min(300px, 30%); font-size:15px; line-height:1.45; color:var(--color-muted); }
++.introCopy > p { display:block; overflow:hidden; padding-bottom:.1em; }
++.introCopy > p > span { display:block; will-change:transform; }
++.scrollHint { display:block; overflow:hidden; margin-top:24px; padding-bottom:.1em; }
++.scrollHint > span { display:flex; align-items:center; gap:10px; color:var(--color-surface-light); font-size:12px; will-change:transform; }
+ .track { position:relative; height:390vh; }
+ .editor { --cloud-drift:0%; --cloud-x:0%; --playhead-x:0%; position:sticky; top:76px; display:grid; grid-template-rows:36px minmax(0,1fr) 88px; width:min(1120px,calc(100vw - 48px)); height:calc(100vh - 152px); min-height:520px; margin-inline:auto; overflow:hidden; border-radius:20px; color:var(--color-background); background:#0b190a; box-shadow:0 24px 64px rgba(17,37,14,.16); }
+ .editorBar { display:grid; grid-template-columns:1fr auto; align-items:center; padding:0 18px; border-bottom:1px solid rgba(248,243,230,.12); color:rgba(248,243,230,.62); background:#0d1c0c; font-size:10px; letter-spacing:.12em; }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+
+We did our best to apply changes despite some inaccuracies. Double check if the edit applied is what you intended.
+===DIFF===
+Created At: 2026-09-15T18:31:10+05:30
+Completed At: 2026-09-15T18:31:12+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -4,6 +4,7 @@
+ .heading { max-width:760px; font:400 clamp(48px,6vw,82px)/1.02 var(--font-tiempos-headline),Georgia,serif; letter-spacing:-.035em; }
+ .heading > span { display:block; overflow:hidden; padding-bottom:.08em; }
+ .heading > span > span { display:block; will-change:transform; }
++.heading em, .outro em { color:var(--color-surface-light); font-weight:400; }
+ .heading em { font-style:italic; color:var(--color-accent); }
+ .introCopy { flex:0 0 min(300px, 30%); font-size:15px; line-height:1.45; color:var(--color-muted); }
+ .introCopy > p { display:block; overflow:hidden; padding-bottom:.1em; }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T18:32:39+05:30
+Completed At: 2026-09-15T18:32:41+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -49,8 +49,8 @@
+       });
+       
+       // Global animations (run on all screen sizes)
+-      gsap.from("[data-edit-heading] > span > span", { yPercent: 110, stagger: 0.12, duration: 1.1, ease: "power3.out", scrollTrigger: { trigger: rootRef.current, start: "top 80%", once: true } });
+-      gsap.from("[data-intro-copy] > * > span", { yPercent: 110, stagger: 0.1, duration: 1, ease: "power3.out", delay: 0.2, scrollTrigger: { trigger: rootRef.current, start: "top 80%", once: true } });
++      gsap.from("[data-edit-heading] > span > span", { yPercent: 110, stagger: 0.12, duration: 1.1, ease: "power3.out", scrollTrigger: { trigger: rootRef.current, start: "top 80%", toggleActions: "play reverse play reverse" } });
++      gsap.from("[data-intro-copy] > * > span", { yPercent: 110, stagger: 0.1, duration: 1, ease: "power3.out", delay: 0.2, scrollTrigger: { trigger: rootRef.current, start: "top 80%", toggleActions: "play reverse play reverse" } });
+     }, rootRef);
+     const frame = requestAnimationFrame(() => ScrollTrigger.refresh());
+     return () => { cancelAnimationFrame(frame); media.revert(); context.revert(); };
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T18:37:35+05:30
+Completed At: 2026-09-15T18:37:37+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -49,8 +49,14 @@
+       });
+       
+       // Global animations (run on all screen sizes)
+-      gsap.from("[data-edit-heading] > span > span", { yPercent: 110, stagger: 0.12, duration: 1.1, ease: "power3.out", scrollTrigger: { trigger: rootRef.current, start: "top 80%", toggleActions: "play reverse play reverse" } });
+-      gsap.from("[data-intro-copy] > * > span", { yPercent: 110, stagger: 0.1, duration: 1, ease: "power3.out", delay: 0.2, scrollTrigger: { trigger: rootRef.current, start: "top 80%", toggleActions: "play reverse play reverse" } });
++      gsap.fromTo("[data-edit-heading] > span > span", 
++        { yPercent: 110 }, 
++        { yPercent: 0, stagger: 0.12, duration: 1.1, ease: "power3.out", scrollTrigger: { trigger: "[data-edit-heading]", start: "top 85%", end: "bottom top", toggleActions: "play reverse play reverse" } }
++      );
++      gsap.fromTo("[data-intro-copy] > * > span", 
++        { yPercent: 110 }, 
++        { yPercent: 0, stagger: 0.1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: "[data-intro-copy]", start: "top 85%", end: "bottom top", toggleActions: "play reverse play reverse" } }
++      );
+     }, rootRef);
+     const frame = requestAnimationFrame(() => ScrollTrigger.refresh());
+     return () => { cancelAnimationFrame(frame); media.revert(); context.revert(); };
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T18:42:11+05:30
+Completed At: 2026-09-15T18:42:13+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -51,11 +51,11 @@
+       // Global animations (run on all screen sizes)
+       gsap.fromTo("[data-edit-heading] > span > span", 
+         { yPercent: 110 }, 
+-        { yPercent: 0, stagger: 0.12, duration: 1.1, ease: "power3.out", scrollTrigger: { trigger: "[data-edit-heading]", start: "top 85%", end: "bottom top", toggleActions: "play reverse play reverse" } }
++        { yPercent: 0, stagger: 0.25, duration: 1.8, ease: "power3.out", scrollTrigger: { trigger: "[data-edit-heading]", start: "top 85%", end: "bottom top", toggleActions: "play reverse play reverse" } }
+       );
+       gsap.fromTo("[data-intro-copy] > * > span", 
+         { yPercent: 110 }, 
+-        { yPercent: 0, stagger: 0.1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: "[data-intro-copy]", start: "top 85%", end: "bottom top", toggleActions: "play reverse play reverse" } }
++        { yPercent: 0, stagger: 0.15, duration: 1.6, ease: "power3.out", scrollTrigger: { trigger: "[data-intro-copy]", start: "top 85%", end: "bottom top", toggleActions: "play reverse play reverse" } }
+       );
+     }, rootRef);
+     const frame = requestAnimationFrame(() => ScrollTrigger.refresh());
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T19:11:00+05:30
+Completed At: 2026-09-15T19:11:03+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -51,11 +51,11 @@
+       // Global animations (run on all screen sizes)
+       gsap.fromTo("[data-edit-heading] > span > span", 
+         { yPercent: 110 }, 
+-        { yPercent: 0, stagger: 0.25, duration: 1.8, ease: "power3.out", scrollTrigger: { trigger: "[data-edit-heading]", start: "top 85%", end: "bottom top", toggleActions: "play reverse play reverse" } }
++        { yPercent: 0, stagger: 0.25, duration: 1.8, ease: "power3.out", scrollTrigger: { trigger: "[data-edit-heading]", start: "bottom 85%", end: "top 15%", toggleActions: "play reverse play reverse" } }
+       );
+       gsap.fromTo("[data-intro-copy] > * > span", 
+         { yPercent: 110 }, 
+-        { yPercent: 0, stagger: 0.15, duration: 1.6, ease: "power3.out", scrollTrigger: { trigger: "[data-intro-copy]", start: "top 85%", end: "bottom top", toggleActions: "play reverse play reverse" } }
++        { yPercent: 0, stagger: 0.15, duration: 1.6, ease: "power3.out", scrollTrigger: { trigger: "[data-intro-copy]", start: "bottom 85%", end: "top 15%", toggleActions: "play reverse play reverse" } }
+       );
+     }, rootRef);
+     const frame = requestAnimationFrame(() => ScrollTrigger.refresh());
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T19:57:06+05:30
+Completed At: 2026-09-15T19:57:09+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -51,11 +51,11 @@
+       // Global animations (run on all screen sizes)
+       gsap.fromTo("[data-edit-heading] > span > span", 
+         { yPercent: 110 }, 
+-        { yPercent: 0, stagger: 0.25, duration: 1.8, ease: "power3.out", scrollTrigger: { trigger: "[data-edit-heading]", start: "top 85%", end: "bottom top", toggleActions: "play reverse play reverse" } }
++        { yPercent: 0, stagger: 0.5, duration: 3.6, ease: "power3.out", scrollTrigger: { trigger: "[data-edit-heading]", start: "top 85%", end: "bottom top", toggleActions: "play reverse play reverse" } }
+       );
+       gsap.fromTo("[data-intro-copy] > * > span", 
+         { yPercent: 110 }, 
+-        { yPercent: 0, stagger: 0.15, duration: 1.6, ease: "power3.out", scrollTrigger: { trigger: "[data-intro-copy]", start: "top 85%", end: "bottom top", toggleActions: "play reverse play reverse" } }
++        { yPercent: 0, stagger: 0.3, duration: 3.2, ease: "power3.out", scrollTrigger: { trigger: "[data-intro-copy]", start: "top 85%", end: "bottom top", toggleActions: "play reverse play reverse" } }
+       );
+     }, rootRef);
+     const frame = requestAnimationFrame(() => ScrollTrigger.refresh());
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T20:14:57+05:30
+Completed At: 2026-09-15T20:15:00+05:30
+The following changes were made by the multi_replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -97,7 +97,13 @@
+         {edits.map((edit, index) => <article key={edit.outcome} data-mobile-cut className={styles.mobileCut}><div className={styles.mobileFrame}><Image src={edit.image} alt={edit.alt} fill sizes="100vw" style={{ objectPosition: edit.position }} /><span>0{index + 1} / {edit.edit}</span><strong>{edit.outcome}</strong></div><p className={styles.mobileReaction}>“{edit.reaction}”</p><h3>{edit.title}</h3><p>{edit.note}</p></article>)}
+       </div>
+ 
+-      <footer className={styles.outro}><p>Entertainment earns the pause.<br /><em>Education makes it valuable.</em></p><a href="/work" data-cursor-hover className={styles.workLink}>See the work <ArrowUpRight size={19} aria-hidden="true" /></a></footer>
++      <footer className={styles.outro}>
++        <div className={styles.outroContent}>
++          <p>Entertainment earns the pause.<br /><em>Education makes it valuable.</em></p>
++          <Image src="/assets/ilne.webp" alt="" width={1072} height={208} className={styles.outroLine} aria-hidden="true" />
++        </div>
++        <a href="/work" data-cursor-hover className={styles.workLink}>See the work <ArrowUpRight size={19} aria-hidden="true" /></a>
++      </footer>
+     </section>
+   );
+ }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T20:15:08+05:30
+Completed At: 2026-09-15T20:15:32+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -52,7 +52,11 @@
+ .outro { display:flex; align-items:center; justify-content:space-between; gap:32px; padding-top:80px; }
+ .outro p { font:400 clamp(28px,3.2vw,38px)/1.2 var(--font-tiempos-headline),Georgia,serif; letter-spacing:-.02em; }
+ .workLink { display:inline-flex; align-items:center; justify-content:center; gap:22px; min-height:48px; padding:12px 23px; border:1px solid var(--color-primary); border-radius:999px; font-size:14px; transition:color .25s,background .25s; }
+-.workLink:hover { color:var(--color-background); background:var(--color-primary); }.workLink:focus-visible { outline:2px solid var(--color-surface-light); outline-offset:5px; }
++.workLink:hover { transform:scale(1.05); color:#fff; background:var(--color-primary); }
++.workLink:active { transform:scale(.95); }
++.workLink:focus-visible { outline:2px solid var(--color-surface-light); outline-offset:5px; }
++.outroContent { display:flex; flex-direction:column; gap:16px; }
++.outroLine { width:100%; max-width:600px; height:auto; margin-left:-24px; }
+ @keyframes reactionIn { from { opacity:0; transform:translateY(7px); filter:blur(4px); } to { opacity:1; transform:translateY(0); filter:blur(0); } }
+ @media(min-width:768px) and (max-height:680px) { .editor { top:60px; height:calc(100vh - 120px); min-height:0; grid-template-rows:34px minmax(0,1fr) 78px; }.clips { height:60px; }.editCopy { bottom:34px; }.audienceReaction { top:28px; }.outcome { bottom:32px; } }
+ @media(max-width:900px) { .intro{gap:32px}.introCopy{width:230px}.audienceReaction,.outcome{right:30px}.editCopy{width:62%} }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+
+We did our best to apply changes despite some inaccuracies. Double check if the edit applied is what you intended.
+===DIFF===
+Created At: 2026-09-15T20:17:05+05:30
+Completed At: 2026-09-15T20:17:07+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -100,7 +100,7 @@
+       <footer className={styles.outro}>
+         <div className={styles.outroContent}>
+           <p>Entertainment earns the pause.<br /><em>Education makes it valuable.</em></p>
+-          <Image src="/assets/ilne.webp" alt="" width={1072} height={208} className={styles.outroLine} aria-hidden="true" />
++          <Image src="/assets/line.png" alt="" width={1072} height={208} className={styles.outroLine} aria-hidden="true" />
+         </div>
+         <a href="/work" data-cursor-hover className={styles.workLink}>See the work <ArrowUpRight size={19} aria-hidden="true" /></a>
+       </footer>
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T20:19:40+05:30
+Completed At: 2026-09-15T20:19:42+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -100,7 +100,7 @@
+       <footer className={styles.outro}>
+         <div className={styles.outroContent}>
+           <p>Entertainment earns the pause.<br /><em>Education makes it valuable.</em></p>
+-          <Image src="/assets/line.png" alt="" width={1072} height={208} className={styles.outroLine} aria-hidden="true" />
++          <Image src="/assets/6a51975c584436cfdd9e2406_loc_path.svg" alt="" width={1072} height={208} className={styles.outroLine} aria-hidden="true" />
+         </div>
+         <a href="/work" data-cursor-hover className={styles.workLink}>See the work <ArrowUpRight size={19} aria-hidden="true" /></a>
+       </footer>
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T20:23:18+05:30
+Completed At: 2026-09-15T20:23:20+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -97,12 +97,14 @@
+         {edits.map((edit, index) => <article key={edit.outcome} data-mobile-cut className={styles.mobileCut}><div className={styles.mobileFrame}><Image src={edit.image} alt={edit.alt} fill sizes="100vw" style={{ objectPosition: edit.position }} /><span>0{index + 1} / {edit.edit}</span><strong>{edit.outcome}</strong></div><p className={styles.mobileReaction}>“{edit.reaction}”</p><h3>{edit.title}</h3><p>{edit.note}</p></article>)}
+       </div>
+ 
+-      <footer className={styles.outro}>
+-        <div className={styles.outroContent}>
++      <footer className={styles.outroWrapper}>
++        <div className={styles.outro}>
+           <p>Entertainment earns the pause.<br /><em>Education makes it valuable.</em></p>
++          <a href="/work" data-cursor-hover className={styles.workLink}>See the work <ArrowUpRight size={19} aria-hidden="true" /></a>
++        </div>
++        <div className={styles.lineWrapper}>
+           <Image src="/assets/6a51975c584436cfdd9e2406_loc_path.svg" alt="" width={1072} height={208} className={styles.outroLine} aria-hidden="true" />
+         </div>
+-        <a href="/work" data-cursor-hover className={styles.workLink}>See the work <ArrowUpRight size={19} aria-hidden="true" /></a>
+       </footer>
+     </section>
+   );
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T20:23:27+05:30
+Completed At: 2026-09-15T20:23:29+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -55,8 +55,9 @@
+ .workLink:hover { transform:scale(1.05); color:#fff; background:var(--color-primary); }
+ .workLink:active { transform:scale(.95); }
+ .workLink:focus-visible { outline:2px solid var(--color-surface-light); outline-offset:5px; }
+-.outroContent { display:flex; flex-direction:column; gap:16px; }
+-.outroLine { width:100%; max-width:600px; height:auto; margin-left:-24px; }
++.outroWrapper { width: 100%; padding-bottom: 80px; }
++.lineWrapper { width: 100%; max-width: 1800px; margin: 60px auto 0; padding: 0 4vw; }
++.outroLine { width: 100%; height: auto; display: block; }
+ @keyframes reactionIn { from { opacity:0; transform:translateY(7px); filter:blur(4px); } to { opacity:1; transform:translateY(0); filter:blur(0); } }
+ @media(min-width:768px) and (max-height:680px) { .editor { top:60px; height:calc(100vh - 120px); min-height:0; grid-template-rows:34px minmax(0,1fr) 78px; }.clips { height:60px; }.editCopy { bottom:34px; }.audienceReaction { top:28px; }.outcome { bottom:32px; } }
+ @media(max-width:900px) { .intro{gap:32px}.introCopy{width:230px}.audienceReaction,.outcome{right:30px}.editCopy{width:62%} }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T20:25:53+05:30
+Completed At: 2026-09-15T20:25:55+05:30
+The following changes were made by the multi_replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -104,6 +104,10 @@
+         </div>
+         <div className={styles.lineWrapper}>
+           <Image src="/assets/6a51975c584436cfdd9e2406_loc_path.svg" alt="" width={1072} height={208} className={styles.outroLine} aria-hidden="true" />
++          <span className={styles.floatWord} style={{ top: "10%", left: "15%" }}>Attention</span>
++          <span className={styles.floatWord} style={{ top: "85%", left: "40%" }}>Authority</span>
++          <span className={styles.floatWord} style={{ top: "15%", left: "65%" }}>Trust</span>
++          <span className={styles.floatWord} style={{ top: "80%", left: "85%" }}>Demand</span>
+         </div>
+       </footer>
+     </section>
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T20:26:04+05:30
+Completed At: 2026-09-15T20:26:06+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -56,8 +56,9 @@
+ .workLink:active { transform:scale(.95); }
+ .workLink:focus-visible { outline:2px solid var(--color-surface-light); outline-offset:5px; }
+ .outroWrapper { width: 100%; padding-bottom: 80px; }
+-.lineWrapper { width: 100%; max-width: 1800px; margin: 60px auto 0; padding: 0 4vw; }
++.lineWrapper { position: relative; width: 100%; max-width: 1800px; margin: 60px auto 0; padding: 0 4vw; }
+ .outroLine { width: 100%; height: auto; display: block; }
++.floatWord { position: absolute; font-family: var(--font-space-grotesk), sans-serif; font-size: clamp(14px, 1.3vw, 18px); color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; transform: translate(-50%, -50%); pointer-events: none; }
+ @keyframes reactionIn { from { opacity:0; transform:translateY(7px); filter:blur(4px); } to { opacity:1; transform:translateY(0); filter:blur(0); } }
+ @media(min-width:768px) and (max-height:680px) { .editor { top:60px; height:calc(100vh - 120px); min-height:0; grid-template-rows:34px minmax(0,1fr) 78px; }.clips { height:60px; }.editCopy { bottom:34px; }.audienceReaction { top:28px; }.outcome { bottom:32px; } }
+ @media(max-width:900px) { .intro{gap:32px}.introCopy{width:230px}.audienceReaction,.outcome{right:30px}.editCopy{width:62%} }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T20:27:35+05:30
+Completed At: 2026-09-15T20:27:37+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -104,10 +104,10 @@
+         </div>
+         <div className={styles.lineWrapper}>
+           <Image src="/assets/6a51975c584436cfdd9e2406_loc_path.svg" alt="" width={1072} height={208} className={styles.outroLine} aria-hidden="true" />
+-          <span className={styles.floatWord} style={{ top: "10%", left: "15%" }}>Attention</span>
+-          <span className={styles.floatWord} style={{ top: "85%", left: "40%" }}>Authority</span>
+-          <span className={styles.floatWord} style={{ top: "15%", left: "65%" }}>Trust</span>
+-          <span className={styles.floatWord} style={{ top: "80%", left: "85%" }}>Demand</span>
++          <span className={styles.floatWord} style={{ top: "55%", left: "16%" }}>Attention</span>
++          <span className={styles.floatWord} style={{ top: "85%", left: "36%" }}>Authority</span>
++          <span className={styles.floatWord} style={{ top: "25%", left: "68%" }}>Trust</span>
++          <span className={styles.floatWord} style={{ top: "75%", left: "86%" }}>Demand</span>
+         </div>
+       </footer>
+     </section>
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T20:31:37+05:30
+Completed At: 2026-09-15T20:31:40+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -104,10 +104,10 @@
+         </div>
+         <div className={styles.lineWrapper}>
+           <Image src="/assets/6a51975c584436cfdd9e2406_loc_path.svg" alt="" width={1072} height={208} className={styles.outroLine} aria-hidden="true" />
+-          <span className={styles.floatWord} style={{ top: "55%", left: "16%" }}>Attention</span>
+-          <span className={styles.floatWord} style={{ top: "85%", left: "36%" }}>Authority</span>
+-          <span className={styles.floatWord} style={{ top: "25%", left: "68%" }}>Trust</span>
+-          <span className={styles.floatWord} style={{ top: "75%", left: "86%" }}>Demand</span>
++          <span className={styles.floatWord} style={{ top: "55%", left: "16%" }}><span className={styles.drawnNum}>1.</span> <em>Attention</em></span>
++          <span className={styles.floatWord} style={{ top: "85%", left: "36%" }}><span className={styles.drawnNum}>2.</span> <em>Authority</em></span>
++          <span className={styles.floatWord} style={{ top: "35%", left: "68%" }}><span className={styles.drawnNum}>3.</span> <em>Trust</em></span>
++          <span className={styles.floatWord} style={{ top: "75%", left: "86%" }}><span className={styles.drawnNum}>4.</span> <em>Demand</em></span>
+         </div>
+       </footer>
+     </section>
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T20:31:50+05:30
+Completed At: 2026-09-15T20:31:52+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -58,7 +58,9 @@
+ .outroWrapper { width: 100%; padding-bottom: 80px; }
+ .lineWrapper { position: relative; width: 100%; max-width: 1800px; margin: 60px auto 0; padding: 0 4vw; }
+ .outroLine { width: 100%; height: auto; display: block; }
+-.floatWord { position: absolute; font-family: var(--font-space-grotesk), sans-serif; font-size: clamp(14px, 1.3vw, 18px); color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; transform: translate(-50%, -50%); pointer-events: none; }
++.floatWord { position: absolute; font-family: var(--font-space-grotesk), sans-serif; font-size: clamp(14px, 1.3vw, 18px); color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; transform: translate(-50%, -50%); pointer-events: none; display: flex; align-items: baseline; gap: 8px; }
++.floatWord em { font-style: italic; }
++.drawnNum { font-family: 'Caveat', 'Bradley Hand', 'Comic Sans MS', cursive; font-size: 1.6em; color: #ffdc2e; transform: rotate(-8deg); display: inline-block; font-weight: bold; }
+ @keyframes reactionIn { from { opacity:0; transform:translateY(7px); filter:blur(4px); } to { opacity:1; transform:translateY(0); filter:blur(0); } }
+ @media(min-width:768px) and (max-height:680px) { .editor { top:60px; height:calc(100vh - 120px); min-height:0; grid-template-rows:34px minmax(0,1fr) 78px; }.clips { height:60px; }.editCopy { bottom:34px; }.audienceReaction { top:28px; }.outcome { bottom:32px; } }
+ @media(max-width:900px) { .intro{gap:32px}.introCopy{width:230px}.audienceReaction,.outcome{right:30px}.editCopy{width:62%} }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T20:33:05+05:30
+Completed At: 2026-09-15T20:33:08+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -104,10 +104,10 @@
+         </div>
+         <div className={styles.lineWrapper}>
+           <Image src="/assets/6a51975c584436cfdd9e2406_loc_path.svg" alt="" width={1072} height={208} className={styles.outroLine} aria-hidden="true" />
+-          <span className={styles.floatWord} style={{ top: "55%", left: "16%" }}>Attention</span>
+-          <span className={styles.floatWord} style={{ top: "85%", left: "36%" }}>Authority</span>
+-          <span className={styles.floatWord} style={{ top: "25%", left: "68%" }}>Trust</span>
+-          <span className={styles.floatWord} style={{ top: "75%", left: "86%" }}>Demand</span>
++          <span className={styles.floatWord} style={{ top: "55%", left: "16%" }}>1. Attention</span>
++          <span className={styles.floatWord} style={{ top: "85%", left: "36%" }}>2. Authority</span>
++          <span className={styles.floatWord} style={{ top: "50%", left: "64%" }}>3. Trust</span>
++          <span className={styles.floatWord} style={{ top: "75%", left: "86%" }}>4. Demand</span>
+         </div>
+       </footer>
+     </section>
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T20:33:15+05:30
+Completed At: 2026-09-15T20:33:18+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -58,7 +58,7 @@
+ .outroWrapper { width: 100%; padding-bottom: 80px; }
+ .lineWrapper { position: relative; width: 100%; max-width: 1800px; margin: 60px auto 0; padding: 0 4vw; }
+ .outroLine { width: 100%; height: auto; display: block; }
+-.floatWord { position: absolute; font-family: var(--font-space-grotesk), sans-serif; font-size: clamp(14px, 1.3vw, 18px); color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; transform: translate(-50%, -50%); pointer-events: none; }
++.floatWord { position: absolute; font-family: var(--font-space-grotesk), sans-serif; font-size: clamp(14px, 1.3vw, 18px); font-style: italic; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; transform: translate(-50%, -50%); pointer-events: none; }
+ @keyframes reactionIn { from { opacity:0; transform:translateY(7px); filter:blur(4px); } to { opacity:1; transform:translateY(0); filter:blur(0); } }
+ @media(min-width:768px) and (max-height:680px) { .editor { top:60px; height:calc(100vh - 120px); min-height:0; grid-template-rows:34px minmax(0,1fr) 78px; }.clips { height:60px; }.editCopy { bottom:34px; }.audienceReaction { top:28px; }.outcome { bottom:32px; } }
+ @media(max-width:900px) { .intro{gap:32px}.introCopy{width:230px}.audienceReaction,.outcome{right:30px}.editCopy{width:62%} }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T20:34:30+05:30
+Completed At: 2026-09-15T20:34:32+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -58,7 +58,7 @@
+ .outroWrapper { width: 100%; padding-bottom: 80px; }
+ .lineWrapper { position: relative; width: 100%; max-width: 1800px; margin: 60px auto 0; padding: 0 4vw; }
+ .outroLine { width: 100%; height: auto; display: block; }
+-.floatWord { position: absolute; font-family: var(--font-space-grotesk), sans-serif; font-size: clamp(14px, 1.3vw, 18px); font-style: italic; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; transform: translate(-50%, -50%); pointer-events: none; }
++.floatWord { position: absolute; font-family: var(--font-tiempos-headline), Georgia, serif; font-size: clamp(16px, 1.5vw, 22px); font-style: italic; color: var(--color-accent); text-transform: capitalize; font-weight: 400; transform: translate(-50%, -50%); pointer-events: none; }
+ @keyframes reactionIn { from { opacity:0; transform:translateY(7px); filter:blur(4px); } to { opacity:1; transform:translateY(0); filter:blur(0); } }
+ @media(min-width:768px) and (max-height:680px) { .editor { top:60px; height:calc(100vh - 120px); min-height:0; grid-template-rows:34px minmax(0,1fr) 78px; }.clips { height:60px; }.editCopy { bottom:34px; }.audienceReaction { top:28px; }.outcome { bottom:32px; } }
+ @media(max-width:900px) { .intro{gap:32px}.introCopy{width:230px}.audienceReaction,.outcome{right:30px}.editCopy{width:62%} }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T20:36:56+05:30
+Completed At: 2026-09-15T20:36:58+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -58,7 +58,7 @@
+ .outroWrapper { width: 100%; padding-bottom: 80px; }
+ .lineWrapper { position: relative; width: 100%; max-width: 1800px; margin: 60px auto 0; padding: 0 4vw; }
+ .outroLine { width: 100%; height: auto; display: block; }
+-.floatWord { position: absolute; font-family: var(--font-tiempos-headline), Georgia, serif; font-size: clamp(16px, 1.5vw, 22px); font-style: italic; color: var(--color-accent); text-transform: capitalize; font-weight: 400; transform: translate(-50%, -50%); pointer-events: none; }
++.floatWord { position: absolute; font-family: var(--font-tiempos-headline), Georgia, serif; font-size: clamp(20px, 2.5vw, 32px); font-style: italic; color: var(--color-accent); text-transform: capitalize; font-weight: 400; transform: translate(-50%, -50%); pointer-events: none; }
+ @keyframes reactionIn { from { opacity:0; transform:translateY(7px); filter:blur(4px); } to { opacity:1; transform:translateY(0); filter:blur(0); } }
+ @media(min-width:768px) and (max-height:680px) { .editor { top:60px; height:calc(100vh - 120px); min-height:0; grid-template-rows:34px minmax(0,1fr) 78px; }.clips { height:60px; }.editCopy { bottom:34px; }.audienceReaction { top:28px; }.outcome { bottom:32px; } }
+ @media(max-width:900px) { .intro{gap:32px}.introCopy{width:230px}.audienceReaction,.outcome{right:30px}.editCopy{width:62%} }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T20:37:52+05:30
+Completed At: 2026-09-15T20:37:54+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -58,7 +58,7 @@
+ .outroWrapper { width: 100%; padding-bottom: 80px; }
+ .lineWrapper { position: relative; width: 100%; max-width: 1800px; margin: 60px auto 0; padding: 0 4vw; }
+ .outroLine { width: 100%; height: auto; display: block; }
+-.floatWord { position: absolute; font-family: var(--font-tiempos-headline), Georgia, serif; font-size: clamp(20px, 2.5vw, 32px); font-style: italic; color: var(--color-accent); text-transform: capitalize; font-weight: 400; transform: translate(-50%, -50%); pointer-events: none; }
++.floatWord { position: absolute; font-family: var(--font-tiempos-headline), Georgia, serif; font-size: clamp(16px, 1.8vw, 24px); font-style: italic; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 400; transform: translate(-50%, -50%); pointer-events: none; }
+ @keyframes reactionIn { from { opacity:0; transform:translateY(7px); filter:blur(4px); } to { opacity:1; transform:translateY(0); filter:blur(0); } }
+ @media(min-width:768px) and (max-height:680px) { .editor { top:60px; height:calc(100vh - 120px); min-height:0; grid-template-rows:34px minmax(0,1fr) 78px; }.clips { height:60px; }.editCopy { bottom:34px; }.audienceReaction { top:28px; }.outcome { bottom:32px; } }
+ @media(max-width:900px) { .intro{gap:32px}.introCopy{width:230px}.audienceReaction,.outcome{right:30px}.editCopy{width:62%} }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T20:38:53+05:30
+Completed At: 2026-09-15T20:38:55+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -58,7 +58,7 @@
+ .outroWrapper { width: 100%; padding-bottom: 80px; }
+ .lineWrapper { position: relative; width: 100%; max-width: 1800px; margin: 60px auto 0; padding: 0 4vw; }
+ .outroLine { width: 100%; height: auto; display: block; }
+-.floatWord { position: absolute; font-family: var(--font-tiempos-headline), Georgia, serif; font-size: clamp(16px, 1.8vw, 24px); font-style: italic; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 400; transform: translate(-50%, -50%); pointer-events: none; }
++.floatWord { position: absolute; font-family: var(--font-tiempos-headline), Georgia, serif; font-size: clamp(13px, 1.2vw, 17px); font-style: italic; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 400; transform: translate(-50%, -50%); pointer-events: none; }
+ @keyframes reactionIn { from { opacity:0; transform:translateY(7px); filter:blur(4px); } to { opacity:1; transform:translateY(0); filter:blur(0); } }
+ @media(min-width:768px) and (max-height:680px) { .editor { top:60px; height:calc(100vh - 120px); min-height:0; grid-template-rows:34px minmax(0,1fr) 78px; }.clips { height:60px; }.editCopy { bottom:34px; }.audienceReaction { top:28px; }.outcome { bottom:32px; } }
+ @media(max-width:900px) { .intro{gap:32px}.introCopy{width:230px}.audienceReaction,.outcome{right:30px}.editCopy{width:62%} }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T20:40:41+05:30
+Completed At: 2026-09-15T20:40:43+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -58,7 +58,7 @@
+ .outroWrapper { width: 100%; padding-bottom: 80px; }
+ .lineWrapper { position: relative; width: 100%; max-width: 1800px; margin: 60px auto 0; padding: 0 4vw; }
+ .outroLine { width: 100%; height: auto; display: block; }
+-.floatWord { position: absolute; font-family: var(--font-tiempos-headline), Georgia, serif; font-size: clamp(13px, 1.2vw, 17px); font-style: italic; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 400; transform: translate(-50%, -50%); pointer-events: none; }
++.floatWord { position: absolute; font-family: var(--font-tiempos-headline), Georgia, serif; font-size: clamp(15px, 1.5vw, 20px); font-style: italic; color: #8a2a2a; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 400; transform: translate(-50%, -50%); pointer-events: none; }
+ @keyframes reactionIn { from { opacity:0; transform:translateY(7px); filter:blur(4px); } to { opacity:1; transform:translateY(0); filter:blur(0); } }
+ @media(min-width:768px) and (max-height:680px) { .editor { top:60px; height:calc(100vh - 120px); min-height:0; grid-template-rows:34px minmax(0,1fr) 78px; }.clips { height:60px; }.editCopy { bottom:34px; }.audienceReaction { top:28px; }.outcome { bottom:32px; } }
+ @media(max-width:900px) { .intro{gap:32px}.introCopy{width:230px}.audienceReaction,.outcome{right:30px}.editCopy{width:62%} }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T20:42:08+05:30
+Completed At: 2026-09-15T20:42:10+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -58,7 +58,7 @@
+ .outroWrapper { width: 100%; padding-bottom: 80px; }
+ .lineWrapper { position: relative; width: 100%; max-width: 1800px; margin: 60px auto 0; padding: 0 4vw; }
+ .outroLine { width: 100%; height: auto; display: block; }
+-.floatWord { position: absolute; font-family: var(--font-tiempos-headline), Georgia, serif; font-size: clamp(15px, 1.5vw, 20px); font-style: italic; color: #8a2a2a; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 400; transform: translate(-50%, -50%); pointer-events: none; }
++.floatWord { position: absolute; font-family: var(--font-tiempos-headline), Georgia, serif; font-size: clamp(15px, 1.5vw, 20px); font-style: italic; color: #8a2a2a; text-transform: uppercase; letter-spacing: 0.05em; font-weight: bold; transform: translate(-50%, -50%); pointer-events: none; }
+ @keyframes reactionIn { from { opacity:0; transform:translateY(7px); filter:blur(4px); } to { opacity:1; transform:translateY(0); filter:blur(0); } }
+ @media(min-width:768px) and (max-height:680px) { .editor { top:60px; height:calc(100vh - 120px); min-height:0; grid-template-rows:34px minmax(0,1fr) 78px; }.clips { height:60px; }.editCopy { bottom:34px; }.audienceReaction { top:28px; }.outcome { bottom:32px; } }
+ @media(max-width:900px) { .intro{gap:32px}.introCopy{width:230px}.audienceReaction,.outcome{right:30px}.editCopy{width:62%} }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-15T20:42:55+05:30
+Completed At: 2026-09-15T20:42:57+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -58,7 +58,7 @@
+ .outroWrapper { width: 100%; padding-bottom: 80px; }
+ .lineWrapper { position: relative; width: 100%; max-width: 1800px; margin: 60px auto 0; padding: 0 4vw; }
+ .outroLine { width: 100%; height: auto; display: block; }
+-.floatWord { position: absolute; font-family: var(--font-tiempos-headline), Georgia, serif; font-size: clamp(15px, 1.5vw, 20px); font-style: italic; color: #8a2a2a; text-transform: uppercase; letter-spacing: 0.05em; font-weight: bold; transform: translate(-50%, -50%); pointer-events: none; }
++.floatWord { position: absolute; font-family: var(--font-tiempos-headline), Georgia, serif; font-size: clamp(15px, 1.5vw, 20px); font-style: italic; color: #8a2a2a; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; transform: translate(-50%, -50%); pointer-events: none; }
+ @keyframes reactionIn { from { opacity:0; transform:translateY(7px); filter:blur(4px); } to { opacity:1; transform:translateY(0); filter:blur(0); } }
+ @media(min-width:768px) and (max-height:680px) { .editor { top:60px; height:calc(100vh - 120px); min-height:0; grid-template-rows:34px minmax(0,1fr) 78px; }.clips { height:60px; }.editCopy { bottom:34px; }.audienceReaction { top:28px; }.outcome { bottom:32px; } }
+ @media(max-width:900px) { .intro{gap:32px}.introCopy{width:230px}.audienceReaction,.outcome{right:30px}.editCopy{width:62%} }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-16T12:37:39+05:30
+Completed At: 2026-09-16T12:38:13+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -6,7 +6,6 @@
+ import gsap from "gsap";
+ import { ScrollTrigger } from "gsap/ScrollTrigger";
+ import styles from "./WhyInfotainmentWorks.module.css";
+-import MethodPath from "./MethodPath";
+ 
+ const edits = [
+   { outcome: "Attention", edit: "The hook", title: "Make the first second impossible to ignore.", note: "Open on a question, image, or tension the audience needs resolved.", reaction: "Wait—what is this?", image: "/assets/infotainment/01-threshold.jpg", alt: "An open doorway framing hazy Lisbon rooftops and a distant bridge", position: "center 58%" },
+@@ -102,7 +102,13 @@
+           <p>Entertainment earns the pause.<br /><em>Education makes it valuable.</em></p>
+           <a href="/work" data-cursor-hover className={styles.workLink}>See the work <ArrowUpRight size={19} aria-hidden="true" /></a>
+         </div>
+-        <MethodPath />
++        <div className={styles.lineWrapper}>
++          <Image src="/assets/6a51975c584436cfdd9e2406_loc_path.svg" alt="" width={1072} height={208} className={styles.outroLine} aria-hidden="true" />
++          <span className={styles.floatWord} style={{ top: "55%", left: "16%" }}>1. Attention</span>
++          <span className={styles.floatWord} style={{ top: "85%", left: "36%" }}>2. Authority</span>
++          <span className={styles.floatWord} style={{ top: "50%", left: "64%" }}>3. Trust</span>
++          <span className={styles.floatWord} style={{ top: "75%", left: "86%" }}>4. Demand</span>
++        </div>
+       </footer>
+     </section>
+   );
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-16T13:02:04+05:30
+Completed At: 2026-09-16T13:02:07+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.tsx. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -103,7 +103,13 @@
+           <p>Entertainment earns the pause.<br /><em>Education makes it valuable.</em></p>
+           <a href="/work" data-cursor-hover className={styles.workLink}>See the work <ArrowUpRight size={19} aria-hidden="true" /></a>
+         </div>
+-        <MethodPath />
++        <div className={styles.lineWrapper}>
++          <Image src="/assets/6a51975c584436cfdd9e2406_loc_path.svg" alt="" width={1072} height={208} className={styles.outroLine} aria-hidden="true" />
++          <span className={styles.floatWord} style={{ top: "55%", left: "16%" }}>1. Attention</span>
++          <span className={styles.floatWord} style={{ top: "85%", left: "36%" }}>2. Authority</span>
++          <span className={styles.floatWord} style={{ top: "50%", left: "64%" }}>3. Trust</span>
++          <span className={styles.floatWord} style={{ top: "75%", left: "86%" }}>4. Demand</span>
++        </div>
+       </footer>
+     </section>
+   );
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+===DIFF===
+Created At: 2026-09-16T13:02:14+05:30
+Completed At: 2026-09-16T13:02:17+05:30
+The following changes were made by the replace_file_content tool to: c:\Users\Ishan\Desktop\monarch Media House\AdityaPortfolioFrontend\components\WhyInfotainmentWorks.module.css. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -55,7 +55,10 @@
+ .workLink:hover { transform:scale(1.05); color:#fff; background:var(--color-primary); }
+ .workLink:active { transform:scale(.95); }
+ .workLink:focus-visible { outline:2px solid var(--color-surface-light); outline-offset:5px; }
+-.outroWrapper { width: 100%; padding-bottom: 0; }
++.outroWrapper { width: 100%; padding-bottom: 80px; }
++.lineWrapper { position: relative; width: 100%; max-width: 1800px; margin: 60px auto 0; padding: 0 4vw; }
++.outroLine { width: 100%; height: auto; display: block; }
++.floatWord { position: absolute; font-family: var(--font-tiempos-headline), Georgia, serif; font-size: clamp(15px, 1.5vw, 20px); font-style: italic; color: #8a2a2a; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; transform: translate(-50%, -50%); pointer-events: none; }
+ @keyframes reactionIn { from { opacity:0; transform:translateY(7px); filter:blur(4px); } to { opacity:1; transform:translateY(0); filter:blur(0); } }
+ @media(min-width:768px) and (max-height:680px) { .editor { top:60px; height:calc(100vh - 120px); min-height:0; grid-template-rows:34px minmax(0,1fr) 78px; }.clips { height:60px; }.editCopy { bottom:34px; }.audienceReaction { top:28px; }.outcome { bottom:32px; } }
+ @media(max-width:900px) { .intro{gap:32px}.introCopy{width:230px}.audienceReaction,.outcome{right:30px}.editCopy{width:62%} }
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.

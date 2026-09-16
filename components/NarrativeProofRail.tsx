@@ -37,11 +37,9 @@ const stories = [
   },
 ];
 
-export default function CinematicFilmstrip() {
+export default function NarrativeProofRail() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
   const pinWrapperRef = useRef<HTMLDivElement>(null);
-  const parallaxWrapperRef = useRef<HTMLDivElement>(null);
   
   const railRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -50,13 +48,11 @@ export default function CinematicFilmstrip() {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
-    const section = sectionRef.current;
     const pinWrapper = pinWrapperRef.current;
-    const parallaxWrapper = parallaxWrapperRef.current;
     const rail = railRef.current;
     const container = containerRef.current;
 
-    if (!section || !pinWrapper || !rail || !parallaxWrapper || !container) return;
+    if (!pinWrapper || !rail || !container) return;
 
     const ctx = gsap.context(() => {
       // ── Horizontal Scroll ───────────────────────────────────────────
@@ -78,21 +74,6 @@ export default function CinematicFilmstrip() {
         ease: "none",
       });
 
-      // ── Entry Parallax ──────────────────────────────────────────────
-      gsap.fromTo(parallaxWrapper,
-        { y: 150 },
-        {
-          y: 0,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top bottom",
-            end: "top top",
-            scrub: true,
-          }
-        }
-      );
-
     });
 
     return () => ctx.revert();
@@ -101,20 +82,18 @@ export default function CinematicFilmstrip() {
   return (
     <div ref={containerRef} className="w-full relative z-20">
       <section
-        ref={sectionRef}
-        id="filmstrip"
-        aria-label="Storytelling Portfolio"
-        className="relative w-full z-20 -mt-12 md:-mt-24"
+        id="narrative-proof"
+        aria-label="Narrative proof across content formats"
+        className="relative w-full z-20"
       >
         <div ref={pinWrapperRef} className="relative w-full h-screen z-20">
           <div 
-            ref={parallaxWrapperRef} 
-            className="w-full h-full relative origin-bottom bg-background overflow-hidden rounded-t-[3rem] md:rounded-t-[4rem] flex flex-col justify-center"
+            className="w-full h-full relative bg-background overflow-hidden flex flex-col justify-center"
           >
             {/* Grain */}
             <div
               aria-hidden="true"
-              className="absolute inset-0 pointer-events-none z-0 opacity-[0.035]"
+              className="absolute inset-0 pointer-events-none z-[1] opacity-[0.035]"
               style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
                 backgroundSize: "180px 180px",

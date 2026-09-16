@@ -5,6 +5,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, AnimatePresence } from "framer-motion";
 import { Share2, Film, Lightbulb, BarChart3, Search } from "lucide-react";
+import Image from "next/image";
+import atmosphere from "./ServicesAtmosphere.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -44,8 +46,28 @@ const services = [
 const OurServices = () => {
     const sectionRef = useRef<HTMLElement>(null);
     const stickyContainerRef = useRef<HTMLDivElement>(null);
+    const passageRef = useRef<HTMLDivElement>(null);
     const textRefs = useRef<(HTMLButtonElement | null)[]>([]);
     const [activeIndex, setActiveIndex] = useState(0);
+
+    useEffect(() => {
+        const passage = passageRef.current;
+        if (!passage) return;
+        let inView = false;
+        const updatePlayback = () => {
+            passage.dataset.playing = String(inView && !document.hidden);
+        };
+        const observer = new IntersectionObserver(([entry]) => {
+            inView = entry.isIntersecting;
+            updatePlayback();
+        });
+        observer.observe(passage);
+        document.addEventListener("visibilitychange", updatePlayback);
+        return () => {
+            observer.disconnect();
+            document.removeEventListener("visibilitychange", updatePlayback);
+        };
+    }, []);
 
     useEffect(() => {
         if (!sectionRef.current) return;
@@ -78,6 +100,25 @@ const OurServices = () => {
                 onRefresh: updateActiveIndex,
             });
 
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top bottom",
+                    end: "top 30%",
+                    scrub: 0.5
+                }
+            });
+
+            if (passageRef.current) {
+                const layers = passageRef.current.querySelectorAll(`.${atmosphere.parallaxLayer}`);
+                if (layers.length >= 4) {
+                    tl.fromTo(layers[0], { y: 55 }, { y: -55, ease: "none" }, 0);
+                    tl.fromTo(layers[1], { y: 75 }, { y: -75, ease: "none" }, 0);
+                    tl.fromTo(layers[2], { y: 35 }, { y: -35, ease: "none" }, 0);
+                    tl.fromTo(layers[3], { y: 25 }, { y: -25, ease: "none" }, 0);
+                }
+            }
+
             updateActiveIndex();
             setTimeout(updateActiveIndex, 100);
             setTimeout(updateActiveIndex, 500);
@@ -97,32 +138,92 @@ const OurServices = () => {
         <section
             ref={sectionRef}
             id="services"
-            className="relative bg-background w-full"
+            className="relative w-full"
+            style={{ backgroundColor: "var(--color-background)" }}
         >
+            <div className={atmosphere.sky} aria-hidden="true" />
+
+            <div className={atmosphere.passage} aria-hidden="true" style={{ zIndex: 1 }}>
+                <div ref={passageRef} className={atmosphere.drift} data-playing="false">
+                    <div className="absolute inset-0">
+                        <div className={`${atmosphere.cloudTrack} ${atmosphere.track1}`}>
+                            <Image src="/clouds/clouds1.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                            <Image src="/clouds/clouds1.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                            <Image src="/clouds/clouds1.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                        </div>
+                    </div>
+                    <div className="absolute inset-0">
+                        <div className={`${atmosphere.cloudTrack} ${atmosphere.track1b}`}>
+                            <Image src="/clouds/clouds1.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                            <Image src="/clouds/clouds1.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                            <Image src="/clouds/clouds1.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                        </div>
+                    </div>
+                    <div className={atmosphere.parallaxLayer}>
+                        <div className={`${atmosphere.cloudTrack} ${atmosphere.track2}`}>
+                            <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                            <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                            <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                        </div>
+                    </div>
+                    <div className={atmosphere.parallaxLayer}>
+                        <div className={`${atmosphere.cloudTrack} ${atmosphere.track2b}`}>
+                            <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                            <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                            <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                        </div>
+                    </div>
+                    <div className="absolute inset-0">
+                        <div className={`${atmosphere.cloudTrack} ${atmosphere.track2c}`}>
+                            <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                            <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                            <Image src="/clouds/clouds2.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                        </div>
+                    </div>
+                    <div className={atmosphere.parallaxLayer}>
+                        <div className={`${atmosphere.cloudTrack} ${atmosphere.track3}`}>
+                            <Image src="/clouds/clouds3.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                            <Image src="/clouds/clouds3.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                            <Image src="/clouds/clouds3.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                        </div>
+                    </div>
+                    <div className={atmosphere.parallaxLayer}>
+                        <div className={`${atmosphere.cloudTrack} ${atmosphere.track1c}`}>
+                            <Image src="/clouds/clouds1.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                            <Image src="/clouds/clouds1.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                            <Image src="/clouds/clouds1.avif" alt="" width={2730} height={871} className={atmosphere.cloudImage} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* Section Header */}
-            <div className="w-full max-w-[1070px] mx-auto px-6 md:px-16 pt-24 md:pt-36 pb-10">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-12 relative z-10 w-full">
+            <div className="w-full max-w-[1070px] mx-auto px-6 md:px-16 pt-14 md:pt-24 pb-12 md:pb-16 relative z-10">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 md:gap-16 relative z-10 w-full">
                     <div className="flex flex-col items-start">
-                        <div className="inline-block bg-primary text-background px-3 py-1.5 rounded-lg text-sm font-medium mb-4 shadow-sm border border-primary/10">
+                        <div className="inline-flex items-center min-h-8 bg-primary text-background px-3.5 py-1.5 rounded-full text-[10px] font-semibold uppercase tracking-[0.18em] mb-5 shadow-[0_8px_24px_rgba(17,37,14,0.12)]">
                             Our Expertise
                         </div>
-                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium text-primary tracking-tight leading-tight">
+                        <h2
+                            className="text-[42px] md:text-[52px] lg:text-[60px] font-normal text-primary tracking-[-0.03em] leading-[0.96]"
+                            style={{ fontFamily: "var(--font-tiempos-headline), Georgia, serif" }}
+                        >
                             Our Services.
                         </h2>
                     </div>
-                    <div className="md:max-w-md lg:max-w-lg md:pb-1">
-                        <p className="text-base md:text-lg text-gray-600 font-light leading-relaxed">
-                            A full-stack creative arsenal built to transform your brand presence into <span className="text-primary font-medium">market authority</span>.
+                    <div className="md:max-w-[440px] md:pb-1">
+                        <p className="text-[15px] md:text-[17px] text-primary/75 font-normal leading-[1.65] text-pretty">
+                            A full-stack creative arsenal built to transform your brand presence into <span className="text-primary font-semibold">market authority</span>.
                         </p>
                     </div>
                 </div>
             </div>
 
             {/* Two Column Layout */}
-            <div className="relative w-full max-w-[1070px] mx-auto px-6 md:px-16 flex flex-col lg:flex-row gap-12 lg:gap-0">
+            <div className="relative z-10 w-full max-w-[1070px] mx-auto px-6 md:px-16 flex flex-col lg:flex-row gap-12 lg:gap-0">
 
                 {/* Left Column — Scrolling Text Items */}
-                <div className="lg:w-[50%] relative pl-6 md:pl-6">
+                <div className="lg:w-[52%] relative md:pl-2 lg:pl-6">
                     {services.map((service, idx) => {
                         const isActive = idx === activeIndex;
                         return (
@@ -134,26 +235,29 @@ const OurServices = () => {
                                     textRefs.current[idx]?.scrollIntoView({ behavior: "smooth", block: "center" });
                                 }}
                                 ref={(el) => { textRefs.current[idx] = el; }}
-                                className="w-full text-left py-6 md:py-8 border-t border-primary/10 first:border-t-0 group relative block"
+                                className="w-full text-left py-7 md:py-10 border-t border-primary/20 first:border-t-0 group relative block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-transparent"
                             >
                                 {/* Active border animation */}
                                 <div 
                                     className={`absolute top-[-1px] left-0 w-full h-[1px] bg-accent transition-transform duration-500 ease-out origin-left ${isActive ? "scale-x-100" : "scale-x-0"}`}
                                 />
 
-                                <div className={`transition-all duration-300 group-hover:translate-x-2 ${isActive ? "opacity-100 translate-x-1" : "opacity-50 group-hover:opacity-80"}`}>
+                                <div className={`transition-all duration-500 ease-out group-hover:translate-x-2 ${isActive ? "opacity-100 translate-x-1" : "opacity-70 group-hover:opacity-90"}`}>
                                     {/* Number */}
-                                    <span className={`text-xs md:text-sm font-mono tracking-[0.3em] uppercase mb-2 block transition-colors duration-300 group-hover:text-accent ${isActive ? "text-accent font-semibold" : "text-accent/60"}`}>
+                                    <span className={`text-[10px] md:text-[11px] font-sans tracking-[0.24em] uppercase mb-3 block transition-colors duration-300 group-hover:text-primary ${isActive ? "text-accent font-semibold" : "text-primary/55 font-medium"}`}>
                                         {service.number}
                                     </span>
 
                                     {/* Title */}
-                                    <h3 className={`text-xl lg:text-2xl font-display font-semibold tracking-tight leading-tight mb-2 transition-colors duration-300 ${isActive ? "text-primary" : "text-primary/70"}`}>
+                                    <h3
+                                        className={`text-[30px] md:text-[36px] lg:text-[40px] font-normal tracking-[-0.025em] leading-[1.05] mb-4 transition-colors duration-300 ${isActive ? "text-primary" : "text-primary/80"}`}
+                                        style={{ fontFamily: "var(--font-tiempos-headline), Georgia, serif" }}
+                                    >
                                         {service.title}
                                     </h3>
 
                                     {/* Description */}
-                                    <p className="text-[13px] md:text-sm text-muted font-light leading-relaxed max-w-sm">
+                                    <p className="text-[14px] md:text-[15px] text-primary/70 font-normal leading-[1.65] max-w-[43ch] text-pretty">
                                         {service.desc}
                                     </p>
                                 </div>
@@ -165,7 +269,7 @@ const OurServices = () => {
                 </div>
 
                 {/* Right Column — Sticky Icon Container */}
-                <div className="hidden lg:block lg:w-[50%] pt-32">
+                <div className="hidden lg:block lg:w-[48%] pt-32">
                     <div
                         ref={stickyContainerRef}
                         className="sticky top-[50vh] -translate-y-1/2 ml-12 xl:ml-20"
@@ -248,7 +352,7 @@ const OurServices = () => {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -6 }}
                                     transition={{ duration: 0.2, ease: "easeOut" }}
-                                    className="text-xs font-mono text-accent tracking-[0.3em] uppercase"
+                                className="text-[10px] font-sans font-semibold text-primary/65 tracking-[0.2em] uppercase"
                                 >
                                     {services[activeIndex].number} — {services[activeIndex].title}
                                 </motion.p>

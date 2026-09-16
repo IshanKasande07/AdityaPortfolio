@@ -1,311 +1,124 @@
-"use client"
+"use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { ArrowDown, ArrowUpRight, Play } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Sparkles, Brain, Heart, Zap } from "lucide-react";
+import styles from "./WhyInfotainmentWorks.module.css";
+import MethodPath from "./MethodPath";
 
-const WhyInfotainmentWorks = () => {
-  const triggerRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const svgPathsRef = useRef<(SVGPathElement | null)[]>([]);
-  const connectingLinesRef = useRef<(SVGLineElement | null)[]>([]);
-  const actionWordRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const incomingLineRef = useRef<SVGLineElement>(null);
+const edits = [
+  { outcome: "Attention", edit: "The hook", title: "Make the first second impossible to ignore.", note: "Open on a question, image, or tension the audience needs resolved.", reaction: "Wait—what is this?", image: "/assets/infotainment/01-threshold.jpg", alt: "An open doorway framing hazy Lisbon rooftops and a distant bridge", position: "center 58%" },
+  { outcome: "Authority", edit: "The insight", title: "Reward attention with an idea worth keeping.", note: "Turn expertise into one clear shift in how the audience sees the problem.", reaction: "I’ve never thought of it that way.", image: "/assets/infotainment/02-insight.jpg", alt: "A reader absorbed in a book beside a softly lit window", position: "center 48%" },
+  { outcome: "Trust", edit: "The pattern", title: "Make useful thinking feel familiar.", note: "A recognisable voice, repeated with care, gives people a reason to return.", reaction: "There’s always something worth learning here.", image: "/assets/infotainment/03-pattern.jpg", alt: "Repeating curved balconies forming a precise architectural rhythm", position: "center 48%" },
+  { outcome: "Demand", edit: "The payoff", title: "Turn remembered value into intent.", note: "When the need arrives, your expertise is already the natural next step.", reaction: "These are the people I want to work with.", image: "/assets/infotainment/04-production.jpg", alt: "A filmmaker recording a subject inside a dark editorial studio", position: "center 45%" },
+];
 
-  const [cardDimensions, setCardDimensions] = useState<{ width: number, height: number }[]>([]);
+export default function WhyInfotainmentWorks() {
+  const rootRef = useRef<HTMLElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const editorRef = useRef<HTMLDivElement>(null);
+  const [activeEdit, setActiveEdit] = useState(0);
 
-  // Capture dimensions to build accurate SVG paths
   useEffect(() => {
-    const updateDimensions = () => {
-      if (cardRefs.current) {
-        const dims = cardRefs.current.map(card => ({
-          width: card?.offsetWidth || 150,
-          height: card?.offsetHeight || 110
-        }));
-        setCardDimensions(dims);
-      }
-    };
-    
-    updateDimensions();
+    if (!rootRef.current || !trackRef.current || !editorRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const media = gsap.matchMedia();
+    const context = gsap.context(() => {
+      media.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
+        const editor = editorRef.current!;
+        ScrollTrigger.create({
+          trigger: trackRef.current,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.7,
+          onUpdate: ({ progress }) => {
+            editor.style.setProperty("--edit-progress", `${progress}`);
+            editor.style.setProperty("--cloud-drift", `${progress * 11}%`);
+            editor.style.setProperty("--cloud-x", `${progress * -3}%`);
+            editor.style.setProperty("--playhead-x", `${progress * 100}%`);
+            setActiveEdit(Math.min(edits.length - 1, Math.floor(progress * edits.length)));
+          },
+        });
+        gsap.from(editor, { clipPath: "inset(12% 8% 12% 8% round 32px)", scale: 0.96, ease: "power3.out", scrollTrigger: { trigger: trackRef.current, start: "top 88%", end: "top 20%", scrub: 0.8 } });
+      });
+      media.add("(max-width: 767px) and (prefers-reduced-motion: no-preference)", () => {
+        gsap.utils.toArray<HTMLElement>("[data-mobile-cut]").forEach((cut) => {
+          gsap.from(cut, { y: 34, opacity: 0.35, duration: 0.95, ease: "power3.out", scrollTrigger: { trigger: cut, start: "top 88%", once: true } });
+        });
+      });
 
-    // Use ResizeObserver to catch font loads, dynamic layout shifts, and Next.js HMR state retentions
-    const resizeObserver = new ResizeObserver(() => {
-      updateDimensions();
-    });
-
-    cardRefs.current.forEach(card => {
-      if (card) resizeObserver.observe(card);
-    });
-
-    window.addEventListener('resize', updateDimensions);
-    const timeOut = setTimeout(updateDimensions, 300);
-    
-    return () => {
-      resizeObserver.disconnect();
-      window.removeEventListener('resize', updateDimensions);
-      clearTimeout(timeOut);
-    }
+      // Global animations (run on all screen sizes)
+      gsap.fromTo("[data-edit-heading] > span > span",
+        { yPercent: 110 },
+        { yPercent: 0, stagger: 0.25, duration: 1.8, ease: "power3.out", scrollTrigger: { trigger: "[data-edit-heading]", start: "top 85%", end: "bottom top", toggleActions: "play reverse play reverse" } }
+      );
+      gsap.fromTo("[data-intro-copy] > * > span",
+        { yPercent: 110 },
+        { yPercent: 0, stagger: 0.15, duration: 1.6, ease: "power3.out", scrollTrigger: { trigger: "[data-intro-copy]", start: "top 85%", end: "bottom top", toggleActions: "play reverse play reverse" } }
+      );
+    }, rootRef);
+    const frame = requestAnimationFrame(() => ScrollTrigger.refresh());
+    return () => { cancelAnimationFrame(frame); media.revert(); context.revert(); };
   }, []);
 
-  useEffect(() => {
-    if (!cardDimensions.length) return;
-    gsap.registerPlugin(ScrollTrigger);
-
-    const container = containerRef.current;
-    if (!container) return;
-
-    let ctx = gsap.context(() => {
-      // GSAP now owns the pinning — no more CSS sticky desync.
-      // The animation is inextricably linked to the pin lifecycle.
-      const masterTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: container,
-          pin: true, // Let GSAP handle the sticky behavior
-          start: "top top",
-          end: "+=2000", // Scroll distance in px (adjust to change scroll speed)
-          scrub: 1,
-          invalidateOnRefresh: true, // Recalculates start/end if elements above change height
-        }
-      });
-
-      // A. Draw Initial Unifying Incoming Line first
-      if (incomingLineRef.current) {
-        masterTl.fromTo(incomingLineRef.current,
-          { strokeDashoffset: 100 },
-          { strokeDashoffset: 0, ease: "none", duration: 0.5 }
-        );
-      }
-
-      steps.forEach((_, i) => {
-        const card = cardRefs.current[i];
-        const topPath = svgPathsRef.current[i * 2];
-        const bottomPath = svgPathsRef.current[i * 2 + 1];
-        const connLine = connectingLinesRef.current[i];
-        const actionWord = actionWordRefs.current[i]; // Remember: action words point to the next line segment
-
-        // B. Split and Trace Card Borders (The split)
-        if (topPath && bottomPath) {
-          masterTl.fromTo([topPath, bottomPath],
-            { strokeDashoffset: 100 },
-            { strokeDashoffset: 0, ease: "none", duration: 1 }
-          );
-        }
-
-        // C. Reveal Card (Happens as borders are finishing drawing)
-        if (card) {
-          masterTl.to(card, {
-            opacity: 1,
-            filter: "blur(0px)",
-            scale: 1,
-            duration: 0.5,
-            ease: "power2.out"
-          }, "-=0.3"); // Overlap card pop with end of border trace
-        }
-
-        // D. Draw Outgoing Connecting Line (The joining)
-        if (connLine) {
-          masterTl.fromTo(connLine,
-            { strokeDashoffset: 100 },
-            { strokeDashoffset: 0, ease: "none", duration: 0.8 }
-          );
-
-          if (actionWord) {
-            masterTl.fromTo(actionWord,
-              { opacity: 0, scale: 0.8 },
-              { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" },
-              "-=0.4"
-            );
-          }
-        }
-      });
-    });
-
-    // After the pin-spacer is injected into the DOM, tell all other
-    // ScrollTriggers (e.g. ProblemsSection cards) to recalculate positions.
-    const rafId = requestAnimationFrame(() => ScrollTrigger.refresh());
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      ctx.revert();
-    };
-  }, [cardDimensions]);
-
-  // Parallax setup for the subtle vertical sway
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
-  const steps = [
-    { label: "Attention", icon: <Zap className="w-5 h-5 text-current" />, actionWord: null },
-    { label: "Authority", icon: <Brain className="w-5 h-5 text-current" />, actionWord: "Builds" },
-    { label: "Trust", icon: <Heart className="w-5 h-5 text-current" />, actionWord: "Earns" },
-    { label: "Demand", icon: <Sparkles className="w-5 h-5 text-current" />, actionWord: "Creates" },
-  ];
-
-  const addToRefs = (el: any, refArray: React.MutableRefObject<any[]>, index: number) => {
-    if (el) refArray.current[index] = el;
-  };
+  const active = edits[activeEdit];
 
   return (
-    <section id="infotainment" className="relative w-full bg-background z-10">
-      <div ref={containerRef} className="relative w-full h-screen flex items-center justify-center px-4 md:px-8">
-        {/* Lighter yellow-green rounded box container */}
-        <div className="w-full h-[70vh] max-h-[550px] max-w-[1070px] rounded-[32px] overflow-hidden isolate flex flex-col justify-center relative bg-[#4C3BBE]"
-             style={{ border: "1px solid rgba(17, 37, 14, 0.15)" }}>
+    <section ref={rootRef} id="infotainment" aria-labelledby="infotainment-heading" className={styles.section}>
+      <header className={styles.intro}>
+        <h2 id="infotainment-heading" data-edit-heading className={styles.heading}><span><span>Great content doesn’t hold attention</span></span><span><span>by <em>accident.</em></span></span></h2>
+        <div data-intro-copy className={styles.introCopy}><p><span>Step inside the edit and see how entertainment becomes education—and how both become demand.</span></p><span className={styles.scrollHint}><span><ArrowDown size={15} aria-hidden="true" /> Scroll to move the playhead</span></span></div>
+      </header>
 
-        {/* Card Row — moved up slightly to make room for heading below */}
-        <div className="absolute top-[20%] md:top-[25%] left-0 right-0 -translate-y-1/2 flex items-center justify-center">
-          <div className="flex flex-nowrap items-center">
-
-            {/* Lead-in line — same width as connectors */}
-            <div className="shrink-0 w-[32px] md:w-[48px] flex items-center justify-center">
-              <svg width="100%" height="100%" viewBox="0 0 48 4" preserveAspectRatio="none" style={{ overflow: 'visible' }}>
-                <line
-                  ref={incomingLineRef}
-                  x1="0" y1="2" x2="48" y2="2"
-                  stroke="#A4C639" strokeWidth="2"
-                  pathLength="100" strokeDasharray="100" strokeDashoffset="100"
-                  style={{ filter: 'drop-shadow(0 0 4px rgba(164,198,57,0.4))' }}
-                />
-              </svg>
+      <div ref={trackRef} className={styles.track}>
+        <div ref={editorRef} className={styles.editor}>
+          <div className={styles.editorBar}><span className={styles.projectName}><i /> MONARCH / INFOTAINMENT_01</span><span className={styles.timecode}>00:00:0{activeEdit + 1}:12</span></div>
+          <div className={styles.monitor}>
+            {edits.map((edit, index) => <figure key={edit.outcome} className={styles.footage} data-active={activeEdit === index} aria-hidden={activeEdit !== index}><Image src={edit.image} alt={activeEdit === index ? edit.alt : ""} fill priority={index === 0} sizes="(max-width: 1100px) 100vw, 1070px" style={{ objectPosition: edit.position }} /></figure>)}
+            <div className={styles.grade} />
+            <Image src="/heroassets/CLoud.webp" alt="" width={1920} height={720} className={styles.cloudLayer} aria-hidden="true" />
+            <div className={styles.frameCorners} aria-hidden="true"><i /><i /><i /><i /></div>
+            {edits.map((edit, index) => <div key={edit.edit} className={styles.editCopy} data-active={activeEdit === index} aria-hidden={activeEdit !== index}><span className={styles.editLabel}>{edit.edit}</span><h3>{edit.title}</h3></div>)}
+            <div className={styles.audienceReaction}><p key={activeEdit}>“{active.reaction}”</p></div>
+            <div className={styles.outcome}><span>0{activeEdit + 1} /</span><strong key={activeEdit}>{active.outcome}</strong></div>
+          </div>
+          <div className={styles.timeline}>
+            <div className={styles.controls}><Play size={13} fill="currentColor" aria-hidden="true" /><span>V1</span></div>
+            <div className={styles.timelineBody}>
+              <div className={styles.clips}>{edits.map((edit, index) => <div key={edit.outcome} className={styles.clip} data-active={activeEdit === index}><Image src={edit.image} alt="" fill sizes="240px" /><span>0{index + 1} · {edit.edit}</span></div>)}</div>
+              <div className={styles.playhead} aria-hidden="true"><i /></div>
             </div>
-
-            {steps.map((step, index) => {
-              const { width: w, height: h } = cardDimensions[index] || { width: 140, height: 110 };
-              const r = 14;
-              const midY = h / 2;
-              const topPathD = `M 0 ${midY} L 0 ${r} Q 0 0 ${r} 0 L ${w - r} 0 Q ${w} 0 ${w} ${r} L ${w} ${midY}`;
-              const bottomPathD = `M 0 ${midY} L 0 ${h - r} Q 0 ${h} ${r} ${h} L ${w - r} ${h} Q ${w} ${h} ${w} ${h - r} L ${w} ${midY}`;
-
-              return (
-                <div key={index} className="flex flex-row items-center shrink-0">
-
-                  {/* Card wrapper with border-tracing SVG */}
-                  <div className="relative shrink-0">
-                    {/* SVG overlay for the card border trace — uses viewBox matching card size, overflow visible for glow */}
-                    <svg
-                      className="absolute inset-0 pointer-events-none"
-                      width={w} height={h}
-                      viewBox={`0 0 ${w} ${h}`}
-                      style={{ overflow: 'visible', filter: 'drop-shadow(0 0 4px rgba(137,162,54,0.4))' }}
-                    >
-                      <path
-                        ref={(el) => addToRefs(el, svgPathsRef, index * 2)}
-                        d={topPathD}
-                        fill="none" stroke="#89A236" strokeWidth="2"
-                        pathLength="100" strokeDasharray="100" strokeDashoffset="100"
-                      />
-                      <path
-                        ref={(el) => addToRefs(el, svgPathsRef, index * 2 + 1)}
-                        d={bottomPathD}
-                        fill="none" stroke="#89A236" strokeWidth="2"
-                        pathLength="100" strokeDasharray="100" strokeDashoffset="100"
-                      />
-                    </svg>
- 
-                    {/* The actual card */}
-                    <div
-                      ref={(el) => addToRefs(el, cardRefs, index)}
-                      className="w-[130px] md:w-[150px] p-3 md:p-4 rounded-[14px] bg-[#F8F3E6] border border-black/5 shadow-xl text-center flex flex-col items-center group relative z-10 opacity-0 scale-95 blur-[10px] transform-gpu"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-br from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[14px]"></div>
-                      <div className="w-8 h-8 rounded-full bg-[#89A236]/10 border border-[#89A236]/20 flex items-center justify-center mb-3 shadow-inner z-10 transition-transform duration-500 group-hover:scale-110 text-[#89A236]">
-                        {step.icon}
-                      </div>
-                      <h3 className="text-sm md:text-base font-display font-semibold text-[#89A236] tracking-wide z-10">
-                        {step.label}
-                      </h3>
-                    </div>
-                  </div>
-
-                  {/* Connector line after card */}
-                  <div className="w-[32px] md:w-[48px] flex items-center justify-center shrink-0 relative">
-                    <svg width="100%" height="4" viewBox="0 0 48 4" preserveAspectRatio="none" style={{ overflow: 'visible' }}>
-                      <line
-                        ref={(el) => addToRefs(el, connectingLinesRef, index)}
-                        x1="0" y1="2" x2="48" y2="2"
-                        stroke="#89A236" strokeWidth="2" fill="none"
-                        pathLength="100" strokeDasharray="100" strokeDashoffset="100"
-                        style={{ filter: 'drop-shadow(0 0 4px rgba(137,162,54,0.4))' }}
-                      />
-                    </svg>
-                    {index < steps.length - 1 && steps[index + 1].actionWord && (
-                      <div
-                        ref={(el) => addToRefs(el, actionWordRefs, index)}
-                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-mono text-[8px] md:text-[9px] font-bold text-[#182410] tracking-widest uppercase px-2 py-1 border border-[#182410]/30 rounded-full bg-[#A4C639] shadow-lg z-20 opacity-0 scale-90"
-                        style={{ boxShadow: '0 0 12px rgba(164,198,57,0.4)' }}
-                      >
-                        {steps[index + 1].actionWord}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
           </div>
         </div>
+      </div>
 
-        {/* Header — Masking reveal (stationary) */}
-        <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false }}
-            className="absolute bottom-8 md:bottom-[12%] left-0 w-full px-8 md:px-24 lg:px-32 z-50 pointer-events-none flex justify-center"
-        >
-            <div className="w-full max-w-[900px] flex flex-col items-end text-right pointer-events-auto">
-                <div className="overflow-hidden py-2">
-                    <motion.h2 
-                        variants={{
-                            hidden: { y: "110%", opacity: 0 },
-                            visible: { 
-                                y: 0, 
-                                opacity: 1, 
-                                transition: { duration: 0.8, ease: [0.33, 1, 0.68, 1] } 
-                            }
-                        }}
-                        className="text-2xl md:text-3xl lg:text-4xl font-display font-semibold text-[#A4C639] tracking-tight leading-tight"
-                    >
-                        Why Infotainment Works
-                    </motion.h2>
-                </div>
-                
-                <motion.div 
-                    variants={{
-                        hidden: { scaleX: 0 },
-                        visible: { 
-                            scaleX: 1, 
-                            transition: { duration: 1, delay: 0.4, ease: "circOut" } 
-                        }
-                    }}
-                    className="w-24 h-1 bg-gradient-to-l from-accent to-red-500 mt-4 rounded-full origin-right" 
-                />
-                
-                <div className="overflow-hidden py-2 max-w-xl outline-none mt-4">
-                    <motion.p 
-                        variants={{
-                            hidden: { y: "100%", opacity: 0 },
-                            visible: { 
-                                y: 0, 
-                                opacity: 1, 
-                                transition: { duration: 0.8, delay: 0.2, ease: [0.33, 1, 0.68, 1] } 
-                            }
-                        }}
-                        className="text-sm md:text-base text-white/80 font-medium leading-relaxed"
-                    >
-                      Anyone can entertain. Anyone can educate. Very few can do both — <span className="text-[#A4C639] font-medium">consistently</span>.
-                    </motion.p>
-                </div>
-            </div>
-        </motion.div>
+      <div className={styles.mobileCuts}>
+        {edits.map((edit, index) => <article key={edit.outcome} data-mobile-cut className={styles.mobileCut}><div className={styles.mobileFrame}><Image src={edit.image} alt={edit.alt} fill sizes="100vw" style={{ objectPosition: edit.position }} /><span>0{index + 1} / {edit.edit}</span><strong>{edit.outcome}</strong></div><p className={styles.mobileReaction}>“{edit.reaction}”</p><h3>{edit.title}</h3><p>{edit.note}</p></article>)}
       </div>
-      </div>
+
+      <footer className={styles.outroWrapper}>
+        <div className={styles.outro}>
+          <p>Entertainment earns the pause.<br /><em>Education makes it valuable.</em></p>
+          <a href="/work" data-cursor-hover className={styles.workLink}>See the work <ArrowUpRight size={19} aria-hidden="true" /></a>
+        </div>
+        <div className={styles.lineWrapper}>
+          <Image src="/assets/6a51975c584436cfdd9e2406_loc_path.svg" alt="" width={1072} height={208} className={styles.outroLine} aria-hidden="true" />
+          <span className={styles.floatWord} style={{ top: "48%", left: "16%" }}>
+            <i>01</i><strong>Attention</strong><small>Earn the pause</small>
+          </span>
+          <span className={styles.floatWord} style={{ top: "82%", left: "36%" }}>
+            <i>02</i><strong>Authority</strong><small>Share what matters</small>
+          </span>
+          <span className={styles.floatWord} style={{ top: "43%", left: "64%" }}>
+            <i>03</i><strong>Trust</strong><small>Become remembered</small>
+          </span>
+          <span className={styles.floatWord} style={{ top: "78%", left: "86%" }}>
+            <i>04</i><strong>Demand</strong><small>Turn value into intent</small>
+          </span>
+        </div>
+      </footer>
     </section>
   );
-};
-
-export default WhyInfotainmentWorks;
-
+}

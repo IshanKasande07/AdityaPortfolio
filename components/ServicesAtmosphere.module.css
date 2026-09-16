@@ -1,0 +1,130 @@
+.sky {
+  position: absolute;
+  z-index: 0;
+  inset: -360px 0 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+    var(--color-background) 0,
+    #dce9e8 140px,
+    #85bdd5 380px,
+    #85bdd5 65%,
+    var(--color-background) 100%);
+}
+
+.passage {
+  position: absolute;
+  z-index: 1;
+  top: -360px;
+  left: 0;
+  width: 100%;
+  height: clamp(620px, 58vw, 900px);
+  overflow-x: clip;
+  overflow-y: visible;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, transparent, #000 16%, #000 100%);
+}
+
+.drift, .parallaxLayer {
+  position: absolute;
+  inset: 0;
+}
+
+.cloudTrack {
+  --tile: max(100vw, 900px);
+  position: absolute;
+  display: flex;
+  width: calc(var(--tile) * 3);
+  left: calc(var(--tile) * -.25);
+  height: 100%;
+  animation: cloudMarquee var(--duration) linear infinite;
+  animation-delay: var(--phase);
+  animation-play-state: paused;
+  will-change: transform;
+}
+
+.drift[data-playing="true"] .cloudTrack {
+  animation-play-state: running;
+}
+
+.cloudImage {
+  flex: 0 0 auto;
+  width: calc(var(--tile) * 1.3);
+  max-width: none;
+  height: 100%;
+  margin-right: calc(var(--tile) * -.3);
+  mask-image: linear-gradient(to right, transparent, #000 15%, #000 78%, transparent);
+  /* Make them closer to cream */
+  mix-blend-mode: normal;
+  filter: sepia(.3) saturate(.4) brightness(1.1) contrast(0.9);
+}
+
+.track1 {
+  --duration: 35s;
+  --phase: -42s;
+  top: -36%;
+  opacity: .95;
+  animation: none !important;
+}
+
+.track1b {
+  top: -36%;
+  opacity: .95;
+  animation: none !important;
+  transform: translateX(calc(var(--tile) * 0.5));
+}
+
+.track1c {
+  --duration: 45s;
+  --phase: -20s;
+  top: 4%;
+  opacity: .90;
+}
+
+.track2 {
+  --duration: 40s;
+  --phase: -84s;
+  top: -22%;
+  opacity: .85;
+}
+
+.track2b {
+  --duration: 20s;
+  --phase: -12s;
+  top: -18%;
+  opacity: .65;
+}
+
+.track2c {
+  --duration: 32s;
+  --phase: -36s;
+  top: -12%;
+  opacity: .75;
+}
+
+.track3 {
+  --duration: 32s;
+  --phase: -18s;
+  top: -2%;
+  opacity: .88;
+}
+
+@keyframes cloudMarquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(calc(var(--tile) * -1), 0, 0); }
+}
+
+@media (max-width: 767px) {
+  .sky { top: -240px; }
+  .passage { top: -240px; height: 580px; }
+  .cloudTrack { --tile: 760px; }
+  .track1 { top: -4%; }
+  .track2 { top: 6%; }
+  .track3 { top: 20%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cloudTrack {
+    animation: none;
+    will-change: auto;
+  }
+}

@@ -37,7 +37,8 @@ const LogoCard = ({ src, isLarge, manualScale = 1 }: { src: string; isLarge: boo
         <div className="logo-card">
             <img
                 src={src}
-                alt="Trusted Brand"
+                alt=""
+                aria-hidden="true"
                 className="logo-img"
                 style={{ transform: `scale(${s})` }}
                 loading="lazy"
@@ -121,7 +122,7 @@ const BrandsWhoTrustUs = () => {
                 .carousel-track-container {
                     overflow: hidden;
                     width: 100%;
-                    padding: 4px 0;
+                    padding: 5px 0;
                     contain: layout style paint;
                 }
 
@@ -158,21 +159,27 @@ const BrandsWhoTrustUs = () => {
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    padding: 12px 16px;
-                    border: 1px solid rgba(17, 37, 14, 0.05);
+                    padding: 16px 20px;
+                    border: 1px solid rgba(248, 243, 230, 0.08);
                     border-radius: 12px;
-                    background: #000;
-                    width: 136px;
-                    height: 90px;
-                    margin: 0 10px;
+                    background: rgba(248, 243, 230, 0.025);
+                    width: 150px;
+                    height: 92px;
+                    margin: 0 5px;
+                    transition: background-color 0.45s cubic-bezier(.22, 1, .36, 1), transform 0.45s cubic-bezier(.22, 1, .36, 1);
+                }
+
+                .logo-card:hover {
+                    background: rgba(248, 243, 230, 0.08);
+                    transform: translateY(-2px);
                 }
 
                 @media (max-width: 768px) {
                     .logo-card {
-                        width: 90px;
-                        height: 68px;
-                        padding: 8px 12px;
-                        margin: 0 6px;
+                        width: 112px;
+                        height: 72px;
+                        padding: 12px 14px;
+                        margin: 0 4px;
                     }
                 }
 
@@ -181,51 +188,154 @@ const BrandsWhoTrustUs = () => {
                     height: 100%;
                     object-fit: contain;
                     filter: brightness(0) invert(1);
-                    opacity: 0.7;
-                    transition: opacity 0.3s ease;
+                    opacity: 0.66;
+                    transition: opacity 0.45s cubic-bezier(.22, 1, .36, 1);
                 }
 
                 .logo-card:hover .logo-img {
                     opacity: 1;
                 }
+
+                .trust-section {
+                    position: relative;
+                    z-index: 30;
+                    width: 100%;
+                    overflow: visible;
+                    padding: 64px 24px 144px;
+                    background: var(--color-background);
+                }
+
+                .trust-header {
+                    position: relative;
+                    z-index: 4;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 16px;
+                    width: min(1070px, 100%);
+                    margin-inline: auto;
+                    text-align: center;
+                    padding: 20px 24px 36px;
+                }
+
+                .trust-heading {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: clamp(20px, 4vw, 56px);
+                    width: 100%;
+                    max-width: 100%;
+                    color: var(--color-background);
+                    font: 400 clamp(32px, 3.5vw, 48px)/1.15 var(--font-tiempos-headline), Georgia, serif;
+                    letter-spacing: -.025em;
+                    text-wrap: balance;
+                }
+
+                .trust-heading em {
+                    color: #c4d67e;
+                    font-weight: 400;
+                }
+
+                .trust-copy {
+                    max-width: 58ch;
+                    margin: 24px auto 0;
+                    text-align: center;
+                    color: var(--color-muted);
+                    font: 400 16px/1.65 var(--font-space-grotesk), Arial, sans-serif;
+                }
+
+                .trust-copy strong {
+                    color: var(--color-primary);
+                    font-weight: 400;
+                }
+
+                .logo-stage {
+                    position: relative;
+                    z-index: 2;
+                    width: min(1120px, 100%);
+                    margin: 0 auto;
+                    padding: 24px 0;
+                    overflow: hidden;
+                    border-radius: 28px;
+                    background: var(--color-primary);
+                    box-shadow: 0 24px 64px rgba(17, 37, 14, .14);
+                    isolation: isolate;
+                }
+
+                .logo-stage::before {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    z-index: -1;
+                    pointer-events: none;
+                    background: radial-gradient(circle at 18% 0%, rgba(137, 162, 54, .14), transparent 34%);
+                }
+
+                .logo-stage__rows {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 2px;
+                    width: 100%;
+                    overflow: hidden;
+                }
+
+                .logo-stage__fade {
+                    position: absolute;
+                    z-index: 3;
+                    top: 0;
+                    bottom: 0;
+                    width: clamp(44px, 11vw, 150px);
+                    pointer-events: none;
+                }
+
+                .logo-stage__fade--left {
+                    left: 0;
+                    background: linear-gradient(90deg, var(--color-primary), rgba(17, 37, 14, .88) 35%, transparent);
+                }
+
+                .logo-stage__fade--right {
+                    right: 0;
+                    background: linear-gradient(270deg, var(--color-primary), rgba(17, 37, 14, .88) 35%, transparent);
+                }
+
+                @media (max-width: 767px) {
+                    .trust-section { padding: 48px 20px 112px; }
+                    .trust-header { padding: 16px 24px 28px; }
+                    .trust-copy { max-width: 36ch; font-size: 16px; }
+                    .logo-stage { width: calc(100% + 40px); margin: 0 0 0 -20px; padding: 18px 0; border-radius: 0; box-shadow: none; }
+                }
+
+                @media (prefers-reduced-motion: reduce) {
+                    .carousel-track { animation-play-state: paused; }
+                }
             `}</style>
 
             <section
                 ref={containerRef}
-                className="w-full relative pt-12 md:pt-20 pb-16 md:pb-20 bg-background z-30"
+                className="trust-section"
             >
 
-                <div className="w-full relative">
+                <div className="w-full relative z-10">
+                    <div className={`logo-stage${!isVisible ? " carousel-offscreen" : ""}`}>
                     <FadeUp>
-                        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-12 mb-10 relative z-10 px-6 md:px-16 max-w-[1070px] mx-auto w-full">
-                            <div className="flex flex-col items-start">
-                                <div className="inline-block bg-primary text-background px-3 py-1.5 rounded-lg text-sm font-medium mb-4 shadow-sm border border-primary/10">
-                                    Our Clients
-                                </div>
-                                <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium text-primary tracking-tight leading-tight">
-                                    Brands Who Trust Us.
-                                </h2>
-                            </div>
-                            <div className="md:max-w-md lg:max-w-lg md:pb-1">
-                                <p className="text-base md:text-lg text-gray-600 font-light leading-relaxed">
-                                    We collaborate with visionary companies who demand nothing less than <span className="text-primary font-medium">extraordinary</span>.
-                                </p>
-                            </div>
+                        <div className="trust-header">
+                            <h2 className="trust-heading">
+                                <span>Brands who <em>trust us.</em></span>
+                            </h2>
                         </div>
                     </FadeUp>
 
-                    <div className={`relative z-10 w-full max-w-[910px] mx-auto flex flex-col gap-2 mt-2 overflow-hidden${!isVisible ? " carousel-offscreen" : ""}`}>
-                        {/* Left fading mask */}
-                        <div className="absolute left-0 top-0 bottom-0 w-20 md:w-[170px] bg-gradient-to-r from-background via-background/40 to-transparent z-20 pointer-events-none"></div>
-                        {/* Right fading mask */}
-                        <div className="absolute right-0 top-0 bottom-0 w-20 md:w-[170px] bg-gradient-to-l from-background via-background/40 to-transparent z-20 pointer-events-none"></div>
+                        <div className="logo-stage__fade logo-stage__fade--left" />
+                        <div className="logo-stage__fade logo-stage__fade--right" />
 
-                        {/* Row 1 scrolling left (larger row) */}
-                        <CSSCarousel items={row1} isLarge={true} />
-
-                        {/* Row 2 scrolling right */}
-                        <CSSCarousel items={row2} reverse isLarge={false} />
+                        <div className="logo-stage__rows">
+                            <CSSCarousel items={row1} isLarge={true} />
+                            <CSSCarousel items={row2} reverse isLarge={false} />
+                        </div>
                     </div>
+                    <p className="trust-copy">
+                        We collaborate with visionary companies who demand nothing less than <strong>extraordinary.</strong>
+                    </p>
                 </div>
 
                 {/* Forest separator overlay on bottom right, overlapping Brands section */}

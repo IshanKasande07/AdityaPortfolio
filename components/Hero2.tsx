@@ -836,7 +836,7 @@ export default function Hero2() {
     const leftMountainZoomRef = useRef<HTMLDivElement>(null); // GSAP parallax
     const rightMountainZoomRef = useRef<HTMLDivElement>(null); // GSAP parallax
     const cloudContainerRef = useRef<HTMLDivElement>(null);
-    const creamOverlayRef = useRef<HTMLDivElement>(null);
+    const handoffMistRef = useRef<HTMLDivElement>(null);
     const skyZoomRef = useRef<HTMLDivElement>(null); // New ref for fading the sky
     const cloudPassageContainerRef = useRef<HTMLDivElement>(null);
     const cloudTextRef = useRef<HTMLDivElement>(null);
@@ -1181,8 +1181,8 @@ export default function Hero2() {
         const foregroundCloudEl = foregroundCloudZoomRef.current;
         const leftMountainEl = leftMountainZoomRef.current;
         const rightMountainEl = rightMountainZoomRef.current;
-        const creamEl = creamOverlayRef.current;
-        if (!container || !bridgeEl || !bridgeBehindEl || !bottomCloudEl || !foregroundCloudEl || !leftMountainEl || !rightMountainEl || !creamEl) return;
+        const handoffMistEl = handoffMistRef.current;
+        if (!container || !bridgeEl || !bridgeBehindEl || !bottomCloudEl || !foregroundCloudEl || !leftMountainEl || !rightMountainEl || !handoffMistEl) return;
 
         // Wait a frame for layout to settle after reveal
         const rafId = requestAnimationFrame(() => {
@@ -1364,12 +1364,21 @@ export default function Hero2() {
                 }, 0.80);
             }
 
+            // Phase 5 (91%–100%): let the cloud passage resolve into the
+            // Warm Daylight ground used by the next chapter. The gradient
+            // keeps the upper cloud field intact while the lower edge becomes
+            // the same surface that the narrative proof rail rises from.
+            tl.fromTo(
+                handoffMistEl,
+                { opacity: 0 },
+                { opacity: 1, duration: 0.09, ease: "power2.inOut" },
+                0.91
+            );
+
             // Force the entire timeline to end exactly at 1.0. 
             // This guarantees GSAP timeline seconds perfectly equal the ScrollTrigger progress (0 to 1) 
             // used by the 3D camera in CloudPassage!
             tl.to({}, { duration: 0.01 }, 1.0);
-
-            // Phase 5 (95%–100%): Cream flash removed to allow seamless transition to next section
 
             // ── Create the ScrollTrigger ────────────────────────────
             const mt = parseFloat(window.getComputedStyle(container).marginTop) || 0;
@@ -1695,14 +1704,15 @@ export default function Hero2() {
 
 
 
-                {/* ========== Cream overlay for hard cut ========== */}
+                {/* ========== Mist-to-daylight handoff ========== */}
                 <div
-                    ref={creamOverlayRef}
-                    className="absolute inset-0 z-[46] pointer-events-none"
+                    ref={handoffMistRef}
+                    aria-hidden="true"
+                    className="absolute inset-x-0 bottom-0 z-[46] h-[72%] pointer-events-none"
                     style={{
-                        backgroundColor: "#F8F3E6",
+                        background:
+                            "linear-gradient(to bottom, rgba(248, 243, 230, 0) 0%, rgba(221, 230, 234, 0.28) 34%, rgba(248, 243, 230, 0.82) 72%, #F8F3E6 100%)",
                         opacity: 0,
-                        visibility: "hidden",
                     }}
                 />
 
@@ -1906,4 +1916,3 @@ export default function Hero2() {
 }
 
 // trigger deploy
-
