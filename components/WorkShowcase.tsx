@@ -204,6 +204,7 @@ function VideoModal({
             {/* Close button */}
             <button
                 onClick={onClose}
+                aria-label="Close video"
                 className="absolute top-6 right-6 z-10 w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors"
             >
                 <X className="w-5 h-5" />
@@ -232,10 +233,30 @@ function VideoModal({
 
 // ─── Custom UI Elements ──────────────────────────────────────────────────────
 
+// Keep user-started media from decoding in hidden carousel slides or offscreen.
+// Playback is never started automatically.
+function WorkVideo({ active = true, ...props }: React.VideoHTMLAttributes<HTMLVideoElement> & { active?: boolean }) {
+    const ref = useRef<HTMLVideoElement>(null);
+    useEffect(() => {
+        const video = ref.current;
+        if (!video) return;
+        if (!active) video.pause();
+        const observer = new IntersectionObserver(([entry]) => {
+            if (!entry.isIntersecting) video.pause();
+        });
+        const onVisibility = () => { if (document.hidden) video.pause(); };
+        observer.observe(video);
+        document.addEventListener("visibilitychange", onVisibility);
+        return () => { observer.disconnect(); document.removeEventListener("visibilitychange", onVisibility); };
+    }, [active]);
+    return <video ref={ref} {...props} />;
+}
+
 const PlayButton = ({ delay = 0, inView = true }: { delay?: number, inView?: boolean }) => (
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
         <div className="scale-90 group-hover:scale-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto">
             <motion.button
+                aria-label="Play video"
                 className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-md transition-colors duration-500 hover:bg-white/20 relative"
                 whileHover={{ scale: 1.1 }}
                 initial={{ opacity: 0 }}
@@ -303,7 +324,7 @@ function ShortFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: 
                                             onClick={() => { if (!item.instagramUrl && !item.videoUrl && item.youtubeUrl) onPlay(item.youtubeUrl); }}
                                         >
                                             {item.videoUrl ? (
-                                                <video 
+                                                <WorkVideo active={isActive}
                                                     src={item.videoUrl} 
                                                     poster={item.posterUrl || getThumbnail(item.youtubeUrl || "")} 
                                                     preload="none" 
@@ -312,7 +333,7 @@ function ShortFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: 
                                                     className="absolute inset-0 w-full h-full object-cover pointer-events-auto bg-[#11250E]" 
                                                 />
                                             ) : item.instagramUrl ? (
-                                                <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" className="absolute top-0 left-0 w-full h-[calc(100%+60px)] pointer-events-auto"></iframe>
+                                                <iframe loading="lazy" title={item.title} src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" className="absolute top-0 left-0 w-full h-[calc(100%+60px)] pointer-events-auto"></iframe>
                                             ) : (
                                                 <div className="relative w-full h-full cursor-pointer group" data-cursor-hover>
                                                     <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out" />
@@ -365,13 +386,13 @@ function ShortFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: 
                         {/* Carousel Controls */}
                         {featuredItems.length > 1 && (
                             <div className="flex items-center gap-4">
-                                <button onClick={prevSlide} className="w-12 h-12 rounded-full border border-primary/20 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors">
+                                <button aria-label="Previous project" onClick={prevSlide} className="w-12 h-12 rounded-full border border-primary/20 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors">
                                     <ChevronLeft className="w-5 h-5" />
                                 </button>
                                 <span className="text-xs text-primary/40 font-medium" style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}>
                                     {String(currentIndex + 1).padStart(2, '0')} / {String(featuredItems.length).padStart(2, '0')}
                                 </span>
-                                <button onClick={nextSlide} className="w-12 h-12 rounded-full border border-primary/20 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors">
+                                <button aria-label="Next project" onClick={nextSlide} className="w-12 h-12 rounded-full border border-primary/20 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors">
                                     <ChevronRight className="w-5 h-5" />
                                 </button>
                             </div>
@@ -404,7 +425,7 @@ function ShortFormCard({ item, index, onPlay }: { item: WorkItem, index: number,
             data-cursor-hover={!item.instagramUrl && !item.videoUrl}
         >
             {item.videoUrl ? (
-                <video 
+                <WorkVideo
                     src={item.videoUrl} 
                     poster={item.posterUrl || getThumbnail(item.youtubeUrl || "")} 
                     preload="none" 
@@ -413,7 +434,7 @@ function ShortFormCard({ item, index, onPlay }: { item: WorkItem, index: number,
                     className="absolute inset-0 w-full h-full object-cover pointer-events-auto bg-[#11250E]" 
                 />
             ) : item.instagramUrl ? (
-                <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" className="absolute top-0 left-0 w-full h-[calc(100%+60px)] pointer-events-auto bg-[#11250E]"></iframe>
+                <iframe loading="lazy" title={item.title} src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" className="absolute top-0 left-0 w-full h-[calc(100%+60px)] pointer-events-auto bg-[#11250E]"></iframe>
             ) : (
                 <>
                     <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 scale-100 group-hover:scale-[1.04] transition-all duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)]" />
@@ -490,7 +511,7 @@ function LongFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: s
                     
                     <PlayButton delay={0.2} />
                     
-                    <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 z-10 pointer-events-none">
+                    <div className="work-feature-copy absolute bottom-0 left-0 right-0 p-8 md:p-12 z-10 pointer-events-none">
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={currentFeatured.id + "-text"}
@@ -514,12 +535,14 @@ function LongFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: s
                     {featuredItems.length > 1 && (
                         <>
                             <button 
+                                aria-label="Previous project"
                                 onClick={prevSlide} 
                                 className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/20 border border-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all hover:bg-black/40 hover:scale-110 z-20"
                             >
                                 <ChevronLeft className="w-6 h-6" />
                             </button>
                             <button 
+                                aria-label="Next project"
                                 onClick={nextSlide} 
                                 className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/20 border border-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all hover:bg-black/40 hover:scale-110 z-20"
                             >
@@ -580,7 +603,7 @@ function LongFormListCard({ item, index, onPlay }: { item: WorkItem, index: numb
                 data-cursor-hover={!item.instagramUrl}
             >
                 {item.instagramUrl ? (
-                    <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" allowTransparency={true} className="absolute top-0 left-0 w-full h-full pointer-events-auto bg-[#11250E]"></iframe>
+                    <iframe loading="lazy" title={item.title} src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" allowTransparency={true} className="absolute top-0 left-0 w-full h-full pointer-events-auto bg-[#11250E]"></iframe>
                 ) : (
                     <>
                         <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover scale-100 group-hover:scale-[1.04] transition-all duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)]" />
@@ -626,7 +649,7 @@ function LongFormGridCard({ item, index, onPlay }: { item: WorkItem, index: numb
                 data-cursor-hover={!item.instagramUrl}
             >
                 {item.instagramUrl ? (
-                    <iframe src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" className="absolute top-0 left-0 w-full h-full pointer-events-auto bg-[#11250E]"></iframe>
+                    <iframe loading="lazy" title={item.title} src={`${item.instagramUrl.split('?')[0]}embed`} width="100%" height="100%" frameBorder="0" scrolling="no" className="absolute top-0 left-0 w-full h-full pointer-events-auto bg-[#11250E]"></iframe>
                 ) : (
                     <>
                         <img src={getThumbnail(item.youtubeUrl || "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover scale-100 group-hover:scale-[1.04] transition-all duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)]" />
@@ -708,7 +731,7 @@ function GraphicsGallery({ items }: { items: WorkItem[] }) {
                         
                         <div className="flex items-center gap-6 mb-3">
                             {featuredItems.length > 1 && (
-                                <button onClick={prevSlide} className="w-10 h-10 rounded-full border border-primary/20 flex items-center justify-center text-primary/60 hover:bg-primary hover:text-white transition-all hover:scale-105 shadow-sm">
+                                <button aria-label="Previous project" onClick={prevSlide} className="w-10 h-10 rounded-full border border-primary/20 flex items-center justify-center text-primary/60 hover:bg-primary hover:text-white transition-all hover:scale-105 shadow-sm">
                                     <ChevronLeft className="w-5 h-5" />
                                 </button>
                             )}
@@ -716,7 +739,7 @@ function GraphicsGallery({ items }: { items: WorkItem[] }) {
                                 Exhibition — {String(currentIndex + 1).padStart(2, '0')}
                             </span>
                             {featuredItems.length > 1 && (
-                                <button onClick={nextSlide} className="w-10 h-10 rounded-full border border-primary/20 flex items-center justify-center text-primary/60 hover:bg-primary hover:text-white transition-all hover:scale-105 shadow-sm">
+                                <button aria-label="Next project" onClick={nextSlide} className="w-10 h-10 rounded-full border border-primary/20 flex items-center justify-center text-primary/60 hover:bg-primary hover:text-white transition-all hover:scale-105 shadow-sm">
                                     <ChevronRight className="w-5 h-5" />
                                 </button>
                             )}
@@ -817,21 +840,24 @@ function TabBar({ activeTab, onTabChange }: { activeTab: TabKey, onTabChange: (k
     }, [isTabsStuck, onTabChange]);
 
     useEffect(() => {
-        let ticking = false;
+        let frame: number | null = null;
+        const breakpoint = window.matchMedia("(min-width: 768px)");
         const handleScroll = () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
+            if (frame === null) {
+                frame = window.requestAnimationFrame(() => {
                     if (tabWrapperRef.current) {
-                        setIsTabsStuck(tabWrapperRef.current.getBoundingClientRect().top <= 81);
+                        setIsTabsStuck(tabWrapperRef.current.getBoundingClientRect().top <= (breakpoint.matches ? 81 : 61));
                     }
-                    ticking = false;
+                    frame = null;
                 });
-                ticking = true;
             }
         };
         window.addEventListener("scroll", handleScroll, { passive: true });
         handleScroll();
-        return () => window.removeEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            if (frame !== null) cancelAnimationFrame(frame);
+        };
     }, []);
 
     return (
@@ -844,7 +870,7 @@ function TabBar({ activeTab, onTabChange }: { activeTab: TabKey, onTabChange: (k
                         y: isTabsStuck ? -10 : 0
                     }}
                     transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                    className="flex items-center gap-1 md:gap-2 p-1.5 rounded-full w-fit pointer-events-auto backdrop-blur-2xl bg-transparent border border-primary/20 shadow-[0_4px_24px_0_rgba(17,37,14,0.08)]"
+                    className="work-tabs flex items-center gap-1 md:gap-2 p-1.5 rounded-full w-fit pointer-events-auto backdrop-blur-2xl bg-transparent border border-primary/20 shadow-[0_4px_24px_0_rgba(17,37,14,0.08)]"
                 >
                     {TABS.map((tab) => {
                         const Icon = tab.icon;
@@ -852,9 +878,11 @@ function TabBar({ activeTab, onTabChange }: { activeTab: TabKey, onTabChange: (k
                         return (
                             <button
                                 key={tab.key}
+                                aria-label={tab.label}
+                                aria-pressed={isActive}
                                 onClick={() => handleTabChange(tab.key)}
                                 data-cursor-hover
-                                className={`relative flex items-center gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-medium transition-colors duration-300 ${
+                                className={`relative flex min-h-[64px] md:min-h-0 flex-col md:flex-row items-center justify-center gap-1 md:gap-2 px-3 md:px-6 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-medium transition-colors duration-300 ${
                                     isActive
                                         ? "text-background"
                                         : "text-primary/60 hover:text-primary"
@@ -875,8 +903,8 @@ function TabBar({ activeTab, onTabChange }: { activeTab: TabKey, onTabChange: (k
                                     />
                                 )}
                                 <Icon className="relative z-10 w-4 h-4" />
-                                <span className="relative z-10 hidden sm:inline">
-                                    {tab.label}
+                                <span className="relative z-10 text-[10px] md:text-sm whitespace-nowrap">
+                                    <span className="md:hidden">{tab.key === "graphics" ? "Graphics" : tab.label}</span><span className="hidden md:inline">{tab.label}</span>
                                 </span>
                             </button>
                         );
@@ -899,7 +927,7 @@ export default function WorkShowcase({ sanityShortFormItems = [] }: { sanityShor
     const closeModal = useCallback(() => setModalVideo(null), []);
 
     return (
-        <section className="relative w-full min-h-screen bg-background overflow-clip">
+        <section className="work-showcase relative w-full min-h-screen bg-background overflow-clip">
             {/* Subtle grain overlay */}
             <div
                 className="fixed inset-0 pointer-events-none opacity-[0.03] z-0"
@@ -937,7 +965,7 @@ export default function WorkShowcase({ sanityShortFormItems = [] }: { sanityShor
                         <div className="absolute inset-0 bg-gradient-to-t from-[#11250E]/80 via-transparent to-[#11250E]/30" />
 
                         {/* Content */}
-                        <div className="relative z-10 flex flex-col justify-end h-full px-8 md:px-14 py-10 md:py-14" style={{ minHeight: "clamp(320px, 50vh, 520px)" }}>
+                        <div className="relative z-10 flex flex-col justify-end h-full px-6 md:px-14 pt-28 pb-10 md:py-14" style={{ minHeight: "clamp(320px, 50vh, 520px)" }}>
 
                             {/* Top-left accent label */}
                             <motion.div
@@ -960,7 +988,7 @@ export default function WorkShowcase({ sanityShortFormItems = [] }: { sanityShor
                                 initial={{ opacity: 0 }}
                                 animate={isHeaderInView ? { opacity: 1 } : {}}
                                 transition={{ duration: 0.6, delay: 0.5 }}
-                                className="absolute top-8 md:top-10 right-8 md:right-14"
+                                className="absolute top-14 md:top-10 left-8 md:left-auto md:right-14"
                             >
                                 <span
                                     className="text-[10px] md:text-xs text-[#F8F3E6]/40 uppercase tracking-[0.15em] font-medium"
@@ -988,7 +1016,7 @@ export default function WorkShowcase({ sanityShortFormItems = [] }: { sanityShor
                                         text="Stories that" 
                                         delay={0.25} 
                                         inView={isHeaderInView}
-                                        className="w-[280px] md:w-[400px] lg:w-[450px]"
+                                        className="max-w-full w-[280px] md:w-[400px] lg:w-[450px]"
                                     />
                                 </div>
                                 <div className="overflow-hidden mb-6 h-16 md:h-24 lg:h-28 -mt-2 md:-mt-4">
@@ -999,7 +1027,7 @@ export default function WorkShowcase({ sanityShortFormItems = [] }: { sanityShor
                                         italic={true} 
                                         fillColor="#89A236" 
                                         strokeColor="#89A236"
-                                        className="w-[300px] md:w-[420px] lg:w-[480px]"
+                                        className="max-w-full w-[300px] md:w-[420px] lg:w-[480px]"
                                     />
                                 </div>
                                 <motion.p
@@ -1018,7 +1046,7 @@ export default function WorkShowcase({ sanityShortFormItems = [] }: { sanityShor
                                 initial={{ opacity: 0 }}
                                 animate={isHeaderInView ? { opacity: 1 } : {}}
                                 transition={{ duration: 0.5, delay: 0.9 }}
-                                className="absolute bottom-8 md:bottom-10 right-8 md:right-14 flex flex-col items-center gap-2"
+                                className="absolute bottom-8 md:bottom-10 right-3 md:right-14 flex flex-col items-center gap-2"
                             >
                                 <span
                                     className="text-[9px] text-[#F8F3E6]/30 uppercase tracking-[0.2em] font-medium"

@@ -9,7 +9,6 @@ import Image from "next/image";
 import { scrollToTarget } from "@/lib/scroll";
 
 const Navbar = () => {
-  const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const { revealed } = useReveal();
   const { startLoading } = useLoading();
@@ -27,15 +26,6 @@ const Navbar = () => {
     }
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      // Toggle at 100px or so down
-      setScrolled(window.scrollY > 100);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -56,7 +46,7 @@ const Navbar = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: shouldBeVisible ? 1 : 0 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className={`${shouldBeVisible ? 'fixed' : 'absolute'} top-0 left-0 w-full z-[200] grid grid-cols-2 md:grid-cols-3 items-center px-6 md:px-12 py-2.5 md:py-3.5 mt-0 pointer-events-none transition-colors duration-300 text-primary`}
+      className={`${shouldBeVisible ? 'fixed' : 'absolute'} top-0 left-0 w-full z-[200] grid grid-cols-2 lg:grid-cols-3 items-center px-6 lg:px-12 py-2.5 lg:py-3.5 mt-0 pointer-events-none transition-colors duration-300 text-primary`}
     >
       {/* Left: Logo */}
       <div className="flex justify-start pointer-events-auto">
@@ -76,7 +66,7 @@ const Navbar = () => {
       </div>
 
       {/* Center: Navigation Links */}
-      <div className="hidden md:flex justify-center pointer-events-auto gap-2">
+      <div className="hidden lg:flex justify-center pointer-events-auto gap-2">
         <div className="flex items-center gap-6 backdrop-blur-2xl rounded-full px-6 py-2 transition-all duration-300 bg-transparent border border-primary/20 shadow-[0_4px_24px_0_rgba(17,37,14,0.08)] text-primary">
           <button
             onClick={() => router.push('/work')}
@@ -119,7 +109,7 @@ const Navbar = () => {
       </div>
 
       {/* Right: Button */}
-      <div className="hidden md:flex justify-end pointer-events-auto">
+      <div className="hidden lg:flex justify-end pointer-events-auto">
         <button
           onClick={() => scrollToTarget("contact")}
           className={`px-5 py-2.5 rounded-full border text-sm font-medium transition-colors duration-300 flex items-center gap-2 backdrop-blur-sm border-primary/30 hover:bg-primary hover:text-background bg-transparent text-primary btn-press`}
@@ -129,11 +119,13 @@ const Navbar = () => {
       </div>
 
       {/* Mobile menu button */}
-      <div className="flex justify-end md:hidden pointer-events-auto text-primary">
+      <div className="flex justify-end lg:hidden pointer-events-auto text-primary">
         <button
           onClick={() => setIsOpen(true)}
-          className="p-2 transition-colors duration-300 btn-press"
+          className="min-w-11 min-h-11 p-2 transition-colors duration-300 btn-press"
           aria-label="Toggle menu"
+          aria-expanded={isOpen}
+          aria-controls="mobile-navigation"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -161,7 +153,12 @@ const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
             exit={{ opacity: 0, y: -20, transition: { duration: 0.2, ease: "easeIn" } }}
-            className="fixed inset-0 z-[250] bg-[#11250E]/95 backdrop-blur-3xl flex flex-col justify-between p-8 md:hidden pointer-events-auto"
+            id="mobile-navigation"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation"
+            data-lenis-prevent
+            className="fixed inset-0 h-dvh overflow-y-auto overscroll-contain z-[250] bg-[#11250E]/95 backdrop-blur-3xl flex flex-col justify-between p-8 lg:hidden pointer-events-auto"
           >
             {/* Top row with Logo and Close button */}
             <div className="flex justify-between items-center w-full">
@@ -196,7 +193,7 @@ const Navbar = () => {
             </div>
 
             {/* Vertical Menu Items */}
-            <div className="flex flex-col gap-8 my-auto text-left">
+            <div className="flex flex-col gap-4 my-8 text-left">
               {[
                 { name: "Home", path: "/" },
                 { name: "Work", path: "/work" },
@@ -231,7 +228,7 @@ const Navbar = () => {
             </div>
 
             {/* CTA button at the bottom */}
-            <div className="w-full pb-8">
+            <div className="w-full pb-[max(1rem,env(safe-area-inset-bottom))]">
               <button
                 onClick={() => {
                   setIsOpen(false);

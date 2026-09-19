@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Space_Grotesk } from "next/font/google";
 import localFont from "next/font/local";
 import Script from "next/script";
@@ -86,6 +86,12 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.ico',
   }
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

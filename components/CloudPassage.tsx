@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Cloud, Clouds } from "@react-three/drei";
 import * as THREE from "three";
@@ -308,8 +308,27 @@ interface CloudPassageProps {
  * - progressRef read in useFrame (no React re-renders)
  */
 export default function CloudPassage({ progressRef }: CloudPassageProps) {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [rendering, setRendering] = useState(false);
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+        let nearViewport = false;
+        const update = () => setRendering(nearViewport && !document.hidden);
+        const observer = new IntersectionObserver(([entry]) => {
+            nearViewport = entry.isIntersecting;
+            update();
+        }, { rootMargin: "100% 0px" });
+        observer.observe(container);
+        document.addEventListener("visibilitychange", update);
+        return () => {
+            observer.disconnect();
+            document.removeEventListener("visibilitychange", update);
+        };
+    }, []);
     return (
         <div
+            ref={containerRef}
             className="absolute inset-0"
             style={{ pointerEvents: "none" }}
         >
@@ -322,7 +341,7 @@ export default function CloudPassage({ progressRef }: CloudPassageProps) {
                     powerPreference: "high-performance",
                 }}
                 dpr={[1, 1.5]}
-                frameloop="always"
+                frameloop={rendering ? "always" : "never"}
             >
                 <CloudScene progressRef={progressRef} />
             </Canvas>

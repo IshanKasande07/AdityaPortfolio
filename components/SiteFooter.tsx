@@ -67,12 +67,13 @@ const SiteFooter = () => {
 
     let frame: number | null = null;
     let isNearViewport = false;
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const clamp = (value: number) => Math.min(1, Math.max(0, value));
 
     const updateParallax = () => {
       frame = null;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      if (preference.matches) {
         bg.style.transform = "none";
         content.style.transform = "none";
         return;
@@ -95,7 +96,7 @@ const SiteFooter = () => {
     };
 
     const scheduleUpdate = () => {
-      if (frame === null) {
+      if (isNearViewport && !document.hidden && frame === null) {
         frame = requestAnimationFrame(updateParallax);
       }
     };
@@ -114,6 +115,8 @@ const SiteFooter = () => {
     observer.observe(section);
     window.addEventListener("scroll", scheduleUpdate, { passive: true });
     window.addEventListener("resize", scheduleUpdate);
+    preference.addEventListener("change", scheduleUpdate);
+    document.addEventListener("visibilitychange", scheduleUpdate);
 
     // Covers direct navigation/reloads that land near the footer.
     scheduleUpdate();
@@ -122,6 +125,8 @@ const SiteFooter = () => {
       observer.disconnect();
       window.removeEventListener("scroll", scheduleUpdate);
       window.removeEventListener("resize", scheduleUpdate);
+      preference.removeEventListener("change", scheduleUpdate);
+      document.removeEventListener("visibilitychange", scheduleUpdate);
       if (frame !== null) cancelAnimationFrame(frame);
     };
   }, []);
@@ -129,10 +134,10 @@ const SiteFooter = () => {
   return (
     <footer
       ref={sectionRef}
-      className="relative w-full pt-4 md:pt-8 pb-0 bg-transparent text-[#2B1B15] overflow-hidden isolate px-4 md:px-8"
+      className="site-footer relative w-full pt-4 md:pt-8 pb-0 bg-transparent text-[#2B1B15] overflow-hidden isolate px-4 md:px-8"
     >
       {/* Main Container - fits exactly in viewport */}
-      <div className="relative w-full rounded-t-[40px] md:rounded-t-[60px] bg-[#F8F3E6] overflow-hidden flex flex-col h-[calc(100vh-2rem)] md:h-[calc(100vh-3rem)]">
+      <div className="footer-frame relative w-full rounded-t-[40px] md:rounded-t-[60px] bg-[#F8F3E6] overflow-hidden flex flex-col min-h-[calc(100svh-2rem)] md:min-h-[calc(100svh-3rem)]">
         
         {/* Background Image — moves at a different speed for parallax depth */}
         <div ref={bgRef} className="absolute inset-0 z-0 pointer-events-none" style={{ top: "-15%", bottom: "-15%", height: "130%" }}>
@@ -152,7 +157,7 @@ const SiteFooter = () => {
         </div>
 
         {/* Content — moves at scroll speed (faster than bg) for parallax contrast */}
-        <div ref={contentRef} className="relative z-20 flex flex-col justify-between h-full px-6 md:px-12 pt-10 md:pt-14 pb-4">
+        <div ref={contentRef} className="footer-content relative z-20 flex flex-1 flex-col justify-between gap-12 px-6 md:px-12 pt-10 md:pt-14 pb-16 md:pb-8">
           
           {/* Top: Logo + Heading + Links */}
           <div>
@@ -175,14 +180,14 @@ const SiteFooter = () => {
             </div>
 
             {/* Links Columns */}
-            <div className="w-full max-w-5xl mx-auto mt-20 md:mt-24 lg:mt-28">
-              <div className="flex flex-row flex-wrap justify-center gap-6 md:gap-12" data-footer-reveal>
+            <div className="w-full max-w-5xl mx-auto mt-10 md:mt-24 lg:mt-28">
+              <div className="footer-links flex flex-row flex-wrap justify-center gap-6 md:gap-12" data-footer-reveal>
                 
                 {/* Navigation */}
                 <div className="flex min-w-[200px] flex-col items-center space-y-3 rounded-[32px] border border-[#11250E]/10 bg-white/[0.02] px-8 py-8 text-sm shadow-[0_8px_32px_rgba(17,37,14,0.03)] backdrop-blur-[2px]">
                   <span className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#2B1B15]/50">Navigation</span>
                   <a href="/" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors duration-300 btn-press font-medium text-center">Home</a>
-                  <a href="/#work" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors duration-300 btn-press font-medium text-center">Work</a>
+                  <a href="/work" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors duration-300 btn-press font-medium text-center">Work</a>
                   <a href="/about" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors duration-300 btn-press font-medium text-center">About Us</a>
                   <a href="/contact" className="border-b border-dotted border-[#2B1B15]/30 pb-0.5 w-fit hover:text-accent hover:border-accent transition-colors duration-300 btn-press font-medium text-center">Contact</a>
                 </div>

@@ -69,7 +69,9 @@
   .section { padding:82px 24px 110px; background:linear-gradient(to top, transparent, var(--color-background) 160px); }.intro { display:block; margin-bottom:48px; }.heading { font-size:clamp(42px,12vw,60px); }.introCopy { width:auto; max-width:420px; margin-top:24px; padding:0; }.introCopy span { display:none; }
   .track { display:none; }.mobileCuts { display:block; }.mobileCut { padding-bottom:72px; }.mobileFrame { position:relative; overflow:hidden; aspect-ratio:.92; border-radius:20px; background:var(--color-primary); }.mobileFrame::after { content:""; position:absolute; inset:35% 0 0; background:linear-gradient(transparent,rgba(7,20,7,.85)); }.mobileFrame>span { position:absolute; z-index:1; top:22px; left:22px; color:var(--color-background); font-size:11px; letter-spacing:.14em; text-transform:uppercase; }.mobileFrame strong { position:absolute; z-index:1; left:22px; bottom:20px; color:var(--color-background); font:400 42px/1 var(--font-tiempos-headline),Georgia,serif; }
   .mobileReaction { margin:22px 0 12px; color:var(--color-surface-light); font-size:13px; }.mobileCut h3 { font:400 32px/1.08 var(--font-tiempos-headline),Georgia,serif; letter-spacing:-.025em; }.mobileCut>p:last-child { margin-top:15px; color:var(--color-muted); font-size:15px; line-height:1.7; }.outro { padding-top:0; align-items:flex-start; flex-direction:column; }.outro p { font-size:30px; }
-  .lineWrapper { width:152%; margin:48px 0 0 -26%; padding:0; }
+  .introCopy > p > span { display:block; }
+  .introCopy > .scrollHint { display:none; }
+  .lineWrapper { width:100%; margin:48px 0 0; padding:0; }
   .floatWord { column-gap:7px; row-gap:3px; }
   .floatWord i { width:21px; height:21px; font-size:9px; }
   .floatWord strong { font-size:16px; }

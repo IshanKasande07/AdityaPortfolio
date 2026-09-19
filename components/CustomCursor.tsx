@@ -10,11 +10,14 @@ const CustomCursor = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [isPressed, setIsPressed] = useState(false);
 
-    const [isTouchDevice, setIsTouchDevice] = useState(false);
+    const [isTouchDevice, setIsTouchDevice] = useState(true);
 
     useEffect(() => {
-        const mql = window.matchMedia("(pointer: coarse)");
-        setIsTouchDevice(mql.matches);
+        const mql = window.matchMedia("(min-width: 768px) and (hover: hover) and (pointer: fine)");
+        const update = () => setIsTouchDevice(!mql.matches);
+        update();
+        mql.addEventListener("change", update);
+        return () => mql.removeEventListener("change", update);
     }, []);
 
     useEffect(() => {

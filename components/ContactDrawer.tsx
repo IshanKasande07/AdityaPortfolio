@@ -153,9 +153,13 @@ export default function ContactDrawer({ isOpen, onClose }: ContactDrawerProps) {
                         initial="hidden"
                         animate="visible"
                         exit="exit"
-                        className="fixed right-0 top-0 h-full w-[min(500px,90vw)] z-[10001]
+                        role="dialog"
+                        aria-modal="true"
+                        aria-label="Contact Monarch"
+                        data-lenis-prevent
+                        className="fixed right-0 top-0 h-dvh w-full sm:w-[min(500px,90vw)] z-[10001]
                             bg-background/95 backdrop-blur-xl border-l border-primary/10
-                            flex flex-col overflow-y-auto"
+                            flex flex-col overflow-y-auto overscroll-contain pb-[env(safe-area-inset-bottom)]"
                         style={{ willChange: "transform", transform: "translate3d(0,0,0)" }}
                     >
                         {/* ── Header ─────────────────────────────────────── */}
@@ -169,7 +173,7 @@ export default function ContactDrawer({ isOpen, onClose }: ContactDrawerProps) {
                             <motion.button
                                 variants={fieldVariants}
                                 onClick={onClose}
-                                className="w-10 h-10 flex items-center justify-center rounded-full border border-primary/20 text-muted hover:text-primary hover:border-accent transition-colors duration-200"
+                                className="w-11 h-11 shrink-0 flex items-center justify-center rounded-full border border-primary/20 text-muted hover:text-primary hover:border-accent transition-colors duration-200"
                                 aria-label="Close drawer"
                             >
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="stroke-current" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -188,11 +192,12 @@ export default function ContactDrawer({ isOpen, onClose }: ContactDrawerProps) {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {fields.map((f) => (
                                     <motion.div key={f.key} variants={fieldVariants} className="flex flex-col gap-1.5">
-                                        <label className="text-xs font-mono uppercase tracking-widest text-muted">
+                                        <label htmlFor={`drawer-${f.key}`} className="text-xs font-mono uppercase tracking-widest text-muted">
                                             {f.label}
                                         </label>
                                         <div className="relative">
                                             <input
+                                                id={`drawer-${f.key}`}
                                                 type={f.type}
                                                 value={f.value}
                                                 onChange={(e) => f.setter(e.target.value)}
@@ -215,11 +220,12 @@ export default function ContactDrawer({ isOpen, onClose }: ContactDrawerProps) {
 
                             {/* Message textarea */}
                             <motion.div variants={fieldVariants} className="flex flex-col gap-1.5">
-                                <label className="text-xs font-mono uppercase tracking-widest text-muted">
+                                <label htmlFor="drawer-message" className="text-xs font-mono uppercase tracking-widest text-muted">
                                     Project Brief
                                 </label>
                                 <div className="relative">
                                     <textarea
+                                        id="drawer-message"
                                         value={message}
                                         onChange={(e) => setMessage(e.target.value)}
                                         onFocus={() => setIsFocusedField("message")}

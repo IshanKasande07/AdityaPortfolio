@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useId, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Check } from 'lucide-react'
 
@@ -14,6 +14,7 @@ interface BrutalistInputProps {
 }
 
 const BrutalistInput = ({ label, type = "text", value, onChange, placeholder, isTextArea = false }: BrutalistInputProps) => {
+    const inputId = useId();
     const [isFocused, setIsFocused] = useState(false);
     const [isValidated, setIsValidated] = useState(false);
 
@@ -38,10 +39,11 @@ const BrutalistInput = ({ label, type = "text", value, onChange, placeholder, is
 
     return (
         <div className='flex flex-col gap-2 w-full group'>
-            <p className='text-xs font-mono uppercase tracking-widest text-muted group-hover:text-primary transition-colors'>{label}</p>
+            <label htmlFor={inputId} className='text-xs font-mono uppercase tracking-widest text-muted group-hover:text-primary transition-colors'>{label}</label>
             <div className="relative w-full">
                 {isTextArea ? (
                     <textarea
+                        id={inputId}
                         value={value}
                         onChange={onChange}
                         onFocus={handleFocus}
@@ -51,6 +53,7 @@ const BrutalistInput = ({ label, type = "text", value, onChange, placeholder, is
                     />
                 ) : (
                     <input
+                        id={inputId}
                         type={type}
                         value={value}
                         onChange={onChange}

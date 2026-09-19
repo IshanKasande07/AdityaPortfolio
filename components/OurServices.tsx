@@ -120,17 +120,10 @@ const OurServices = () => {
             }
 
             updateActiveIndex();
-            setTimeout(updateActiveIndex, 100);
-            setTimeout(updateActiveIndex, 500);
         }, sectionRef);
-
-        window.addEventListener("scroll", updateActiveIndex, { passive: true });
-        window.addEventListener("resize", updateActiveIndex, { passive: true });
 
         return () => {
             ctx.revert();
-            window.removeEventListener("scroll", updateActiveIndex);
-            window.removeEventListener("resize", updateActiveIndex);
         };
     }, []);
 
@@ -265,7 +258,7 @@ const OurServices = () => {
                         );
                     })}
                     {/* Spacer inside left column so the flex row stays tall enough for SEO to reach vertical center before unpinning */}
-                    <div className="h-[30vh]" />
+                    <div className="hidden lg:block h-[30vh]" />
                 </div>
 
                 {/* Right Column — Sticky Icon Container */}

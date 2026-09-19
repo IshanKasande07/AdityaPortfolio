@@ -20,7 +20,7 @@
 }
 
 @layer base {
-  @media (pointer: fine) {
+  @media (min-width: 768px) and (hover: hover) and (pointer: fine) {
     html, body {
       cursor: none !important;
     }
@@ -39,7 +39,7 @@
 
 
 @layer utilities {
-  @media (pointer: fine) {
+  @media (min-width: 768px) and (hover: hover) and (pointer: fine) {
     *, *::before, *::after,
     a, button, input, textarea, select, label,
     [role="button"] {
@@ -67,7 +67,7 @@
 /* Mobile: stacked column layout */
 .bento-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
 }
 
@@ -79,11 +79,39 @@
 .bento-impress  { min-height: 180px; }
 .bento-img2     { min-height: 280px; position: relative; }
 
+/* Preserve motion; only reflow the surfaces that carry it. */
+@media (max-width: 767px) {
+  input, textarea, select { font-size: 16px !important; }
+  .site-footer .footer-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .site-footer .footer-links > div { min-width: 0; padding: 20px 10px; border-radius: 24px; }
+  .site-footer .footer-links > div:last-child { grid-column: 1 / -1; }
+  .site-footer .footer-links a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; }
+  .site-footer .footer-content { padding-inline: 16px; padding-bottom: max(64px, env(safe-area-inset-bottom)); }
+  .site-footer h2 { font-size: clamp(24px, 7.6vw, 30px); }
+  .site-footer [data-footer-reveal] { overflow-wrap: anywhere; }
+  #about .bento-hero { padding: 28px 24px; }
+  #about .bento-hero h3 { font-size: clamp(24px, 7.4vw, 30px); }
+  .work-showcase h4 { overflow-wrap: anywhere; }
+  .work-showcase .work-feature-copy { padding: 24px; }
+  .work-showcase .work-feature-copy h4 { font-size: clamp(24px, 7vw, 30px); }
+  .work-showcase .work-tabs { max-width: 100%; }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .bento-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; grid-template-rows: none !important; }
+  .bento-grid > div { grid-column: auto !important; grid-row: auto !important; min-height: 240px; }
+  .bento-grid > .bento-hero { grid-column: 1 / -1 !important; }
+}
+
+@media (hover: none) {
+  .work-showcase .group .group-hover\:opacity-100 { opacity: 1; }
+}
+
 /* Desktop: 2-row landscape-oriented rectangle */
 @media (min-width: 768px) {
   .bento-grid {
     grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: 340px 260px;
+    grid-template-rows: minmax(340px, auto) minmax(260px, auto);
     gap: 18px;
   }
 

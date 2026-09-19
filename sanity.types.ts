@@ -214,9 +214,12 @@ export type SHORT_FORM_PROJECTS_QUERY_RESULT = Array<{
 }>;
 
 // Query TypeMap
-import "@sanity/client";
-declare module "@sanity/client" {
+declare global {
   interface SanityQueries {
     '\n  *[_type == "project" && (!defined(category) || category == "short-form")] | order(_createdAt desc) {\n    _id,\n    title,\n    description,\n    category,\n    featured,\n    stats,\n    "videoUrl": videoFile.asset->url,\n    "posterUrl": videoThumbnail.asset->url,\n    "youtubeUrl": videoUrl\n  }\n': SHORT_FORM_PROJECTS_QUERY_RESULT;
   }
+}
+// Lets @sanity/client releases that predate the global registry read it too
+declare module "@sanity/client" {
+  interface SanityQueries extends globalThis.SanityQueries {}
 }

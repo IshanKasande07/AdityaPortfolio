@@ -51,17 +51,20 @@ function FloatingCTAInner() {
     // exactly when it reaches the middle of the screen.
     const [contactEl, setContactEl] = useState<HTMLElement | null>(null);
     useEffect(() => {
-        // Since the Contact section is deferred, it won't exist in the DOM immediately.
-        // We poll for it until it appears.
+        // Observe deferred mounting once, instead of polling forever on routes
+        // without the home-page contact heading.
         const checkEl = () => {
-            const el = document.getElementById("contact-heading");
+            const el = document.getElementById("contact-heading") || document.querySelector<HTMLElement>(".site-footer");
             if (el) {
                 setContactEl(el);
-            } else {
-                setTimeout(checkEl, 200);
+                return true;
             }
+            return false;
         };
-        checkEl();
+        if (checkEl()) return;
+        const observer = new MutationObserver(() => { if (checkEl()) observer.disconnect(); });
+        observer.observe(document.body, { childList: true, subtree: true });
+        return () => observer.disconnect();
     }, []);
 
     const { scrollYProgress: contactProgress } = useScroll({
@@ -96,7 +99,7 @@ function FloatingCTAInner() {
     // Magnetic Hover
     useEffect(() => {
         const btn = btnRef.current;
-        if (!btn) return;
+        if (!btn || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
         const STRENGTH = 0.30;
         const onMove = (e: MouseEvent) => {
             if (isAnimating || isDrawerOpen) return;
@@ -320,12 +323,12 @@ function FloatingCTAInner() {
                     y: ySpring,
                     pointerEvents: isDrawerOpen || isAnimating ? "none" : pointerEvents,
                 }}
-                className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[9999]"
+                className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-[9999]"
             >
                 <button
                     ref={btnRef}
                     onClick={handleClick}
-                    className="group relative flex items-center gap-2 rounded-full overflow-hidden will-change-transform cursor-pointer"
+                    className="group relative flex min-h-11 items-center gap-2 rounded-full overflow-hidden will-change-transform cursor-pointer"
                     style={{ padding: "0" }}
                 >
                     <span ref={labelRef} className="relative overflow-hidden rounded-full font-medium whitespace-nowrap text-black group-hover:text-white transition-colors duration-300">

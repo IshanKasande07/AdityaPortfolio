@@ -124,7 +124,7 @@ export default function NarrativeProofRail() {
             {/* Horizontal Rail */}
             <div 
               ref={railRef} 
-              className="flex items-center gap-6 md:gap-12 pl-[clamp(1.5rem,5vw,6rem)] h-[55vh] md:h-[65vh] pt-24 md:pt-16 z-10 w-max"
+              className="flex items-center gap-6 md:gap-12 pl-[clamp(1.5rem,5vw,6rem)] h-[55svh] md:h-[65vh] pt-0 md:pt-16 z-10 w-max"
             >
               {stories.map((story, i) => (
                 <div 
@@ -143,7 +143,7 @@ export default function NarrativeProofRail() {
                   <div className="absolute inset-0 bg-gradient-to-t from-[#11250E]/95 via-[#11250E]/30 to-transparent pointer-events-none" />
                   
                   {/* Card Content */}
-                  <div className="relative z-10 p-6 md:p-10 lg:p-12 flex flex-col gap-3 md:gap-4 pointer-events-auto max-w-[85%]">
+                  <div className="relative z-10 p-6 md:p-10 lg:p-12 flex flex-col gap-3 md:gap-4 pointer-events-auto max-w-full md:max-w-[85%]">
                     <span 
                       className="text-accent text-[10px] md:text-xs uppercase tracking-[0.24em] font-bold"
                       style={{ fontFamily: "var(--font-space-grotesk)" }}

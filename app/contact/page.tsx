@@ -38,7 +38,6 @@ const ItalicHoverWord = ({ text, onHover }: { text: string; onHover: (el: HTMLEl
             ref={ref}
             data-cursor-hover
             onMouseEnter={() => onHover(ref.current)}
-            onMouseMove={() => onHover(ref.current)}
             onMouseLeave={() => onHover(null)}
             whileHover={{ color: "#997300", scale: 1.03 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
