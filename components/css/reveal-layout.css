@@ -86,3 +86,11 @@ html:has(.reveal-parent-container) {
         background-image: url('/heroassets/vertical-hero.webp');
     }
 }
+
+/* Lift the copy on wide, shallow viewports without shrinking the headline.
+   Taller compositions retain their original placement. */
+@media (min-width: 768px) and (min-aspect-ratio: 8/5) {
+    .hero-copy-composition {
+        top: max(104px, 15vh);
+    }
+}

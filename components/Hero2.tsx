@@ -728,7 +728,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 
 const headingLines = [
-    ["Your", "content", "isn't", "underperforming."],
+    ["Your", "content", "isn't", "failing."],
     ["Your", "format", "is"],
 ];
 
@@ -1442,7 +1442,7 @@ export default function Hero2() {
         <div
             ref={containerRef}
             id="work"
-            className="relative overflow-hidden bg-background z-20 w-full h-[100vh]"
+            className="relative overflow-hidden bg-background z-20 w-full h-[100vh] select-none"
             onPointerMove={handlePointerMove}
             onPointerLeave={() => {
                 mouseX.set(0);
@@ -1757,7 +1757,7 @@ export default function Hero2() {
                 {/* ========== LAYER 5: Text Overlay + CTA ========== */}
                 <motion.div
                     style={{ y: textY, opacity: textOpacity, scale: textScale, z: 0.01, willChange: "transform, opacity" }}
-                    className="absolute top-[max(96px,15vh)] md:top-[max(104px,18vh)] left-0 w-full flex flex-col items-center justify-center text-primary text-center z-[50] px-5 md:px-[5vw] pointer-events-none"
+                    className="hero-copy-composition absolute top-[max(96px,15vh)] md:top-[max(104px,18vh)] left-0 w-full flex flex-col items-center justify-center text-primary text-center z-[50] px-5 md:px-[5vw] pointer-events-none"
                 >
                     <motion.div
                         initial={{ opacity: 1, y: "25vh", scale: 1.5 }}
@@ -1770,11 +1770,11 @@ export default function Hero2() {
                         className="w-full flex flex-col items-center justify-center pointer-events-none"
                     >
                         <h1
-                            className="w-full max-w-[1120px] text-[clamp(30px,7.7vw,44px)] md:text-[clamp(30px,3.7vw,72px)] font-medium leading-[1.08] tracking-tight pointer-events-auto mb-5 md:mb-6 flex flex-col items-center"
+                            className="hero-copy-heading w-full max-w-[1120px] text-[clamp(26px,7.7vw,40px)] md:text-[clamp(26px,3.7vw,68px)] font-medium leading-[1.08] tracking-tight pointer-events-auto mb-1 flex flex-col items-center"
                             style={{ fontFamily: "var(--font-tiempos-headline), serif" }}
                         >
                             {headingLines.map((line, lineIdx) => (
-                                <span key={lineIdx} className={`flex flex-wrap justify-center gap-x-[0.2em] overflow-visible ${lineIdx === 1 ? "mt-2 md:mt-3 text-[1.28em]" : ""}`}>
+                                <span key={lineIdx} className={`flex flex-wrap justify-center gap-x-[0.2em] overflow-visible ${lineIdx === 1 ? "mt-0 md:mt-1 text-[1.28em]" : ""}`}>
                                     {line.map((word, i) => (
                                         <span
                                             key={i}
@@ -1797,55 +1797,55 @@ export default function Hero2() {
                             ))}
                         </h1>
 
-                        <p className={`subtitle-reveal ${earlyReveal ? "playing" : ""} text-[16px] md:text-[clamp(17px,1.25vw,22px)] text-[#F8F3E6] max-w-[32ch] md:max-w-[58ch] pointer-events-auto leading-[1.5] text-balance`}>
-                            Same knowledge. Better storytelling. Content people stop for.
+                        {showHeroCta && (
+                            <motion.div className="mt-0 md:mt-1 pointer-events-auto">
+                                <motion.button
+                                    onClick={() => scrollToTarget("contact")}
+                                    onPointerEnter={() => setHasInteracted(true)}
+                                    onPointerMove={(e) => {
+                                        if (isTouchDevice || !parallaxUnlocked) return;
+                                        const rect = e.currentTarget.getBoundingClientRect();
+                                        buttonX.set((e.clientX - (rect.left + rect.width / 2)) * 0.15);
+                                        buttonY.set((e.clientY - (rect.top + rect.height / 2)) * 0.15);
+                                    }}
+                                    onPointerLeave={() => {
+                                        buttonX.set(0);
+                                        buttonY.set(0);
+                                    }}
+                                    style={{ x: buttonSpringX, y: buttonSpringY }}
+                                    animate={nudgeControls}
+                                    whileTap={{ scale: 0.9 }}
+                                    className="group relative overflow-hidden rounded-full py-3 px-8 md:py-4 md:px-10 will-change-transform"
+                                >
+                                    <div className="absolute inset-0 bg-accent rounded-full -z-10" />
+                                    <div className="absolute inset-0 bg-[#1e3a18] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full z-0" />
+                                    <div className="relative z-10 flex items-center justify-center text-sm md:text-[1.1vw] font-medium text-black group-hover:text-white transition-colors duration-300">
+                                        <span>Book a Call</span>
+                                        <span className="ml-3 relative flex items-center justify-center overflow-hidden w-5 h-5">
+                                            <span className="absolute inset-0 flex items-center justify-center -rotate-45 transition-transform duration-700 group-hover:translate-x-[150%] group-hover:-translate-y-[150%]">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                                </svg>
+                                            </span>
+                                            <span className="absolute inset-0 flex items-center justify-center -rotate-45 -translate-x-[150%] translate-y-[150%] transition-transform duration-700 group-hover:translate-x-0 group-hover:translate-y-0">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </motion.button>
+                            </motion.div>
+                        )}
+                        <p 
+                            className={`subtitle-reveal ${earlyReveal ? "playing" : ""} mt-3 max-w-[32ch] md:max-w-none text-sm text-primary md:text-muted pointer-events-auto leading-relaxed text-balance`}
+                            style={{ fontFamily: "var(--font-tiempos-headline), serif" }}
+                        >
+                            <span className="block md:inline">Same knowledge. Better storytelling.</span>{" "}
+                            <span className="block md:inline">Content people stop for.</span>
                         </p>
                     </motion.div>
                 </motion.div>
-
-                {showHeroCta && <motion.div
-                    initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                    animate={contentControls}
-                    style={{ y: textY, opacity: textOpacity, z: 0.01, willChange: "transform, opacity" }}
-                    className="absolute bottom-[6vh] md:bottom-[calc(8vh+18px)] left-0 w-full flex flex-col items-center justify-center z-[100] pointer-events-auto"
-                >
-                    <motion.button
-                        onClick={() => scrollToTarget("contact")}
-                        onPointerEnter={() => setHasInteracted(true)}
-                        onPointerMove={(e) => {
-                            if (isTouchDevice || !parallaxUnlocked) return;
-                            const rect = e.currentTarget.getBoundingClientRect();
-                            buttonX.set((e.clientX - (rect.left + rect.width / 2)) * 0.15);
-                            buttonY.set((e.clientY - (rect.top + rect.height / 2)) * 0.15);
-                        }}
-                        onPointerLeave={() => {
-                            buttonX.set(0);
-                            buttonY.set(0);
-                        }}
-                        style={{ x: buttonSpringX, y: buttonSpringY }}
-                        animate={nudgeControls}
-                        whileTap={{ scale: 0.9 }}
-                        className="group relative overflow-hidden rounded-full py-3 px-8 md:py-4 md:px-10 will-change-transform"
-                    >
-                        <div className="absolute inset-0 bg-accent rounded-full -z-10" />
-                        <div className="absolute inset-0 bg-[#1e3a18] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full z-0" />
-                        <div className="relative z-10 flex items-center justify-center text-sm md:text-[1.1vw] font-medium text-black group-hover:text-white transition-colors duration-300">
-                            <span>Book a Call</span>
-                            <span className="ml-3 relative flex items-center justify-center overflow-hidden w-5 h-5">
-                                <span className="absolute inset-0 flex items-center justify-center -rotate-45 transition-transform duration-700 group-hover:translate-x-[150%] group-hover:-translate-y-[150%]">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                        <path d="M5 12h14M12 5l7 7-7 7" />
-                                    </svg>
-                                </span>
-                                <span className="absolute inset-0 flex items-center justify-center -rotate-45 -translate-x-[150%] translate-y-[150%] transition-transform duration-700 group-hover:translate-x-0 group-hover:translate-y-0">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                        <path d="M5 12h14M12 5l7 7-7 7" />
-                                    </svg>
-                                </span>
-                            </span>
-                        </div>
-                    </motion.button>
-                </motion.div>}
 
                 <AnimatePresence>
                     {earlyReveal && !isTouchDevice && (
