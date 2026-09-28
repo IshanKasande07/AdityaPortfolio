@@ -3,14 +3,14 @@
 import React from 'react'
 import FadeUp from './css/FadeUp'
 import ContactForm from './ContactForm'
+import styles from './Contact.module.css'
 
 const Contact = () => {
     return (
         <>
-            <div id="contact" className='w-full relative z-10'>
+            <div id="contact" className={styles.section}>
                 <div
-                    className='w-full flex flex-col items-center justify-center z-10 px-6 py-24 md:py-32 relative overflow-hidden
-                        bg-background'
+                    className={styles.content}
                 >
 
 
@@ -35,3 +35,4 @@ const Contact = () => {
 
 export default Contact
 // qw4erfuaerfiubrfiubearviuarvfiauwe
+

@@ -15,25 +15,29 @@ const stories = [
     eyebrow: "01 / Attention",
     title: "Short-form",
     desc: "We engineer hooks that stop the scroll and retain fractured attention across TikTok, Reels, and Shorts.",
-    img: "https://images.unsplash.com/photo-1616469829581-73993eb86b02?q=80&w=2940&auto=format&fit=crop",
+    img: "/assets/editorial/short-form.webp",
+    alt: "A creator filming a green outdoor scene on a phone",
   },
   {
     eyebrow: "02 / Depth",
     title: "Long-form",
     desc: "Documentary-style YouTube narratives that build lasting authority and deep parasocial trust.",
-    img: "https://images.unsplash.com/photo-1542744094-3a31f272c490?q=80&w=2940&auto=format&fit=crop",
+    img: "/assets/editorial/long-form.webp",
+    alt: "A filmmaker preparing a cinema camera in natural light",
   },
   {
     eyebrow: "03 / Impact",
     title: "Campaigns",
     desc: "Multi-channel brand pushes that convert earned trust into measurable demand.",
-    img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2942&auto=format&fit=crop",
+    img: "/assets/editorial/campaigns.webp",
+    alt: "A creative team mapping an idea together on paper",
   },
   {
     eyebrow: "04 / Aesthetic",
     title: "Graphics",
     desc: "High-end visual communication that elevates perception instantly.",
-    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2940&auto=format&fit=crop",
+    img: "/assets/editorial/graphics.webp",
+    alt: "A designer comparing colour swatches for a visual concept",
   },
 ];
 
@@ -83,7 +87,7 @@ export default function NarrativeProofRail() {
     <div ref={containerRef} className="w-full relative z-20">
       <section
         id="narrative-proof"
-        aria-label="Narrative proof across content formats"
+        aria-label="Creative disciplines across content formats"
         className="relative w-full z-20"
       >
         <div ref={pinWrapperRef} className="relative w-full h-screen z-20">
@@ -109,14 +113,14 @@ export default function NarrativeProofRail() {
                 <div className="flex items-center gap-3">
                   <span className="text-accent text-sm leading-none" aria-hidden="true">✦</span>
                   <span className="text-[10px] uppercase tracking-[0.28em] font-medium text-primary/60" style={{ fontFamily: "var(--font-space-grotesk)" }}>
-                    Selected Work
+                    What We Create
                   </span>
                 </div>
                 <h2 
                   className="text-primary font-display text-4xl md:text-5xl lg:text-6xl font-normal italic tracking-tight"
                   style={{ fontFamily: "var(--font-tiempos-headline), serif" }}
                 >
-                  The <span className="text-accent font-semibold not-italic">Proof.</span>
+                  The <span className="text-accent font-semibold not-italic">Craft.</span>
                 </h2>
               </div>
             </div>
@@ -134,7 +138,7 @@ export default function NarrativeProofRail() {
                 >
                   <Image 
                     src={story.img} 
-                    alt={story.title} 
+                    alt={story.alt}
                     fill 
                     className="object-cover object-center scale-[1.01] group-hover:scale-105 transition-transform duration-[1.5s] ease-[cubic-bezier(0.2,1,0.2,1)]" 
                     sizes="(max-width: 768px) 85vw, 60vw"

@@ -26,9 +26,6 @@ interface RevealLayoutProps {
     children: ReactNode;
 }
 
-const BORDER_TOP_PX = 66;
-const BORDER_PX = 18;
-const RADIUS = "20px";
 const CREAM = "#F8F3E6";
 
 export function RevealProvider({ children }: { children: ReactNode }) {
@@ -49,8 +46,8 @@ export function RevealProvider({ children }: { children: ReactNode }) {
         document.body.style.backgroundColor = CREAM;
         document.documentElement.style.backgroundColor = CREAM;
 
-        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-        document.body.style.paddingRight = `${scrollbarWidth}px`;
+        // CSS reserves the scrollbar gutter throughout the reveal and pinning.
+        // Padding compensation would resize the landscape at the handoff.
         document.body.style.overflow = "hidden";
         document.documentElement.style.overflow = "hidden";
         document.body.style.pointerEvents = "none";
@@ -64,7 +61,6 @@ export function RevealProvider({ children }: { children: ReactNode }) {
             document.body.style.backgroundColor = CREAM;
             document.documentElement.style.backgroundColor = CREAM;
 
-            document.body.style.paddingRight = "0px";
             document.body.style.overflow = "";
             document.documentElement.style.overflow = "";
             document.body.style.pointerEvents = "";
@@ -121,7 +117,7 @@ export default function RevealLayout({ children }: RevealLayoutProps) {
 
         setPaths({
             start: `inset(${insetY}px ${insetX}px ${insetY}px ${insetX}px round 100px)`,
-            end: `inset(${BORDER_TOP_PX}px ${BORDER_PX}px ${BORDER_PX}px ${BORDER_PX}px round ${RADIUS})`
+            end: "inset(0px 0px 0px 0px round 0px)"
         });
     }, [setRevealed, setEarlyReveal]);
 

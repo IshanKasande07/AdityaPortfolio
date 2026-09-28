@@ -100,7 +100,7 @@ export default function ContactPage() {
                             initial={{ scale: 1.1, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             transition={{ duration: 2, ease: "easeOut" }}
-                            src="/assets/contact_hero_bg.jpg" 
+                            src="/assets/editorial/contact-forest.webp"
                             alt="" 
                             className="w-full h-full object-cover object-top"
                         />

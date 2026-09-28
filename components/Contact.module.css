@@ -1,0 +1,6 @@
+.section { position: relative; z-index: 10; background: var(--color-background); }
+.content { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 64px 24px 128px; position: relative; }
+.content::before { content: ''; width: 1px; height: 64px; background: linear-gradient(transparent, rgb(67 93 32 / 45%)); margin-bottom: 48px; }
+.content input::placeholder, .content textarea::placeholder { color: var(--color-muted); opacity: .85; }
+.content button:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 5px; }
+@media (max-width: 767px) { .content { padding: 24px 24px 80px; } .content::before { height: 48px; margin-bottom: 36px; } }

@@ -1,5 +1,10 @@
 /* RevealLayout static styles — parsed once at CSS load, not recalculated on mount */
 
+/* Reserve the same width before scroll unlock and after the hero is pinned. */
+html:has(.reveal-parent-container) {
+    scrollbar-gutter: stable;
+}
+
 @media (max-width: 768px) {
     .reveal-parent-container {
         background-color: #F8F3E6 !important;
@@ -44,6 +49,34 @@
 }
 .subtitle-reveal.playing {
     animation-play-state: running;
+}
+
+/* Editorial Wilderness: soft canopy shade in foliage ink, without gloss
+   or additional motion competing with the landscape. */
+.hero-canopy-ink {
+    display: inline-block;
+    padding-inline: 0.07em;
+    margin-inline: -0.07em;
+    color: var(--color-accent);
+}
+
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+    .hero-canopy-ink {
+        background-image:
+            radial-gradient(ellipse at 16% 80%, color-mix(in srgb, var(--color-surface-light) 45%, transparent), transparent 65%),
+            radial-gradient(ellipse at 86% 20%, color-mix(in srgb, var(--color-surface-light) 25%, transparent), transparent 58%);
+        background-color: var(--color-accent);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
+
+@media (forced-colors: active) {
+    .hero-canopy-ink {
+        background: none;
+        -webkit-text-fill-color: currentColor;
+    }
 }
 .hero-sky-bg {
     background-image: url('/heroassets/Sky.webp');

@@ -19,7 +19,7 @@ const page = () => {
       <FloatingCTA />
       <Navbar />
 
-      {/* Hero as one clipped card — cream border on all 4 sides */}
+      {/* The cream aperture reveal opens into an edge-to-edge hero. */}
       <RevealLayout>
         <Hero2 />
       </RevealLayout>

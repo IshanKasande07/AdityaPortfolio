@@ -728,8 +728,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 
 const headingLines = [
-    ["Why", "just", "create", "content", "?"],
-    ["-", "Build", "Narratives"],
+    ["Your", "content", "isn't", "underperforming."],
+    ["Your", "format", "is"],
 ];
 
 const statementWords = [
@@ -745,6 +745,12 @@ const statementWords = [
 ];
 
 const combineTransforms = ([s, m]: number[]) => s + m;
+
+// The reveal poster and scroll timeline must use the same resting geometry.
+const BRIDGE_BEHIND_REST_SCALE = 1.05;
+// A near-white blue wash softens the opening sky without tinting the foreground.
+// Keep the live layer and reveal snapshot identical at their handoff.
+const SKY_BLUE_WASH = 'rgba(232, 244, 250, 0.38)';
 
 /** Canvas helper: replicates CSS object-fit: cover for drawImage */
 function drawImageCover(
@@ -999,6 +1005,20 @@ export default function Hero2() {
     const smoothRawMouseX = useSpring(rawMouseX, { stiffness: 70, damping: 20, mass: 0.5 });
     const smoothRawMouseY = useSpring(rawMouseY, { stiffness: 70, damping: 20, mass: 0.5 });
     const [showScrollHint, setShowScrollHint] = useState(false);
+    const [showHeroCta, setShowHeroCta] = useState(true);
+
+    useEffect(() => {
+        const syncHeroCta = () => {
+            // The CTA reaches zero opacity at 150px. Keep it mounted through
+            // that fade, then remove its hit area for the cloud sequence.
+            const shouldShow = window.scrollY < 160;
+            setShowHeroCta(current => current === shouldShow ? current : shouldShow);
+        };
+
+        syncHeroCta();
+        window.addEventListener("scroll", syncHeroCta, { passive: true });
+        return () => window.removeEventListener("scroll", syncHeroCta);
+    }, []);
 
     const animationProgress = useMotionValue(0);
     const scrollBarHeight = useTransform(animationProgress, [0, 1], ["0%", "100%"]);
@@ -1087,6 +1107,13 @@ export default function Hero2() {
                     skyRect.width,
                     skyRect.height,
                     'top'
+                );
+                ctx.fillStyle = SKY_BLUE_WASH;
+                ctx.fillRect(
+                    skyRect.left - rect.left,
+                    skyRect.top - rect.top,
+                    skyRect.width,
+                    skyRect.height,
                 );
             }
 
@@ -1186,25 +1213,8 @@ export default function Hero2() {
 
         // Wait a frame for layout to settle after reveal
         const rafId = requestAnimationFrame(() => {
-            // Set initial clip path on container so it holds the frame when pinned
-            gsap.set(container, { clipPath: "inset(66px 18px 18px 18px round 20px)" });
-
             // ── Build the scrubbed timeline ─────────────────────────
             const tl = gsap.timeline({ paused: true });
-
-            // Phase 0: Expand the frame
-            const revealDiv = document.querySelector('.reveal-animated-div') as HTMLElement;
-            if (revealDiv) {
-                revealDiv.style.transition = 'none'; // remove CSS transition so GSAP can control it
-            }
-            tl.fromTo([revealDiv, container], 
-                { clipPath: "inset(66px 18px 18px 18px round 20px)" },
-                {
-                    clipPath: "inset(0px 0px 0px 0px round 0px)",
-                    ease: "power2.inOut",
-                    duration: 0.1,
-                }, 
-            0);
 
             // Phase 1 (0%–20%): Text fades out via Framer Motion (scrollY 0–150)
             // GSAP does nothing here — the text transforms handle it.
@@ -1218,9 +1228,9 @@ export default function Hero2() {
                     {
                         opacity: 0,
                         ease: "power2.inOut",
-                        duration: 0.54, // Fades out over 54% of the scroll (1.5× of previous)
+                        duration: 0.42, // Fully clear before the bridge edges leave the viewport
                     },
-                    0.05
+                    0.04
                 );
             }
 
@@ -1237,7 +1247,7 @@ export default function Hero2() {
 
             // Parallax zoom for the Bridge Behind layer (scales slightly slower/less)
             tl.fromTo(bridgeBehindEl,
-                { scale: 1.05, yPercent: 0 },
+                { scale: BRIDGE_BEHIND_REST_SCALE, yPercent: 0 },
                 {
                     scale: 18, // Scaled up proportionally
                     yPercent: -10, // Less drift
@@ -1245,6 +1255,15 @@ export default function Hero2() {
                     duration: 0.50,
                 },
                 0.05
+            );
+
+            // The magnified bridge image eventually runs out of coverage.
+            // Dissolve both bridge planes while the blue cloud passage is
+            // already opaque, before that image edge crosses the viewport.
+            tl.fromTo([bridgeEl, bridgeBehindEl],
+                { opacity: 1 },
+                { opacity: 0, ease: "power2.inOut", duration: 0.19 },
+                0.27
             );
 
             // Parallax zoom for Layer 1.5 (Bottom Cloud)
@@ -1423,7 +1442,7 @@ export default function Hero2() {
         <div
             ref={containerRef}
             id="work"
-            className="relative overflow-hidden bg-background z-20 w-full h-[calc(100vh-72px)] mt-[60px] mb-[12px] rounded-[16px] md:!w-full md:!h-[100vh] md:!m-0 md:!rounded-none"
+            className="relative overflow-hidden bg-background z-20 w-full h-[100vh]"
             onPointerMove={handlePointerMove}
             onPointerLeave={() => {
                 mouseX.set(0);
@@ -1468,7 +1487,9 @@ export default function Hero2() {
                             transformOrigin: "center",
                             visibility: layerVisibility,
                         }}
-                    />
+                    >
+                        <div className="absolute inset-0" style={{ backgroundColor: SKY_BLUE_WASH }} />
+                    </motion.div>
                 </div>
 
                 {/* ========== LAYER 0.5: Cloud Passage ========== */}
@@ -1563,7 +1584,7 @@ export default function Hero2() {
                     }}
                     className="absolute inset-0 z-[10] pointer-events-none hidden md:block"
                 >
-                    <div ref={bridgeBehindZoomRef} className="absolute inset-0" style={{ transformOrigin: "50% 72%", transform: "scale(1.15)" }}>
+                    <div ref={bridgeBehindZoomRef} className="absolute inset-0" style={{ transformOrigin: "50% 72%", transform: `scale(${BRIDGE_BEHIND_REST_SCALE})` }}>
                         <Image
                             src="/heroassets/Bridge Behind.webp"
                             alt="Bridge Background"
@@ -1736,7 +1757,7 @@ export default function Hero2() {
                 {/* ========== LAYER 5: Text Overlay + CTA ========== */}
                 <motion.div
                     style={{ y: textY, opacity: textOpacity, scale: textScale, z: 0.01, willChange: "transform, opacity" }}
-                    className="absolute top-[6vh] md:top-[calc(8vh+66px)] left-0 w-full flex flex-col items-center justify-center text-primary text-center z-[50] px-6 md:px-[5vw] pointer-events-none"
+                    className="absolute top-[max(96px,15vh)] md:top-[max(104px,18vh)] left-0 w-full flex flex-col items-center justify-center text-primary text-center z-[50] px-5 md:px-[5vw] pointer-events-none"
                 >
                     <motion.div
                         initial={{ opacity: 1, y: "25vh", scale: 1.5 }}
@@ -1748,37 +1769,41 @@ export default function Hero2() {
                         }}
                         className="w-full flex flex-col items-center justify-center pointer-events-none"
                     >
-                        <div
-                            className="text-[8vw] sm:text-[5.5vw] md:text-[4vw] font-medium leading-[1.1] tracking-tight pointer-events-auto mb-3 md:mb-4 flex flex-col items-center"
+                        <h1
+                            className="w-full max-w-[1120px] text-[clamp(30px,7.7vw,44px)] md:text-[clamp(30px,3.7vw,72px)] font-medium leading-[1.08] tracking-tight pointer-events-auto mb-5 md:mb-6 flex flex-col items-center"
                             style={{ fontFamily: "var(--font-tiempos-headline), serif" }}
                         >
                             {headingLines.map((line, lineIdx) => (
-                                <div key={lineIdx} className="flex flex-wrap justify-center gap-[0.3em] overflow-visible">
+                                <span key={lineIdx} className={`flex flex-wrap justify-center gap-x-[0.2em] overflow-visible ${lineIdx === 1 ? "mt-2 md:mt-3 text-[1.28em]" : ""}`}>
                                     {line.map((word, i) => (
-                                        <div
+                                        <span
                                             key={i}
-                                            className="overflow-hidden inline-flex relative py-2 pl-1 pr-3 -mx-1"
+                                            className="overflow-hidden inline-flex relative py-[0.08em] px-[0.08em] -mx-[0.08em]"
                                             style={{ transform: "translateZ(0)" }}
                                         >
                                             <span
-                                                className={`word-reveal ${earlyReveal ? "playing" : ""} ${lineIdx === 1 ? "italic font-light text-accent" : "font-semibold text-[#1e3a18]"}`}
+                                                className={`word-reveal ${earlyReveal ? "playing" : ""} ${lineIdx === 1 ? "italic font-normal text-accent" : "font-medium text-[#1e3a18]"}`}
                                                 style={{ animationDelay: `${lineIdx * 0.1 + i * 0.04}s` }}
                                             >
-                                                {word}
+                                                {lineIdx === 1 ? (
+                                                    <span className="hero-canopy-ink">
+                                                        {word}
+                                                    </span>
+                                                ) : word}
                                             </span>
-                                        </div>
+                                        </span>
                                     ))}
-                                </div>
+                                </span>
                             ))}
-                        </div>
+                        </h1>
 
-                        <p className={`subtitle-reveal ${earlyReveal ? "playing" : ""} text-xs sm:text-sm md:text-[1.1vw] text-[#F8F3E6] max-w-[90vw] md:max-w-3xl pointer-events-auto leading-relaxed mb-1 px-4 md:px-0`}>
-                            Attention is the highest currency, we are helping you to mine it
+                        <p className={`subtitle-reveal ${earlyReveal ? "playing" : ""} text-[16px] md:text-[clamp(17px,1.25vw,22px)] text-[#F8F3E6] max-w-[32ch] md:max-w-[58ch] pointer-events-auto leading-[1.5] text-balance`}>
+                            Same knowledge. Better storytelling. Content people stop for.
                         </p>
                     </motion.div>
                 </motion.div>
 
-                <motion.div
+                {showHeroCta && <motion.div
                     initial={{ opacity: 0, y: 20, scale: 0.95 }}
                     animate={contentControls}
                     style={{ y: textY, opacity: textOpacity, z: 0.01, willChange: "transform, opacity" }}
@@ -1820,7 +1845,7 @@ export default function Hero2() {
                             </span>
                         </div>
                     </motion.button>
-                </motion.div>
+                </motion.div>}
 
                 <AnimatePresence>
                     {earlyReveal && !isTouchDevice && (

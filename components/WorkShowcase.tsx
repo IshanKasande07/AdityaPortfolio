@@ -420,7 +420,7 @@ function ShortFormCard({ item, index, onPlay }: { item: WorkItem, index: number,
             initial={{ opacity: 0, scale: 0.95 }}
             animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className={`group relative w-full aspect-[2/3] rounded-3xl overflow-hidden bg-black/5 ${item.instagramUrl || item.videoUrl ? '' : 'cursor-pointer'}`}
+            className={`group relative w-full aspect-[9/16] rounded-3xl overflow-hidden bg-black/5 ${item.instagramUrl || item.videoUrl ? '' : 'cursor-pointer'}`}
             onClick={() => { if (!item.instagramUrl && !item.videoUrl && item.youtubeUrl) onPlay(item.youtubeUrl); }}
             data-cursor-hover={!item.instagramUrl && !item.videoUrl}
         >
