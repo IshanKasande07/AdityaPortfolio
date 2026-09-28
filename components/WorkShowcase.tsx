@@ -216,7 +216,7 @@ function VideoModal({
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className="relative z-10 w-[92vw] max-w-5xl aspect-video rounded-2xl overflow-hidden shadow-2xl"
+                className="relative z-10 w-[92vw] max-w-[min(64rem,calc((100dvh-6rem)*16/9))] aspect-video rounded-2xl overflow-hidden shadow-2xl"
                 onClick={(e) => e.stopPropagation()}
             >
                 <iframe
@@ -237,6 +237,8 @@ function VideoModal({
 // Playback is never started automatically.
 function WorkVideo({ active = true, ...props }: React.VideoHTMLAttributes<HTMLVideoElement> & { active?: boolean }) {
     const ref = useRef<HTMLVideoElement>(null);
+    const [playing, setPlaying] = useState(false);
+    const [started, setStarted] = useState(false);
     useEffect(() => {
         const video = ref.current;
         if (!video) return;
@@ -249,15 +251,42 @@ function WorkVideo({ active = true, ...props }: React.VideoHTMLAttributes<HTMLVi
         document.addEventListener("visibilitychange", onVisibility);
         return () => { observer.disconnect(); document.removeEventListener("visibilitychange", onVisibility); };
     }, [active]);
-    return <video ref={ref} {...props} />;
+    return (
+        <div className="short-form-media group relative w-full h-full" data-playing={playing}>
+            <video
+                ref={ref}
+                {...props}
+                controls={started}
+                className={`${props.className || ""} short-form-preview`}
+                onPlay={() => { setPlaying(true); setStarted(true); }}
+                onPause={() => setPlaying(false)}
+                onEnded={() => { setPlaying(false); setStarted(false); }}
+            />
+            {!playing && (
+                <>
+                    <div className="short-form-shade absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
+                    <PlayButton
+                        label={`Play ${props.title || "video"}`}
+                        onClick={() => {
+                            const playback = ref.current?.play();
+                            playback?.catch(() => setStarted(true));
+                        }}
+                    />
+                </>
+            )}
+        </div>
+    );
 }
 
-const PlayButton = ({ delay = 0, inView = true }: { delay?: number, inView?: boolean }) => (
-    <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+const PlayButton = ({ delay = 0, inView = true, onClick, label = "Play video" }: { delay?: number, inView?: boolean, onClick?: () => void, label?: string }) => (
+    <div className="work-play-overlay absolute inset-0 flex items-center justify-center pointer-events-none z-10">
         <div className="scale-90 group-hover:scale-100 transition-transform duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto">
             <motion.button
-                aria-label="Play video"
-                className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-md transition-colors duration-500 hover:bg-white/20 relative"
+                type="button"
+                aria-label={label}
+                onClick={onClick}
+                data-cursor-hover
+                className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-md transition-colors duration-500 hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white relative"
                 whileHover={{ scale: 1.1 }}
                 initial={{ opacity: 0 }}
                 animate={inView ? { opacity: 1 } : {}}
@@ -304,15 +333,15 @@ function ShortFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: 
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full flex flex-col gap-20 md:gap-32"
+            className="w-full min-w-0 flex flex-col gap-14 sm:gap-20 lg:gap-32"
         >
             {/* The Asymmetrical Exhibit (Featured Carousel) */}
             {currentFeatured && (
-                <div className="flex flex-col md:flex-row items-center gap-12 md:gap-24">
+                <div className="flex flex-col md:flex-row items-center gap-8 md:gap-10 lg:gap-20">
                     
                     {/* Left: Isolated Phone Mockup */}
                     <div className="w-full md:w-[45%] lg:w-[40%] flex justify-center md:justify-end">
-                        <div className="relative w-full max-w-[200px] md:max-w-[220px] xl:max-w-[240px] 2xl:max-w-[300px] aspect-[9/19] rounded-[40px] p-2 bg-[#11250E] shadow-[0_20px_60px_-15px_rgba(17,37,14,0.3)]">
+                        <div className="relative w-full max-w-[240px] md:max-w-[260px] lg:max-w-[300px] aspect-[9/19] rounded-[40px] p-2 bg-[#11250E] shadow-[0_20px_60px_-15px_rgba(17,37,14,0.3)]">
                             {/* Phone Inner - Preloaded Stack */}
                             <div className="relative w-full h-full rounded-[32px] overflow-hidden bg-black">
                                 {featuredItems.map((item, idx) => {
@@ -320,11 +349,13 @@ function ShortFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: 
                                     return (
                                         <div
                                             key={item.id}
+                                            inert={!isActive}
                                             className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}
                                             onClick={() => { if (!item.instagramUrl && !item.videoUrl && item.youtubeUrl) onPlay(item.youtubeUrl); }}
                                         >
                                             {item.videoUrl ? (
                                                 <WorkVideo active={isActive}
+                                                    title={item.title}
                                                     src={item.videoUrl} 
                                                     poster={item.posterUrl || getThumbnail(item.youtubeUrl || "")} 
                                                     preload="none" 
@@ -351,12 +382,12 @@ function ShortFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: 
                     </div>
 
                     {/* Right: Editorial Writeup & Controls */}
-                    <div className="w-full md:w-[55%] lg:w-[60%] flex flex-col items-start px-4 md:px-0">
+                    <div className="w-full min-w-0 md:w-[55%] lg:w-[60%] flex flex-col items-start">
                         <div className="mb-6 md:mb-8">
                             <h3 className="text-3xl md:text-4xl 2xl:text-5xl font-medium text-primary tracking-tight mb-4 md:mb-6" style={{ fontFamily: "var(--font-tiempos-headline), serif" }}>
                                 The Scroll-Stoppers.
                             </h3>
-                            <p className="text-xs md:text-sm 2xl:text-base text-primary/60 font-light leading-relaxed max-w-md" style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}>
+                            <p className="text-sm lg:text-base text-primary/60 font-light leading-relaxed max-w-md" style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}>
                                 We engineer retention. By combining rapid-fire editing with hook-driven storytelling, our short form content consistently shatters algorithmic ceilings across TikTok, Reels, and Shorts.
                             </p>
                         </div>
@@ -372,7 +403,7 @@ function ShortFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: 
                             >
                                 <span className="inline-block px-2 md:px-3 py-1 rounded-full bg-accent/10 text-accent text-[10px] md:text-xs font-semibold uppercase tracking-widest w-fit mb-3 md:mb-4">Viral Hit</span>
                                 <h4 className="text-xl md:text-2xl 2xl:text-3xl font-medium text-primary leading-tight mb-2 md:mb-3" style={{ fontFamily: "var(--font-tiempos-headline), serif" }}>{currentFeatured.title}</h4>
-                                <p className="text-primary/70 font-light text-xs md:text-sm max-w-sm mb-3 md:mb-4" style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}>{currentFeatured.description}</p>
+                                <p className="text-primary/70 font-light text-sm leading-relaxed max-w-sm mb-3 md:mb-4" style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}>{currentFeatured.description}</p>
                                 {currentFeatured.stats && (
                                     <div className="p-4 rounded-xl border border-primary/10 bg-white/50 backdrop-blur-sm max-w-sm">
                                         <p className="text-xs text-primary/80 font-medium" style={{ fontFamily: "var(--font-space-grotesk), sans-serif" }}>
@@ -402,7 +433,7 @@ function ShortFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: 
             )}
 
             {/* Grid for remaining items */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 min-[400px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                 {gridItems.map((item, idx) => (
                     <ShortFormCard key={item.id} item={item} onPlay={onPlay} index={idx} />
                 ))}
@@ -426,6 +457,7 @@ function ShortFormCard({ item, index, onPlay }: { item: WorkItem, index: number,
         >
             {item.videoUrl ? (
                 <WorkVideo
+                    title={item.title}
                     src={item.videoUrl} 
                     poster={item.posterUrl || getThumbnail(item.youtubeUrl || "")} 
                     preload="none" 
@@ -476,7 +508,7 @@ function LongFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: s
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="w-full flex flex-col gap-16 md:gap-24"
         >
-            <div className="flex flex-col md:flex-row gap-6 md:gap-12 items-end mb-4 border-b border-primary/10 pb-8">
+            <div className="flex flex-col md:flex-row gap-6 md:gap-12 items-start md:items-end mb-4 border-b border-primary/10 pb-8">
                 <h3 className="text-3xl md:text-5xl font-medium text-primary tracking-tight" style={{ fontFamily: "var(--font-tiempos-headline), serif" }}>
                     Cinematic Narratives.
                 </h3>
@@ -488,7 +520,7 @@ function LongFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: s
             {/* Distinct Featured Hero for Long Form */}
             {currentFeatured && (
                 <div 
-                    className="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-3xl md:rounded-[40px] overflow-hidden cursor-pointer group shadow-2xl"
+                    className="work-long-feature relative w-full rounded-3xl md:rounded-[40px] overflow-hidden cursor-pointer group shadow-2xl"
                     onClick={() => onPlay(currentFeatured.youtubeUrl || "")}
                     data-cursor-hover
                 >
@@ -554,7 +586,7 @@ function LongFormGallery({ items, onPlay }: { items: WorkItem[], onPlay: (url: s
             )}
 
             {/* Split Layout for the rest: List on Left, Grid on Right */}
-            <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 mt-12 md:mt-16">
+            <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 mt-0 md:mt-6">
                 
                 {/* Left Side: Detailed List */}
                 <div className="w-full lg:w-5/12 flex flex-col gap-16">
@@ -695,7 +727,7 @@ function GraphicsGallery({ items }: { items: WorkItem[] }) {
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="w-full flex flex-col gap-16 md:gap-24"
         >
-            <div className="flex flex-col md:flex-row gap-6 md:gap-12 items-end mb-4 border-b border-primary/10 pb-8">
+            <div className="flex flex-col md:flex-row gap-6 md:gap-12 items-start md:items-end mb-4 border-b border-primary/10 pb-8">
                 <h3 className="text-3xl md:text-5xl font-medium text-primary tracking-tight" style={{ fontFamily: "var(--font-tiempos-headline), serif" }}>
                     Visual Identity.
                 </h3>
@@ -763,7 +795,7 @@ function GraphicsGallery({ items }: { items: WorkItem[] }) {
             )}
 
             {/* Masonry-style Moodboard for the rest */}
-            <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6 md:space-y-8">
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6 md:space-y-8">
                 {gridItems.map((item, idx) => (
                     <GraphicsCard key={item.id} item={item} index={idx} />
                 ))}
@@ -789,7 +821,7 @@ function GraphicsCard({ item, index }: { item: WorkItem, index: number }) {
             className={`relative break-inside-avoid overflow-hidden bg-white p-2 md:p-3 shadow-xl shadow-primary/[0.03] group ${radius}`}
             data-cursor-hover
         >
-            <div className={`relative overflow-hidden w-full h-full ${radius.replace('rounded', 'rounded')}`}>
+            <div className={`relative overflow-hidden w-full aspect-[4/3] ${radius}`}>
                 <img src={getThumbnail(item.youtubeUrl ?? "")} alt={item.title} className="absolute inset-0 w-full h-full object-cover scale-100 group-hover:scale-[1.04] transition-all duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)]" />
                 
                 <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-45 transition-opacity duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none z-0" />
@@ -866,11 +898,10 @@ function TabBar({ activeTab, onTabChange }: { activeTab: TabKey, onTabChange: (k
             <div ref={tabWrapperRef} className="sticky top-[60px] md:top-[80px] z-50 flex justify-center w-full mb-12 md:mb-16 pointer-events-none">
                 <motion.div 
                     animate={{
-                        scale: isTabsStuck ? 0.7 : 1,
                         y: isTabsStuck ? -10 : 0
                     }}
                     transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                    className="work-tabs flex items-center gap-1 md:gap-2 p-1.5 rounded-full w-fit pointer-events-auto backdrop-blur-2xl bg-transparent border border-primary/20 shadow-[0_4px_24px_0_rgba(17,37,14,0.08)]"
+                    className="work-tabs grid grid-cols-3 items-center gap-1 md:gap-2 p-1.5 rounded-full w-full max-w-[440px] pointer-events-auto backdrop-blur-2xl bg-background/90 border border-primary/20 shadow-[0_4px_24px_0_rgba(17,37,14,0.08)]"
                 >
                     {TABS.map((tab) => {
                         const Icon = tab.icon;
@@ -882,7 +913,7 @@ function TabBar({ activeTab, onTabChange }: { activeTab: TabKey, onTabChange: (k
                                 aria-pressed={isActive}
                                 onClick={() => handleTabChange(tab.key)}
                                 data-cursor-hover
-                                className={`relative flex min-h-[64px] md:min-h-0 flex-col md:flex-row items-center justify-center gap-1 md:gap-2 px-3 md:px-6 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-medium transition-colors duration-300 ${
+                                className={`relative flex min-w-0 min-h-12 flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-2 md:px-4 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-medium transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
                                     isActive
                                         ? "text-background"
                                         : "text-primary/60 hover:text-primary"
@@ -940,9 +971,9 @@ export default function WorkShowcase({ sanityShortFormItems = [] }: { sanityShor
             />
 
 
-            <div className="relative z-10 w-full max-w-[1070px] mx-auto px-6 md:px-16 pt-10 md:pt-16 pb-24 md:pb-32">
+            <div className="relative z-10 w-full max-w-[1070px] mx-auto px-5 sm:px-8 lg:px-16 pt-6 md:pt-16 pb-24 md:pb-32">
             {/* ── Cinematic Hero Banner ── */}
-                <div className="mb-14 md:mb-20 -mx-6 md:-mx-16">
+                <div className="mb-10 md:mb-20 -mx-5 sm:-mx-8 lg:-mx-16">
                     <motion.div
                         ref={headerRef}
                         className="relative w-full rounded-[24px] md:rounded-[32px] overflow-hidden"

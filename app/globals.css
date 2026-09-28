@@ -64,6 +64,102 @@
 
 /* ── Bento Grid Layout ─────────────────────────── */
 
+.work-showcase h3,
+.work-showcase h4,
+.work-showcase p {
+  overflow-wrap: anywhere;
+}
+
+.work-showcase button {
+  flex-shrink: 0;
+}
+
+.work-long-feature {
+  min-height: 440px;
+  padding-top: 220px;
+  background: var(--color-primary);
+}
+
+.work-long-feature .work-feature-copy {
+  position: relative;
+}
+
+.work-long-feature > .work-play-overlay {
+  bottom: auto;
+  height: 220px;
+}
+
+.work-long-feature > button {
+  top: 110px;
+  opacity: 1;
+}
+
+@media (max-width: 767px) {
+  .work-showcase .items-end {
+    align-items: flex-start;
+  }
+
+  .work-showcase .work-feature-copy {
+    padding: 24px;
+  }
+
+  .work-showcase button[aria-label="Previous project"],
+  .work-showcase button[aria-label="Next project"] {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+@media (min-width: 768px) {
+  .work-long-feature {
+    min-height: 480px;
+    padding-top: 230px;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .work-showcase .group .translate-y-3 {
+    transform: translateY(0);
+  }
+
+  .work-showcase .group .group-hover\:opacity-45 {
+    opacity: 0.45;
+  }
+}
+
+/* Match the long-form preview treatment without transforming active controls. */
+.short-form-preview {
+  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.short-form-shade {
+  opacity: 0;
+  transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.short-form-media[data-playing="false"]:is(:hover, :focus-within) .short-form-preview {
+  transform: scale(1.04);
+}
+
+.short-form-media:is(:hover, :focus-within) .short-form-shade {
+  opacity: 0.75;
+}
+
+.short-form-media:focus-within circle {
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .short-form-media .short-form-preview,
+  .short-form-media button,
+  .short-form-media button > svg,
+  .short-form-media button circle,
+  .short-form-media div {
+    transition-duration: 0.01ms !important;
+    transform: none !important;
+  }
+}
+
 /* Mobile: stacked column layout */
 .bento-grid {
   display: grid;
